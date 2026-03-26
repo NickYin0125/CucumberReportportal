@@ -281,22 +281,7 @@ module ReportportalCucumber
       # @param boundary [String]
       # @return [String]
       def encode_multipart(parts, boundary)
-        buffer = String.new(capacity: 1024, encoding: Encoding::BINARY)
-
-        parts.each do |part|
-          disposition = +"form-data; name=\"#{part.fetch(:name)}\""
-          disposition << "; filename=\"#{part[:filename]}\"" if part[:filename]
-
-          buffer << "--#{boundary}\r\n".b
-          buffer << "Content-Disposition: #{disposition}\r\n".b
-          buffer << "Content-Type: #{part.fetch(:content_type, 'application/octet-stream')}\r\n\r\n".b
-          body = part.fetch(:body)
-          buffer << (body.is_a?(String) ? body.b : body.to_s.b)
-          buffer << "\r\n".b
-        end
-
-        buffer << "--#{boundary}--\r\n".b
-        buffer
+        MultipartHelper.encode(parts: parts, boundary: boundary)
       end
     end
   end

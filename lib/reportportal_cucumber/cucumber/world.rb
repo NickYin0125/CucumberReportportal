@@ -23,6 +23,9 @@ module ReportportalCucumber
       # @param level [String, Symbol]
       # @return [void]
       def rp_attach(io_or_bytes, name:, mime:, message: nil, level: :info)
+        runtime = ReportportalCucumber.current_runtime
+        return unless runtime
+
         bytes =
           if io_or_bytes.respond_to?(:read)
             data = io_or_bytes.read
@@ -32,9 +35,10 @@ module ReportportalCucumber
             io_or_bytes.to_s
           end
 
-        rp_log(
-          message || "Attachment: #{name}",
+        runtime.emit_world_attachment(
+          message: message || "Attachment: #{name}",
           level: level,
+          timestamp: Time.now,
           attachment: {
             name: name,
             mime: mime,

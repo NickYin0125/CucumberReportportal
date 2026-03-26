@@ -8,6 +8,8 @@
 - 默认层级：`Launch -> Feature(suite) -> Scenario(hasStats=true) -> nested step/hook(hasStats=false)`
 - 支持 `rerun`、最小可用 `retry`、批量日志、附件、多进程 join、HTTP 重试与退出 flush
 - 提供 World DSL：`rp_log`、`rp_attach`、`rp_step`
+- Gherkin step 会保留 `Given/When/Then` 语义，并把 DataTable / DocString 渲染成 Markdown 描述
+- JSON、文本、图片、视频等附件会自动做 MIME 识别与更友好的 RP 日志预览
 
 ## Installation
 
@@ -98,6 +100,13 @@ end
 
 `attachment` 结构参考 `pytest-reportportal` 的使用体验，支持 `name`、`bytes`、`mime` 三元组。
 
+附件和 step 的绑定规则：
+
+- `rp_attach` 默认挂到当前 active step，而不是漂到 scenario 外层
+- `application/json` 附件会自动 prettify，并把 JSON 代码块追加到日志消息
+- `text/plain` / `.log` 附件会在日志消息中展示前 100 行预览，完整内容仍保留在附件文件中
+- 图片和视频附件会根据 MIME 和文件后缀触发 RP 内置预览器
+
 ## Design Notes
 
 - 所有 HTTP 请求都经过 `ReportportalCucumber::Http::Client`
@@ -106,6 +115,8 @@ end
 - `Runtime::LogBuffer` 在后台线程按 `batch_size_logs` 或 `flush_interval` 触发批量发送
 - 发送失败会按指数退避重试；最终失败则写入 spool 目录
 - 多进程 join 通过文件锁和 sync 文件共享 `launchUuid`
+- `ReportPortal::Models::StepDesc` 负责把 Gherkin Step 转成 Markdown 描述
+- `Transport::MultipartHelper` 负责 multipart `json_request_part` 与 binary parts 的一致性校验和 MIME 识别
 
 ## Testing
 
@@ -125,6 +136,7 @@ bundle exec cucumber
 ## Runtime Dependencies
 
 - `cucumber`：formatter 需要挂接 Cucumber 事件总线
+- `mime-types`：根据文件名和 MIME 元数据自动补全附件 content type / 后缀，保证 RP 图片、视频和文本附件预览稳定
 
 其余实现尽量使用 Ruby 标准库：`Net::HTTP`、`JSON`、`Time`、`SecureRandom`、`Base64`、`File`、`Mutex`、`Queue`。
 

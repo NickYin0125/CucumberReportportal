@@ -61,5 +61,57 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
       expect(payload.fetch(:entries).map { |entry| entry.dig("file", "name") }).to eq(["evidence.txt", "evidence-1.txt"])
       expect(payload.fetch(:files).map { |file| file.fetch(:name) }).to eq(["evidence.txt", "evidence-1.txt"])
     end
+
+    it "pretty prints JSON attachments and appends a markdown preview to the log message" do
+      payload = described_class.build_log_batch(
+        [
+          {
+            item_uuid: "item-1",
+            launch_uuid: "launch-1",
+            message: "Structured config snapshot",
+            level: :debug,
+            timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+            attachment: {
+              name: "config",
+              mime: "application/json",
+              bytes: '{"buyer":"JPM","amount":10}'
+            }
+          }
+        ]
+      )
+
+      entry = payload.fetch(:entries).first
+      file = payload.fetch(:files).first
+
+      expect(file.fetch(:name)).to eq("config.json")
+      expect(file.fetch(:bytes)).to include("\"buyer\": \"JPM\"")
+      expect(entry.fetch("message")).to include("Structured config snapshot")
+      expect(entry.fetch("message")).to include("```json")
+    end
+
+    it "truncates long text attachment previews after 100 lines" do
+      payload = described_class.build_log_batch(
+        [
+          {
+            item_uuid: "item-1",
+            launch_uuid: "launch-1",
+            message: "Transport trace",
+            level: :info,
+            timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+            attachment: {
+              name: "trace.log",
+              mime: "text/plain",
+              bytes: (1..120).map { |index| "line-#{index}" }.join("\n")
+            }
+          }
+        ]
+      )
+
+      message = payload.fetch(:entries).first.fetch("message")
+
+      expect(message).to include("line-100")
+      expect(message).not_to include("line-101")
+      expect(message).to include("[View Full Log](attachment://trace.log)")
+    end
   end
 end

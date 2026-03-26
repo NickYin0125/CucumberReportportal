@@ -17,11 +17,13 @@ RSpec.describe ReportportalCucumber::Runtime::Context do
 
     expect(Thread.current[:rp_context_stack].map(&:uuid)).to eq(%w[feature-1 scenario-1 step-1])
     expect(context.current_item_uuid).to eq("step-1")
+    expect(context.active_parent_uuid).to eq("step-1")
 
     context.pop_step(expected_uuid: "step-1")
     context.finish_scenario(expected_uuid: "scenario-1")
 
     expect(Thread.current[:rp_context_stack].map(&:uuid)).to eq(["feature-1"])
     expect(context.current_item_uuid).to eq("feature-1")
+    expect(context.active_parent_uuid).to eq("feature-1")
   end
 end

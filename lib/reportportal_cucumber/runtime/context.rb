@@ -29,6 +29,7 @@ module ReportportalCucumber
         thread_state[:current_feature_key] = nil
         thread_state[:current_scenario_key] = nil
         thread_state[:current_scenario_item] = nil
+        thread_state[:active_parent] = nil
       end
 
       # @param feature_key [String]
@@ -58,6 +59,7 @@ module ReportportalCucumber
         stack.reject! { |handle| handle.kind == :feature && handle.uuid != item.uuid }
         stack << item unless stack.any? { |handle| handle.uuid == item.uuid }
         state[:current_feature_key] = feature_key
+        sync_active_parent_from_stack!
         item
       end
 
@@ -143,6 +145,7 @@ module ReportportalCucumber
       def clear_current_scenario
         finish_scenario
         context_stack.reject! { |item| item.kind == :step || item.kind == :hook || item.kind == :manual_step }
+        sync_active_parent_from_stack!
       end
 
       # @param item [ItemHandle]
@@ -175,6 +178,16 @@ module ReportportalCucumber
       # @return [String, nil]
       def current_item_uuid
         current_item&.uuid
+      end
+
+      # @return [ItemHandle, nil]
+      def active_parent
+        thread_state[:active_parent] || current_item
+      end
+
+      # @return [String, nil]
+      def active_parent_uuid
+        active_parent&.uuid
       end
 
       # @param test_case_started_id [String]
@@ -221,18 +234,25 @@ module ReportportalCucumber
       # @return [ItemHandle]
       def push_item(item)
         context_stack << item
+        sync_active_parent_from_stack!
         item
       end
 
       # @param expected_uuid [String, nil]
       # @return [ItemHandle, nil]
       def pop_item(expected_uuid: nil)
-        return context_stack.pop if expected_uuid.nil?
+        if expected_uuid.nil?
+          popped = context_stack.pop
+          sync_active_parent_from_stack!
+          return popped
+        end
 
         index = context_stack.rindex { |item| item.uuid == expected_uuid }
         return nil unless index
 
-        context_stack.delete_at(index)
+        popped = context_stack.delete_at(index)
+        sync_active_parent_from_stack!
+        popped
       end
 
       # @return [Array<ItemHandle>]
@@ -243,6 +263,11 @@ module ReportportalCucumber
       # @return [Hash]
       def thread_state
         Thread.current[:reportportal_cucumber_context_state] ||= {}
+      end
+
+      # @return [void]
+      def sync_active_parent_from_stack!
+        thread_state[:active_parent] = context_stack.last
       end
     end
   end

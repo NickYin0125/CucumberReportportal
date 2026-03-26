@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cucumber/formatter/ast_lookup"
+
 module ReportportalCucumber
   module Cucumber
     # Cucumber formatter that streams execution state to ReportPortal in real time.
@@ -14,6 +16,7 @@ module ReportportalCucumber
         @api = ReportPortal::API.new(config: @config)
         @join = Runtime::Join.new(config: @config)
         @log_buffer = Runtime::LogBuffer.new(api: @api, config: @config, on_error: method(:handle_reporting_error))
+        @ast_lookup = build_ast_lookup
         @feature_states = {}
         @scenario_states = {}
         @outline_metadata_cache = {}
@@ -55,7 +58,26 @@ module ReportportalCucumber
       def emit_world_log(message:, level:, timestamp:, attachment: nil)
         return unless reporting_enabled?
 
-        target_item_uuid = runtime_context.current_item_uuid
+        target_item_uuid = runtime_context.current_item_uuid || runtime_context.active_parent_uuid
+        @log_buffer.emit_log(
+          item_uuid: target_item_uuid,
+          launch_uuid: @launch_uuid,
+          message: message,
+          level: level,
+          timestamp: timestamp,
+          attachment: attachment
+        )
+      end
+
+      # @param message [String]
+      # @param level [String, Symbol]
+      # @param timestamp [Time]
+      # @param attachment [Hash]
+      # @return [void]
+      def emit_world_attachment(message:, level:, timestamp:, attachment:)
+        return unless reporting_enabled?
+
+        target_item_uuid = runtime_context.active_parent_uuid || runtime_context.current_item_uuid
         @log_buffer.emit_log(
           item_uuid: target_item_uuid,
           launch_uuid: @launch_uuid,
@@ -275,8 +297,9 @@ module ReportportalCucumber
         scenario_item = runtime_context.current_scenario_item || runtime_context.item_for_test_case_started(extract_test_case_started_id(event))
         return unless scenario_item
 
-        parent_uuid = runtime_context.current_item_uuid || scenario_item.uuid
+        parent_uuid = runtime_context.active_parent_uuid || runtime_context.current_item_uuid || scenario_item.uuid
         step_name = extract_step_name(event)
+        step_description = extract_step_description(event)
         debug("Starting nested step name=#{step_name.inspect} parent=#{parent_uuid}")
         local_uuid = SecureRandom.uuid
         step_uuid = safe_reporting_call(fallback: local_uuid) do
@@ -286,6 +309,7 @@ module ReportportalCucumber
             type: "step",
             launch_uuid: @launch_uuid,
             parent_uuid: parent_uuid,
+            description: step_description,
             has_stats: false,
             retry: false,
             uuid: local_uuid
@@ -298,7 +322,7 @@ module ReportportalCucumber
           parent_uuid: parent_uuid,
           type: "step",
           has_stats: false,
-          metadata: {}
+          metadata: { description: step_description }
         )
         runtime_context.push_step(item)
         if (test_step_id = extract_test_step_id(event))
@@ -313,6 +337,7 @@ module ReportportalCucumber
 
         target_item = runtime_context.item_for_test_step(extract_test_step_id(event))
         target_item ||= runtime_context.item_for_test_case_started(extract_test_case_started_id(event))
+        target_item ||= runtime_context.active_parent
         target_item ||= runtime_context.current_item
         return unless target_item
 
@@ -554,9 +579,10 @@ module ReportportalCucumber
         encoding = (fetch_value(event, :content_encoding) || "identity").to_s.downcase
         body = fetch_value(event, :body).to_s
         bytes = encoding == "base64" ? Base64.decode64(body) : body
+        media_type = fetch_value(event, :media_type) || "application/octet-stream"
         {
-          name: fetch_value(event, :file_name) || default_attachment_name(fetch_value(event, :media_type)),
-          mime: fetch_value(event, :media_type) || "application/octet-stream",
+          name: fetch_value(event, :file_name) || default_attachment_name(media_type),
+          mime: media_type,
           bytes: bytes
         }
       end
@@ -571,14 +597,7 @@ module ReportportalCucumber
       # @param media_type [String, nil]
       # @return [String]
       def default_attachment_name(media_type)
-        extension =
-          case media_type.to_s
-          when "image/png" then ".png"
-          when "image/jpeg" then ".jpg"
-          when "text/plain" then ".txt"
-          else ""
-          end
-        "attachment#{extension}"
+        Service::PayloadBuilder.default_attachment_name(media_type)
       end
 
       # @return [String]
@@ -678,11 +697,21 @@ module ReportportalCucumber
       # @param event [Object]
       # @return [String]
       def extract_step_name(event)
+        descriptor = build_step_descriptor(event)
         base_name =
+          descriptor&.summary_name ||
           fetch_value(event, :step_text, [:test_step, :text], [:test_step, :name], [:pickle_step, :text], :name) || "Step"
         return "Hook: #{base_name}" if extract_hook?(event)
 
         base_name
+      end
+
+      # @param event [Object]
+      # @return [String, nil]
+      def extract_step_description(event)
+        return nil if extract_hook?(event)
+
+        build_step_descriptor(event)&.to_markdown
       end
 
       # @param event [Object]
@@ -843,6 +872,24 @@ module ReportportalCucumber
       # @return [void]
       def debug(message)
         ReportportalCucumber.logger.debug(message)
+      end
+
+      # @param event [Object]
+      # @return [ReportportalCucumber::ReportPortal::Models::StepDesc, nil]
+      def build_step_descriptor(event)
+        test_step = fetch_value(event, :test_step)
+        return nil unless test_step && @ast_lookup
+
+        ReportPortal::Models::StepDesc.from_test_step(test_step, ast_lookup: @ast_lookup)
+      end
+
+      # @return [Object, nil]
+      def build_ast_lookup
+        return nil unless defined?(::Cucumber::Formatter::AstLookup) && @cucumber_config.respond_to?(:on_event)
+
+        ::Cucumber::Formatter::AstLookup.new(@cucumber_config)
+      rescue StandardError
+        nil
       end
     end
   end

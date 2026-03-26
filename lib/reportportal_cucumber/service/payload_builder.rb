@@ -6,6 +6,16 @@ module ReportportalCucumber
     module PayloadBuilder
       module_function
 
+      MIME_EXTENSION_MAP = {
+        "application/json" => ".json",
+        "application/pdf" => ".pdf",
+        "application/octet-stream" => ".bin",
+        "image/jpeg" => ".jpg",
+        "image/png" => ".png",
+        "text/plain" => ".txt",
+        "video/mp4" => ".mp4"
+      }.freeze
+
       # @param value [Time, String, Integer, Float, nil]
       # @return [String]
       def unix_ms(value)
@@ -142,13 +152,13 @@ module ReportportalCucumber
 
         Array(records).each do |record|
           payload = record.respond_to?(:to_h) ? record.to_h : record
-          attachment = payload[:attachment] || payload["attachment"]
+          attachment = normalize_attachment(payload[:attachment] || payload["attachment"])
           filename = attachment && unique_filename(attachment.fetch(:name), used_names)
           entries << build_log_entry(
             launch_uuid: payload[:launch_uuid] || payload["launch_uuid"],
             item_uuid: payload[:item_uuid] || payload["item_uuid"],
             time: payload[:timestamp] || payload["timestamp"],
-            message: payload[:message] || payload["message"],
+            message: enrich_log_message(payload[:message] || payload["message"], attachment),
             level: payload[:level] || payload["level"],
             file_name: filename
           )
@@ -158,7 +168,7 @@ module ReportportalCucumber
           files << {
             name: filename,
             mime: attachment.fetch(:mime),
-            bytes: attachment.fetch(:bytes)
+            bytes: attachment.fetch(:bytes).dup.force_encoding(Encoding::BINARY)
           }
         end
 
@@ -256,10 +266,54 @@ module ReportportalCucumber
         "info"
       end
 
+      # @param attachment [Hash, nil]
+      # @return [Hash, nil]
+      def normalize_attachment(attachment)
+        return nil if attachment.nil?
+
+        payload = attachment.respond_to?(:to_h) ? attachment.to_h : attachment
+        name = payload[:name] || payload["name"]
+        mime = payload[:mime] || payload["mime"]
+        bytes = payload[:bytes] || payload["bytes"]
+
+        mime = Transport::MultipartHelper.content_type_for(filename: name, declared_type: mime)
+        name = Transport::MultipartHelper.ensure_filename_extension(
+          name: name,
+          content_type: mime,
+          fallback: default_attachment_name(mime)
+        )
+
+        {
+          name: name,
+          mime: mime,
+          bytes: normalize_attachment_bytes(bytes: bytes, mime: mime)
+        }
+      end
+
+      # @param message [String, nil]
+      # @param attachment [Hash, nil]
+      # @return [String]
+      def enrich_log_message(message, attachment)
+        base = message.to_s.strip
+        preview = attachment_preview(attachment)
+        parts = []
+        parts << base unless base.empty?
+        parts << preview unless preview.to_s.strip.empty?
+        return "Attachment" if parts.empty?
+
+        parts.join("\n\n")
+      end
+
       # @param attributes [Array<Hash>, nil]
       # @return [Array<Hash>]
       def normalize_attributes(attributes)
         Array(attributes).map { |item| stringify_hash(item).compact }.reject(&:empty?)
+      end
+
+      # @param media_type [String, nil]
+      # @return [String]
+      def default_attachment_name(media_type)
+        "attachment#{mime_extension(media_type)}"
       end
 
       # @param base [String]
@@ -309,6 +363,87 @@ module ReportportalCucumber
       # @return [Hash]
       def stringify_hash(value)
         value.each_with_object({}) { |(key, item), memo| memo[key.to_s] = item }
+      end
+
+      # @param bytes [Object]
+      # @param mime [String]
+      # @return [String]
+      def normalize_attachment_bytes(bytes:, mime:)
+        raw =
+          if bytes.respond_to?(:read)
+            data = bytes.read
+            bytes.rewind if bytes.respond_to?(:rewind)
+            data
+          else
+            bytes.to_s
+          end
+
+        return "#{pretty_json(raw)}\n" if json_attachment?(mime: mime)
+
+        raw
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [String, nil]
+      def attachment_preview(attachment)
+        return nil unless attachment
+
+        if json_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
+          "```json\n#{pretty_json(safe_utf8(attachment.fetch(:bytes)))}\n```"
+        elsif text_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
+          text_preview(attachment)
+        end
+      end
+
+      # @param attachment [Hash]
+      # @return [String]
+      def text_preview(attachment)
+        content = safe_utf8(attachment.fetch(:bytes))
+        lines = content.lines
+        snippet = lines.first(100).join
+        preview = "```text\n#{snippet.rstrip}\n```"
+        return preview if lines.length <= 100
+
+        "#{preview}\n\n[View Full Log](attachment://#{attachment.fetch(:name)})"
+      end
+
+      # @param value [Object]
+      # @return [String]
+      def safe_utf8(value)
+        value.to_s.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")
+      end
+
+      # @param content [String]
+      # @return [String]
+      def pretty_json(content)
+        JSON.pretty_generate(JSON.parse(content.to_s))
+      rescue JSON::ParserError
+        content.to_s
+      end
+
+      # @param mime [String]
+      # @param name [String, nil]
+      # @return [Boolean]
+      def json_attachment?(mime:, name: nil)
+        mime.to_s.downcase == "application/json" || File.extname(name.to_s).downcase == ".json"
+      end
+
+      # @param mime [String]
+      # @param name [String, nil]
+      # @return [Boolean]
+      def text_attachment?(mime:, name: nil)
+        mime.to_s.downcase.start_with?("text/") || %w[.log .txt].include?(File.extname(name.to_s).downcase)
+      end
+
+      # @param media_type [String, nil]
+      # @return [String]
+      def mime_extension(media_type)
+        normalized = media_type.to_s.downcase
+        return MIME_EXTENSION_MAP[normalized] if MIME_EXTENSION_MAP.key?(normalized)
+
+        detected = MIME::Types[normalized].first
+        extension = detected&.preferred_extension.to_s
+        extension.empty? ? "" : ".#{extension}"
       end
 
       # @param filename [String]

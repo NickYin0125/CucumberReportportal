@@ -68,6 +68,19 @@ module VerificationArtifacts
   def build_trace_attachment
     verification_file("trace.log", "TRACE request\nTRACE response\n")
   end
+
+  def build_json_attachment(name, payload)
+    verification_file(name, JSON.pretty_generate(payload))
+  end
+
+  def build_mp4_attachment(name = "verification.mp4")
+    bytes = [
+      0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70,
+      0x6D, 0x70, 0x34, 0x32, 0x00, 0x00, 0x00, 0x00,
+      0x6D, 0x70, 0x34, 0x32, 0x69, 0x73, 0x6F, 0x6D
+    ].pack("C*")
+    verification_file(name, bytes)
+  end
 end
 
 World(VerificationArtifacts)
@@ -250,6 +263,35 @@ end
 Then("the nested step hierarchy should be prepared") do
   expect(@nested_step_names).to eq(["Authenticate", "Create order", "Capture payment"])
   expect(@nested_log_messages.length).to eq(3)
+end
+
+When("I execute a richly structured step with a verification matrix:") do |table|
+  @rich_matrix_rows = table.raw
+  @rich_attachment_names = []
+  @rich_matrix_headers = table.raw.first
+
+  payload = {
+    buyer: "JPM",
+    region: "APAC",
+    batchId: SecureRandom.uuid,
+    validations: table.hashes.first(3),
+    generatedAt: Time.utc(2026, 3, 26, 0, 0, 0).iso8601
+  }
+
+  json_path = build_json_attachment("config.json", payload)
+  png_path = build_png_attachment("error.png")
+
+  attach_path(json_path, mime: "application/json", message: "Structured config snapshot", level: :debug)
+  @rich_attachment_names << File.basename(json_path)
+
+  attach_path(png_path, mime: "image/png", message: "Failure screenshot", level: :error)
+  @rich_attachment_names << File.basename(png_path)
+end
+
+Then("the rich evidence payload should be prepared") do
+  expect(@rich_matrix_headers).to eq(%w[buyer region product currency amount])
+  expect(@rich_matrix_rows.length).to eq(11)
+  expect(@rich_attachment_names).to eq(%w[config.json error.png])
 end
 
 Given("I record the current process identity for join verification") do

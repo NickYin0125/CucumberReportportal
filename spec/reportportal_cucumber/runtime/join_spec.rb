@@ -26,6 +26,7 @@ RSpec.describe ReportportalCucumber::Runtime::Join do
             "shared-launch"
           end
           File.write(result_paths[index], JSON.generate({ uuid: uuid, primary: join.primary? }))
+          sleep(0.2) if join.primary?
           exit!(0)
         end
       end

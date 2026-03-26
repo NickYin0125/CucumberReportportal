@@ -197,4 +197,33 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
       )
     end
   end
+
+  it "binds world attachments to the active step item" do
+    log_buffer = instance_double(ReportportalCucumber::Runtime::LogBuffer, emit_log: nil, flush: true, shutdown: true)
+    allow(ReportportalCucumber::Runtime::LogBuffer).to receive(:new).and_return(log_buffer)
+
+    formatter = described_class.new(stub_config)
+    feature = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "feature-1", kind: :feature, name: "Feature", type: "suite", has_stats: false)
+    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", parent_uuid: "feature-1", type: "test", has_stats: true)
+    step = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "step-1", kind: :step, name: "When upload", parent_uuid: "scenario-1", type: "step", has_stats: false)
+
+    formatter.runtime_context.register_feature("features/a.feature", feature)
+    formatter.runtime_context.activate_feature("features/a.feature", feature)
+    formatter.runtime_context.start_scenario("features/a.feature:1:uniq", scenario)
+    formatter.runtime_context.push_step(step)
+
+    formatter.emit_world_attachment(
+      message: "Failure screenshot",
+      level: :info,
+      timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+      attachment: {
+        name: "error.png",
+        mime: "image/png",
+        bytes: "png-bytes"
+      }
+    )
+
+    expect(log_buffer).to have_received(:emit_log).with(hash_including(item_uuid: "step-1", attachment: hash_including(name: "error.png")))
+    formatter.instance_variable_set(:@finalized, true)
+  end
 end
