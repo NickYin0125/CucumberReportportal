@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      CUCUMBER_PUBLISH_QUIET: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Run RSpec
+        run: bundle exec rspec
+
+      - name: Run Cucumber
+        run: bundle exec cucumber
