@@ -1,0 +1,3 @@
+default: --publish-quiet --tags 'not @reportportal_live'
+verification: --publish-quiet --require features --format ReportPortal::Cucumber::Formatter features/verification
+rerun_config: --publish-quiet --require features --format ReportPortal::Cucumber::Formatter features/verification

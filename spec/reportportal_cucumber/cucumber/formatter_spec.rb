@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "tmpdir"
 
 RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   FakeConfig = Struct.new(:handlers) do
@@ -17,6 +18,8 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
       project: "demo",
       api_key: "token",
       launch: "Demo launch",
+      launch_description: "Formatter spec launch",
+      launch_attributes: [{ "key" => "suite", "value" => "spec" }],
       batch_size_logs: 2,
       flush_interval: 0.1,
       retry_attempts: 1,
@@ -89,11 +92,13 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     start_launch_body = calls.find { |name, _| name == :start_launch }.last
     expect(start_launch_body["name"]).to eq("Demo launch")
     expect(start_launch_body["startTime"]).to match(/\A\d+\z/)
+    expect(start_launch_body["description"]).to eq("Formatter spec launch")
+    expect(start_launch_body["attributes"]).to eq([{ "key" => "suite", "value" => "spec" }])
 
     scenario_body = calls.find { |name, body| name == :start_scenario && body["hasStats"] == true }.last
     expect(scenario_body).to include(
       "name" => "Scenario: Login ok",
-      "type" => "step",
+      "type" => "test",
       "codeRef" => "features/login.feature:12",
       "testCaseId" => "features/login.feature:12",
       "uniqueId" => ReportportalCucumber::ReportPortal::Models.build_unique_id(code_ref: "features/login.feature:12", parameters: nil)
@@ -163,5 +168,33 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     formatter.ingest_event("type" => "test_run_finished", "success" => true)
 
     expect(payloads.first).to include("rerun" => true, "rerunOf" => "prev-launch")
+  end
+
+  it "derives outline parameters and stable scenario line from example rows" do
+    formatter = described_class.new(stub_config)
+
+    Dir.mktmpdir do |dir|
+      feature_path = File.join(dir, "outline.feature")
+      File.write(feature_path, <<~FEATURE)
+        Feature: Outline verification
+          Scenario Outline: Stable test case id
+            Given user <user> pays <amount>
+
+            Examples:
+              | user  | amount |
+              | alice | 10     |
+              | bob   | 20     |
+      FEATURE
+
+      metadata = formatter.send(:parse_outline_metadata, feature_path, 7)
+
+      expect(metadata).to eq(
+        scenario_line: 2,
+        parameters: {
+          "user" => "alice",
+          "amount" => "10"
+        }
+      )
+    end
   end
 end

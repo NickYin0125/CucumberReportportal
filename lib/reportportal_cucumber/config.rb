@@ -72,9 +72,10 @@ module ReportportalCucumber
     # @param overrides [Hash]
     # @return [Config]
     def self.load(profile: ENV["CUCUMBER_PROFILE"], env: ENV, yaml_path: nil, overrides: {})
-      yaml_data = load_yaml(path: yaml_path || env["RP_CONFIG"], profile: profile)
+      resolved_profile = profile || detect_profile_from_argv
+      yaml_data = load_yaml(path: yaml_path || env["RP_CONFIG"], profile: resolved_profile)
       env_data = load_env(env)
-      new(DEFAULTS.merge(yaml_data).merge(env_data).merge(symbolize_keys(overrides)).merge(profile: profile))
+      new(DEFAULTS.merge(yaml_data).merge(env_data).merge(symbolize_keys(overrides)).merge(profile: resolved_profile))
     end
 
     # @param path [String, nil]
@@ -108,6 +109,19 @@ module ReportportalCucumber
         File.join(Dir.pwd, ".reportportal.yml"),
         File.join(Dir.pwd, "config", "reportportal.yml")
       ]
+    end
+
+    # @param argv [Array<String>]
+    # @return [String, nil]
+    def self.detect_profile_from_argv(argv = ARGV)
+      args = Array(argv)
+      args.each_with_index do |entry, index|
+        return args[index + 1] if entry == "-p" || entry == "--profile"
+        if (match = entry.match(/\A--profile=(.+)\z/))
+          return match[1]
+        end
+      end
+      nil
     end
 
     # @param value [Object]

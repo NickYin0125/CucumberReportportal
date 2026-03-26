@@ -79,19 +79,21 @@ module ReportportalCucumber
           attributes: attributes,
           code_ref: code_ref,
           parameters: parameters,
+          parent_uuid: parent_uuid,
           has_stats: has_stats,
           retry: retry_flag,
           uuid: uuid,
           test_case_id: test_case_id,
           unique_id: unique_id
         )
-        path =
+
+        response =
           if parent_uuid
-            "#{@config.api_base_path}/item/#{parent_uuid}"
+            start_child_item(body: body, parent_uuid: parent_uuid)
           else
-            "#{@config.api_base_path}/item"
+            @client.post_json(path: "#{@config.api_base_path}/item", body: body)
           end
-        response = @client.post_json(path: path, body: body)
+
         extract_id(response.body, fallback: uuid)
       end
 
@@ -146,6 +148,29 @@ module ReportportalCucumber
         return fallback unless body.is_a?(Hash)
 
         body["id"] || body.dig("data", "id") || body["uuid"] || fallback
+      end
+
+      # @param body [Hash]
+      # @param parent_uuid [String]
+      # @return [ReportportalCucumber::Transport::HTTPClient::Response]
+      def start_child_item(body:, parent_uuid:)
+        child_body = body.reject { |key, _| key == "parentUuid" }
+        @client.post_json(path: "#{@config.api_base_path}/item/#{parent_uuid}", body: child_body)
+      rescue Http::Client::Error => error
+        raise error unless fallback_to_parent_uuid_body?(error)
+
+        @client.post_json(path: "#{@config.api_base_path}/item", body: body)
+      end
+
+      # @param error [ReportportalCucumber::Transport::HTTPClient::Error]
+      # @return [Boolean]
+      def fallback_to_parent_uuid_body?(error)
+        response = error.response
+        return true if [404, 405].include?(response&.status)
+        return false unless response&.status == 400 && response.body.is_a?(Hash)
+
+        response.body["errorCode"] == 40016 ||
+          response.body["message"].to_s.downcase.include?("nested step")
       end
     end
   end

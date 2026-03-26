@@ -9,26 +9,7 @@ module ReportportalCucumber
       # @param value [Time, String, Integer, Float, nil]
       # @return [String]
       def unix_ms(value)
-        time =
-          case value
-          when nil
-            Time.now
-          when Time
-            value
-          when Integer
-            Time.at(value / 1000.0)
-          when Float
-            Time.at(value)
-          else
-            parsed = value.to_s
-            if parsed.match?(/\A\d+\z/)
-              return parsed
-            end
-
-            Time.parse(parsed)
-          end
-
-        (time.to_r * 1000).to_i.to_s
+        Service::PayloadBuilder.unix_ms(value)
       end
 
       # @param name [String]
@@ -41,16 +22,16 @@ module ReportportalCucumber
       # @param uuid [String, nil]
       # @return [Hash]
       def build_launch_start(name:, start_time:, description:, attributes:, mode:, rerun:, rerun_of:, uuid:)
-        {
-          "name" => name,
-          "startTime" => unix_ms(start_time),
-          "description" => description,
-          "attributes" => compact_array(attributes),
-          "mode" => mode,
-          "rerun" => rerun,
-          "rerunOf" => rerun_of,
-          "uuid" => uuid
-        }.compact
+        Service::PayloadBuilder.build_launch_start(
+          name: name,
+          start_time: start_time,
+          description: description,
+          attributes: attributes,
+          mode: mode,
+          rerun: rerun,
+          rerun_of: rerun_of,
+          uuid: uuid
+        )
       end
 
       # @param launch_uuid [String]
@@ -59,12 +40,12 @@ module ReportportalCucumber
       # @param attributes [Array<Hash>, nil]
       # @return [Hash]
       def build_launch_finish(launch_uuid:, end_time:, status: nil, attributes: nil)
-        {
-          "endTime" => unix_ms(end_time),
-          "launchUuid" => launch_uuid,
-          "status" => normalize_status(status),
-          "attributes" => compact_array(attributes)
-        }.compact
+        Service::PayloadBuilder.build_launch_finish(
+          launch_uuid: launch_uuid,
+          end_time: end_time,
+          status: status,
+          attributes: attributes
+        )
       end
 
       # @param name [String]
@@ -75,6 +56,7 @@ module ReportportalCucumber
       # @param attributes [Array<Hash>, nil]
       # @param code_ref [String, nil]
       # @param parameters [Hash, Array<Hash>, nil]
+      # @param parent_uuid [String, nil]
       # @param has_stats [Boolean]
       # @param retry [Boolean]
       # @param uuid [String, nil]
@@ -82,23 +64,24 @@ module ReportportalCucumber
       # @param unique_id [String, nil]
       # @return [Hash]
       def build_item_start(name:, start_time:, type:, launch_uuid:, description:, attributes:, code_ref:, parameters:,
-                           has_stats:, retry:, uuid:, test_case_id:, unique_id:)
+                           parent_uuid: nil, has_stats:, retry:, uuid:, test_case_id:, unique_id:)
         retry_flag = binding.local_variable_get(:retry)
-        {
-          "name" => name,
-          "startTime" => unix_ms(start_time),
-          "type" => type,
-          "launchUuid" => launch_uuid,
-          "description" => description,
-          "attributes" => compact_array(attributes),
-          "codeRef" => code_ref,
-          "parameters" => parameters.nil? ? nil : normalize_parameters(parameters),
-          "hasStats" => has_stats,
-          "retry" => retry_flag,
-          "uuid" => uuid,
-          "testCaseId" => test_case_id,
-          "uniqueId" => unique_id
-        }.compact
+        Service::PayloadBuilder.build_item_start(
+          name: name,
+          start_time: start_time,
+          type: type,
+          launch_uuid: launch_uuid,
+          description: description,
+          attributes: attributes,
+          code_ref: code_ref,
+          parameters: parameters,
+          parent_uuid: parent_uuid,
+          has_stats: has_stats,
+          retry: retry_flag,
+          uuid: uuid,
+          test_case_id: test_case_id,
+          unique_id: unique_id
+        )
       end
 
       # @param item_uuid [String]
@@ -107,11 +90,12 @@ module ReportportalCucumber
       # @param status [String, Symbol, nil]
       # @return [Hash]
       def build_item_finish(item_uuid:, launch_uuid:, end_time:, status: nil)
-        {
-          "endTime" => unix_ms(end_time),
-          "launchUuid" => launch_uuid,
-          "status" => normalize_status(status)
-        }.compact
+        Service::PayloadBuilder.build_item_finish(
+          item_uuid: item_uuid,
+          launch_uuid: launch_uuid,
+          end_time: end_time,
+          status: status
+        )
       end
 
       # @param launch_uuid [String, nil]
@@ -122,22 +106,21 @@ module ReportportalCucumber
       # @param file_name [String, nil]
       # @return [Hash]
       def build_log_entry(launch_uuid:, item_uuid:, time:, message:, level:, file_name: nil)
-        entry = {
-          "launchUuid" => launch_uuid,
-          "itemUuid" => item_uuid,
-          "time" => unix_ms(time),
-          "message" => message.to_s,
-          "level" => level.to_s.downcase
-        }
-        entry["file"] = { "name" => file_name } if file_name
-        entry
+        Service::PayloadBuilder.build_log_entry(
+          launch_uuid: launch_uuid,
+          item_uuid: item_uuid,
+          time: time,
+          message: message,
+          level: level,
+          file_name: file_name
+        )
       end
 
       # @param feature_uri [String]
       # @param scenario_line [Integer, String]
       # @return [String]
       def build_code_ref(feature_uri:, scenario_line:)
-        "#{feature_uri}:#{scenario_line}"
+        Service::PayloadBuilder.build_code_ref(feature_uri: feature_uri, scenario_line: scenario_line)
       end
 
       # @param explicit_id [String, nil]
@@ -145,87 +128,51 @@ module ReportportalCucumber
       # @param parameters [Hash, Array<Hash>, nil]
       # @return [String]
       def build_test_case_id(explicit_id: nil, code_ref:, parameters: nil)
-        base = explicit_id.nil? || explicit_id.to_s.strip.empty? ? code_ref : explicit_id.to_s.strip
-        append_parameters_identifier(base, parameters)
+        Service::PayloadBuilder.build_test_case_id(explicit_id: explicit_id, code_ref: code_ref, parameters: parameters)
       end
 
       # @param code_ref [String]
       # @param parameters [Hash, Array<Hash>, nil]
       # @return [String]
       def build_unique_id(code_ref:, parameters: nil)
-        payload = {
-          code_ref: code_ref,
-          parameters: normalize_parameters(parameters)
-        }
-        Digest::SHA1.hexdigest(JSON.generate(payload))
+        Service::PayloadBuilder.build_unique_id(code_ref: code_ref, parameters: parameters)
       end
 
       # @param parameters [Hash, Array<Hash>, nil]
       # @return [Hash, Array<Hash>, nil]
       def normalize_parameters(parameters)
-        case parameters
-        when nil
-          nil
-        when Array
-          parameters.map { |item| stringify_hash(item) }
-        when Hash
-          parameters.each_with_object({}) { |(key, value), memo| memo[key.to_s] = value.to_s }
-        else
-          { "value" => parameters.to_s }
-        end
+        Service::PayloadBuilder.normalize_parameters(parameters)
       end
 
       # @param status [String, Symbol, nil]
       # @return [String, nil]
       def normalize_status(status)
-        return nil if status.nil?
-
-        case status.to_s.downcase
-        when "passed", "pass", "success"
-          "passed"
-        when "failed", "failure"
-          "failed"
-        when "skipped", "pending", "undefined", "ambiguous"
-          "skipped"
-        else
-          status.to_s.downcase
-        end
+        Service::PayloadBuilder.normalize_status(status)
       end
 
       # @param base [String]
       # @param parameters [Hash, Array<Hash>, nil]
       # @return [String]
       def append_parameters_identifier(base, parameters)
-        normalized = normalize_parameters(parameters)
-        return base if normalized.nil? || normalized == {} || normalized == []
-
-        suffix =
-          case normalized
-          when Array
-            normalized.map do |item|
-              stringify_hash(item).sort.map { |key, value| "#{key}=#{value}" }.join(",")
-            end.join(";")
-          when Hash
-            normalized.sort.map { |key, value| "#{key}=#{value}" }.join(",")
-          else
-            normalized.to_s
-          end
-
-        "#{base}[#{suffix}]"
+        Service::PayloadBuilder.append_parameters_identifier(base, parameters)
       end
 
       # @param value [Array<Hash>, nil]
       # @return [Array<Hash>, nil]
       def compact_array(value)
-        return nil if value.nil?
-
-        value.map { |item| stringify_hash(item).compact }.reject(&:empty?)
+        value.nil? ? nil : Service::PayloadBuilder.normalize_attributes(value)
       end
 
       # @param value [Hash]
       # @return [Hash]
       def stringify_hash(value)
-        value.each_with_object({}) { |(key, item), memo| memo[key.to_s] = item }
+        Service::PayloadBuilder.stringify_hash(value)
+      end
+
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @return [Array<Array<String>>]
+      def identifier_pairs(parameters)
+        Service::PayloadBuilder.identifier_pairs(parameters)
       end
     end
   end

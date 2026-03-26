@@ -1,0 +1,16 @@
+default:
+  launch_description: Local ReportPortal verification from reportportal-cucumber-ruby
+  launch_attributes:
+    - key: component
+      value: cucumber-ruby
+    - value: local-verification
+  batch_size_logs: 2
+  flush_interval: 0.5
+  join: true
+  join_lock_file_name: .reportportal-verification.lock
+  join_sync_file_name: .reportportal-verification-launch.json
+  join_wait_timeout_ms: 15000
+
+profiles:
+  rerun_config:
+    rerun: true

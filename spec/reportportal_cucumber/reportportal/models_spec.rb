@@ -30,12 +30,13 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models do
       body = described_class.build_item_start(
         name: "Scenario: Login ok",
         start_time: Time.utc(2026, 3, 23),
-        type: "step",
+        type: "test",
         launch_uuid: "launch-1",
         description: nil,
         attributes: nil,
         code_ref: "features/login.feature:12",
         parameters: { example: 1 },
+        parent_uuid: "suite-1",
         has_stats: true,
         retry: true,
         uuid: "item-uuid",
@@ -45,16 +46,35 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models do
 
       expect(body).to include(
         "name" => "Scenario: Login ok",
-        "type" => "step",
+        "type" => "test",
         "launchUuid" => "launch-1",
+        "parentUuid" => "suite-1",
         "hasStats" => true,
         "retry" => true,
         "codeRef" => "features/login.feature:12",
         "testCaseId" => "TMS-123[example=1]",
         "uniqueId" => "abc123"
       )
-      expect(body["parameters"]).to eq("example" => "1")
+      expect(body["parameters"]).to eq([{ "key" => "example", "value" => "1" }])
       expect(body["startTime"]).to match(/\A\d+\z/)
+    end
+  end
+
+  describe ".build_launch_start" do
+    it "includes explicit description and attributes fields" do
+      body = described_class.build_launch_start(
+        name: "Verification launch",
+        start_time: Time.utc(2026, 3, 26),
+        description: nil,
+        attributes: nil,
+        mode: "DEFAULT",
+        rerun: false,
+        rerun_of: nil,
+        uuid: "launch-uuid"
+      )
+
+      expect(body["description"]).to eq("")
+      expect(body["attributes"]).to eq([])
     end
   end
 end

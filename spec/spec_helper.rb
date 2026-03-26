@@ -13,9 +13,15 @@ RSpec.configure do |config|
   config.before do
     WebMock.disable_net_connect!(allow_localhost: true)
     ReportportalCucumber.current_runtime = nil
+    Thread.current[:rp_context_stack] = []
+    Thread.current[:reportportal_cucumber_context_state] = nil
+    Thread.current[:reportportal_http_sessions] = {}
   end
 
   config.after do
     WebMock.reset!
+    Thread.current[:rp_context_stack] = []
+    Thread.current[:reportportal_cucumber_context_state] = nil
+    Thread.current[:reportportal_http_sessions] = nil
   end
 end

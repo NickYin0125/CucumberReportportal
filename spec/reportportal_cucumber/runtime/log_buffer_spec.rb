@@ -32,4 +32,20 @@ RSpec.describe ReportportalCucumber::Runtime::LogBuffer do
     expect(captured.first.first.map { |entry| entry["message"] }).to eq(%w[one two])
     expect(captured.first.last).to eq([])
   end
+
+  it "flushes all pending logs on shutdown" do
+    captured = []
+    allow(api).to receive(:log_batch) do |entries:, files:|
+      captured << [entries, files]
+    end
+
+    buffer = described_class.new(api: api, config: config)
+    buffer.emit_log(item_uuid: "item-1", launch_uuid: "launch-1", message: "one", level: :info, timestamp: Time.now)
+    buffer.emit_log(item_uuid: "item-1", launch_uuid: "launch-1", message: "two", level: :info, timestamp: Time.now)
+    buffer.emit_log(item_uuid: "item-1", launch_uuid: "launch-1", message: "three", level: :info, timestamp: Time.now)
+    buffer.shutdown(timeout: 2)
+
+    messages = captured.flat_map { |entries, _files| entries.map { |entry| entry["message"] } }
+    expect(messages).to eq(%w[one two three])
+  end
 end

@@ -16,6 +16,7 @@ module ReportportalCucumber
         @log_buffer = Runtime::LogBuffer.new(api: @api, config: @config, on_error: method(:handle_reporting_error))
         @feature_states = {}
         @scenario_states = {}
+        @outline_metadata_cache = {}
         @launch_uuid = nil
         @finalized = false
         ReportportalCucumber.current_runtime = self
@@ -76,6 +77,7 @@ module ReportportalCucumber
 
         start_time = Time.now
         local_uuid = SecureRandom.uuid
+        failure = nil
         item_uuid = safe_reporting_call(fallback: local_uuid) do
           @api.start_item(
             name: name,
@@ -101,6 +103,7 @@ module ReportportalCucumber
 
         yield
       rescue StandardError => error
+        failure = error
         emit_error_log(item_uuid: item_uuid || local_uuid, error: error, timestamp: Time.now)
         raise
       ensure
@@ -110,7 +113,7 @@ module ReportportalCucumber
               item_uuid: item_uuid || local_uuid,
               launch_uuid: @launch_uuid,
               end_time: Time.now,
-              status: $ERROR_INFO ? "failed" : "passed"
+              status: failure ? "failed" : "passed"
             )
           end
           runtime_context.pop_step(expected_uuid: item_uuid || local_uuid)
@@ -167,6 +170,7 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         start_time = extract_timestamp(event) || Time.now
+        debug("Starting launch name=#{@config.launch.inspect} join=#{@config.join?} rerun=#{@config.rerun?}")
         creator = lambda do
           local_uuid = SecureRandom.uuid
           safe_reporting_call(fallback: local_uuid) do
@@ -189,6 +193,7 @@ module ReportportalCucumber
           else
             creator.call
           end
+        debug("Launch ready uuid=#{@launch_uuid}")
       end
 
       # @param event [Object]
@@ -215,12 +220,13 @@ module ReportportalCucumber
         scenario_key = build_scenario_key(feature_uri: feature_uri, scenario_line: scenario_line, unique_id: unique_id)
         attempt = runtime_context.next_scenario_attempt(scenario_key)
         retry_flag = attempt > 1
+        debug("Starting scenario name=#{scenario_name.inspect} code_ref=#{code_ref} retry=#{retry_flag} parameters=#{parameters.inspect}")
         local_uuid = SecureRandom.uuid
         scenario_uuid = safe_reporting_call(fallback: local_uuid) do
           @api.start_item(
             name: "Scenario: #{scenario_name}",
             start_time: start_time,
-            type: "step",
+            type: "test",
             launch_uuid: @launch_uuid,
             parent_uuid: suite_item.uuid,
             code_ref: code_ref,
@@ -238,7 +244,7 @@ module ReportportalCucumber
           name: scenario_name,
           kind: :scenario,
           parent_uuid: suite_item.uuid,
-          type: "step",
+          type: "test",
           has_stats: true,
           metadata: {
             code_ref: code_ref,
@@ -256,7 +262,8 @@ module ReportportalCucumber
         @scenario_states[scenario_key] = {
           item: item,
           feature_key: feature_uri,
-          statuses: []
+          statuses: [],
+          test_case_started_id: test_case_started_id
         }
       end
 
@@ -268,8 +275,9 @@ module ReportportalCucumber
         scenario_item = runtime_context.current_scenario_item || runtime_context.item_for_test_case_started(extract_test_case_started_id(event))
         return unless scenario_item
 
-        parent_uuid = runtime_context.current_step_item&.uuid || scenario_item.uuid
+        parent_uuid = runtime_context.current_item_uuid || scenario_item.uuid
         step_name = extract_step_name(event)
+        debug("Starting nested step name=#{step_name.inspect} parent=#{parent_uuid}")
         local_uuid = SecureRandom.uuid
         step_uuid = safe_reporting_call(fallback: local_uuid) do
           @api.start_item(
@@ -309,6 +317,7 @@ module ReportportalCucumber
         return unless target_item
 
         attachment = build_attachment(event)
+        debug("Queueing attachment name=#{attachment[:name].inspect} mime=#{attachment[:mime]} item=#{target_item.uuid}")
         @log_buffer.emit_log(
           item_uuid: target_item.uuid,
           launch_uuid: @launch_uuid,
@@ -343,6 +352,7 @@ module ReportportalCucumber
           emit_error_log(item_uuid: item.uuid, error: error, timestamp: extract_timestamp(event) || Time.now)
         end
 
+        debug("Finishing nested step uuid=#{item.uuid} status=#{status}")
         @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
         safe_reporting_call do
           @api.finish_item(
@@ -369,6 +379,7 @@ module ReportportalCucumber
         close_open_steps_for_current_scenario(status: extract_status(event), end_time: extract_timestamp(event) || Time.now)
 
         status = extract_status(event) || aggregate_status(scenario_state[:statuses])
+        debug("Finishing scenario uuid=#{scenario_state[:item].uuid} status=#{status}")
         @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
         safe_reporting_call do
           @api.finish_item(
@@ -380,7 +391,9 @@ module ReportportalCucumber
         end
         runtime_context.record_feature_status(scenario_state[:feature_key], status)
         scenario_state[:statuses] << status
-        runtime_context.clear_current_scenario
+        runtime_context.release_test_case_started(scenario_state[:test_case_started_id]) if scenario_state[:test_case_started_id]
+        runtime_context.finish_scenario(expected_uuid: scenario_state[:item].uuid)
+        @scenario_states.delete(scenario_key)
       end
 
       # @param event [Object]
@@ -401,12 +414,13 @@ module ReportportalCucumber
         @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
         finish_feature_items(end_time: end_time)
         if @launch_uuid && (!@config.join? || @join.primary?)
+          debug("Finalizing launch uuid=#{@launch_uuid} status=#{status}")
           safe_reporting_call do
             @api.finish_launch(
               launch_uuid: @launch_uuid,
               end_time: end_time,
               status: status,
-              attributes: nil
+              attributes: @config.launch_attributes
             )
           end
         end
@@ -418,7 +432,7 @@ module ReportportalCucumber
       # @return [Runtime::Context::ItemHandle]
       def ensure_feature_item(feature_uri, start_time:)
         existing = runtime_context.feature_item(feature_uri)
-        return existing if existing
+        return runtime_context.activate_feature(feature_uri, existing) if existing
 
         local_uuid = SecureRandom.uuid
         feature_name = "Feature: #{File.basename(feature_uri, File.extname(feature_uri)).tr('_', ' ')}"
@@ -442,7 +456,7 @@ module ReportportalCucumber
           has_stats: false,
           metadata: { feature_uri: feature_uri }
         )
-        runtime_context.register_feature(feature_uri, item)
+        runtime_context.activate_feature(feature_uri, runtime_context.register_feature(feature_uri, item))
       end
 
       # @param end_time [Time]
@@ -450,6 +464,7 @@ module ReportportalCucumber
       def finish_feature_items(end_time:)
         runtime_context.feature_items.each do |feature_key, item|
           status = aggregate_status(runtime_context.feature_statuses(feature_key))
+          debug("Finishing feature feature=#{feature_key} uuid=#{item.uuid} status=#{status}")
           safe_reporting_call do
             @api.finish_item(
               item_uuid: item.uuid,
@@ -458,6 +473,7 @@ module ReportportalCucumber
               status: status
             )
           end
+          runtime_context.finish_feature(feature_key)
         end
       end
 
@@ -635,7 +651,8 @@ module ReportportalCucumber
       # @param event [Object]
       # @return [Hash, Array<Hash>, nil]
       def extract_parameters(event)
-        fetch_value(event, :parameters, [:example, :parameters], [:test_case, :parameters], [:pickle, :parameters])
+        fetch_value(event, :parameters, [:example, :parameters], [:test_case, :parameters], [:pickle, :parameters]) ||
+          extract_outline_metadata(event)&.fetch(:parameters, nil)
       end
 
       # @param event [Object]
@@ -653,7 +670,8 @@ module ReportportalCucumber
       # @param event [Object]
       # @return [Integer]
       def extract_scenario_line(event)
-        value = fetch_value(event, :scenario_line, [:test_case, :location, :line], [:location, :line], [:pickle, :location, :line])
+        value = extract_outline_metadata(event)&.fetch(:scenario_line, nil) ||
+          fetch_value(event, :scenario_line, [:test_case, :location, :line], [:location, :line], [:pickle, :location, :line])
         value ? value.to_i : 1
       end
 
@@ -692,7 +710,13 @@ module ReportportalCucumber
       # @return [String, nil]
       def extract_status(event)
         status = fetch_value(event, :status, [:result, :status], [:test_step_result, :status])
-        ReportPortal::Models.normalize_status(status)
+        normalized = ReportPortal::Models.normalize_status(status)
+        return normalized if normalized
+
+        result = fetch_value(event, :result)
+        return ReportPortal::Models.normalize_status(result.to_sym) if result.respond_to?(:to_sym)
+
+        nil
       end
 
       # @param event [Object]
@@ -760,6 +784,65 @@ module ReportportalCucumber
         return value.to_h if value.respond_to?(:to_h)
 
         value
+      end
+
+      # @param event [Object]
+      # @return [Hash, nil]
+      def extract_outline_metadata(event)
+        feature_uri = extract_feature_uri(event)
+        location_line = fetch_value(event, :scenario_line, [:test_case, :location, :line], [:location, :line], [:pickle, :location, :line])
+        return nil if feature_uri.to_s.empty? || location_line.nil?
+
+        cache_key = [feature_uri, location_line.to_i]
+        @outline_metadata_cache[cache_key] ||= parse_outline_metadata(feature_uri, location_line.to_i)
+      end
+
+      # @param feature_uri [String]
+      # @param location_line [Integer]
+      # @return [Hash, nil]
+      def parse_outline_metadata(feature_uri, location_line)
+        return nil unless File.file?(feature_uri)
+
+        lines = File.readlines(feature_uri, chomp: true)
+        row_index = location_line - 1
+        return nil unless row_index.between?(0, lines.length - 1)
+        return nil unless lines[row_index].strip.start_with?("|")
+
+        table_start = row_index
+        while table_start.positive? && lines[table_start - 1].strip.start_with?("|")
+          table_start -= 1
+        end
+        return nil if table_start == row_index
+
+        outline_index = table_start - 1
+        while outline_index >= 0
+          stripped = lines[outline_index].strip
+          break if stripped.start_with?("Scenario Outline:", "Scenario Template:")
+
+          outline_index -= 1
+        end
+        return nil if outline_index.negative?
+
+        headers = split_table_row(lines[table_start])
+        values = split_table_row(lines[row_index])
+        return nil if headers.empty? || headers.length != values.length
+
+        {
+          scenario_line: outline_index + 1,
+          parameters: headers.zip(values).to_h
+        }
+      end
+
+      # @param row [String]
+      # @return [Array<String>]
+      def split_table_row(row)
+        row.strip.sub(/\A\|/, "").sub(/\|\z/, "").split("|").map(&:strip)
+      end
+
+      # @param message [String]
+      # @return [void]
+      def debug(message)
+        ReportportalCucumber.logger.debug(message)
       end
     end
   end

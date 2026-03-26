@@ -1,3 +1,4 @@
+@stubbed
 Feature: Formatter contract
   Scenario: Replay fixture events through the formatter
     Given ReportPortal HTTP is stubbed

@@ -22,13 +22,13 @@ module ReportportalCucumber
 
         File.open(lock_path, File::RDWR | File::CREAT, 0o644) do |lock|
           loop do
-            existing = read_sync_uuid
-            return mark_secondary(existing) if existing
+            existing = read_sync_state
+            return mark_secondary(existing.fetch("launchUuid")) if existing
 
             if lock.flock(File::LOCK_EX | File::LOCK_NB)
               begin
-                existing = read_sync_uuid
-                return mark_secondary(existing) if existing
+                existing = read_sync_state
+                return mark_secondary(existing.fetch("launchUuid")) if existing
 
                 @primary = true
                 launch_uuid = yield
@@ -64,11 +64,14 @@ module ReportportalCucumber
       end
 
       # @return [String, nil]
-      def read_sync_uuid
+      def read_sync_state
         return nil unless File.file?(sync_path)
 
         payload = JSON.parse(File.read(sync_path))
-        payload["launchUuid"]
+        return nil unless payload_matches_current_config?(payload)
+        return nil unless primary_process_alive?(payload["pid"])
+
+        payload
       rescue JSON::ParserError
         nil
       end
@@ -76,7 +79,17 @@ module ReportportalCucumber
       # @param launch_uuid [String]
       # @return [void]
       def write_sync_uuid(launch_uuid)
-        File.write(sync_path, JSON.generate({ launchUuid: launch_uuid, pid: Process.pid, writtenAt: Time.now.utc.iso8601 }))
+        File.write(
+          sync_path,
+          JSON.generate(
+            launchUuid: launch_uuid,
+            launchName: @config.launch,
+            project: @config.project,
+            endpoint: @config.endpoint,
+            pid: Process.pid,
+            writtenAt: Time.now.utc.iso8601
+          )
+        )
       end
 
       # @param launch_uuid [String]
@@ -89,6 +102,28 @@ module ReportportalCucumber
       # @return [Float]
       def monotonic_now
         Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      end
+
+      # @param payload [Hash]
+      # @return [Boolean]
+      def payload_matches_current_config?(payload)
+        payload["launchName"].to_s == @config.launch.to_s &&
+          payload["project"].to_s == @config.project.to_s &&
+          payload["endpoint"].to_s == @config.endpoint.to_s
+      end
+
+      # @param pid [Integer, String, nil]
+      # @return [Boolean]
+      def primary_process_alive?(pid)
+        return false if pid.to_i <= 0
+        return true if pid.to_i == Process.pid
+
+        Process.kill(0, pid.to_i)
+        true
+      rescue Errno::ESRCH
+        false
+      rescue Errno::EPERM
+        true
       end
     end
   end

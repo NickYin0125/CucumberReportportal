@@ -2,8 +2,10 @@
 
 module ReportportalCucumber
   module Runtime
-    # Thread-safe execution context for the current launch, feature, scenario, and nested steps.
+    # Thread-safe execution context backed by a thread-local ReportPortal UUID stack.
     class Context
+      STACK_KEY = :rp_context_stack
+
       ItemHandle = Struct.new(
         :uuid,
         :name,
@@ -17,13 +19,16 @@ module ReportportalCucumber
 
       # @return [void]
       def initialize
-        @thread_state_key = :"reportportal_cucumber_context_state_#{object_id}"
         @mutex = Mutex.new
         @feature_items = {}
         @feature_statuses = Hash.new { |hash, key| hash[key] = [] }
         @scenario_attempts = Hash.new(0)
         @test_case_items = {}
         @test_step_items = {}
+        Thread.current[STACK_KEY] = []
+        thread_state[:current_feature_key] = nil
+        thread_state[:current_scenario_key] = nil
+        thread_state[:current_scenario_item] = nil
       end
 
       # @param feature_key [String]
@@ -42,6 +47,18 @@ module ReportportalCucumber
       # @return [Hash<String, ItemHandle>]
       def feature_items
         @mutex.synchronize { @feature_items.dup }
+      end
+
+      # @param feature_key [String]
+      # @param item [ItemHandle]
+      # @return [ItemHandle]
+      def activate_feature(feature_key, item)
+        state = thread_state
+        stack = context_stack
+        stack.reject! { |handle| handle.kind == :feature && handle.uuid != item.uuid }
+        stack << item unless stack.any? { |handle| handle.uuid == item.uuid }
+        state[:current_feature_key] = feature_key
+        item
       end
 
       # @param feature_key [String]
@@ -68,6 +85,21 @@ module ReportportalCucumber
         thread_state[:current_feature_key]
       end
 
+      # @return [ItemHandle, nil]
+      def current_feature_item
+        context_stack.reverse.find { |item| item.kind == :feature } || feature_item(current_feature_key)
+      end
+
+      # @param feature_key [String]
+      # @return [void]
+      def finish_feature(feature_key)
+        item = feature_item(feature_key)
+        return unless item
+
+        pop_item(expected_uuid: item.uuid)
+        thread_state[:current_feature_key] = nil if current_feature_key == feature_key
+      end
+
       # @param scenario_key [String]
       # @return [Integer]
       def next_scenario_attempt(scenario_key)
@@ -83,8 +115,7 @@ module ReportportalCucumber
         state = thread_state
         state[:current_scenario_key] = scenario_key
         state[:current_scenario_item] = item
-        state[:step_stack] = []
-        item
+        push_item(item)
       end
 
       # @return [ItemHandle, nil]
@@ -97,45 +128,48 @@ module ReportportalCucumber
         thread_state[:current_scenario_key]
       end
 
-      # @return [void]
-      def clear_current_scenario
+      # @param expected_uuid [String, nil]
+      # @return [ItemHandle, nil]
+      def finish_scenario(expected_uuid: nil)
+        target_uuid = expected_uuid || current_scenario_item&.uuid
+        popped = target_uuid ? pop_item(expected_uuid: target_uuid) : nil
         state = thread_state
         state[:current_scenario_key] = nil
         state[:current_scenario_item] = nil
-        state[:step_stack] = []
+        popped
+      end
+
+      # @return [void]
+      def clear_current_scenario
+        finish_scenario
+        context_stack.reject! { |item| item.kind == :step || item.kind == :hook || item.kind == :manual_step }
       end
 
       # @param item [ItemHandle]
-      # @return [Array<ItemHandle>]
+      # @return [ItemHandle]
       def push_step(item)
-        thread_state[:step_stack] << item
+        push_item(item)
       end
 
       # @param expected_uuid [String, nil]
       # @return [ItemHandle, nil]
       def pop_step(expected_uuid: nil)
-        stack = thread_state[:step_stack]
-        return stack.pop if expected_uuid.nil?
-
-        index = stack.rindex { |item| item.uuid == expected_uuid }
-        return nil unless index
-
-        stack.delete_at(index)
+        pop_item(expected_uuid: expected_uuid)
       end
 
       # @return [ItemHandle, nil]
       def current_step_item
-        thread_state[:step_stack].last
+        context_stack.reverse.find { |item| %i[step hook manual_step].include?(item.kind) }
       end
 
       # @return [Array<ItemHandle>]
       def current_step_stack
-        thread_state[:step_stack].dup
+        context_stack.select { |item| %i[step hook manual_step].include?(item.kind) }
       end
 
       # @return [ItemHandle, nil]
       def current_item
-        current_step_item || current_scenario_item || feature_item(current_feature_key)
+        context_stack.last || current_feature_item
       end
 
       # @return [String, nil]
@@ -154,6 +188,12 @@ module ReportportalCucumber
       # @return [ItemHandle, nil]
       def item_for_test_case_started(test_case_started_id)
         @mutex.synchronize { @test_case_items[test_case_started_id] }
+      end
+
+      # @param test_case_started_id [String]
+      # @return [ItemHandle, nil]
+      def release_test_case_started(test_case_started_id)
+        @mutex.synchronize { @test_case_items.delete(test_case_started_id) }
       end
 
       # @param test_step_id [String]
@@ -177,14 +217,32 @@ module ReportportalCucumber
 
       private
 
+      # @param item [ItemHandle]
+      # @return [ItemHandle]
+      def push_item(item)
+        context_stack << item
+        item
+      end
+
+      # @param expected_uuid [String, nil]
+      # @return [ItemHandle, nil]
+      def pop_item(expected_uuid: nil)
+        return context_stack.pop if expected_uuid.nil?
+
+        index = context_stack.rindex { |item| item.uuid == expected_uuid }
+        return nil unless index
+
+        context_stack.delete_at(index)
+      end
+
+      # @return [Array<ItemHandle>]
+      def context_stack
+        Thread.current[STACK_KEY] ||= []
+      end
+
       # @return [Hash]
       def thread_state
-        Thread.current[@thread_state_key] ||= {
-          current_feature_key: nil,
-          current_scenario_key: nil,
-          current_scenario_item: nil,
-          step_stack: []
-        }
+        Thread.current[:reportportal_cucumber_context_state] ||= {}
       end
     end
   end

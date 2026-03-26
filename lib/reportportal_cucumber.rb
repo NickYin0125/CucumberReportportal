@@ -19,6 +19,9 @@ module ReportportalCucumber
 end
 
 require_relative "reportportal_cucumber/config"
+require_relative "reportportal_cucumber/service/payload_builder"
+require_relative "reportportal_cucumber/service/queue_processor"
+require_relative "reportportal_cucumber/transport/http_client"
 require_relative "reportportal_cucumber/http/client"
 require_relative "reportportal_cucumber/reportportal/models"
 require_relative "reportportal_cucumber/reportportal/api"
@@ -35,7 +38,7 @@ module ReportportalCucumber
     # @return [Logger]
     def logger
       @logger ||= Logger.new($stderr).tap do |instance|
-        instance.level = Logger::INFO
+        instance.level = ENV["DEBUG"].to_s.strip.empty? ? Logger::INFO : Logger::DEBUG
         instance.progname = "reportportal-cucumber"
       end
     end
