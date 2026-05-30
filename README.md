@@ -95,12 +95,16 @@ rp_attach(File.binread("tmp/screenshot.png"),
   mime: "image/png",
   message: "screenshot after login")
 
+rp_attach("tmp/failure-recording.mp4",
+  mime_type: nil,
+  message: "screen recording for the failed step")
+
 rp_step("Prepare data") do
   rp_log("seed user")
 end
 ```
 
-`attachment` 结构参考 `pytest-reportportal` 的使用体验，支持 `name`、`bytes`、`mime` 三元组。
+`attachment` 结构参考 `pytest-reportportal` 的使用体验，支持 `name`、`bytes`、`mime` 三元组；文件路径形式会以 path-backed multipart 上传，适合 MP4 录屏这类大附件，避免在 step 里整文件读入内存。
 
 附件和 step 的绑定规则：
 

@@ -148,6 +148,124 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     expect(finished_items.map { |body| body["status"] }).to include("failed")
   end
 
+  it "starts scenarios through the active feature child endpoint" do
+    start_items = []
+    start_item_counter = 0
+
+    stub_request(:post, "https://rp.example.com/api/v1/demo/launch")
+      .to_return(status: 200, body: '{"id":"launch-1"}')
+    stub_request(:post, %r{\Ahttps://rp\.example\.com/api/v1/demo/item(?:/.*)?\z}).to_return do |request|
+      start_item_counter += 1
+      body = JSON.parse(request.body)
+      start_items << { id: "item-#{start_item_counter}", body: body, path: request.uri.path }
+      { status: 200, body: { id: "item-#{start_item_counter}" }.to_json }
+    end
+    stub_request(:put, %r{\Ahttps://rp\.example\.com/api/v1/demo/item/.*\z})
+      .to_return(status: 200, body: '{"message":"ok"}')
+    stub_request(:put, "https://rp.example.com/api/v1/demo/launch/launch-1/finish")
+      .to_return(status: 200, body: '{"message":"ok"}')
+
+    formatter = described_class.new(stub_config)
+    [
+      { "type" => "test_run_started", "timestamp" => "2026-03-23T00:00:00Z" },
+      { "type" => "test_suite_started", "feature_uri" => "features/nesting.feature", "timestamp" => "2026-03-23T00:00:01Z" },
+      { "type" => "test_case_started", "feature_uri" => "features/nesting.feature", "scenario_name" => "Nested scenario", "scenario_line" => 11 },
+      { "type" => "test_case_finished", "status" => "passed" },
+      { "type" => "test_run_finished", "success" => true }
+    ].each { |event| formatter.ingest_event(event) }
+
+    expect(start_items[0]).to include(path: "/api/v1/demo/item")
+    expect(start_items[0].fetch(:body)).to include("type" => "suite")
+    expect(start_items[1]).to include(path: "/api/v1/demo/item/item-1")
+    expect(start_items[1].fetch(:body)).to include("type" => "test")
+    expect(start_items[1].fetch(:body)).to include("parentUuid" => "item-1")
+  end
+
+  it "labels background steps and maps before/after hooks under the scenario" do
+    start_items = []
+    start_item_counter = 0
+
+    stub_request(:post, "https://rp.example.com/api/v1/demo/launch")
+      .to_return(status: 200, body: '{"id":"launch-1"}')
+    stub_request(:post, %r{\Ahttps://rp\.example\.com/api/v1/demo/item(?:/.*)?\z}).to_return do |request|
+      start_item_counter += 1
+      body = JSON.parse(request.body)
+      start_items << { id: "item-#{start_item_counter}", body: body, path: request.uri.path }
+      { status: 200, body: { id: "item-#{start_item_counter}" }.to_json }
+    end
+    stub_request(:put, %r{\Ahttps://rp\.example\.com/api/v1/demo/item/.*\z})
+      .to_return(status: 200, body: '{"message":"ok"}')
+    stub_request(:put, "https://rp.example.com/api/v1/demo/launch/launch-1/finish")
+      .to_return(status: 200, body: '{"message":"ok"}')
+
+    formatter = described_class.new(stub_config)
+    [
+      { "type" => "test_run_started", "timestamp" => "2026-03-23T00:00:00Z" },
+      { "type" => "test_case_started", "feature_uri" => "features/hooks.feature", "scenario_name" => "Hooked scenario", "scenario_line" => 3 },
+      { "type" => "test_step_started", "step_id" => "before-1", "step_text" => "setup browser", "hook_type" => "before" },
+      { "type" => "test_step_finished", "step_id" => "before-1", "status" => "passed" },
+      { "type" => "test_step_started", "step_id" => "bg-1", "step_text" => "Given shared customer exists", "background" => true },
+      { "type" => "test_step_finished", "step_id" => "bg-1", "status" => "passed" },
+      { "type" => "test_step_started", "step_id" => "after-1", "step_text" => "close browser", "hook_type" => "after" },
+      { "type" => "test_step_finished", "step_id" => "after-1", "status" => "passed" },
+      { "type" => "test_case_finished", "status" => "passed" },
+      { "type" => "test_run_finished", "success" => true }
+    ].each { |event| formatter.ingest_event(event) }
+
+    before_hook = start_items[2]
+    background = start_items[3]
+    after_hook = start_items[4]
+
+    expect(before_hook).to include(path: "/api/v1/demo/item/item-2")
+    expect(before_hook.fetch(:body)).to include("name" => "Before Hook: setup browser", "type" => "before_method", "hasStats" => false)
+    expect(background).to include(path: "/api/v1/demo/item/item-2")
+    expect(background.fetch(:body)).to include("name" => "[Background] Given shared customer exists", "type" => "step", "hasStats" => false)
+    expect(after_hook).to include(path: "/api/v1/demo/item/item-2")
+    expect(after_hook.fetch(:body)).to include("name" => "After Hook: close browser", "type" => "after_method", "hasStats" => false)
+  end
+
+  it "maps before_all and after_all hooks under the feature suite" do
+    start_items = []
+    start_item_counter = 0
+
+    stub_request(:post, "https://rp.example.com/api/v1/demo/launch")
+      .to_return(status: 200, body: '{"id":"launch-1"}')
+    stub_request(:post, %r{\Ahttps://rp\.example\.com/api/v1/demo/item(?:/.*)?\z}).to_return do |request|
+      start_item_counter += 1
+      body = JSON.parse(request.body)
+      start_items << { id: "item-#{start_item_counter}", body: body, path: request.uri.path }
+      { status: 200, body: { id: "item-#{start_item_counter}" }.to_json }
+    end
+    stub_request(:put, %r{\Ahttps://rp\.example\.com/api/v1/demo/item/.*\z})
+      .to_return(status: 200, body: '{"message":"ok"}')
+    stub_request(:put, "https://rp.example.com/api/v1/demo/launch/launch-1/finish")
+      .to_return(status: 200, body: '{"message":"ok"}')
+
+    formatter = described_class.new(stub_config)
+    [
+      { "type" => "test_run_started", "timestamp" => "2026-03-23T00:00:00Z" },
+      { "type" => "test_suite_started", "feature_uri" => "features/class_hooks.feature" },
+      { "type" => "test_step_started", "feature_uri" => "features/class_hooks.feature", "step_id" => "before-all", "step_text" => "seed database", "hook_type" => "before_all" },
+      { "type" => "test_step_finished", "step_id" => "before-all", "status" => "passed" },
+      { "type" => "test_case_started", "feature_uri" => "features/class_hooks.feature", "scenario_name" => "Class hook scenario", "scenario_line" => 8 },
+      { "type" => "test_case_finished", "status" => "passed" },
+      { "type" => "test_step_started", "feature_uri" => "features/class_hooks.feature", "step_id" => "after-all", "step_text" => "drop database", "hook_type" => "after_all" },
+      { "type" => "test_step_finished", "step_id" => "after-all", "status" => "passed" },
+      { "type" => "test_run_finished", "success" => true }
+    ].each { |event| formatter.ingest_event(event) }
+
+    before_all = start_items[1]
+    scenario = start_items[2]
+    after_all = start_items[3]
+
+    expect(before_all).to include(path: "/api/v1/demo/item/item-1")
+    expect(before_all.fetch(:body)).to include("name" => "BeforeAll Hook: seed database", "type" => "before_class", "hasStats" => false)
+    expect(scenario).to include(path: "/api/v1/demo/item/item-1")
+    expect(scenario.fetch(:body)).to include("name" => "Scenario: Class hook scenario", "type" => "test", "hasStats" => true)
+    expect(after_all).to include(path: "/api/v1/demo/item/item-1")
+    expect(after_all.fetch(:body)).to include("name" => "AfterAll Hook: drop database", "type" => "after_class", "hasStats" => false)
+  end
+
   it "closes open steps and scenarios before feature and launch when run finishes early" do
     calls = []
     start_item_counter = 0

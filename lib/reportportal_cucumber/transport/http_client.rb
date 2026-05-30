@@ -58,14 +58,20 @@ module ReportportalCucumber
       # @return [Response]
       def post_multipart(path:, parts:, headers: {})
         boundary = "----rp#{SecureRandom.hex(12)}"
-        curl_artifacts = prepare_multipart_curl_artifacts(path: path, parts: parts)
+        normalized_parts = MultipartHelper.normalize_parts(parts)
+        curl_artifacts = prepare_multipart_curl_artifacts(path: path, parts: normalized_parts)
+        body_source = MultipartHelper.body_source(parts: normalized_parts, boundary: boundary)
         request(
           method: :post,
           path: path,
-          body: encode_multipart(parts, boundary),
+          body: body_source.body,
+          body_stream: body_source.stream,
+          content_length: body_source.length,
           headers: default_headers.merge(headers).merge("Content-Type" => "multipart/form-data; boundary=#{boundary}"),
           curl_parts: curl_artifacts
         )
+      ensure
+        body_source&.tempfile&.close!
       end
 
       # @return [void]
@@ -90,12 +96,20 @@ module ReportportalCucumber
       # @param body [String]
       # @param headers [Hash]
       # @return [Response]
-      def request(method:, path:, body:, headers:, curl_parts: nil)
+      def request(method:, path:, body:, headers:, curl_parts: nil, body_stream: nil, content_length: nil)
         attempts = 0
 
         begin
           attempts += 1
-          response = perform(method: method, path: path, body: body, headers: headers, curl_parts: curl_parts)
+          response = perform(
+            method: method,
+            path: path,
+            body: body,
+            headers: headers,
+            curl_parts: curl_parts,
+            body_stream: body_stream,
+            content_length: content_length
+          )
           return response unless retriable_response?(response)
 
           raise Error.new("Retriable HTTP #{response.status}", response: response)
@@ -118,12 +132,18 @@ module ReportportalCucumber
       # @param body [String]
       # @param headers [Hash]
       # @return [Response]
-      def perform(method:, path:, body:, headers:, curl_parts: nil)
+      def perform(method:, path:, body:, headers:, curl_parts: nil, body_stream: nil, content_length: nil)
         uri = build_uri(path)
         log_curl(method: method, uri: uri, headers: headers, body: body, curl_parts: curl_parts)
         request = request_class_for(method).new(uri)
         headers.each { |key, value| request[key] = value }
-        request.body = body
+        if body_stream
+          body_stream.rewind
+          request.body_stream = body_stream
+          request.content_length = content_length
+        else
+          request.body = body
+        end
 
         raw_response = with_http(uri) { |http| http.request(request) }
         response = build_response(raw_response)
@@ -320,18 +340,24 @@ module ReportportalCucumber
       def prepare_multipart_curl_artifacts(path:, parts:)
         return nil unless @config.debug_curl_mode?
 
-        normalized_parts = MultipartHelper.normalize_parts(parts)
         directory = File.expand_path(@config.debug_curl_dir, Dir.pwd)
         FileUtils.mkdir_p(directory)
         basename = "#{Time.now.utc.strftime('%Y%m%d%H%M%S')}-#{SecureRandom.hex(4)}"
 
-        normalized_parts.each_with_index.map do |part, index|
-          file_path = File.join(directory, "#{basename}-#{index}-#{curl_file_name(part)}")
-          File.binwrite(file_path, part.fetch(:body))
-
+        parts.each_with_index.map do |part, index|
           if part[:filename]
+            file_path =
+              if part[:path]
+                part.fetch(:path)
+              else
+                File.join(directory, "#{basename}-#{index}-#{curl_file_name(part)}").tap do |artifact_path|
+                  File.binwrite(artifact_path, part.fetch(:body))
+                end
+              end
             "file=@#{file_path};filename=#{part.fetch(:filename)};type=#{part.fetch(:content_type)}"
           else
+            file_path = File.join(directory, "#{basename}-#{index}-#{curl_file_name(part)}")
+            File.binwrite(file_path, part.fetch(:body))
             "#{part.fetch(:name)}=@#{file_path};type=#{part.fetch(:content_type)}"
           end
         end

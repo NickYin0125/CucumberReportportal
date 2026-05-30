@@ -100,5 +100,40 @@ RSpec.describe ReportportalCucumber::Transport::MultipartHelper do
 
   it "prefers playable video MIME types for mp4 attachments" do
     expect(described_class.content_type_for(filename: "clip.mp4", declared_type: nil)).to eq("video/mp4")
+    expect(described_class.content_type_for(filename: "clip.mp4", declared_type: "application/mp4")).to eq("video/mp4")
+  end
+
+  it "builds path-backed multipart bodies through a stream source for video attachments" do
+    Dir.mktmpdir do |dir|
+      video_path = File.join(dir, "clip.mp4")
+      File.binwrite(video_path, "mp4-bytes")
+
+      source = described_class.body_source(
+        parts: [
+          {
+            name: "json_request_part",
+            content_type: "application/json",
+            body: '[{"message":"video","level":"info","file":{"name":"clip.mp4"}}]'
+          },
+          {
+            name: "file",
+            filename: "clip.mp4",
+            content_type: "application/mp4",
+            path: video_path
+          }
+        ],
+        boundary: "rp-boundary"
+      )
+
+      expect(source.body).to be_nil
+      expect(source.stream).not_to be_nil
+      body = source.stream.read
+
+      expect(body).to include('filename="clip.mp4"')
+      expect(body).to include("Content-Type: video/mp4")
+      expect(body).to include("mp4-bytes")
+    ensure
+      source&.tempfile&.close!
+    end
   end
 end

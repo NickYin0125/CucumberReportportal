@@ -32,7 +32,7 @@ RSpec.describe ReportportalCucumber::SpecSupport::RPMockServer do
       launch_uuid: launch_uuid,
       has_stats: false,
       retry: false,
-      uuid: "suite-uuid"
+      uuid: nil
     )
     scenario_uuid = api.start_item(
       name: "Scenario",
@@ -43,7 +43,7 @@ RSpec.describe ReportportalCucumber::SpecSupport::RPMockServer do
       parameters: { "buyer" => "JPM" },
       has_stats: true,
       retry: false,
-      uuid: "scenario-uuid"
+      uuid: nil
     )
     step_uuid = api.start_item(
       name: "Step",
@@ -85,10 +85,16 @@ RSpec.describe ReportportalCucumber::SpecSupport::RPMockServer do
     api.finish_launch(launch_uuid: launch_uuid, end_time: Time.utc(2026, 5, 30, 12, 0, 6), status: "passed")
 
     launch = server.launches.fetch("launch-uuid")
+    feature_request = server.item_requests.find { |request| request.fetch("name") == "Feature" }
+    scenario_request = server.item_requests.find { |request| request.fetch("name") == "Scenario" }
     multipart = server.multipart_requests.first
 
     expect(launch).to include("description" => "nested mock")
-    expect(server.items.fetch("scenario-uuid")["parameters"]).to eq([{ "key" => "buyer", "value" => "JPM" }])
+    expect(feature_request.fetch("responseUuid")).to eq(suite_uuid)
+    expect(scenario_request.fetch("parentUuid")).to eq(feature_request.fetch("responseUuid"))
+    expect(scenario_request.fetch("path")).to end_with("/api/v1/demo/item/#{suite_uuid}")
+    expect(server.items.fetch(scenario_uuid)["parentUuid"]).to eq(suite_uuid)
+    expect(server.items.fetch(scenario_uuid)["parameters"]).to eq([{ "key" => "buyer", "value" => "JPM" }])
     expect(multipart.fetch(:files).map { |file| file.fetch(:content_type) }).to eq(["image/png", "video/mp4"])
     expect(server.logs.length).to eq(2)
     expect(launch.dig("statistics", "executions", "total")).to eq(1)

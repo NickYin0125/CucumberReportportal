@@ -122,4 +122,107 @@ RSpec.describe ReportportalCucumber::Http::Client do
       ReportportalCucumber.logger = nil
     end
   end
+
+  it "prints video/mp4 multipart curl parts for screen recording attachments" do
+    Dir.mktmpdir do |dir|
+      debug_config = ReportportalCucumber::Config.new(
+        endpoint: "https://rp.example.com",
+        project: "demo",
+        api_key: "token",
+        retry_attempts: 1,
+        debug_curl_mode: true,
+        debug_curl_dir: dir
+      )
+      client = described_class.new(config: debug_config)
+      stream = StringIO.new
+      ReportportalCucumber.logger = Logger.new(stream)
+      ReportportalCucumber.logger.level = Logger::DEBUG
+
+      stub_request(:post, "https://rp.example.com/api/v1/demo/log")
+        .to_return(status: 200, body: '{"responses":[{"id":"log-1"}]}')
+
+      client.post_multipart(
+        path: "/api/v1/demo/log",
+        parts: [
+          {
+            name: "json_request_part",
+            content_type: "application/json",
+            body: '[{"itemUuid":"step-uuid","launchUuid":"launch-uuid","time":"1","message":"recording","level":"info","file":{"name":"recording.mp4"}}]'
+          },
+          {
+            name: "file",
+            filename: "recording.mp4",
+            content_type: "video/mp4",
+            body: "mp4-bytes"
+          }
+        ]
+      )
+
+      output = stream.string
+
+      expect(output).to include("--form json_request_part\\=@")
+      expect(output).to include("--form file\\=@")
+      expect(output).to include("filename\\=recording.mp4")
+      expect(output).to include("type\\=video/mp4")
+      expect(output).not_to include("boundary\\=")
+    ensure
+      ReportportalCucumber.logger = nil
+    end
+  end
+
+  it "streams path-backed mp4 multipart uploads and prints video curl without copying the video artifact" do
+    Dir.mktmpdir do |dir|
+      video_path = File.join(dir, "failure recording.mp4")
+      debug_dir = File.join(dir, "curl")
+      File.binwrite(video_path, "mp4-bytes")
+      debug_config = ReportportalCucumber::Config.new(
+        endpoint: "https://rp.example.com",
+        project: "demo",
+        api_key: "token",
+        retry_attempts: 1,
+        debug_curl_mode: true,
+        debug_curl_dir: debug_dir
+      )
+      client = described_class.new(config: debug_config)
+      stream = StringIO.new
+      captured_body = nil
+      ReportportalCucumber.logger = Logger.new(stream)
+      ReportportalCucumber.logger.level = Logger::DEBUG
+
+      stub_request(:post, "https://rp.example.com/api/v1/demo/log").to_return do |request|
+        captured_body = request.body
+        { status: 200, body: '{"responses":[{"id":"log-1"}]}' }
+      end
+
+      client.post_multipart(
+        path: "/api/v1/demo/log",
+        parts: [
+          {
+            name: "json_request_part",
+            content_type: "application/json",
+            body: '[{"itemUuid":"step-1","launchUuid":"launch-1","time":"1","message":"recording","level":"info","file":{"name":"failure_recording.mp4"}}]'
+          },
+          {
+            name: "file",
+            filename: "failure_recording.mp4",
+            content_type: "application/mp4",
+            path: video_path
+          }
+        ]
+      )
+
+      output = stream.string
+
+      expect(captured_body).to include('filename="failure_recording.mp4"')
+      expect(captured_body).to include("Content-Type: video/mp4")
+      expect(captured_body).to include("mp4-bytes")
+      expect(output).to include("--form file\\=@")
+      expect(output).to include("failure\\ recording.mp4")
+      expect(output).to include("filename\\=failure_recording.mp4")
+      expect(output).to include("type\\=video/mp4")
+      expect(Dir[File.join(debug_dir, "*failure_recording.mp4")]).to be_empty
+    ensure
+      ReportportalCucumber.logger = nil
+    end
+  end
 end

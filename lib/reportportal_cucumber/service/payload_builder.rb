@@ -164,11 +164,16 @@ module ReportportalCucumber
 
           next unless attachment
 
-          files << {
+          file = {
             name: filename,
-            mime: attachment.fetch(:mime),
-            bytes: attachment.fetch(:bytes).dup.force_encoding(Encoding::BINARY)
+            mime: attachment.fetch(:mime)
           }
+          if attachment[:path]
+            file[:path] = attachment.fetch(:path)
+          else
+            file[:bytes] = attachment.fetch(:bytes).dup.force_encoding(Encoding::BINARY)
+          end
+          files << file
         end
 
         validate_log_batch!(entries: entries, files: files)
@@ -274,20 +279,31 @@ module ReportportalCucumber
         name = payload[:name] || payload["name"]
         mime = payload[:mime] || payload["mime"]
         bytes = payload[:bytes] || payload["bytes"]
+        path = payload[:path] || payload["path"] || payload[:file_path] || payload["file_path"]
 
+        path = normalize_attachment_path(path)
+        name ||= File.basename(path) if path
         name = Transport::MultipartHelper.safe_filename(name)
-        mime = Transport::MultipartHelper.content_type_for(filename: name, declared_type: mime)
+        mime = Transport::MultipartHelper.content_type_for(
+          filename: mime_detection_filename(name: name, path: path),
+          declared_type: mime
+        )
         name = Transport::MultipartHelper.ensure_filename_extension(
           name: name,
           content_type: mime,
           fallback: default_attachment_name(mime)
         )
 
-        {
+        result = {
           name: name,
-          mime: mime,
-          bytes: normalize_attachment_bytes(bytes: bytes, mime: mime)
+          mime: mime
         }
+        if path
+          result[:path] = path
+        else
+          result[:bytes] = normalize_attachment_bytes(bytes: bytes, mime: mime)
+        end
+        result
       end
 
       # @param message [String, nil]
@@ -383,10 +399,30 @@ module ReportportalCucumber
         raw
       end
 
+      # @param path [String, nil]
+      # @return [String, nil]
+      def normalize_attachment_path(path)
+        return nil if path.to_s.strip.empty?
+
+        expanded = File.expand_path(path.to_s)
+        raise ArgumentError, "Attachment file does not exist: #{expanded}" unless File.file?(expanded)
+        raise ArgumentError, "Attachment file is not readable: #{expanded}" unless File.readable?(expanded)
+
+        expanded
+      end
+
+      # @param name [String]
+      # @param path [String, nil]
+      # @return [String]
+      def mime_detection_filename(name:, path:)
+        path && File.extname(name.to_s).empty? ? File.basename(path) : name
+      end
+
       # @param attachment [Hash, nil]
       # @return [String, nil]
       def attachment_preview(attachment)
         return nil unless attachment
+        return nil unless attachment.key?(:bytes)
 
         if json_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
           "```json\n#{pretty_json(safe_utf8(attachment.fetch(:bytes)))}\n```"

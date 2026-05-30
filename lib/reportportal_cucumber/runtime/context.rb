@@ -92,10 +92,15 @@ module ReportportalCucumber
         context_stack.reverse.find { |item| item.kind == :feature } || feature_item(current_feature_key)
       end
 
+      # @return [String, nil]
+      def current_feature_uuid
+        current_feature_item&.uuid
+      end
+
       # @param feature_key [String]
       # @return [void]
       def finish_feature(feature_key)
-        item = feature_item(feature_key)
+        item = @mutex.synchronize { @feature_items.delete(feature_key) }
         return unless item
 
         pop_item(expected_uuid: item.uuid)

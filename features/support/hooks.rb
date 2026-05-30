@@ -24,5 +24,5 @@ end
 After do
   next if ENV["KEEP_VERIFICATION_ARTIFACTS"].to_s == "true"
 
-  FileUtils.rm_rf(File.expand_path("../../tmp/verification", __dir__))
+  FileUtils.rm_rf(Dir[File.expand_path("../../tmp/verification/run-*", __dir__)])
 end

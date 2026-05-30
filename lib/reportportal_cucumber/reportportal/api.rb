@@ -128,12 +128,17 @@ module ReportportalCucumber
           body: JSON.generate(entries)
         }]
         files.each do |file|
-          parts << {
+          part = {
             name: "file",
             filename: file.fetch(:name),
-            content_type: file.fetch(:mime),
-            body: file.fetch(:bytes)
+            content_type: file.fetch(:mime)
           }
+          if file[:path]
+            part[:path] = file.fetch(:path)
+          else
+            part[:body] = file.fetch(:bytes)
+          end
+          parts << part
         end
         response = @client.post_multipart(path: "#{@config.api_base_path}/log", parts: parts)
         response.body
@@ -154,8 +159,7 @@ module ReportportalCucumber
       # @param parent_uuid [String]
       # @return [ReportportalCucumber::Transport::HTTPClient::Response]
       def start_child_item(body:, parent_uuid:)
-        child_body = body.reject { |key, _| key == "parentUuid" }
-        @client.post_json(path: "#{@config.api_base_path}/item/#{parent_uuid}", body: child_body)
+        @client.post_json(path: "#{@config.api_base_path}/item/#{parent_uuid}", body: body)
       rescue Http::Client::Error => error
         raise error unless fallback_to_parent_uuid_body?(error)
 

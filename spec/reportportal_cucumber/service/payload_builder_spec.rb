@@ -136,5 +136,34 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
       expect(message).not_to include("line-101")
       expect(message).to include("Full log is attached as `trace.log`.")
     end
+
+    it "keeps file path backed mp4 attachments out of in-memory bytes payloads" do
+      Dir.mktmpdir do |dir|
+        video_path = File.join(dir, "failure-recording.mp4")
+        File.binwrite(video_path, "mp4-bytes")
+
+        payload = described_class.build_log_batch(
+          [
+            {
+              item_uuid: "step-1",
+              launch_uuid: "launch-1",
+              message: "Failure recording",
+              level: :info,
+              timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+              attachment: {
+                path: video_path,
+                mime: nil
+              }
+            }
+          ]
+        )
+
+        file = payload.fetch(:files).first
+
+        expect(payload.fetch(:entries).first.dig("file", "name")).to eq("failure-recording.mp4")
+        expect(file).to include(name: "failure-recording.mp4", mime: "video/mp4", path: video_path)
+        expect(file).not_to have_key(:bytes)
+      end
+    end
   end
 end

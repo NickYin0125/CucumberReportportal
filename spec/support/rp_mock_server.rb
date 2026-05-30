@@ -6,7 +6,7 @@ module ReportportalCucumber
   module SpecSupport
     # Stateful WebMock-backed ReportPortal v1 API sandbox.
     class RPMockServer
-      attr_reader :endpoint, :launches, :items, :logs, :multipart_requests
+      attr_reader :endpoint, :launches, :items, :logs, :multipart_requests, :item_requests
 
       # @param endpoint [String]
       def initialize(endpoint: "https://rp-mock.example.com")
@@ -20,6 +20,7 @@ module ReportportalCucumber
         @items = {}
         @logs = []
         @multipart_requests = []
+        @item_requests = []
         @sequence = 0
       end
 
@@ -82,6 +83,14 @@ module ReportportalCucumber
             "parentUuid" => parent_uuid,
             "status" => "IN_PROGRESS"
           )
+          @item_requests << {
+            "path" => request.uri.path,
+            "body" => body,
+            "parentUuid" => parent_uuid,
+            "responseUuid" => uuid,
+            "name" => body["name"],
+            "type" => body["type"]
+          }
           launch["items"] << uuid unless launch["items"].include?(uuid)
           json_response(201, "id" => uuid)
         end

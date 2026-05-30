@@ -184,7 +184,12 @@ module ReportportalCucumber
         FileUtils.mkdir_p(attachments_dir)
 
         payload.fetch(:files).each do |file|
-          File.binwrite(File.join(attachments_dir, file.fetch(:name)), file.fetch(:bytes))
+          attachment_path = File.join(attachments_dir, file.fetch(:name))
+          if file[:path]
+            IO.copy_stream(file.fetch(:path), attachment_path)
+          else
+            File.binwrite(attachment_path, file.fetch(:bytes))
+          end
         end
 
         File.open(File.join(directory, "#{basename}.ndjson"), "wb") do |file|
@@ -275,10 +280,15 @@ module ReportportalCucumber
 
         payload = attachment.respond_to?(:to_h) ? attachment.to_h : attachment
         name = Transport::MultipartHelper.safe_filename(payload[:name] || payload["name"] || "attachment-#{index}")
-        bytes = payload[:bytes] || payload["bytes"] || ""
-        data = bytes.respond_to?(:read) ? bytes.read : bytes.to_s
-        bytes.rewind if bytes.respond_to?(:rewind)
-        File.binwrite(File.join(directory, name), data)
+        path = payload[:path] || payload["path"] || payload[:file_path] || payload["file_path"]
+        if path && File.file?(File.expand_path(path.to_s))
+          IO.copy_stream(File.expand_path(path.to_s), File.join(directory, name))
+        else
+          bytes = payload[:bytes] || payload["bytes"] || ""
+          data = bytes.respond_to?(:read) ? bytes.read : bytes.to_s
+          bytes.rewind if bytes.respond_to?(:rewind)
+          File.binwrite(File.join(directory, name), data)
+        end
         {
           "name" => name,
           "mime" => payload[:mime] || payload["mime"],

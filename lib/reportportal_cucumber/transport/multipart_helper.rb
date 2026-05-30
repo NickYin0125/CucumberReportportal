@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 require "mime/types"
+require "tempfile"
 
 module ReportportalCucumber
   module Transport
     # Helpers for building multipart/form-data request bodies.
     module MultipartHelper
       CONTENT_TYPE_PATTERN = %r{\A[A-Za-z0-9!#$&^_.+-]+/[A-Za-z0-9!#$&^_.+-]+(?:\s*;\s*[A-Za-z0-9!#$&^_.+-]+=[A-Za-z0-9!#$&^_.+:-]+)*\z}.freeze
+      FILE_CHUNK_SIZE = 1024 * 1024
+      BodySource = Struct.new(:body, :stream, :length, :tempfile, keyword_init: true)
 
       module_function
 
@@ -16,6 +19,7 @@ module ReportportalCucumber
       def encode(parts:, boundary:)
         normalized_parts = normalize_parts(parts)
         validate_alignment!(normalized_parts)
+        raise ArgumentError, "Path-backed multipart parts require streaming body construction" if streaming_required?(normalized_parts)
 
         buffer = String.new(capacity: 1024, encoding: Encoding::BINARY)
         normalized_parts.each do |part|
@@ -33,6 +37,9 @@ module ReportportalCucumber
       # @param declared_type [String, nil]
       # @return [String]
       def content_type_for(filename:, declared_type: nil)
+        forced = forced_content_type_for(filename)
+        return forced if forced
+
         declared = declared_type.to_s.strip
         return declared if valid_content_type?(declared)
 
@@ -55,6 +62,19 @@ module ReportportalCucumber
         return candidates.find { |type| type.content_type.start_with?(preferred_prefix) } if preferred_prefix
 
         candidates.first
+      end
+
+      # @param filename [String, nil]
+      # @return [String, nil]
+      def forced_content_type_for(filename)
+        case File.extname(filename.to_s).downcase
+        when ".mp4", ".m4v"
+          "video/mp4"
+        when ".mov"
+          "video/quicktime"
+        when ".webm"
+          "video/webm"
+        end
       end
 
       # @param value [String]
@@ -118,15 +138,43 @@ module ReportportalCucumber
       # @return [Array<Hash>]
       def normalize_parts(parts)
         Array(parts).map do |part|
-          body = part.fetch(:body)
+          path = part[:path] || part[:file_path]
+          body = part[:body]
           filename = part[:filename] ? safe_filename(part[:filename]) : nil
+          path = normalize_file_path(path) if path
           {
             name: part.fetch(:name).to_s.gsub(/[\r\n]/, " ").strip,
             filename: filename,
             content_type: filename ? content_type_for(filename: filename, declared_type: part[:content_type]) : content_type_for(filename: nil, declared_type: part.fetch(:content_type, "text/plain")),
-            body: body.is_a?(String) ? body.b : body.to_s.b
-          }
+            body: path ? nil : normalize_body(body),
+            path: path
+          }.compact
         end
+      end
+
+      # @param parts [Array<Hash>]
+      # @return [Boolean]
+      def streaming_required?(parts)
+        Array(parts).any? { |part| part[:path] }
+      end
+
+      # @param parts [Array<Hash>]
+      # @param boundary [String]
+      # @return [BodySource]
+      def body_source(parts:, boundary:)
+        normalized_parts = normalize_parts(parts)
+        validate_alignment!(normalized_parts)
+        return BodySource.new(body: encode_normalized(normalized_parts, boundary), length: nil) unless streaming_required?(normalized_parts)
+
+        tempfile = Tempfile.new(["reportportal-multipart", ".body"])
+        tempfile.binmode
+        write_parts(io: tempfile, parts: normalized_parts, boundary: boundary)
+        tempfile.flush
+        tempfile.rewind
+        BodySource.new(stream: tempfile, length: tempfile.size, tempfile: tempfile)
+      rescue StandardError
+        tempfile&.close!
+        raise
       end
 
       # @param buffer [String]
@@ -153,6 +201,85 @@ module ReportportalCucumber
         buffer << "Content-Type: #{part.fetch(:content_type)}\r\n\r\n".b
         buffer << part.fetch(:body)
         buffer << "\r\n".b
+      end
+
+      # @param parts [Array<Hash>]
+      # @param boundary [String]
+      # @return [String]
+      def encode_normalized(parts, boundary)
+        buffer = String.new(capacity: 1024, encoding: Encoding::BINARY)
+        write_parts(io: buffer, parts: parts, boundary: boundary)
+        buffer
+      end
+
+      # @param io [#<<, #write]
+      # @param parts [Array<Hash>]
+      # @param boundary [String]
+      # @return [void]
+      def write_parts(io:, parts:, boundary:)
+        parts.each do |part|
+          if part[:filename]
+            write_file_part(io: io, part: part, boundary: boundary)
+          else
+            write_form_part(io: io, part: part, boundary: boundary)
+          end
+        end
+        write_bytes(io, "--#{boundary}--\r\n".b)
+      end
+
+      # @param io [#<<, #write]
+      # @param part [Hash]
+      # @param boundary [String]
+      # @return [void]
+      def write_file_part(io:, part:, boundary:)
+        disposition = %(form-data; name="#{quoted_parameter(part.fetch(:name))}"; filename="#{quoted_parameter(part.fetch(:filename))}")
+        write_bytes(io, "--#{boundary}\r\n".b)
+        write_bytes(io, "Content-Disposition: #{disposition}\r\n".b)
+        write_bytes(io, "Content-Type: #{part.fetch(:content_type)}\r\n\r\n".b)
+        if part[:path]
+          File.open(part.fetch(:path), "rb") do |file|
+            IO.copy_stream(file, io)
+          end
+        else
+          write_bytes(io, part.fetch(:body))
+        end
+        write_bytes(io, "\r\n".b)
+      end
+
+      # @param io [#<<, #write]
+      # @param part [Hash]
+      # @param boundary [String]
+      # @return [void]
+      def write_form_part(io:, part:, boundary:)
+        disposition = %(form-data; name="#{quoted_parameter(part.fetch(:name))}")
+        write_bytes(io, "--#{boundary}\r\n".b)
+        write_bytes(io, "Content-Disposition: #{disposition}\r\n".b)
+        write_bytes(io, "Content-Type: #{part.fetch(:content_type)}\r\n\r\n".b)
+        write_bytes(io, part.fetch(:body))
+        write_bytes(io, "\r\n".b)
+      end
+
+      # @param io [#<<, #write]
+      # @param bytes [String]
+      # @return [void]
+      def write_bytes(io, bytes)
+        io.respond_to?(:write) ? io.write(bytes) : io << bytes
+      end
+
+      # @param body [Object]
+      # @return [String]
+      def normalize_body(body)
+        body.is_a?(String) ? body.b : body.to_s.b
+      end
+
+      # @param path [String]
+      # @return [String]
+      def normalize_file_path(path)
+        expanded = File.expand_path(path.to_s)
+        raise ArgumentError, "Multipart file does not exist: #{expanded}" unless File.file?(expanded)
+        raise ArgumentError, "Multipart file is not readable: #{expanded}" unless File.readable?(expanded)
+
+        expanded
       end
 
       # @param value [String]

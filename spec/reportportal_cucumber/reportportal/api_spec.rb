@@ -29,7 +29,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::API do
 
     allow(client).to receive(:post_json).with(
       path: "/api/v1/demo/item/feature-uuid",
-      body: hash_excluding("parentUuid")
+      body: hash_including("parentUuid" => "feature-uuid")
     ).and_raise(child_error)
 
     allow(client).to receive(:post_json).with(

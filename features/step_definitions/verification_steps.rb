@@ -29,7 +29,7 @@ module VerificationArtifacts
 
   def verification_tmp_dir
     @verification_tmp_dir ||= begin
-      directory = File.expand_path("../../tmp/verification", __dir__)
+      directory = File.expand_path("../../tmp/verification/run-#{Process.pid}", __dir__)
       FileUtils.mkdir_p(directory)
       directory
     end
