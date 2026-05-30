@@ -80,6 +80,8 @@ CUCUMBER_PROFILE=ci bundle exec cucumber --format ReportPortal::Cucumber::Format
 - `RP_CLIENT_JOIN_LOCK_FILE_NAME`
 - `RP_CLIENT_JOIN_SYNC_FILE_NAME`
 - `RP_CLIENT_JOIN_FILE_WAIT_TIMEOUT_MS`
+- `RP_DEBUG_CURL_MODE`
+- `RP_DEBUG_CURL_DIR`
 
 ## DSL
 
@@ -117,6 +119,7 @@ end
 - 多进程 join 通过文件锁和 sync 文件共享 `launchUuid`
 - `ReportPortal::Models::StepDesc` 负责把 Gherkin Step 转成 Markdown 描述
 - `Transport::MultipartHelper` 负责 multipart `json_request_part` 与 binary parts 的一致性校验和 MIME 识别
+- `RP_DEBUG_CURL_MODE=true` 会通过 logger 输出可复制的 `curl` 命令；multipart 请求会把临时 form 文件写入 `RP_DEBUG_CURL_DIR`
 
 ## Testing
 

@@ -4,6 +4,7 @@ require "tmpdir"
 require "webmock/rspec"
 
 require "reportportal_cucumber"
+Dir[File.join(__dir__, "support", "*.rb")].sort.each { |path| require path }
 
 RSpec.configure do |config|
   config.disable_monkey_patching!

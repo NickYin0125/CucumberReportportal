@@ -22,6 +22,7 @@ module ReportportalCucumber
         @outline_metadata_cache = {}
         @launch_uuid = nil
         @finalized = false
+        @last_timestamp_ms = nil
         ReportportalCucumber.current_runtime = self
 
         inject_world_module
@@ -64,7 +65,7 @@ module ReportportalCucumber
           launch_uuid: @launch_uuid,
           message: message,
           level: level,
-          timestamp: timestamp,
+          timestamp: monotonic_timestamp(timestamp),
           attachment: attachment
         )
       end
@@ -83,7 +84,7 @@ module ReportportalCucumber
           launch_uuid: @launch_uuid,
           message: message,
           level: level,
-          timestamp: timestamp,
+          timestamp: monotonic_timestamp(timestamp),
           attachment: attachment
         )
       end
@@ -97,7 +98,7 @@ module ReportportalCucumber
         parent_uuid = runtime_context.current_item_uuid
         return yield unless parent_uuid
 
-        start_time = Time.now
+        start_time = monotonic_timestamp(Time.now)
         local_uuid = SecureRandom.uuid
         failure = nil
         item_uuid = safe_reporting_call(fallback: local_uuid) do
@@ -130,16 +131,40 @@ module ReportportalCucumber
         raise
       ensure
         if item_uuid || local_uuid
+          @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
           safe_reporting_call do
             @api.finish_item(
               item_uuid: item_uuid || local_uuid,
               launch_uuid: @launch_uuid,
-              end_time: Time.now,
+              end_time: monotonic_timestamp(Time.now),
               status: failure ? "failed" : "passed"
             )
           end
           runtime_context.pop_step(expected_uuid: item_uuid || local_uuid)
         end
+      end
+
+      # @param src [String]
+      # @param media_type [String]
+      # @param filename [String, nil]
+      # @return [void]
+      def attach(src, media_type, filename = nil)
+        return unless reporting_enabled?
+
+        normalized_type = media_type.to_s.sub(/;base64\z/i, "")
+        if normalized_type == "text/x.cucumber.log+plain"
+          emit_world_log(message: src.to_s, level: :info, timestamp: Time.now)
+          return
+        end
+
+        body = media_type.to_s.match?(/;base64\z/i) ? Base64.decode64(src.to_s) : src.to_s
+        handle_attachment(
+          file_name: filename || default_attachment_name(normalized_type),
+          media_type: normalized_type.empty? ? "application/octet-stream" : normalized_type,
+          body: body,
+          content_encoding: "identity",
+          message: filename ? "Attachment: #{filename}" : "Attachment"
+        )
       end
 
       private
@@ -182,7 +207,7 @@ module ReportportalCucumber
         at_exit do
           next if @finalized
 
-          finalize_reporting(status: overall_status, end_time: Time.now)
+          finalize_reporting(status: "failed", end_time: Time.now)
         end
       end
 
@@ -191,7 +216,7 @@ module ReportportalCucumber
       def handle_test_run_started(event)
         return unless reporting_enabled?
 
-        start_time = extract_timestamp(event) || Time.now
+        start_time = monotonic_timestamp(extract_timestamp(event) || Time.now)
         debug("Starting launch name=#{@config.launch.inspect} join=#{@config.join?} rerun=#{@config.rerun?}")
         creator = lambda do
           local_uuid = SecureRandom.uuid
@@ -223,10 +248,11 @@ module ReportportalCucumber
       def handle_test_case_started(event)
         return unless reporting_enabled?
 
-        start_time = extract_timestamp(event) || Time.now
+        event_time = extract_timestamp(event) || Time.now
         feature_uri = extract_feature_uri(event)
         runtime_context.set_current_feature(feature_uri)
-        suite_item = ensure_feature_item(feature_uri, start_time: start_time)
+        suite_item = ensure_feature_item(feature_uri, start_time: event_time)
+        start_time = monotonic_timestamp(event_time)
 
         scenario_name = extract_scenario_name(event)
         scenario_line = extract_scenario_line(event)
@@ -305,7 +331,7 @@ module ReportportalCucumber
         step_uuid = safe_reporting_call(fallback: local_uuid) do
           @api.start_item(
             name: step_name,
-            start_time: extract_timestamp(event) || Time.now,
+            start_time: monotonic_timestamp(extract_timestamp(event) || Time.now),
             type: "step",
             launch_uuid: @launch_uuid,
             parent_uuid: parent_uuid,
@@ -348,7 +374,7 @@ module ReportportalCucumber
           launch_uuid: @launch_uuid,
           message: extract_attachment_message(event, attachment[:name]),
           level: :info,
-          timestamp: extract_timestamp(event) || Time.now,
+          timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now),
           attachment: attachment
         )
       end
@@ -374,16 +400,17 @@ module ReportportalCucumber
         status = extract_status(event)
         if status == "failed"
           error = extract_error(event)
-          emit_error_log(item_uuid: item.uuid, error: error, timestamp: extract_timestamp(event) || Time.now)
+          emit_error_log(item_uuid: item.uuid, error: error, timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now))
         end
 
         debug("Finishing nested step uuid=#{item.uuid} status=#{status}")
         @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        finish_time = monotonic_timestamp(extract_timestamp(event) || Time.now)
         safe_reporting_call do
           @api.finish_item(
             item_uuid: item.uuid,
             launch_uuid: @launch_uuid,
-            end_time: extract_timestamp(event) || Time.now,
+            end_time: finish_time,
             status: status
           )
         end
@@ -398,27 +425,14 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         scenario_key = runtime_context.current_scenario_key
-        scenario_state = @scenario_states[scenario_key]
-        return unless scenario_state
+        return unless @scenario_states[scenario_key]
 
-        close_open_steps_for_current_scenario(status: extract_status(event), end_time: extract_timestamp(event) || Time.now)
-
-        status = extract_status(event) || aggregate_status(scenario_state[:statuses])
-        debug("Finishing scenario uuid=#{scenario_state[:item].uuid} status=#{status}")
-        @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
-        safe_reporting_call do
-          @api.finish_item(
-            item_uuid: scenario_state[:item].uuid,
-            launch_uuid: @launch_uuid,
-            end_time: extract_timestamp(event) || Time.now,
-            status: status
-          )
-        end
-        runtime_context.record_feature_status(scenario_state[:feature_key], status)
-        scenario_state[:statuses] << status
-        runtime_context.release_test_case_started(scenario_state[:test_case_started_id]) if scenario_state[:test_case_started_id]
-        runtime_context.finish_scenario(expected_uuid: scenario_state[:item].uuid)
-        @scenario_states.delete(scenario_key)
+        finish_scenario_state(
+          scenario_key: scenario_key,
+          status: extract_status(event),
+          end_time: monotonic_timestamp(extract_timestamp(event) || Time.now),
+          close_steps: true
+        )
       end
 
       # @param event [Object]
@@ -426,7 +440,7 @@ module ReportportalCucumber
       def handle_test_run_finished(event)
         return unless reporting_enabled?
 
-        finalize_reporting(status: extract_run_status(event), end_time: extract_timestamp(event) || Time.now)
+        finalize_reporting(status: extract_run_status(event), end_time: monotonic_timestamp(extract_timestamp(event) || Time.now))
       end
 
       # @param status [String]
@@ -437,13 +451,14 @@ module ReportportalCucumber
 
         @finalized = true
         @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
-        finish_feature_items(end_time: end_time)
+        finish_open_scenarios(status: status, end_time: monotonic_timestamp(end_time))
+        finish_feature_items(end_time: monotonic_timestamp(end_time))
         if @launch_uuid && (!@config.join? || @join.primary?)
           debug("Finalizing launch uuid=#{@launch_uuid} status=#{status}")
           safe_reporting_call do
             @api.finish_launch(
               launch_uuid: @launch_uuid,
-              end_time: end_time,
+              end_time: monotonic_timestamp(end_time),
               status: status,
               attributes: @config.launch_attributes
             )
@@ -464,7 +479,7 @@ module ReportportalCucumber
         feature_uuid = safe_reporting_call(fallback: local_uuid) do
           @api.start_item(
             name: feature_name,
-            start_time: start_time,
+            start_time: monotonic_timestamp(start_time),
             type: "suite",
             launch_uuid: @launch_uuid,
             has_stats: false,
@@ -490,11 +505,12 @@ module ReportportalCucumber
         runtime_context.feature_items.each do |feature_key, item|
           status = aggregate_status(runtime_context.feature_statuses(feature_key))
           debug("Finishing feature feature=#{feature_key} uuid=#{item.uuid} status=#{status}")
+          @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
           safe_reporting_call do
             @api.finish_item(
               item_uuid: item.uuid,
               launch_uuid: @launch_uuid,
-              end_time: end_time,
+              end_time: monotonic_timestamp(end_time),
               status: status
             )
           end
@@ -505,16 +521,61 @@ module ReportportalCucumber
       # @param status [String, nil]
       # @param end_time [Time]
       # @return [void]
+      def finish_open_scenarios(status:, end_time:)
+        current_key = runtime_context.current_scenario_key
+        if current_key && @scenario_states[current_key]
+          finish_scenario_state(scenario_key: current_key, status: status, end_time: end_time, close_steps: true)
+        end
+
+        @scenario_states.keys.each do |scenario_key|
+          finish_scenario_state(scenario_key: scenario_key, status: status, end_time: end_time, close_steps: false)
+        end
+      end
+
+      # @param scenario_key [String]
+      # @param status [String, nil]
+      # @param end_time [Time]
+      # @param close_steps [Boolean]
+      # @return [void]
+      def finish_scenario_state(scenario_key:, status:, end_time:, close_steps:)
+        scenario_state = @scenario_states[scenario_key]
+        return unless scenario_state
+
+        resolved_status = ReportPortal::Models.normalize_status(status) || aggregate_status(scenario_state[:statuses])
+        close_open_steps_for_current_scenario(status: resolved_status, end_time: monotonic_timestamp(end_time)) if close_steps
+
+        debug("Finishing scenario uuid=#{scenario_state[:item].uuid} status=#{resolved_status}")
+        @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        safe_reporting_call do
+          @api.finish_item(
+            item_uuid: scenario_state[:item].uuid,
+            launch_uuid: @launch_uuid,
+            end_time: monotonic_timestamp(end_time),
+            status: resolved_status
+          )
+        end
+        runtime_context.record_feature_status(scenario_state[:feature_key], resolved_status)
+        scenario_state[:statuses] << resolved_status
+        runtime_context.release_test_case_started(scenario_state[:test_case_started_id]) if scenario_state[:test_case_started_id]
+        runtime_context.finish_scenario(expected_uuid: scenario_state[:item].uuid) if runtime_context.current_scenario_key == scenario_key
+        @scenario_states.delete(scenario_key)
+      end
+
+      # @param status [String, nil]
+      # @param end_time [Time]
+      # @return [void]
       def close_open_steps_for_current_scenario(status:, end_time:)
         runtime_context.current_step_stack.reverse_each do |item|
+          @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
           safe_reporting_call do
             @api.finish_item(
               item_uuid: item.uuid,
               launch_uuid: @launch_uuid,
-              end_time: end_time,
+              end_time: monotonic_timestamp(end_time),
               status: status || "failed"
             )
           end
+          runtime_context.release_test_steps_for_item(item.uuid)
           runtime_context.pop_step(expected_uuid: item.uuid)
         end
       end
@@ -569,7 +630,7 @@ module ReportportalCucumber
           launch_uuid: @launch_uuid,
           message: message.empty? ? "Step failed" : message,
           level: :error,
-          timestamp: timestamp
+          timestamp: monotonic_timestamp(timestamp)
         )
       end
 
@@ -797,7 +858,13 @@ module ReportportalCucumber
           break nil if memo.nil?
 
           if memo.is_a?(Hash)
-            memo[key] || memo[key.to_s] || memo[key.to_sym]
+            if memo.key?(key)
+              memo[key]
+            elsif memo.key?(key.to_s)
+              memo[key.to_s]
+            elsif memo.key?(key.to_sym)
+              memo[key.to_sym]
+            end
           elsif memo.respond_to?(key)
             memo.public_send(key)
           else
@@ -872,6 +939,20 @@ module ReportportalCucumber
       # @return [void]
       def debug(message)
         ReportportalCucumber.logger.debug(message)
+      end
+
+      # @param value [Time]
+      # @return [Time]
+      def monotonic_timestamp(value)
+        base_ms = Service::PayloadBuilder.unix_ms(value).to_i
+        next_ms =
+          if @last_timestamp_ms && base_ms <= @last_timestamp_ms
+            @last_timestamp_ms + 1
+          else
+            base_ms
+          end
+        @last_timestamp_ms = next_ms
+        Time.at(next_ms / 1000, (next_ms % 1000) * 1000, :microsecond)
       end
 
       # @param event [Object]

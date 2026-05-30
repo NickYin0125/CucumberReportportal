@@ -69,7 +69,6 @@ module ReportportalCucumber
       def build_launch_finish(launch_uuid:, end_time:, status: nil, attributes: nil)
         {
           "endTime" => unix_ms(end_time),
-          "launchUuid" => launch_uuid,
           "status" => normalize_status(status),
           "attributes" => normalize_attributes(attributes)
         }.compact
@@ -276,6 +275,7 @@ module ReportportalCucumber
         mime = payload[:mime] || payload["mime"]
         bytes = payload[:bytes] || payload["bytes"]
 
+        name = Transport::MultipartHelper.safe_filename(name)
         mime = Transport::MultipartHelper.content_type_for(filename: name, declared_type: mime)
         name = Transport::MultipartHelper.ensure_filename_extension(
           name: name,
@@ -404,7 +404,7 @@ module ReportportalCucumber
         preview = "```text\n#{snippet.rstrip}\n```"
         return preview if lines.length <= 100
 
-        "#{preview}\n\n[View Full Log](attachment://#{attachment.fetch(:name)})"
+        "#{preview}\n\nFull log is attached as `#{attachment.fetch(:name)}`."
       end
 
       # @param value [Object]

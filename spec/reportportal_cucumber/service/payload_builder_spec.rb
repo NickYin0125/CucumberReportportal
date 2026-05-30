@@ -89,6 +89,29 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
       expect(entry.fetch("message")).to include("```json")
     end
 
+    it "normalizes attachment filenames before building json_request_part file references" do
+      payload = described_class.build_log_batch(
+        [
+          {
+            item_uuid: "item-1",
+            launch_uuid: "launch-1",
+            message: "png",
+            level: :info,
+            timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+            attachment: {
+              name: "bad\r\nname",
+              mime: "image/png\r\nX-Injected: yes",
+              bytes: "png"
+            }
+          }
+        ]
+      )
+
+      expect(payload.fetch(:entries).first.dig("file", "name")).to eq("bad name.png")
+      expect(payload.fetch(:files).first.fetch(:name)).to eq("bad name.png")
+      expect(payload.fetch(:files).first.fetch(:mime)).to eq("image/png")
+    end
+
     it "truncates long text attachment previews after 100 lines" do
       payload = described_class.build_log_batch(
         [
@@ -111,7 +134,7 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
 
       expect(message).to include("line-100")
       expect(message).not_to include("line-101")
-      expect(message).to include("[View Full Log](attachment://trace.log)")
+      expect(message).to include("Full log is attached as `trace.log`.")
     end
   end
 end

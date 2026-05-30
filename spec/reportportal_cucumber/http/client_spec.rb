@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "stringio"
 
 RSpec.describe ReportportalCucumber::Http::Client do
   let(:config) do
@@ -66,5 +67,59 @@ RSpec.describe ReportportalCucumber::Http::Client do
     expect(captured_body).to include('"file":{"name":"trace.log"}')
     expect(captured_body).to include('name="file"; filename="trace.log"')
     expect(captured_body).to include("trace-body")
+  end
+
+  it "prints executable curl for JSON and multipart requests when debug curl mode is enabled" do
+    Dir.mktmpdir do |dir|
+      debug_config = ReportportalCucumber::Config.new(
+        endpoint: "https://rp.example.com",
+        project: "demo",
+        api_key: "token",
+        retry_attempts: 1,
+        debug_curl_mode: true,
+        debug_curl_dir: dir
+      )
+      client = described_class.new(config: debug_config)
+      stream = StringIO.new
+      ReportportalCucumber.logger = Logger.new(stream)
+      ReportportalCucumber.logger.level = Logger::DEBUG
+
+      stub_request(:post, "https://rp.example.com/api/v1/demo/launch")
+        .to_return(status: 200, body: '{"id":"launch-1"}')
+      stub_request(:post, "https://rp.example.com/api/v1/demo/log")
+        .to_return(status: 200, body: '{"responses":[{"id":"log-1"}]}')
+
+      client.post_json(path: "/api/v1/demo/launch", body: { name: "demo" })
+      client.post_multipart(
+        path: "/api/v1/demo/log",
+        parts: [
+          {
+            name: "json_request_part",
+            content_type: "application/json",
+            body: '[{"itemUuid":"item-1","launchUuid":"launch-1","time":"1","message":"shot","level":"info","file":{"name":"shot.png"}}]'
+          },
+          {
+            name: "file",
+            filename: "shot.png",
+            content_type: "image/png",
+            body: "png"
+          }
+        ]
+      )
+
+      output = stream.string
+
+      expect(output).to include("curl -X POST")
+      expect(output).to include("-H Content-Type:\\ application/json")
+      expect(output).to include("-d \\{\\\"name\\\":\\\"demo\\\"\\}")
+      expect(output).to include("--form json_request_part\\=@")
+      expect(output).to include("--form file\\=@")
+      expect(output).to include("filename\\=shot.png")
+      expect(output).to include("type\\=image/png")
+      expect(output).to include("Bearer\\ \\<redacted\\>")
+      expect(output).not_to include("boundary\\=")
+    ensure
+      ReportportalCucumber.logger = nil
+    end
   end
 end

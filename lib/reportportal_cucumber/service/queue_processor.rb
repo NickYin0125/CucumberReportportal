@@ -16,6 +16,7 @@ module ReportportalCucumber
         @mutex = Mutex.new
         @condition = ConditionVariable.new
         @records = []
+        @in_flight_records = []
         @flush_requests = []
         @closed = false
         @worker = Thread.new { worker_loop }
@@ -57,15 +58,16 @@ module ReportportalCucumber
       # @param timeout [Numeric]
       # @return [Boolean]
       def shutdown(timeout: @config.exit_flush_timeout_ms / 1000.0)
-        acknowledge(timeout: timeout) do |ack|
+        result = acknowledge(timeout: timeout) do |ack|
           return true if @closed && !@worker.alive?
 
           @closed = true
           @flush_requests << ack
           @condition.broadcast
-        end.tap do
-          @worker.join(timeout)
         end
+        spool_unflushed("Log buffer shutdown timed out") unless result
+        @worker.join(timeout)
+        result
       end
 
       private
@@ -85,11 +87,14 @@ module ReportportalCucumber
       def worker_loop
         loop do
           batch, acknowledgements, should_stop = next_work_unit
+          mark_in_flight(batch)
           flush_batch(batch) unless batch.empty?
+          mark_in_flight([])
           acknowledgements.each { |ack| ack << true }
           break if should_stop
         end
       rescue StandardError => error
+        mark_in_flight([])
         fail_pending_flushes
         handle_error(error)
       end
@@ -131,21 +136,39 @@ module ReportportalCucumber
       def flush_batch(records)
         return if records.empty?
 
-        payload = Service::PayloadBuilder.build_log_batch(records)
         attempts = 0
 
         begin
           attempts += 1
+          payload = Service::PayloadBuilder.build_log_batch(records)
           @api.log_batch(entries: payload.fetch(:entries), files: payload.fetch(:files))
         rescue StandardError => error
-          if attempts < @config.retry_attempts
+          if retryable_reporting_error?(error) && attempts < @config.retry_attempts
             sleep(backoff_for(attempts))
             retry
           end
 
-          spool(records, error)
+          safe_spool(records, error)
           handle_error(error)
         end
+      end
+
+      # @param error [StandardError]
+      # @return [Boolean]
+      def retryable_reporting_error?(error)
+        response = error.respond_to?(:response) ? error.response : nil
+        return false if response && [400, 401, 403].include?(response.status)
+
+        true
+      end
+
+      # @param records [Array<LogRecord>]
+      # @param error [StandardError]
+      # @return [void]
+      def safe_spool(records, error)
+        spool(records, error)
+      rescue StandardError => spool_error
+        fallback_spool(records, error, spool_error)
       end
 
       # @param records [Array<LogRecord>]
@@ -171,11 +194,121 @@ module ReportportalCucumber
         end
       end
 
+      # @param records [Array<LogRecord>]
+      # @param original_error [StandardError]
+      # @param spool_error [StandardError]
+      # @return [void]
+      def fallback_spool(records, original_error, spool_error)
+        begin
+          raw_spool(records, original_error, spool_error, File.expand_path(@config.spool_dir, Dir.pwd))
+        rescue StandardError
+          begin
+            raw_spool(records, original_error, spool_error, File.join(Dir.tmpdir, "reportportal-cucumber-spool"))
+          rescue StandardError => final_error
+            handle_error(final_error)
+          end
+        end
+      end
+
+      # @param records [Array<LogRecord>]
+      # @param original_error [StandardError]
+      # @param spool_error [StandardError]
+      # @param directory [String]
+      # @return [void]
+      def raw_spool(records, original_error, spool_error, directory)
+        FileUtils.mkdir_p(directory)
+        basename = "#{Time.now.utc.strftime('%Y%m%d%H%M%S')}-#{SecureRandom.hex(6)}"
+        attachments_dir = File.join(directory, "#{basename}.attachments")
+        FileUtils.mkdir_p(attachments_dir)
+
+        File.open(File.join(directory, "#{basename}.ndjson"), "wb") do |file|
+          records.each_with_index do |record, index|
+            attachment = raw_attachment(record, attachments_dir, index)
+            file.puts(
+              JSON.generate(
+                raw_record(record).merge(
+                  "attachment" => attachment,
+                  "rawSpool" => true,
+                  "spoolError" => "#{original_error.class}: #{original_error.message}",
+                  "fallbackSpoolError" => "#{spool_error.class}: #{spool_error.message}"
+                ).compact
+              )
+            )
+          end
+        end
+      end
+
+      # @param record [LogRecord]
+      # @return [Hash]
+      def raw_record(record)
+        {
+          "itemUuid" => record.item_uuid,
+          "launchUuid" => record.launch_uuid,
+          "message" => record.message.to_s,
+          "level" => record.level.to_s,
+          "time" => raw_time(record.timestamp)
+        }.compact
+      end
+
+      # @param value [Time, String, Integer, Float]
+      # @return [String]
+      def raw_time(value)
+        case value
+        when Time
+          (value.to_r * 1000).to_i.to_s
+        when Integer
+          value.to_s
+        when Float
+          value.to_i.to_s
+        else
+          value.to_s
+        end
+      end
+
+      # @param record [LogRecord]
+      # @param directory [String]
+      # @param index [Integer]
+      # @return [Hash, nil]
+      def raw_attachment(record, directory, index)
+        attachment = record.attachment
+        return nil unless attachment
+
+        payload = attachment.respond_to?(:to_h) ? attachment.to_h : attachment
+        name = Transport::MultipartHelper.safe_filename(payload[:name] || payload["name"] || "attachment-#{index}")
+        bytes = payload[:bytes] || payload["bytes"] || ""
+        data = bytes.respond_to?(:read) ? bytes.read : bytes.to_s
+        bytes.rewind if bytes.respond_to?(:rewind)
+        File.binwrite(File.join(directory, name), data)
+        {
+          "name" => name,
+          "mime" => payload[:mime] || payload["mime"],
+          "spooledPath" => File.join(File.basename(directory), name)
+        }.compact
+      end
+
+      # @param message [String]
+      # @return [void]
+      def spool_unflushed(message)
+        records = nil
+        @mutex.synchronize do
+          records = @in_flight_records + @records
+        end
+        return if records.empty?
+
+        safe_spool(records, ReportportalCucumber::ReportingError.new(message))
+      end
+
       # @return [void]
       def fail_pending_flushes
         @mutex.synchronize do
           @flush_requests.shift(@flush_requests.length).each { |ack| ack << false }
         end
+      end
+
+      # @param records [Array<LogRecord>]
+      # @return [void]
+      def mark_in_flight(records)
+        @mutex.synchronize { @in_flight_records = records.dup }
       end
 
       # @param attempt [Integer]

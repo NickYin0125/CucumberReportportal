@@ -228,6 +228,16 @@ module ReportportalCucumber
         @mutex.synchronize { @test_step_items.delete(test_step_id) }
       end
 
+      # @param item_uuid [String]
+      # @return [Array<String>]
+      def release_test_steps_for_item(item_uuid)
+        @mutex.synchronize do
+          removed = @test_step_items.select { |_id, item| item.uuid == item_uuid }.keys
+          removed.each { |id| @test_step_items.delete(id) }
+          removed
+        end
+      end
+
       private
 
       # @param item [ItemHandle]
@@ -247,10 +257,9 @@ module ReportportalCucumber
           return popped
         end
 
-        index = context_stack.rindex { |item| item.uuid == expected_uuid }
-        return nil unless index
+        return nil unless context_stack.last&.uuid == expected_uuid
 
-        popped = context_stack.delete_at(index)
+        popped = context_stack.pop
         sync_active_parent_from_stack!
         popped
       end
