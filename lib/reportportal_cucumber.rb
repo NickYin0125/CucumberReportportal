@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "base64"
+require "cgi"
 require "digest/sha1"
 require "fileutils"
 require "json"
@@ -21,6 +22,7 @@ end
 
 require_relative "reportportal_cucumber/config"
 require_relative "reportportal_cucumber/transport/multipart_helper"
+require_relative "reportportal_cucumber/transport/minio_uploader"
 require_relative "reportportal_cucumber/service/payload_builder"
 require_relative "reportportal_cucumber/service/queue_processor"
 require_relative "reportportal_cucumber/transport/http_client"

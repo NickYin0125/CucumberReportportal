@@ -85,6 +85,13 @@ CUCUMBER_PROFILE=ci bundle exec cucumber --format ReportPortal::Cucumber::Format
 - `RP_CLIENT_JOIN_FILE_WAIT_TIMEOUT_MS`
 - `RP_DEBUG_CURL_MODE`
 - `RP_DEBUG_CURL_DIR`
+- `RP_VIDEO_UPLOAD_MODE`，默认 `reportportal_multipart`；设置为 `minio_markdown` 时会把 MP4 上传到 MinIO，并把可播放 `<video>` 片段作为普通 log 写入当前 step
+- `RP_MINIO_ENDPOINT`
+- `RP_MINIO_PUBLIC_BASE_URL`
+- `RP_MINIO_BUCKET`
+- `RP_MINIO_ACCESS_KEY_ID`
+- `RP_MINIO_SECRET_ACCESS_KEY`
+- `RP_MINIO_REGION`
 
 ## DSL
 
@@ -107,14 +114,15 @@ rp_step("Prepare data") do
 end
 ```
 
-`attachment` 结构参考 `pytest-reportportal` 的使用体验，支持 `name`、`bytes`、`mime` 三元组；文件路径形式会以 path-backed multipart 上传，适合 MP4 录屏这类大附件，避免在 step 里整文件读入内存。
+`attachment` 结构参考 `pytest-reportportal` 的使用体验，支持 `name`、`bytes`、`mime` 三元组；文件路径形式会以 path-backed multipart 上传，适合大附件，避免在 step 里整文件读入内存。
 
 附件和 step 的绑定规则：
 
 - `rp_attach` 默认挂到当前 active step，而不是漂到 scenario 外层
 - `application/json` 附件会自动 prettify，并把 JSON 代码块追加到日志消息
 - `text/plain` / `.log` 附件会在日志消息中展示前 100 行预览，完整内容仍保留在附件文件中
-- 图片和视频附件会根据 MIME 和文件后缀触发 RP 内置预览器
+- 图片、JSON、文本、PDF 等附件继续走 ReportPortal multipart
+- ReportPortal 当前通用附件视图对 MP4 内联播放支持有限；如需浏览器内播放录屏，设置 `RP_VIDEO_UPLOAD_MODE=minio_markdown`，客户端会将 `.mp4` 流式上传到 MinIO/S3，并在当前 step 写入包含 HTML5 `<video>` 的普通 log
 
 ## Design Notes
 
@@ -126,6 +134,7 @@ end
 - 多进程 join 通过文件锁和 sync 文件共享 `launchUuid`
 - `ReportPortal::Models::StepDesc` 负责把 Gherkin Step 转成 Markdown 描述
 - `Transport::MultipartHelper` 负责 multipart `json_request_part` 与 binary parts 的一致性校验和 MIME 识别
+- `Transport::MinioUploader` 负责可选的 MP4 外部存储链路，使用 path-style S3 API 直连 MinIO，避免视频文件进入 RP multipart 导致前端附件视图崩溃
 - `RP_DEBUG_CURL_MODE=true` 会通过 logger 输出可复制的 `curl` 命令；multipart 请求会把临时 form 文件写入 `RP_DEBUG_CURL_DIR`
 
 ## Testing
@@ -146,6 +155,7 @@ bundle exec cucumber
 ## Runtime Dependencies
 
 - `cucumber`：formatter 需要挂接 Cucumber 事件总线
+- `aws-sdk-s3`：可选 MP4 外部存储链路需要兼容 MinIO 的 S3 API；普通图片/JSON/TXT 附件不依赖该链路
 - `mime-types`：根据文件名和 MIME 元数据自动补全附件 content type / 后缀，保证 RP 图片、视频和文本附件预览稳定
 
 其余实现尽量使用 Ruby 标准库：`Net::HTTP`、`JSON`、`Time`、`SecureRandom`、`Base64`、`File`、`Mutex`、`Queue`。

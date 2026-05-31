@@ -9,10 +9,12 @@ module ReportportalCucumber
       # @param api [ReportportalCucumber::ReportPortal::API]
       # @param config [ReportportalCucumber::Config]
       # @param on_error [#call, nil]
-      def initialize(api:, config:, on_error: nil)
+      # @param video_uploader [ReportportalCucumber::Transport::MinioUploader, nil]
+      def initialize(api:, config:, on_error: nil, video_uploader: nil)
         @api = api
         @config = config
         @on_error = on_error
+        @video_uploader = video_uploader || default_video_uploader
         @mutex = Mutex.new
         @condition = ConditionVariable.new
         @records = []
@@ -140,7 +142,8 @@ module ReportportalCucumber
 
         begin
           attempts += 1
-          payload = Service::PayloadBuilder.build_log_batch(records)
+          routed_records ||= route_external_video_records(records)
+          payload = Service::PayloadBuilder.build_log_batch(routed_records)
           @api.log_batch(entries: payload.fetch(:entries), files: payload.fetch(:files))
         rescue StandardError => error
           if retryable_reporting_error?(error) && attempts < @config.retry_attempts
@@ -151,6 +154,43 @@ module ReportportalCucumber
           safe_spool(records, error)
           handle_error(error)
         end
+      end
+
+      # @return [ReportportalCucumber::Transport::MinioUploader, nil]
+      def default_video_uploader
+        return nil unless @config.minio_markdown_video?
+
+        Transport::MinioUploader.new(config: @config)
+      end
+
+      # @param records [Array<LogRecord>]
+      # @return [Array<LogRecord>]
+      def route_external_video_records(records)
+        return records unless @video_uploader
+
+        records.map { |record| route_external_video_record(record) }
+      end
+
+      # @param record [LogRecord]
+      # @return [LogRecord]
+      def route_external_video_record(record)
+        attachment = Service::PayloadBuilder.normalize_attachment(record.attachment)
+        return record unless Service::PayloadBuilder.video_attachment?(attachment)
+
+        public_url = @video_uploader.upload_video(
+          path: attachment[:path],
+          bytes: attachment[:bytes],
+          name: attachment.fetch(:name),
+          content_type: attachment.fetch(:mime)
+        )
+        LogRecord.new(
+          item_uuid: record.item_uuid,
+          launch_uuid: record.launch_uuid,
+          message: Service::PayloadBuilder.build_video_markdown_message(message: record.message, url: public_url),
+          level: :error,
+          timestamp: record.timestamp,
+          attachment: nil
+        )
       end
 
       # @param error [StandardError]

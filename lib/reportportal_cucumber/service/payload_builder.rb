@@ -197,6 +197,30 @@ module ReportportalCucumber
         { entries: entries, files: files }
       end
 
+      # @param attachment [Hash, nil]
+      # @return [Boolean]
+      def video_attachment?(attachment)
+        return false unless attachment
+
+        mime = attachment[:mime] || attachment["mime"]
+        name = attachment[:name] || attachment["name"]
+        mime.to_s.downcase == "video/mp4" || File.extname(name.to_s).downcase == ".mp4"
+      end
+
+      # @param message [String, nil]
+      # @param url [String]
+      # @param width [Integer]
+      # @return [String]
+      def build_video_markdown_message(message:, url:, width: 640)
+        base = message.to_s.strip
+        video = "UI Failure Playback:\n\n" \
+                "<video width=\"#{Integer(width)}\" controls preload=\"metadata\">" \
+                "<source src=\"#{CGI.escapeHTML(url.to_s)}\" type=\"video/mp4\"></video>"
+        return video if base.empty?
+
+        "#{base}\n\n#{video}"
+      end
+
       # @param feature_uri [String]
       # @param scenario_line [Integer, String]
       # @return [String]
