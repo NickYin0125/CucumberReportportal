@@ -15,6 +15,23 @@ module ReportportalCucumber
         "text/plain" => ".txt",
         "video/mp4" => ".mp4"
       }.freeze
+      ITEM_TYPE_MAP = {
+        "suite" => "SUITE",
+        "story" => "STORY",
+        "test" => "TEST",
+        "scenario" => "SCENARIO",
+        "step" => "STEP",
+        "before_class" => "BEFORE_CLASS",
+        "before_groups" => "BEFORE_GROUPS",
+        "before_method" => "BEFORE_METHOD",
+        "before_suite" => "BEFORE_SUITE",
+        "before_test" => "BEFORE_TEST",
+        "after_class" => "AFTER_CLASS",
+        "after_groups" => "AFTER_GROUPS",
+        "after_method" => "AFTER_METHOD",
+        "after_suite" => "AFTER_SUITE",
+        "after_test" => "AFTER_TEST"
+      }.freeze
 
       # @param value [Time, String, Integer, Float, nil]
       # @return [String]
@@ -95,7 +112,7 @@ module ReportportalCucumber
         {
           "name" => name,
           "startTime" => unix_ms(start_time),
-          "type" => type,
+          "type" => normalize_item_type(type),
           "launchUuid" => launch_uuid,
           "parentUuid" => parent_uuid,
           "description" => description,
@@ -257,6 +274,13 @@ module ReportportalCucumber
         else
           status.to_s.downcase
         end
+      end
+
+      # @param type [String, Symbol]
+      # @return [String]
+      def normalize_item_type(type)
+        normalized = type.to_s.strip.downcase.gsub(/[^a-z0-9]+/, "_").sub(/\A_+/, "").sub(/_+\z/, "")
+        ITEM_TYPE_MAP.fetch(normalized, type.to_s.upcase)
       end
 
       # @param level [String, Symbol, Integer]

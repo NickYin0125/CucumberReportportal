@@ -95,18 +95,22 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     expect(start_launch_body["description"]).to eq("Formatter spec launch")
     expect(start_launch_body["attributes"]).to eq([{ "key" => "suite", "value" => "spec" }])
 
+    suite_body = calls.find { |name, _body| name == :start_suite }.last
     scenario_body = calls.find { |name, body| name == :start_scenario && body["hasStats"] == true }.last
+    step_body = calls.find { |name, _body| name == :start_step }.last
+    expect(suite_body).to include("type" => "SUITE", "hasStats" => true)
     expect(scenario_body).to include(
       "name" => "Scenario: Login ok",
-      "type" => "test",
+      "type" => "STEP",
+      "hasStats" => true,
+      "parentUuid" => "item-1",
       "codeRef" => "features/login.feature:12",
       "testCaseId" => "features/login.feature:12",
       "uniqueId" => ReportportalCucumber::ReportPortal::Models.build_unique_id(code_ref: "features/login.feature:12", parameters: nil)
     )
-    start_suite_body = calls.find { |name, _body| name == :start_suite }.last
-    start_step_body = calls.find { |name, _body| name == :start_step }.last
-    expect(start_suite_body.fetch("startTime").to_i).to be < scenario_body.fetch("startTime").to_i
-    expect(scenario_body.fetch("startTime").to_i).to be < start_step_body.fetch("startTime").to_i
+    expect(step_body).to include("type" => "STEP", "hasStats" => false, "parentUuid" => "item-2")
+    expect(suite_body.fetch("startTime").to_i).to be < scenario_body.fetch("startTime").to_i
+    expect(scenario_body.fetch("startTime").to_i).to be < step_body.fetch("startTime").to_i
 
     log_body = calls.find { |name, _| name == :log_batch }.last
     expect(log_body).to include("json_request_part")
@@ -175,10 +179,9 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     ].each { |event| formatter.ingest_event(event) }
 
     expect(start_items[0]).to include(path: "/api/v1/demo/item")
-    expect(start_items[0].fetch(:body)).to include("type" => "suite")
+    expect(start_items[0].fetch(:body)).to include("type" => "SUITE", "hasStats" => true)
     expect(start_items[1]).to include(path: "/api/v1/demo/item/item-1")
-    expect(start_items[1].fetch(:body)).to include("type" => "test")
-    expect(start_items[1].fetch(:body)).to include("parentUuid" => "item-1")
+    expect(start_items[1].fetch(:body)).to include("type" => "STEP", "hasStats" => true, "parentUuid" => "item-1")
   end
 
   it "labels background steps and maps before/after hooks under the scenario" do
@@ -217,11 +220,84 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     after_hook = start_items[4]
 
     expect(before_hook).to include(path: "/api/v1/demo/item/item-2")
-    expect(before_hook.fetch(:body)).to include("name" => "Before Hook: setup browser", "type" => "before_method", "hasStats" => false)
+    expect(before_hook.fetch(:body)).to include("name" => "Before Hook: setup browser", "type" => "BEFORE_METHOD", "hasStats" => false)
     expect(background).to include(path: "/api/v1/demo/item/item-2")
-    expect(background.fetch(:body)).to include("name" => "[Background] Given shared customer exists", "type" => "step", "hasStats" => false)
+    expect(background.fetch(:body)).to include("name" => "[Background] Given shared customer exists", "type" => "STEP", "hasStats" => false)
     expect(after_hook).to include(path: "/api/v1/demo/item/item-2")
-    expect(after_hook.fetch(:body)).to include("name" => "After Hook: close browser", "type" => "after_method", "hasStats" => false)
+    expect(after_hook.fetch(:body)).to include("name" => "After Hook: close browser", "type" => "AFTER_METHOD", "hasStats" => false)
+  end
+
+  it "detects background steps from the feature file when Cucumber events do not flag them" do
+    start_items = []
+    start_item_counter = 0
+
+    stub_request(:post, "https://rp.example.com/api/v1/demo/launch")
+      .to_return(status: 200, body: '{"id":"launch-1"}')
+    stub_request(:post, %r{\Ahttps://rp\.example\.com/api/v1/demo/item(?:/.*)?\z}).to_return do |request|
+      start_item_counter += 1
+      body = JSON.parse(request.body)
+      start_items << { id: "item-#{start_item_counter}", body: body, path: request.uri.path }
+      { status: 200, body: { id: "item-#{start_item_counter}" }.to_json }
+    end
+    stub_request(:put, %r{\Ahttps://rp\.example\.com/api/v1/demo/item/.*\z})
+      .to_return(status: 200, body: '{"message":"ok"}')
+    stub_request(:put, "https://rp.example.com/api/v1/demo/launch/launch-1/finish")
+      .to_return(status: 200, body: '{"message":"ok"}')
+
+    Dir.mktmpdir do |directory|
+      feature_path = File.join(directory, "background.feature")
+      File.write(feature_path, <<~FEATURE)
+        Feature: Background fallback
+          Background:
+            Given shared customer exists
+
+          Scenario: Uses background
+            Then the scenario passes
+      FEATURE
+
+      formatter = described_class.new(stub_config)
+      [
+        { "type" => "test_run_started", "timestamp" => "2026-03-23T00:00:00Z" },
+        { "type" => "test_case_started", "feature_uri" => feature_path, "scenario_name" => "Uses background", "scenario_line" => 5 },
+        { "type" => "test_step_started", "step_id" => "bg-1", "step_text" => "Given shared customer exists" },
+        { "type" => "test_step_finished", "step_id" => "bg-1", "status" => "passed" },
+        { "type" => "test_case_finished", "status" => "passed" },
+        { "type" => "test_run_finished", "success" => true }
+      ].each { |event| formatter.ingest_event(event) }
+    end
+
+    background = start_items.find { |item| item.fetch(:body)["name"].include?("shared customer exists") }
+    expect(background.fetch(:body)).to include("name" => "[Background] Given shared customer exists", "type" => "STEP", "hasStats" => false)
+  end
+
+  it "always starts Cucumber steps under the scenario even if another step is still active" do
+    start_items = []
+    start_item_counter = 0
+
+    stub_request(:post, "https://rp.example.com/api/v1/demo/launch")
+      .to_return(status: 200, body: '{"id":"launch-1"}')
+    stub_request(:post, %r{\Ahttps://rp\.example\.com/api/v1/demo/item(?:/.*)?\z}).to_return do |request|
+      start_item_counter += 1
+      body = JSON.parse(request.body)
+      start_items << { id: "item-#{start_item_counter}", body: body, path: request.uri.path }
+      { status: 200, body: { id: "item-#{start_item_counter}" }.to_json }
+    end
+
+    formatter = described_class.new(stub_config)
+    [
+      { "type" => "test_run_started", "timestamp" => "2026-03-23T00:00:00Z" },
+      { "type" => "test_case_started", "feature_uri" => "features/stale.feature", "scenario_name" => "Stale active step", "scenario_line" => 3 },
+      { "type" => "test_step_started", "step_id" => "s1", "step_text" => "Given first step is still active" },
+      { "type" => "test_step_started", "step_id" => "s2", "step_text" => "When second step starts" }
+    ].each { |event| formatter.ingest_event(event) }
+
+    first_step = start_items[2]
+    second_step = start_items[3]
+
+    expect(first_step.fetch(:body)).to include("type" => "STEP", "hasStats" => false, "parentUuid" => "item-2")
+    expect(second_step).to include(path: "/api/v1/demo/item/item-2")
+    expect(second_step.fetch(:body)).to include("type" => "STEP", "hasStats" => false, "parentUuid" => "item-2")
+    formatter.instance_variable_set(:@finalized, true)
   end
 
   it "maps before_all and after_all hooks under the feature suite" do
@@ -259,11 +335,11 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     after_all = start_items[3]
 
     expect(before_all).to include(path: "/api/v1/demo/item/item-1")
-    expect(before_all.fetch(:body)).to include("name" => "BeforeAll Hook: seed database", "type" => "before_class", "hasStats" => false)
+    expect(before_all.fetch(:body)).to include("name" => "BeforeAll Hook: seed database", "type" => "BEFORE_CLASS", "hasStats" => false)
     expect(scenario).to include(path: "/api/v1/demo/item/item-1")
-    expect(scenario.fetch(:body)).to include("name" => "Scenario: Class hook scenario", "type" => "test", "hasStats" => true)
+    expect(scenario.fetch(:body)).to include("name" => "Scenario: Class hook scenario", "type" => "STEP", "hasStats" => true)
     expect(after_all).to include(path: "/api/v1/demo/item/item-1")
-    expect(after_all.fetch(:body)).to include("name" => "AfterAll Hook: drop database", "type" => "after_class", "hasStats" => false)
+    expect(after_all.fetch(:body)).to include("name" => "AfterAll Hook: drop database", "type" => "AFTER_CLASS", "hasStats" => false)
   end
 
   it "closes open steps and scenarios before feature and launch when run finishes early" do
@@ -371,9 +447,9 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     allow(ReportportalCucumber::Runtime::LogBuffer).to receive(:new).and_return(log_buffer)
 
     formatter = described_class.new(stub_config)
-    feature = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "feature-1", kind: :feature, name: "Feature", type: "suite", has_stats: false)
-    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", parent_uuid: "feature-1", type: "test", has_stats: true)
-    step = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "step-1", kind: :step, name: "When upload", parent_uuid: "scenario-1", type: "step", has_stats: false)
+    feature = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "feature-1", kind: :feature, name: "Feature", type: "SUITE", has_stats: true)
+    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", parent_uuid: "feature-1", type: "STEP", has_stats: true)
+    step = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "step-1", kind: :step, name: "When upload", parent_uuid: "scenario-1", type: "STEP", has_stats: false)
 
     formatter.runtime_context.register_feature("features/a.feature", feature)
     formatter.runtime_context.activate_feature("features/a.feature", feature)
@@ -400,8 +476,8 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     allow(ReportportalCucumber::Runtime::LogBuffer).to receive(:new).and_return(log_buffer)
 
     formatter = described_class.new(stub_config)
-    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", type: "test", has_stats: true)
-    step = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "step-1", kind: :step, name: "When upload", parent_uuid: "scenario-1", type: "step", has_stats: false)
+    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", type: "STEP", has_stats: true)
+    step = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "step-1", kind: :step, name: "When upload", parent_uuid: "scenario-1", type: "STEP", has_stats: false)
 
     formatter.runtime_context.start_scenario("features/a.feature:1:uniq", scenario)
     formatter.runtime_context.push_step(step)
@@ -433,7 +509,7 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     formatter = described_class.new(stub_config)
     formatter.instance_variable_set(:@api, api)
     formatter.instance_variable_set(:@launch_uuid, "launch-uuid")
-    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", type: "test", has_stats: true)
+    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", type: "STEP", has_stats: true)
     formatter.runtime_context.start_scenario("features/a.feature:1:uniq", scenario)
 
     formatter.with_manual_step("Manual group") do

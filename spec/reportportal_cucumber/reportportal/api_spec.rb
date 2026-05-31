@@ -40,7 +40,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::API do
     result = api.start_item(
       name: "Scenario: Fallback",
       start_time: Time.utc(2026, 3, 26),
-      type: "test",
+      type: "STEP",
       launch_uuid: "launch-uuid",
       parent_uuid: "feature-uuid",
       has_stats: true,

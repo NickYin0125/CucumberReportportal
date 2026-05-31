@@ -59,7 +59,7 @@ module ReportportalCucumber
           launch_uuid = request.uri.path.split("/")[-2]
           body = parse_json(request.body)
           launch = @launches.fetch(launch_uuid)
-          leaf_items = @items.values.select { |item| item["launchUuid"] == launch_uuid && item["hasStats"] == true }
+          leaf_items = @items.values.select { |item| item["launchUuid"] == launch_uuid && test_item?(item) }
           status = body["status"] || bubble_status(leaf_items)
           launch.merge!(
             "endTime" => body.fetch("endTime"),
@@ -132,6 +132,23 @@ module ReportportalCucumber
 
       # @return [void]
       def stub_query_routes
+        WebMock.stub_request(:get, %r{\A#{Regexp.escape(endpoint)}/(?:api/)?v1/([^/]+)/item(?:\?.*)?\z}).to_return do |request|
+          query = CGI.parse(request.uri.query.to_s)
+          filtered_items = @items.values.select do |item|
+            matches_filter?(item, query)
+          end
+          json_response(
+            200,
+            "content" => filtered_items.map { |item| item.merge("hasChildren" => has_children?(item)) },
+            "page" => {
+              "number" => query.fetch("page.page", ["1"]).first.to_i,
+              "size" => query.fetch("page.size", [filtered_items.length.to_s]).first.to_i,
+              "totalElements" => filtered_items.length,
+              "totalPages" => 1
+            }
+          )
+        end
+
         WebMock.stub_request(:get, %r{\A#{Regexp.escape(endpoint)}/(?:api/)?v1/project/([^/]+)/launch/([^/?]+)}).to_return do |request|
           launch_uuid = request.uri.path.split("/").last
           json_response(200, @launches.fetch(launch_uuid))
@@ -214,6 +231,35 @@ module ReportportalCucumber
         items.each { |item| executions[item["status"].to_s.downcase] += 1 }
         executions["total"] = items.length
         { "executions" => executions }
+      end
+
+      # @param item [Hash]
+      # @return [Boolean]
+      def test_item?(item)
+        item["hasStats"] == true && item["type"].to_s.casecmp("STEP").zero?
+      end
+
+      # @param item [Hash]
+      # @param query [Hash<String, Array<String>>]
+      # @return [Boolean]
+      def matches_filter?(item, query)
+        return false if query["filter.eq.hasStats"] && item["hasStats"].to_s != query["filter.eq.hasStats"].first
+        return false if query["filter.eq.hasChildren"] && has_children?(item).to_s != query["filter.eq.hasChildren"].first
+
+        if query["filter.in.type"]
+          types = query["filter.in.type"].flat_map { |value| value.split(",") }
+          return false unless types.any? { |type| item["type"].to_s.casecmp(type).zero? }
+        end
+
+        true
+      end
+
+      # @param item [Hash]
+      # @return [Boolean]
+      def has_children?(item)
+        @items.values.any? do |candidate|
+          candidate["parentUuid"] == item["uuid"] && candidate["hasStats"] == true
+        end
       end
 
       # @param body [String]

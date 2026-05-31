@@ -28,16 +28,16 @@ RSpec.describe ReportportalCucumber::SpecSupport::RPMockServer do
     suite_uuid = api.start_item(
       name: "Feature",
       start_time: Time.utc(2026, 5, 30, 12, 0, 1),
-      type: "suite",
+      type: "SUITE",
       launch_uuid: launch_uuid,
-      has_stats: false,
+      has_stats: true,
       retry: false,
       uuid: nil
     )
     scenario_uuid = api.start_item(
       name: "Scenario",
       start_time: Time.utc(2026, 5, 30, 12, 0, 2),
-      type: "test",
+      type: "STEP",
       launch_uuid: launch_uuid,
       parent_uuid: suite_uuid,
       parameters: { "buyer" => "JPM" },
@@ -48,7 +48,7 @@ RSpec.describe ReportportalCucumber::SpecSupport::RPMockServer do
     step_uuid = api.start_item(
       name: "Step",
       start_time: Time.utc(2026, 5, 30, 12, 0, 3),
-      type: "step",
+      type: "STEP",
       launch_uuid: launch_uuid,
       parent_uuid: scenario_uuid,
       has_stats: false,
@@ -90,9 +90,14 @@ RSpec.describe ReportportalCucumber::SpecSupport::RPMockServer do
     multipart = server.multipart_requests.first
 
     expect(launch).to include("description" => "nested mock")
+    expect(feature_request.fetch("body")).to include("type" => "SUITE", "hasStats" => true)
     expect(feature_request.fetch("responseUuid")).to eq(suite_uuid)
+    expect(scenario_request.fetch("body")).to include("type" => "STEP", "hasStats" => true)
     expect(scenario_request.fetch("parentUuid")).to eq(feature_request.fetch("responseUuid"))
     expect(scenario_request.fetch("path")).to end_with("/api/v1/demo/item/#{suite_uuid}")
+    step_request = server.item_requests.find { |request| request.fetch("name") == "Step" }
+    expect(step_request.fetch("body")).to include("type" => "STEP", "hasStats" => false, "parentUuid" => scenario_uuid)
+    expect(step_request.fetch("path")).to end_with("/api/v1/demo/item/#{scenario_uuid}")
     expect(server.items.fetch(scenario_uuid)["parentUuid"]).to eq(suite_uuid)
     expect(server.items.fetch(scenario_uuid)["parameters"]).to eq([{ "key" => "buyer", "value" => "JPM" }])
     expect(multipart.fetch(:files).map { |file| file.fetch(:content_type) }).to eq(["image/png", "video/mp4"])
@@ -103,5 +108,11 @@ RSpec.describe ReportportalCucumber::SpecSupport::RPMockServer do
     response = Net::HTTP.get_response(URI("#{server.endpoint}/api/v1/project/demo/launch/#{launch_uuid}"))
     expect(response.code.to_i).to eq(200)
     expect(JSON.parse(response.body)).to include("uuid" => "launch-uuid", "status" => "PASSED")
+
+    ui_filter_response = Net::HTTP.get_response(
+      URI("#{server.endpoint}/api/v1/demo/item?filter.eq.hasStats=true&filter.eq.hasChildren=false&filter.in.type=STEP")
+    )
+    ui_items = JSON.parse(ui_filter_response.body).fetch("content")
+    expect(ui_items.map { |item| item.fetch("name") }).to eq(["Scenario"])
   end
 end

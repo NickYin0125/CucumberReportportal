@@ -102,7 +102,7 @@ RSpec.describe "ReportPortal backend chaos sandbox" do
         api.start_item(
           name: "Scenario: timing inversion",
           start_time: Time.utc(2026, 5, 30),
-          type: "test",
+          type: "STEP",
           launch_uuid: "launch-uuid",
           parent_uuid: "parent-uuid",
           has_stats: true,

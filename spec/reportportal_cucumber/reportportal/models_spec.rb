@@ -30,7 +30,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models do
       body = described_class.build_item_start(
         name: "Scenario: Login ok",
         start_time: Time.utc(2026, 3, 23),
-        type: "test",
+        type: "STEP",
         launch_uuid: "launch-1",
         description: nil,
         attributes: nil,
@@ -46,7 +46,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models do
 
       expect(body).to include(
         "name" => "Scenario: Login ok",
-        "type" => "test",
+        "type" => "STEP",
         "launchUuid" => "launch-1",
         "parentUuid" => "suite-1",
         "hasStats" => true,

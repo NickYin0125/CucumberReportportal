@@ -20,6 +20,9 @@ module ReportportalCucumber
         @feature_states = {}
         @scenario_states = {}
         @outline_metadata_cache = {}
+        @feature_description_cache = {}
+        @scenario_description_cache = {}
+        @background_step_texts_cache = {}
         @launch_uuid = nil
         @finalized = false
         @last_timestamp_ms = nil
@@ -109,7 +112,7 @@ module ReportportalCucumber
           @api.start_item(
             name: name,
             start_time: start_time,
-            type: "step",
+            type: "STEP",
             launch_uuid: @launch_uuid,
             parent_uuid: parent_uuid,
             has_stats: false,
@@ -122,7 +125,7 @@ module ReportportalCucumber
           name: name,
           kind: :manual_step,
           parent_uuid: parent_uuid,
-          type: "step",
+          type: "STEP",
           has_stats: false,
           metadata: {}
         )
@@ -279,6 +282,7 @@ module ReportportalCucumber
 
         scenario_name = extract_scenario_name(event)
         scenario_line = extract_scenario_line(event)
+        scenario_description = extract_scenario_description(feature_uri: feature_uri, scenario_line: scenario_line)
         parameters = extract_parameters(event)
         code_ref = ReportPortal::Models.build_code_ref(feature_uri: feature_uri, scenario_line: scenario_line)
         explicit_test_case_id = explicit_test_case_id_for(event)
@@ -297,9 +301,10 @@ module ReportportalCucumber
           @api.start_item(
             name: "Scenario: #{scenario_name}",
             start_time: start_time,
-            type: "test",
+            type: "STEP",
             launch_uuid: @launch_uuid,
             parent_uuid: feature_parent_uuid,
+            description: scenario_description,
             code_ref: code_ref,
             parameters: parameters,
             has_stats: true,
@@ -315,10 +320,11 @@ module ReportportalCucumber
           name: scenario_name,
           kind: :scenario,
           parent_uuid: feature_parent_uuid,
-          type: "test",
+          type: "STEP",
           has_stats: true,
           metadata: {
             code_ref: code_ref,
+            description: scenario_description,
             test_case_id: test_case_id,
             unique_id: unique_id,
             attempt: attempt
@@ -353,12 +359,13 @@ module ReportportalCucumber
           if class_hook
             feature_item&.uuid
           else
-            runtime_context.active_parent_uuid || runtime_context.current_item_uuid || scenario_item.uuid
+            scenario_item.uuid
           end
         return unless parent_uuid
 
-        step_name = extract_step_name(event)
-        step_description = extract_step_description(event)
+        step_descriptor = build_step_descriptor(event)
+        step_name = extract_step_name(event, descriptor: step_descriptor)
+        step_description = extract_step_description(event, descriptor: step_descriptor)
         item_type = reportportal_step_type(event)
         debug("Starting nested step name=#{step_name.inspect} type=#{item_type} parent=#{parent_uuid}")
         local_uuid = SecureRandom.uuid
@@ -390,6 +397,7 @@ module ReportportalCucumber
           }
         )
         runtime_context.push_step(item)
+        emit_step_markdown_log(item_uuid: step_uuid, description: step_description, timestamp: extract_timestamp(event) || Time.now) if step_descriptor&.rich?
         if (test_step_id = extract_test_step_id(event))
           runtime_context.associate_test_step(test_step_id, item)
         end
@@ -530,14 +538,16 @@ module ReportportalCucumber
         return runtime_context.activate_feature(feature_uri, existing) if existing
 
         local_uuid = SecureRandom.uuid
-        feature_name = "Feature: #{File.basename(feature_uri, File.extname(feature_uri)).tr('_', ' ')}"
+        feature_name = extract_feature_name(feature_uri)
+        feature_description = extract_feature_description(feature_uri)
         feature_uuid = safe_reporting_call(fallback: local_uuid) do
           @api.start_item(
             name: feature_name,
             start_time: monotonic_timestamp(start_time),
-            type: "suite",
+            type: "SUITE",
             launch_uuid: @launch_uuid,
-            has_stats: false,
+            description: feature_description,
+            has_stats: true,
             retry: false,
             uuid: local_uuid
           )
@@ -547,9 +557,9 @@ module ReportportalCucumber
           name: feature_name,
           kind: :feature,
           parent_uuid: nil,
-          type: "suite",
-          has_stats: false,
-          metadata: { feature_uri: feature_uri }
+          type: "SUITE",
+          has_stats: true,
+          metadata: { feature_uri: feature_uri, description: feature_description }
         )
         runtime_context.activate_feature(feature_uri, runtime_context.register_feature(feature_uri, item))
       end
@@ -712,6 +722,22 @@ module ReportportalCucumber
         )
       end
 
+      # @param item_uuid [String]
+      # @param description [String, nil]
+      # @param timestamp [Time]
+      # @return [void]
+      def emit_step_markdown_log(item_uuid:, description:, timestamp:)
+        return if description.to_s.strip.empty?
+
+        @log_buffer.emit_log(
+          item_uuid: item_uuid,
+          launch_uuid: @launch_uuid,
+          message: description,
+          level: :info,
+          timestamp: monotonic_timestamp(timestamp)
+        )
+      end
+
       # @param event [Object]
       # @return [Hash]
       def build_attachment(event)
@@ -819,6 +845,26 @@ module ReportportalCucumber
         fetch_value(event, :feature_uri, [:test_case, :location, :file], [:uri], [:pickle, :uri]) || "unknown.feature"
       end
 
+      # @param feature_uri [String]
+      # @return [String]
+      def extract_feature_name(feature_uri)
+        feature_line = feature_file_lines(feature_uri).find { |line| line.strip.match?(/\AFeature:/) }
+        name = feature_line.to_s.strip.sub(/\AFeature:\s*/, "")
+        return "Feature: #{name}" unless name.empty?
+
+        "Feature: #{File.basename(feature_uri, File.extname(feature_uri)).tr('_', ' ')}"
+      end
+
+      # @param feature_uri [String]
+      # @return [String, nil]
+      def extract_feature_description(feature_uri)
+        @feature_description_cache[feature_uri] ||= begin
+          lines = feature_file_lines(feature_uri)
+          feature_index = lines.index { |line| line.strip.match?(/\AFeature:/) }
+          extract_description_after(lines, feature_index, stop_pattern: /\A(?:Background:|Rule:|Scenario(?: Outline| Template)?:|@)/)
+        end
+      end
+
       # @param event [Object]
       # @return [String]
       def extract_scenario_name(event)
@@ -833,25 +879,43 @@ module ReportportalCucumber
         value ? value.to_i : 1
       end
 
+      # @param feature_uri [String]
+      # @param scenario_line [Integer]
+      # @return [String, nil]
+      def extract_scenario_description(feature_uri:, scenario_line:)
+        key = [feature_uri, scenario_line.to_i]
+        @scenario_description_cache[key] ||= begin
+          lines = feature_file_lines(feature_uri)
+          index = scenario_line.to_i - 1
+          extract_description_after(
+            lines,
+            index,
+            stop_pattern: /\A(?:Given |When |Then |And |But |\* |Examples:|Background:|Rule:|Scenario(?: Outline| Template)?:|@)/
+          )
+        end
+      end
+
       # @param event [Object]
+      # @param descriptor [ReportportalCucumber::ReportPortal::Models::StepDesc, nil]
       # @return [String]
-      def extract_step_name(event)
-        descriptor = build_step_descriptor(event)
+      def extract_step_name(event, descriptor: nil)
+        descriptor ||= build_step_descriptor(event)
         base_name =
           descriptor&.summary_name ||
           fetch_value(event, :step_text, [:test_step, :text], [:test_step, :name], [:pickle_step, :text], :name) || "Step"
         return hook_display_name(event, base_name) if extract_hook?(event)
-        return "[Background] #{base_name}" if extract_background?(event)
+        return "[Background] #{base_name}" if extract_background?(event, descriptor: descriptor)
 
         base_name
       end
 
       # @param event [Object]
+      # @param descriptor [ReportportalCucumber::ReportPortal::Models::StepDesc, nil]
       # @return [String, nil]
-      def extract_step_description(event)
+      def extract_step_description(event, descriptor: nil)
         return nil if extract_hook?(event)
 
-        build_step_descriptor(event)&.to_markdown
+        (descriptor || build_step_descriptor(event))&.to_markdown
       end
 
       # @param event [Object]
@@ -904,17 +968,17 @@ module ReportportalCucumber
       def reportportal_step_type(event)
         case extract_hook_type(event)
         when "before", "before_method"
-          "before_method"
+          "BEFORE_METHOD"
         when "after", "after_method"
-          "after_method"
+          "AFTER_METHOD"
         when "after_step"
-          "after_method"
+          "AFTER_METHOD"
         when "before_all", "before_class"
-          "before_class"
+          "BEFORE_CLASS"
         when "after_all", "after_class"
-          "after_class"
+          "AFTER_CLASS"
         else
-          "step"
+          "STEP"
         end
       end
 
@@ -938,12 +1002,27 @@ module ReportportalCucumber
 
       # @param event [Object]
       # @return [Boolean]
-      def extract_background?(event)
+      def extract_background?(event, descriptor: nil)
         value = fetch_value(event, :background, :background_step, [:test_step, :background], [:pickle_step, :background])
         return value if value == true || value == false
 
         keyword = fetch_value(event, :keyword, [:test_step, :keyword], [:pickle_step, :keyword]).to_s
-        keyword.match?(/\Abackground\b/i)
+        return true if keyword.match?(/\Abackground\b/i)
+
+        step_text = background_candidate_text(event, descriptor: descriptor)
+        feature_uri = extract_feature_uri(event)
+        feature_uri = runtime_context.current_feature_key if feature_uri == "unknown.feature"
+        !step_text.to_s.empty? && background_step_texts(feature_uri).include?(step_text)
+      end
+
+      # @param event [Object]
+      # @param descriptor [ReportportalCucumber::ReportPortal::Models::StepDesc, nil]
+      # @return [String, nil]
+      def background_candidate_text(event, descriptor:)
+        descriptor ||= build_step_descriptor(event)
+        text = descriptor&.gherkin_text
+        text ||= fetch_value(event, :step_text, [:test_step, :text], [:test_step, :name], [:pickle_step, :text], :name)
+        text.to_s.strip.sub(/\A(?:Given|When|Then|And|But|\*)\s+/, "")
       end
 
       # @param event [Object]
@@ -1063,7 +1142,7 @@ module ReportportalCucumber
       def parse_outline_metadata(feature_uri, location_line)
         return nil unless File.file?(feature_uri)
 
-        lines = File.readlines(feature_uri, chomp: true)
+        lines = feature_file_lines(feature_uri)
         row_index = location_line - 1
         return nil unless row_index.between?(0, lines.length - 1)
         return nil unless lines[row_index].strip.start_with?("|")
@@ -1097,6 +1176,59 @@ module ReportportalCucumber
       # @return [Array<String>]
       def split_table_row(row)
         row.strip.sub(/\A\|/, "").sub(/\|\z/, "").split("|").map(&:strip)
+      end
+
+      # @param feature_uri [String]
+      # @return [Array<String>]
+      def feature_file_lines(feature_uri)
+        return [] unless File.file?(feature_uri)
+
+        File.readlines(feature_uri, chomp: true)
+      rescue StandardError
+        []
+      end
+
+      # @param feature_uri [String]
+      # @return [Array<String>]
+      def background_step_texts(feature_uri)
+        @background_step_texts_cache[feature_uri] ||= begin
+          lines = feature_file_lines(feature_uri)
+          background_index = lines.index { |line| line.strip.match?(/\ABackground:/) }
+          parse_background_step_texts(lines, background_index)
+        end
+      end
+
+      # @param lines [Array<String>]
+      # @param background_index [Integer, nil]
+      # @return [Array<String>]
+      def parse_background_step_texts(lines, background_index)
+        return [] unless background_index && background_index >= 0
+
+        lines[(background_index + 1)..].to_a.each_with_object([]) do |line, memo|
+          stripped = line.strip
+          break memo if stripped.match?(/\A(?:Rule:|Scenario(?: Outline| Template)?:|@)/)
+
+          match = stripped.match(/\A(?:Given|When|Then|And|But|\*)\s+(.+)\z/)
+          memo << match[1].strip if match
+        end
+      end
+
+      # @param lines [Array<String>]
+      # @param start_index [Integer, nil]
+      # @param stop_pattern [Regexp]
+      # @return [String, nil]
+      def extract_description_after(lines, start_index, stop_pattern:)
+        return nil unless start_index && start_index >= 0
+
+        description_lines = []
+        lines[(start_index + 1)..]&.each do |line|
+          stripped = line.strip
+          break if stripped.match?(stop_pattern)
+
+          description_lines << stripped
+        end
+        description = description_lines.join("\n").strip
+        description.empty? ? nil : description
       end
 
       # @param message [String]

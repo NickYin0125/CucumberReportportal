@@ -5,11 +5,14 @@
 实现遵循本项目的调研结论与约束：
 
 - 最小上报流：`start launch -> start item -> save log -> finish item -> finish launch`
-- 默认层级：`Launch -> Feature(suite) -> Scenario(hasStats=true) -> nested step/hook(hasStats=false)`
+- 默认层级：`Launch -> Feature(SUITE) -> Scenario(STEP, hasStats=true) -> nested step/hook(STEP/HOOK, hasStats=false)`
 - 支持 `rerun`、最小可用 `retry`、批量日志、附件、多进程 join、HTTP 重试与退出 flush
 - 提供 World DSL：`rp_log`、`rp_attach`、`rp_step`
 - Gherkin step 会保留 `Given/When/Then` 语义，并把 DataTable / DocString 渲染成 Markdown 描述
 - JSON、文本、图片、视频等附件会自动做 MIME 识别与更友好的 RP 日志预览
+
+> ReportPortal UI 的 Suite/Launch 统计链接会按 `type=STEP&hasStats=true&hasChildren=false` 查询统计叶子。
+> 因此本 formatter 与官方 pytest-reportportal 的 BDD 拓扑对齐：Scenario 作为统计叶子 `STEP` 上报，Gherkin step/hook 作为非统计子 item 承载日志和附件。
 
 ## Installation
 

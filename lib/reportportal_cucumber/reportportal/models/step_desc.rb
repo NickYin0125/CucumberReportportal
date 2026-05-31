@@ -36,12 +36,22 @@ module ReportportalCucumber
         end
 
         # @return [String]
+        def gherkin_text
+          step_text
+        end
+
+        # @return [String]
         def to_markdown
           sections = [header_line]
           multiline_sections.each do |section|
             sections << section unless section.to_s.strip.empty?
           end
           sections.join("\n\n")
+        end
+
+        # @return [Boolean]
+        def rich?
+          multiline_sections.any? { |section| !section.to_s.strip.empty? }
         end
 
         private

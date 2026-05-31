@@ -6,9 +6,9 @@ RSpec.describe ReportportalCucumber::Runtime::Context do
   let(:context) { described_class.new }
 
   it "stores the active feature, scenario, and step stack in Thread.current[:rp_context_stack]" do
-    feature = described_class::ItemHandle.new(uuid: "feature-1", kind: :feature, name: "Feature", type: "suite", has_stats: false)
-    scenario = described_class::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", parent_uuid: "feature-1", type: "test", has_stats: true)
-    step = described_class::ItemHandle.new(uuid: "step-1", kind: :step, name: "Step", parent_uuid: "scenario-1", type: "step", has_stats: false)
+    feature = described_class::ItemHandle.new(uuid: "feature-1", kind: :feature, name: "Feature", type: "SUITE", has_stats: true)
+    scenario = described_class::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", parent_uuid: "feature-1", type: "STEP", has_stats: true)
+    step = described_class::ItemHandle.new(uuid: "step-1", kind: :step, name: "Step", parent_uuid: "scenario-1", type: "STEP", has_stats: false)
 
     context.register_feature("features/a.feature", feature)
     context.activate_feature("features/a.feature", feature)
@@ -28,9 +28,9 @@ RSpec.describe ReportportalCucumber::Runtime::Context do
   end
 
   it "keeps the stack LIFO when an out-of-order finish asks to pop a parent" do
-    feature = described_class::ItemHandle.new(uuid: "feature-1", kind: :feature, name: "Feature", type: "suite", has_stats: false)
-    scenario = described_class::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", parent_uuid: "feature-1", type: "test", has_stats: true)
-    step = described_class::ItemHandle.new(uuid: "step-1", kind: :step, name: "Step", parent_uuid: "scenario-1", type: "step", has_stats: false)
+    feature = described_class::ItemHandle.new(uuid: "feature-1", kind: :feature, name: "Feature", type: "SUITE", has_stats: true)
+    scenario = described_class::ItemHandle.new(uuid: "scenario-1", kind: :scenario, name: "Scenario", parent_uuid: "feature-1", type: "STEP", has_stats: true)
+    step = described_class::ItemHandle.new(uuid: "step-1", kind: :step, name: "Step", parent_uuid: "scenario-1", type: "STEP", has_stats: false)
 
     context.register_feature("features/a.feature", feature)
     context.activate_feature("features/a.feature", feature)

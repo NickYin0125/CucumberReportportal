@@ -26,6 +26,14 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     expect(markdown).to include("**When** I submit a verification matrix")
     expect(markdown).to include("| buyer | region |")
     expect(markdown).to include("| JPM | APAC |")
+    expect(described_class.new(step: step)).to be_rich
+    expect(described_class.new(step: step).gherkin_text).to eq("I submit a verification matrix")
+  end
+
+  it "does not mark plain steps as rich markdown" do
+    step = Step.new("Given ", "a user exists", nil, nil)
+
+    expect(described_class.new(step: step)).not_to be_rich
   end
 
   it "formats JSON doc strings as fenced code blocks" do
