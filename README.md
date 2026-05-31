@@ -152,6 +152,28 @@ bundle exec cucumber
 - fork 多进程 join
 - formatter 事件序列、附件、失败日志、rerun 载荷
 
+## Kubernetes / Helm
+
+本仓库提供一个 ReportPortal umbrella chart，用于部署官方 ReportPortal
+Helm chart，并额外创建 `automation-videos` Public Bucket 与同源 Ingress
+路由，服务 `minio_markdown` 视频播放模式：
+
+```bash
+helm repo add reportportal https://k8s.reportportal.io/
+helm dependency update helm/reportportal-rich-experience
+helm install reportportal ./helm/reportportal-rich-experience \
+  --namespace reportportal \
+  --create-namespace
+```
+
+本地默认登录仍对齐 ReportPortal demo 习惯：`superadmin/erebus`。生产环境
+请通过 `--set reportportal.uat.superadminInitPasswd.password=...` 覆盖。
+
+默认会把 `/automation-videos(/|$)(.*)` 路由到 K8s 内部
+`reportportal-minio:9000`，不做 path rewrite，因此浏览器访问
+`http://localhost/automation-videos/videos/<file>.mp4` 时仍然是 MinIO
+path-style bucket URL。
+
 ## Runtime Dependencies
 
 - `cucumber`：formatter 需要挂接 Cucumber 事件总线

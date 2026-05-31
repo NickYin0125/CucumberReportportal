@@ -1,0 +1,84 @@
+# Values under `reportportal` are passed directly to the official ReportPortal chart.
+reportportal:
+  ingress:
+    enable: true
+    class: nginx
+    hosts: null
+    path: ""
+    annotations:
+      nginx.ingress.kubernetes.io/proxy-body-size: "128m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "4000"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "4000"
+  storage:
+    type: minio
+    accesskey: rpuser
+    secretkey: miniopassword
+    ssl: false
+    port: ""
+    bucket:
+      type: multi
+  minio:
+    install: true
+    auth:
+      rootUser: rpuser
+      rootPassword: miniopassword
+    console:
+      enabled: false
+  uat:
+    superadminInitPasswd:
+      password: erebus
+
+# Extra resources for this Ruby client project's MinIO-backed MP4 playback mode.
+videoBucket:
+  enabled: true
+  name: automation-videos
+  objectPrefix: videos
+  makePublic: true
+  endpoint:
+    scheme: http
+    host: ""
+    port: 9000
+  auth:
+    existingSecret: ""
+    accessKeyKey: access-key
+    secretKeyKey: secret-key
+    accessKey: ""
+    secretKey: ""
+  ingress:
+    enabled: true
+    className: nginx
+    hosts: []
+    path: /automation-videos(/|$)(.*)
+    pathType: ImplementationSpecific
+    serviceName: ""
+    servicePort: 9000
+    annotations:
+      nginx.ingress.kubernetes.io/use-regex: "true"
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "4000"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "4000"
+    tls: []
+  job:
+    useHelmHooks: true
+    hookWeight: 20
+    backoffLimit: 6
+    ttlSecondsAfterFinished: 300
+    activeDeadlineSeconds: 600
+    image:
+      repository: minio/mc
+      tag: RELEASE.2025-07-21T05-28-08Z
+      pullPolicy: IfNotPresent
+    wait:
+      attempts: 60
+      sleepSeconds: 5
+    resources:
+      requests:
+        cpu: 20m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    podAnnotations: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}

@@ -1,0 +1,56 @@
+{{- /* Same-origin route for MinIO-hosted automation videos. */ -}}
+{{- if and .Values.videoBucket.enabled .Values.videoBucket.ingress.enabled -}}
+{{- $hosts := .Values.videoBucket.ingress.hosts | default .Values.reportportal.ingress.hosts -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ printf "%s-video-bucket" (include "reportportal-rich-experience.fullname" .) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "reportportal-rich-experience.labels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.videoBucket.ingress.annotations | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.videoBucket.ingress.className }}
+  {{- with .Values.videoBucket.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  rules:
+    {{- if $hosts }}
+    {{- if kindIs "slice" $hosts }}
+    {{- range $host := $hosts }}
+    - host: {{ $host | quote }}
+      http:
+        paths:
+          - path: {{ $.Values.videoBucket.ingress.path | quote }}
+            pathType: {{ $.Values.videoBucket.ingress.pathType }}
+            backend:
+              service:
+                name: {{ include "reportportal-rich-experience.minioServiceName" $ }}
+                port:
+                  number: {{ $.Values.videoBucket.ingress.servicePort }}
+    {{- end }}
+    {{- else }}
+    - host: {{ $hosts | quote }}
+      http:
+        paths:
+          - path: {{ .Values.videoBucket.ingress.path | quote }}
+            pathType: {{ .Values.videoBucket.ingress.pathType }}
+            backend:
+              service:
+                name: {{ include "reportportal-rich-experience.minioServiceName" . }}
+                port:
+                  number: {{ .Values.videoBucket.ingress.servicePort }}
+    {{- end }}
+    {{- else }}
+    - http:
+        paths:
+          - path: {{ .Values.videoBucket.ingress.path | quote }}
+            pathType: {{ .Values.videoBucket.ingress.pathType }}
+            backend:
+              service:
+                name: {{ include "reportportal-rich-experience.minioServiceName" . }}
+                port:
+                  number: {{ .Values.videoBucket.ingress.servicePort }}
+    {{- end }}
+{{- end }}

@@ -1,0 +1,17 @@
+ReportPortal rich-experience chart was rendered.
+
+Official ReportPortal is installed as the `reportportal` dependency.
+
+For Ruby video playback mode, configure test runners with:
+
+  RP_VIDEO_UPLOAD_MODE=minio_markdown
+  RP_MINIO_ENDPOINT={{ .Values.videoBucket.endpoint.scheme }}://{{ include "reportportal-rich-experience.minioHost" . }}:{{ .Values.videoBucket.endpoint.port }}
+  RP_MINIO_PUBLIC_BASE_URL=https://<reportportal-ingress-host>
+  RP_MINIO_BUCKET={{ .Values.videoBucket.name }}
+  RP_MINIO_ACCESS_KEY_ID=<{{ include "reportportal-rich-experience.videoBucketSecretName" . }}:{{ .Values.videoBucket.auth.accessKeyKey }}>
+  RP_MINIO_SECRET_ACCESS_KEY=<{{ include "reportportal-rich-experience.videoBucketSecretName" . }}:{{ .Values.videoBucket.auth.secretKeyKey }}>
+  RP_MINIO_REGION=us-east-1
+
+The extra Ingress routes {{ .Values.videoBucket.ingress.path }} to service
+{{ include "reportportal-rich-experience.minioServiceName" . }}:{{ .Values.videoBucket.ingress.servicePort }}
+without rewriting the path, so path-style MinIO URLs keep the bucket name.

@@ -1,0 +1,99 @@
+{{- /* Creates the public bucket used by minio_markdown video playback. */ -}}
+{{- if .Values.videoBucket.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ printf "%s-video-bucket-init" (include "reportportal-rich-experience.fullname" .) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "reportportal-rich-experience.labels" . | nindent 4 }}
+  {{- if .Values.videoBucket.job.useHelmHooks }}
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-weight: {{ .Values.videoBucket.job.hookWeight | quote }}
+    helm.sh/hook-delete-policy: before-hook-creation
+  {{- end }}
+spec:
+  backoffLimit: {{ .Values.videoBucket.job.backoffLimit }}
+  ttlSecondsAfterFinished: {{ .Values.videoBucket.job.ttlSecondsAfterFinished }}
+  activeDeadlineSeconds: {{ .Values.videoBucket.job.activeDeadlineSeconds }}
+  template:
+    metadata:
+      labels:
+        {{- include "reportportal-rich-experience.labels" . | nindent 8 }}
+      {{- with .Values.videoBucket.job.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      restartPolicy: OnFailure
+      {{- with .Values.videoBucket.job.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.videoBucket.job.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.videoBucket.job.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: init-video-bucket
+          image: "{{ .Values.videoBucket.job.image.repository }}:{{ .Values.videoBucket.job.image.tag }}"
+          imagePullPolicy: {{ .Values.videoBucket.job.image.pullPolicy }}
+          env:
+            - name: MINIO_ENDPOINT
+              value: "{{ .Values.videoBucket.endpoint.scheme }}://{{ include "reportportal-rich-experience.minioHost" . }}:{{ .Values.videoBucket.endpoint.port }}"
+            - name: MINIO_BUCKET
+              value: {{ .Values.videoBucket.name | quote }}
+            - name: MINIO_OBJECT_PREFIX
+              value: {{ .Values.videoBucket.objectPrefix | quote }}
+            - name: MINIO_MAKE_PUBLIC
+              value: {{ .Values.videoBucket.makePublic | quote }}
+            - name: MINIO_WAIT_ATTEMPTS
+              value: {{ .Values.videoBucket.job.wait.attempts | quote }}
+            - name: MINIO_WAIT_SLEEP_SECONDS
+              value: {{ .Values.videoBucket.job.wait.sleepSeconds | quote }}
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "reportportal-rich-experience.videoBucketSecretName" . }}
+                  key: {{ .Values.videoBucket.auth.accessKeyKey }}
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "reportportal-rich-experience.videoBucketSecretName" . }}
+                  key: {{ .Values.videoBucket.auth.secretKeyKey }}
+          command:
+            - /bin/sh
+            - -ec
+          args:
+            - |
+              alias_name="reportportal"
+
+              i=1
+              until mc alias set "${alias_name}" "${MINIO_ENDPOINT}" "${MINIO_ACCESS_KEY}" "${MINIO_SECRET_KEY}"; do
+                if [ "${i}" -ge "${MINIO_WAIT_ATTEMPTS}" ]; then
+                  echo "MinIO did not become ready after ${MINIO_WAIT_ATTEMPTS} attempts" >&2
+                  exit 1
+                fi
+                i=$((i + 1))
+                sleep "${MINIO_WAIT_SLEEP_SECONDS}"
+              done
+
+              mc mb --ignore-existing "${alias_name}/${MINIO_BUCKET}"
+
+              if [ "${MINIO_MAKE_PUBLIC}" = "true" ]; then
+                mc anonymous set public "${alias_name}/${MINIO_BUCKET}" || mc policy set public "${alias_name}/${MINIO_BUCKET}"
+              fi
+
+              if [ -n "${MINIO_OBJECT_PREFIX}" ]; then
+                keep_file="$(mktemp)"
+                prefix="${MINIO_OBJECT_PREFIX%/}"
+                touch "${keep_file}"
+                mc cp "${keep_file}" "${alias_name}/${MINIO_BUCKET}/${prefix}/.keep"
+              fi
+          resources:
+            {{- toYaml .Values.videoBucket.job.resources | nindent 12 }}
+{{- end }}
