@@ -7,8 +7,14 @@ module ReportportalCucumber
       # @param api [ReportportalCucumber::ReportPortal::API]
       # @param config [ReportportalCucumber::Config]
       # @param on_error [#call, nil]
-      def initialize(api:, config:, on_error: nil)
-        @processor = Service::QueueProcessor.new(api: api, config: config, on_error: on_error)
+      # @param video_uploader [ReportportalCucumber::Transport::MinioUploader, nil]
+      def initialize(api:, config:, on_error: nil, video_uploader: nil)
+        @processor = Service::QueueProcessor.new(
+          api: api,
+          config: config,
+          on_error: on_error,
+          video_uploader: video_uploader
+        )
       end
 
       # @param item_uuid [String, nil]

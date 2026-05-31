@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
 require "base64"
+require "cgi"
 require "digest/sha1"
 require "fileutils"
 require "json"
 require "logger"
+require "mime/types"
 require "securerandom"
 require "time"
 require "timeout"
@@ -19,11 +21,14 @@ module ReportportalCucumber
 end
 
 require_relative "reportportal_cucumber/config"
+require_relative "reportportal_cucumber/transport/multipart_helper"
+require_relative "reportportal_cucumber/transport/minio_uploader"
 require_relative "reportportal_cucumber/service/payload_builder"
 require_relative "reportportal_cucumber/service/queue_processor"
 require_relative "reportportal_cucumber/transport/http_client"
 require_relative "reportportal_cucumber/http/client"
 require_relative "reportportal_cucumber/reportportal/models"
+require_relative "reportportal_cucumber/reportportal/models/step_desc"
 require_relative "reportportal_cucumber/reportportal/api"
 require_relative "reportportal_cucumber/runtime/context"
 require_relative "reportportal_cucumber/runtime/log_buffer"

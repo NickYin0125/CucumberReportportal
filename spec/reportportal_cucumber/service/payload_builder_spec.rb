@@ -61,5 +61,109 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
       expect(payload.fetch(:entries).map { |entry| entry.dig("file", "name") }).to eq(["evidence.txt", "evidence-1.txt"])
       expect(payload.fetch(:files).map { |file| file.fetch(:name) }).to eq(["evidence.txt", "evidence-1.txt"])
     end
+
+    it "pretty prints JSON attachments and appends a markdown preview to the log message" do
+      payload = described_class.build_log_batch(
+        [
+          {
+            item_uuid: "item-1",
+            launch_uuid: "launch-1",
+            message: "Structured config snapshot",
+            level: :debug,
+            timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+            attachment: {
+              name: "config",
+              mime: "application/json",
+              bytes: '{"buyer":"JPM","amount":10}'
+            }
+          }
+        ]
+      )
+
+      entry = payload.fetch(:entries).first
+      file = payload.fetch(:files).first
+
+      expect(file.fetch(:name)).to eq("config.json")
+      expect(file.fetch(:bytes)).to include("\"buyer\": \"JPM\"")
+      expect(entry.fetch("message")).to include("Structured config snapshot")
+      expect(entry.fetch("message")).to include("```json")
+    end
+
+    it "normalizes attachment filenames before building json_request_part file references" do
+      payload = described_class.build_log_batch(
+        [
+          {
+            item_uuid: "item-1",
+            launch_uuid: "launch-1",
+            message: "png",
+            level: :info,
+            timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+            attachment: {
+              name: "bad\r\nname",
+              mime: "image/png\r\nX-Injected: yes",
+              bytes: "png"
+            }
+          }
+        ]
+      )
+
+      expect(payload.fetch(:entries).first.dig("file", "name")).to eq("bad name.png")
+      expect(payload.fetch(:files).first.fetch(:name)).to eq("bad name.png")
+      expect(payload.fetch(:files).first.fetch(:mime)).to eq("image/png")
+    end
+
+    it "truncates long text attachment previews after 100 lines" do
+      payload = described_class.build_log_batch(
+        [
+          {
+            item_uuid: "item-1",
+            launch_uuid: "launch-1",
+            message: "Transport trace",
+            level: :info,
+            timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+            attachment: {
+              name: "trace.log",
+              mime: "text/plain",
+              bytes: (1..120).map { |index| "line-#{index}" }.join("\n")
+            }
+          }
+        ]
+      )
+
+      message = payload.fetch(:entries).first.fetch("message")
+
+      expect(message).to include("line-100")
+      expect(message).not_to include("line-101")
+      expect(message).to include("Full log is attached as `trace.log`.")
+    end
+
+    it "keeps file path backed mp4 attachments out of in-memory bytes payloads" do
+      Dir.mktmpdir do |dir|
+        video_path = File.join(dir, "failure-recording.mp4")
+        File.binwrite(video_path, "mp4-bytes")
+
+        payload = described_class.build_log_batch(
+          [
+            {
+              item_uuid: "step-1",
+              launch_uuid: "launch-1",
+              message: "Failure recording",
+              level: :info,
+              timestamp: Time.utc(2026, 3, 26, 12, 0, 0),
+              attachment: {
+                path: video_path,
+                mime: nil
+              }
+            }
+          ]
+        )
+
+        file = payload.fetch(:files).first
+
+        expect(payload.fetch(:entries).first.dig("file", "name")).to eq("failure-recording.mp4")
+        expect(file).to include(name: "failure-recording.mp4", mime: "video/mp4", path: video_path)
+        expect(file).not_to have_key(:bytes)
+      end
+    end
   end
 end

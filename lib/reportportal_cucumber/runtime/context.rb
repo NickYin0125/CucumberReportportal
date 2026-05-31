@@ -29,6 +29,7 @@ module ReportportalCucumber
         thread_state[:current_feature_key] = nil
         thread_state[:current_scenario_key] = nil
         thread_state[:current_scenario_item] = nil
+        thread_state[:active_parent] = nil
       end
 
       # @param feature_key [String]
@@ -58,6 +59,7 @@ module ReportportalCucumber
         stack.reject! { |handle| handle.kind == :feature && handle.uuid != item.uuid }
         stack << item unless stack.any? { |handle| handle.uuid == item.uuid }
         state[:current_feature_key] = feature_key
+        sync_active_parent_from_stack!
         item
       end
 
@@ -90,10 +92,15 @@ module ReportportalCucumber
         context_stack.reverse.find { |item| item.kind == :feature } || feature_item(current_feature_key)
       end
 
+      # @return [String, nil]
+      def current_feature_uuid
+        current_feature_item&.uuid
+      end
+
       # @param feature_key [String]
       # @return [void]
       def finish_feature(feature_key)
-        item = feature_item(feature_key)
+        item = @mutex.synchronize { @feature_items.delete(feature_key) }
         return unless item
 
         pop_item(expected_uuid: item.uuid)
@@ -143,6 +150,7 @@ module ReportportalCucumber
       def clear_current_scenario
         finish_scenario
         context_stack.reject! { |item| item.kind == :step || item.kind == :hook || item.kind == :manual_step }
+        sync_active_parent_from_stack!
       end
 
       # @param item [ItemHandle]
@@ -175,6 +183,16 @@ module ReportportalCucumber
       # @return [String, nil]
       def current_item_uuid
         current_item&.uuid
+      end
+
+      # @return [ItemHandle, nil]
+      def active_parent
+        thread_state[:active_parent] || current_item
+      end
+
+      # @return [String, nil]
+      def active_parent_uuid
+        active_parent&.uuid
       end
 
       # @param test_case_started_id [String]
@@ -215,24 +233,40 @@ module ReportportalCucumber
         @mutex.synchronize { @test_step_items.delete(test_step_id) }
       end
 
+      # @param item_uuid [String]
+      # @return [Array<String>]
+      def release_test_steps_for_item(item_uuid)
+        @mutex.synchronize do
+          removed = @test_step_items.select { |_id, item| item.uuid == item_uuid }.keys
+          removed.each { |id| @test_step_items.delete(id) }
+          removed
+        end
+      end
+
       private
 
       # @param item [ItemHandle]
       # @return [ItemHandle]
       def push_item(item)
         context_stack << item
+        sync_active_parent_from_stack!
         item
       end
 
       # @param expected_uuid [String, nil]
       # @return [ItemHandle, nil]
       def pop_item(expected_uuid: nil)
-        return context_stack.pop if expected_uuid.nil?
+        if expected_uuid.nil?
+          popped = context_stack.pop
+          sync_active_parent_from_stack!
+          return popped
+        end
 
-        index = context_stack.rindex { |item| item.uuid == expected_uuid }
-        return nil unless index
+        return nil unless context_stack.last&.uuid == expected_uuid
 
-        context_stack.delete_at(index)
+        popped = context_stack.pop
+        sync_active_parent_from_stack!
+        popped
       end
 
       # @return [Array<ItemHandle>]
@@ -243,6 +277,11 @@ module ReportportalCucumber
       # @return [Hash]
       def thread_state
         Thread.current[:reportportal_cucumber_context_state] ||= {}
+      end
+
+      # @return [void]
+      def sync_active_parent_from_stack!
+        thread_state[:active_parent] = context_stack.last
       end
     end
   end

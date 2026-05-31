@@ -29,7 +29,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::API do
 
     allow(client).to receive(:post_json).with(
       path: "/api/v1/demo/item/feature-uuid",
-      body: hash_excluding("parentUuid")
+      body: hash_including("parentUuid" => "feature-uuid")
     ).and_raise(child_error)
 
     allow(client).to receive(:post_json).with(
@@ -40,7 +40,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::API do
     result = api.start_item(
       name: "Scenario: Fallback",
       start_time: Time.utc(2026, 3, 26),
-      type: "test",
+      type: "STEP",
       launch_uuid: "launch-uuid",
       parent_uuid: "feature-uuid",
       has_stats: true,

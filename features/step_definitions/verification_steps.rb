@@ -29,7 +29,7 @@ module VerificationArtifacts
 
   def verification_tmp_dir
     @verification_tmp_dir ||= begin
-      directory = File.expand_path("../../tmp/verification", __dir__)
+      directory = File.expand_path("../../tmp/verification/run-#{Process.pid}", __dir__)
       FileUtils.mkdir_p(directory)
       directory
     end
@@ -67,6 +67,72 @@ module VerificationArtifacts
 
   def build_trace_attachment
     verification_file("trace.log", "TRACE request\nTRACE response\n")
+  end
+
+  def build_json_attachment(name, payload)
+    verification_file(name, JSON.pretty_generate(payload))
+  end
+
+  def build_mp4_attachment(name = "verification.mp4")
+    path = File.join(verification_tmp_dir, name)
+    source = ENV["RP_VIDEO_FIXTURE"].to_s.strip
+    return path if !source.empty? && transcode_mp4(source: source, destination: path)
+
+    return path if generate_previewable_mp4(path)
+
+    # Last-resort placeholder keeps attachment-path tests deterministic when ffmpeg is unavailable.
+    # Live verification should use ffmpeg so ReportPortal receives a previewable H.264 asset.
+    verification_file(name, minimal_mp4_header)
+  end
+
+  def generate_previewable_mp4(path)
+    if system(
+      "ffmpeg",
+      "-y",
+      "-f", "lavfi",
+      "-i", "testsrc2=size=640x360:rate=15:duration=2",
+      "-an",
+      "-c:v", "libx264",
+      "-profile:v", "baseline",
+      "-level:v", "3.0",
+      "-preset", "veryfast",
+      "-pix_fmt", "yuv420p",
+      "-movflags", "+faststart",
+      path,
+      out: File::NULL,
+      err: File::NULL
+    )
+      return path
+    end
+    false
+  end
+
+  def transcode_mp4(source:, destination:)
+    return false unless File.file?(source)
+
+    system(
+      "ffmpeg",
+      "-y",
+      "-i", source,
+      "-an",
+      "-c:v", "libx264",
+      "-profile:v", "baseline",
+      "-level:v", "3.0",
+      "-preset", "veryfast",
+      "-pix_fmt", "yuv420p",
+      "-movflags", "+faststart",
+      destination,
+      out: File::NULL,
+      err: File::NULL
+    )
+  end
+
+  def minimal_mp4_header
+    [
+      0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70,
+      0x6D, 0x70, 0x34, 0x32, 0x00, 0x00, 0x00, 0x00,
+      0x6D, 0x70, 0x34, 0x32, 0x69, 0x73, 0x6F, 0x6D
+    ].pack("C*")
   end
 end
 
@@ -250,6 +316,114 @@ end
 Then("the nested step hierarchy should be prepared") do
   expect(@nested_step_names).to eq(["Authenticate", "Create order", "Capture payment"])
   expect(@nested_log_messages.length).to eq(3)
+end
+
+When("I execute a richly structured step with a verification matrix:") do |table|
+  @rich_matrix_rows = table.raw
+  @rich_attachment_names = []
+  @rich_matrix_headers = table.raw.first
+
+  payload = {
+    buyer: "JPM",
+    region: "APAC",
+    batchId: SecureRandom.uuid,
+    validations: table.hashes.first(3),
+    generatedAt: Time.utc(2026, 3, 26, 0, 0, 0).iso8601
+  }
+
+  json_path = build_json_attachment("config.json", payload)
+  png_path = build_png_attachment("error.png")
+
+  attach_path(json_path, mime: "application/json", message: "Structured config snapshot", level: :debug)
+  @rich_attachment_names << File.basename(json_path)
+
+  attach_path(png_path, mime: "image/png", message: "Failure screenshot", level: :error)
+  @rich_attachment_names << File.basename(png_path)
+end
+
+Then("the rich evidence payload should be prepared") do
+  expect(@rich_matrix_headers).to eq(%w[buyer region product currency amount])
+  expect(@rich_matrix_rows.length).to eq(11)
+  expect(@rich_attachment_names).to eq(%w[config.json error.png])
+end
+
+Given("the portfolio reporting workspace is initialized") do
+  @deep_water_workspace = {
+    run_id: SecureRandom.uuid,
+    actor: "codex-deep-water",
+    started_at: Time.utc(2026, 3, 26, 0, 0, 0).iso8601
+  }
+  rp_log("Deep-water workspace initialized: #{@deep_water_workspace.to_json}", level: :debug)
+end
+
+Given("the risk control baseline is loaded") do
+  @risk_control_baseline = {
+    policy: "risk-control-v26",
+    threshold: 0.97,
+    loaded_at: Time.utc(2026, 3, 26, 0, 1, 0).iso8601
+  }
+  rp_log("Risk baseline loaded: #{JSON.pretty_generate(@risk_control_baseline)}", level: :debug)
+end
+
+When("I submit the onboarding payload:") do |doc_string|
+  @deep_doc_payload = JSON.parse(doc_string)
+  rp_log("Parsed onboarding payload for #{@deep_doc_payload.fetch('account')}", level: :debug)
+end
+
+When("I validate the portfolio exposure matrix:") do |table|
+  @portfolio_exposure_rows = table.hashes
+  @portfolio_exposure_headers = table.raw.first
+  rp_log("Validated #{@portfolio_exposure_rows.length} exposure rows", level: :info)
+end
+
+Then("the portfolio reporting payload should be accepted") do
+  expect(@deep_doc_payload.fetch("account")).to eq("JPM-PRIME")
+  expect(@portfolio_exposure_headers).to eq(%w[account region product currency exposure])
+  expect(@portfolio_exposure_rows.length).to eq(10)
+end
+
+When("I price portfolio {string} in {string} with risk {string}") do |portfolio, region, risk|
+  @priced_portfolio = {
+    portfolio: portfolio,
+    region: region,
+    risk: risk
+  }
+  rp_log("Pricing outline row #{@priced_portfolio.to_json}", level: :debug)
+end
+
+Then("the scenario outline payload should be tracked") do
+  expect(@priced_portfolio.values).to all(be_a(String))
+end
+
+When("the payment capture records a failing screen video") do
+  mp4_path = build_mp4_attachment("deep-water-failure.mp4")
+  config_path = build_json_attachment(
+    "failure-context.json",
+    {
+      scenario: "Capture rich failure evidence",
+      reason: "Intentional deep-water failure",
+      video: File.basename(mp4_path)
+    }
+  )
+
+  rp_attach(config_path, mime_type: nil, message: "Failure context JSON", level: :error)
+  rp_attach(mp4_path, mime_type: nil, message: "Failure MP4 playback evidence", level: :error)
+  rp_log("Evidence bundle attached directly to the failing Gherkin step", level: :error)
+
+  raise "Intentional deep-water failure after MP4 evidence upload"
+end
+
+When("I route audit message {string} with severity {string}") do |channel, severity|
+  @audit_route = {
+    channel: channel,
+    severity: severity
+  }
+  rp_log("Audit route #{@audit_route.to_json}", level: :trace)
+end
+
+Then("audit routing metadata should be tracked") do
+  expect(@audit_route.fetch(:channel)).not_to be_empty
+  expect(@audit_route.fetch(:severity)).not_to be_empty
 end
 
 Given("I record the current process identity for join verification") do

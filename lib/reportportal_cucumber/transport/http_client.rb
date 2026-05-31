@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "net/http"
+require "shellwords"
 
 module ReportportalCucumber
   module Transport
@@ -57,12 +58,20 @@ module ReportportalCucumber
       # @return [Response]
       def post_multipart(path:, parts:, headers: {})
         boundary = "----rp#{SecureRandom.hex(12)}"
+        normalized_parts = MultipartHelper.normalize_parts(parts)
+        curl_artifacts = prepare_multipart_curl_artifacts(path: path, parts: normalized_parts)
+        body_source = MultipartHelper.body_source(parts: normalized_parts, boundary: boundary)
         request(
           method: :post,
           path: path,
-          body: encode_multipart(parts, boundary),
-          headers: default_headers.merge(headers).merge("Content-Type" => "multipart/form-data; boundary=#{boundary}")
+          body: body_source.body,
+          body_stream: body_source.stream,
+          content_length: body_source.length,
+          headers: default_headers.merge(headers).merge("Content-Type" => "multipart/form-data; boundary=#{boundary}"),
+          curl_parts: curl_artifacts
         )
+      ensure
+        body_source&.tempfile&.close!
       end
 
       # @return [void]
@@ -87,12 +96,20 @@ module ReportportalCucumber
       # @param body [String]
       # @param headers [Hash]
       # @return [Response]
-      def request(method:, path:, body:, headers:)
+      def request(method:, path:, body:, headers:, curl_parts: nil, body_stream: nil, content_length: nil)
         attempts = 0
 
         begin
           attempts += 1
-          response = perform(method: method, path: path, body: body, headers: headers)
+          response = perform(
+            method: method,
+            path: path,
+            body: body,
+            headers: headers,
+            curl_parts: curl_parts,
+            body_stream: body_stream,
+            content_length: content_length
+          )
           return response unless retriable_response?(response)
 
           raise Error.new("Retriable HTTP #{response.status}", response: response)
@@ -115,11 +132,18 @@ module ReportportalCucumber
       # @param body [String]
       # @param headers [Hash]
       # @return [Response]
-      def perform(method:, path:, body:, headers:)
+      def perform(method:, path:, body:, headers:, curl_parts: nil, body_stream: nil, content_length: nil)
         uri = build_uri(path)
+        log_curl(method: method, uri: uri, headers: headers, body: body, curl_parts: curl_parts)
         request = request_class_for(method).new(uri)
         headers.each { |key, value| request[key] = value }
-        request.body = body
+        if body_stream
+          body_stream.rewind
+          request.body_stream = body_stream
+          request.content_length = content_length
+        else
+          request.body = body
+        end
 
         raw_response = with_http(uri) { |http| http.request(request) }
         response = build_response(raw_response)
@@ -281,22 +305,72 @@ module ReportportalCucumber
       # @param boundary [String]
       # @return [String]
       def encode_multipart(parts, boundary)
-        buffer = String.new(capacity: 1024, encoding: Encoding::BINARY)
+        MultipartHelper.encode(parts: parts, boundary: boundary)
+      end
 
-        parts.each do |part|
-          disposition = +"form-data; name=\"#{part.fetch(:name)}\""
-          disposition << "; filename=\"#{part[:filename]}\"" if part[:filename]
+      # @param method [Symbol]
+      # @param uri [URI::HTTP]
+      # @param headers [Hash]
+      # @param body [String]
+      # @param curl_parts [Array<String>, nil]
+      # @return [void]
+      def log_curl(method:, uri:, headers:, body:, curl_parts: nil)
+        return unless @config.debug_curl_mode?
 
-          buffer << "--#{boundary}\r\n".b
-          buffer << "Content-Disposition: #{disposition}\r\n".b
-          buffer << "Content-Type: #{part.fetch(:content_type, 'application/octet-stream')}\r\n\r\n".b
-          body = part.fetch(:body)
-          buffer << (body.is_a?(String) ? body.b : body.to_s.b)
-          buffer << "\r\n".b
+        command = ["curl", "-X", method.to_s.upcase]
+        headers.each do |key, value|
+          next if curl_parts && key.to_s.downcase == "content-type" && value.to_s.include?("multipart/form-data")
+
+          header_value = key.to_s.downcase == "authorization" ? "Bearer <redacted>" : value
+          command << "-H" << "#{key}: #{header_value}"
         end
 
-        buffer << "--#{boundary}--\r\n".b
-        buffer
+        if curl_parts
+          curl_parts.each { |part| command << "--form" << part }
+        else
+          command << "-d" << body
+        end
+        command << uri.to_s
+        ReportportalCucumber.logger.debug(command.shelljoin)
+      end
+
+      # @param path [String]
+      # @param parts [Array<Hash>]
+      # @return [Array<String>, nil]
+      def prepare_multipart_curl_artifacts(path:, parts:)
+        return nil unless @config.debug_curl_mode?
+
+        directory = File.expand_path(@config.debug_curl_dir, Dir.pwd)
+        FileUtils.mkdir_p(directory)
+        basename = "#{Time.now.utc.strftime('%Y%m%d%H%M%S')}-#{SecureRandom.hex(4)}"
+
+        parts.each_with_index.map do |part, index|
+          if part[:filename]
+            file_path =
+              if part[:path]
+                part.fetch(:path)
+              else
+                File.join(directory, "#{basename}-#{index}-#{curl_file_name(part)}").tap do |artifact_path|
+                  File.binwrite(artifact_path, part.fetch(:body))
+                end
+              end
+            "file=@#{file_path};filename=#{part.fetch(:filename)};type=#{part.fetch(:content_type)}"
+          else
+            file_path = File.join(directory, "#{basename}-#{index}-#{curl_file_name(part)}")
+            File.binwrite(file_path, part.fetch(:body))
+            "#{part.fetch(:name)}=@#{file_path};type=#{part.fetch(:content_type)}"
+          end
+        end
+      rescue StandardError => error
+        ReportportalCucumber.logger.warn("Unable to prepare multipart curl artifacts for #{path}: #{error.class}: #{error.message}")
+        nil
+      end
+
+      # @param part [Hash]
+      # @return [String]
+      def curl_file_name(part)
+        candidate = part[:filename] || "#{part.fetch(:name)}.txt"
+        candidate.to_s.gsub(%r{[^A-Za-z0-9_.-]}, "_")
       end
     end
   end
