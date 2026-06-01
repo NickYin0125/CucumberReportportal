@@ -183,14 +183,40 @@ module ReportportalCucumber
           name: attachment.fetch(:name),
           content_type: attachment.fetch(:mime)
         )
+        message =
+          if video_upload_url?(public_url)
+            video_markdown_message(record, public_url)
+          else
+            video_fallback_message(record, public_url)
+          end
         LogRecord.new(
           item_uuid: record.item_uuid,
           launch_uuid: record.launch_uuid,
-          message: Service::PayloadBuilder.build_video_markdown_message(message: record.message, url: public_url),
+          message: message,
           level: :error,
           timestamp: record.timestamp,
           attachment: nil
         )
+      end
+
+      # @param value [Object]
+      # @return [Boolean]
+      def video_upload_url?(value)
+        value.to_s.match?(%r{\Ahttps?://})
+      end
+
+      # @param record [LogRecord]
+      # @param public_url [String]
+      # @return [String]
+      def video_markdown_message(record, public_url)
+        Service::PayloadBuilder.build_video_markdown_message(message: record.message, url: public_url)
+      end
+
+      # @param record [LogRecord]
+      # @param fallback [String]
+      # @return [String]
+      def video_fallback_message(record, fallback)
+        [record.message.to_s, fallback.to_s].reject(&:empty?).join("\n\n")
       end
 
       # @param error [StandardError]

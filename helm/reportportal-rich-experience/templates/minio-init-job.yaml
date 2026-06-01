@@ -88,6 +88,9 @@ spec:
                 mc anonymous set public "${alias_name}/${MINIO_BUCKET}" || mc policy set public "${alias_name}/${MINIO_BUCKET}"
               fi
 
+              mc ilm add --expire-days 30 "${alias_name}/${MINIO_BUCKET}" || \
+                echo "Unable to configure 30-day MinIO ILM policy for ${alias_name}/${MINIO_BUCKET}" >&2
+
               if [ -n "${MINIO_OBJECT_PREFIX}" ]; then
                 keep_file="$(mktemp)"
                 prefix="${MINIO_OBJECT_PREFIX%/}"

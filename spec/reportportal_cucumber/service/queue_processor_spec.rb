@@ -20,13 +20,14 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
   class FakeVideoUploader
     attr_reader :calls
 
-    def initialize
+    def initialize(result = nil)
       @calls = []
+      @result = result
     end
 
     def upload_video(path:, bytes:, name:, content_type:)
       @calls << { path: path, bytes: bytes, name: name, content_type: content_type }
-      "http://localhost:9000/automation-videos/videos/#{name}"
+      @result || "http://localhost:9000/automation-videos/videos/#{name}"
     end
   end
 
@@ -92,6 +93,33 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
       expect(entries.last.fetch("message")).to include("UI Failure Playback:")
       expect(files).to contain_exactly(include(name: "screen.png", mime: "image/png", bytes: "png-bytes"))
       expect(uploader.calls.length).to eq(1)
+    end
+  end
+
+  it "reports a plain fallback log when MinIO upload degrades instead of returning a URL" do
+    Dir.mktmpdir do |dir|
+      video_path = File.join(dir, "failure.mp4")
+      File.binwrite(video_path, "mp4-bytes")
+      uploader = FakeVideoUploader.new("Video upload failed for failure.mp4: timeout")
+      captured = []
+      allow(api).to receive(:log_batch) { |entries:, files:| captured << [entries, files] }
+
+      processor = described_class.new(api: api, config: config, video_uploader: uploader)
+      processor.emit_log(
+        item_uuid: "step-1",
+        launch_uuid: "launch-1",
+        message: "Failure MP4 playback evidence",
+        level: :info,
+        timestamp: Time.utc(2026, 5, 31, 8, 0, 0),
+        attachment: { name: "failure.mp4", mime: "video/mp4", path: video_path }
+      )
+      expect(processor.shutdown(timeout: 2)).to be(true)
+
+      entries, files = captured.first
+      expect(files).to eq([])
+      expect(entries.first.fetch("message")).to include("Failure MP4 playback evidence")
+      expect(entries.first.fetch("message")).to include("Video upload failed for failure.mp4: timeout")
+      expect(entries.first.fetch("message")).not_to include("<video")
     end
   end
 end

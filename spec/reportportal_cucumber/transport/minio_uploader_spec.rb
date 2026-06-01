@@ -40,4 +40,20 @@ RSpec.describe ReportportalCucumber::Transport::MinioUploader do
       expect(url).to end_with("-failure_clip.mp4")
     end
   end
+
+  it "degrades to a warning message when S3 upload fails" do
+    client = instance_double(Aws::S3::Client)
+    allow(client).to receive(:put_object).and_raise(Timeout::Error, "execution expired")
+
+    expect do
+      result = described_class.new(config: config, client: client).upload_video(
+        bytes: "mp4-bytes",
+        name: "failure.mp4",
+        content_type: "video/mp4"
+      )
+
+      expect(result).to include("Video upload failed for failure.mp4")
+      expect(result).to include("execution expired")
+    end.to output("[WARN] Video upload failed: execution expired\n").to_stderr
+  end
 end

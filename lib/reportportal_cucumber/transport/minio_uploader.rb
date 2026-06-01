@@ -38,6 +38,9 @@ module ReportportalCucumber
           content_type: normalized_video_content_type(content_type)
         )
         public_url_for(key)
+      rescue StandardError => error
+        warn_video_upload_failure(error)
+        fallback_message(name: name, error: error)
       ensure
         body.close if body.respond_to?(:close) && body.respond_to?(:path)
       end
@@ -83,6 +86,20 @@ module ReportportalCucumber
         bucket = escape_path_segment(@config.minio_bucket)
         object = key.split("/").map { |segment| escape_path_segment(segment) }.join("/")
         "#{base}/#{bucket}/#{object}"
+      end
+
+      # @param error [StandardError]
+      # @return [void]
+      def warn_video_upload_failure(error)
+        $stderr.puts("[WARN] Video upload failed: #{error.message}")
+      end
+
+      # @param name [String]
+      # @param error [StandardError]
+      # @return [String]
+      def fallback_message(name:, error:)
+        "Video upload failed for #{name}: #{error.message}. " \
+          "The Cucumber run was not interrupted; inspect the local recording artifact if it is available."
       end
 
       # @param value [String]
