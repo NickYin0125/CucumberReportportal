@@ -33,6 +33,8 @@ require_relative "reportportal_cucumber/reportportal/api"
 require_relative "reportportal_cucumber/runtime/context"
 require_relative "reportportal_cucumber/runtime/log_buffer"
 require_relative "reportportal_cucumber/runtime/join"
+require_relative "reportportal_cucumber/automation/cucumber_logger"
+require_relative "reportportal_cucumber/automation/app_log"
 require_relative "reportportal_cucumber/cucumber/world"
 require_relative "reportportal_cucumber/cucumber/formatter"
 

@@ -62,6 +62,31 @@ default:
 CUCUMBER_PROFILE=ci bundle exec cucumber --format ReportPortal::Cucumber::Formatter
 ```
 
+如果需要同时在终端查看 `pretty` 输出并启用 ReportPortal formatter，Cucumber 10+
+要求其中一个 formatter 显式指定 `--out`，否则两个 formatter 都会默认写
+STDOUT 并报错：
+
+```bash
+bundle exec cucumber features/deep_water \
+  --format ReportPortal::Cucumber::Formatter --out tmp/reportportal-formatter.log \
+  --format pretty
+```
+
+本地调试 `rp_log` 时可以开启控制台镜像，避免一边看终端一边等 UI
+刷新时出现“暗箱感”。开启后，`rp_log` 会继续实时上报 ReportPortal，同时向
+STDOUT 打印一份带 `[RP-MIRROR]` 前缀的日志：
+
+```bash
+RP_CONSOLE_MIRROR=true bundle exec rake rp:regression
+```
+
+DSL 同时支持 keyword 与位置参数两种 level 写法：
+
+```ruby
+rp_log(JSON.pretty_generate(response), level: :info)
+rp_log(JSON.pretty_generate(response), "INFO")
+```
+
 ## Configuration
 
 支持的主要环境变量：
@@ -83,6 +108,7 @@ CUCUMBER_PROFILE=ci bundle exec cucumber --format ReportPortal::Cucumber::Format
 - `RP_CLIENT_JOIN_LOCK_FILE_NAME`
 - `RP_CLIENT_JOIN_SYNC_FILE_NAME`
 - `RP_CLIENT_JOIN_FILE_WAIT_TIMEOUT_MS`
+- `RP_CONSOLE_MIRROR`
 - `RP_DEBUG_CURL_MODE`
 - `RP_DEBUG_CURL_DIR`
 - `RP_VIDEO_UPLOAD_MODE`，默认 `reportportal_multipart`；设置为 `minio_markdown` 时会把 MP4 上传到 MinIO，并把可播放 `<video>` 片段作为普通 log 写入当前 step
@@ -115,6 +141,34 @@ end
 ```
 
 `attachment` 结构参考 `pytest-reportportal` 的使用体验，支持 `name`、`bytes`、`mime` 三元组；文件路径形式会以 path-backed multipart 上传，适合大附件，避免在 step 里整文件读入内存。
+
+### Triple-Track Smart Logger
+
+深层业务 helper 可以不依赖 Cucumber World 参数，直接使用线程局部代理
+`AppLog`。它会把同一条诊断路由到三个轨道：终端摘要、Cucumber
+Event Bus / HTML 报告，以及 ReportPortal 当前 Step。
+
+```ruby
+AppLog.info("Margin Payload", attach: true, json: { status: "ok" })
+AppLog.error("Payment failed", attach: true, file: "tmp/failure.png")
+```
+
+`attach: false` 时只输出终端摘要，不会污染 Cucumber/RP 报告。`json:`
+payload 会在终端保持一行摘要，并在 Cucumber/RP 中写入 Markdown fenced
+JSON。Cucumber 的 stdout formatter 可能会额外展示 `world.log` 内容；这是
+Cucumber 原生报告轨道的输出，不是 ReportPortal 重复上报。
+
+最小黑盒验证：
+
+```bash
+RP_ENDPOINT=http://localhost \
+RP_PROJECT=superadmin_personal \
+RP_API_KEY="$TOKEN" \
+RP_LAUNCH="triple-track-smart-logger-$(date +%Y%m%d%H%M%S)" \
+bundle exec cucumber -P features/triple_track/triple_track_logger.feature \
+  --format ReportPortal::Cucumber::Formatter --out tmp/triple-track-rp.log \
+  --format html --out tmp/triple-track-report.html
+```
 
 附件和 step 的绑定规则：
 

@@ -1,5 +1,13 @@
 # frozen_string_literal: true
 
+Around do |_scenario, block|
+  AppLog.with_logger(Automation::CucumberLogger.new(world: self)) do
+    block.call
+  end
+ensure
+  AppLog.clear!
+end
+
 Before("@reportportal_live") do
   required = %w[RP_ENDPOINT RP_PROJECT RP_API_KEY]
   missing = required.select { |key| ENV[key].to_s.strip.empty? }

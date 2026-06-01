@@ -52,4 +52,36 @@ RSpec.describe ReportportalCucumber::Cucumber::World do
 
     world.rp_attach("trace", name: "trace.log", mime: "text/plain")
   end
+
+  it "mirrors rp_log to stdout when console mirror mode is enabled" do
+    config = instance_double("config", console_mirror?: true)
+    runtime = instance_double("runtime", config: config)
+    timestamp = Time.utc(2026, 3, 26, 0, 0, 0)
+    ReportportalCucumber.current_runtime = runtime
+
+    expect(runtime).to receive(:emit_world_log).with(
+      message: "{\"ok\":true}",
+      level: "INFO",
+      timestamp: timestamp,
+      attachment: nil
+    )
+
+    expect do
+      world.rp_log("{\"ok\":true}", "INFO", timestamp: timestamp)
+    end.to output("[RP-MIRROR] [INFO] {\"ok\":true}\n").to_stdout
+  end
+
+  it "does not mirror rp_log when console mirror mode is disabled" do
+    config = instance_double("config", console_mirror?: false)
+    runtime = instance_double("runtime", config: config)
+    ReportportalCucumber.current_runtime = runtime
+
+    expect(runtime).to receive(:emit_world_log).with(
+      hash_including(message: "quiet", level: :debug, attachment: nil)
+    )
+
+    expect do
+      world.rp_log("quiet", level: :debug)
+    end.not_to output.to_stdout
+  end
 end

@@ -34,6 +34,7 @@ module ReportportalCucumber
       exit_flush_timeout_ms: 5_000,
       debug_curl_mode: false,
       debug_curl_dir: ".reportportal-curl",
+      console_mirror: false,
       video_upload_mode: "reportportal_multipart",
       minio_endpoint: "http://localhost:9000",
       minio_public_base_url: "http://localhost:9000",
@@ -73,6 +74,7 @@ module ReportportalCucumber
       "RP_EXIT_FLUSH_TIMEOUT_MS" => :exit_flush_timeout_ms,
       "RP_DEBUG_CURL_MODE" => :debug_curl_mode,
       "RP_DEBUG_CURL_DIR" => :debug_curl_dir,
+      "RP_CONSOLE_MIRROR" => :console_mirror,
       "RP_VIDEO_UPLOAD_MODE" => :video_upload_mode,
       "RP_MINIO_ENDPOINT" => :minio_endpoint,
       "RP_MINIO_PUBLIC_BASE_URL" => :minio_public_base_url,
@@ -193,6 +195,7 @@ module ReportportalCucumber
       @exit_flush_timeout_ms = integer(config[:exit_flush_timeout_ms], minimum: 1)
       @debug_curl_mode = truthy?(config[:debug_curl_mode])
       @debug_curl_dir = strip(config[:debug_curl_dir]) || DEFAULTS[:debug_curl_dir]
+      @console_mirror = truthy?(config[:console_mirror])
       @video_upload_mode = strip(config[:video_upload_mode]) || DEFAULTS[:video_upload_mode]
       @minio_endpoint = strip(config[:minio_endpoint]) || DEFAULTS[:minio_endpoint]
       @minio_public_base_url = strip(config[:minio_public_base_url]) || DEFAULTS[:minio_public_base_url]
@@ -234,6 +237,11 @@ module ReportportalCucumber
     end
 
     # @return [Boolean]
+    def console_mirror?
+      @console_mirror
+    end
+
+    # @return [Boolean]
     def minio_markdown_video?
       @video_upload_mode.to_s.downcase == "minio_markdown"
     end
@@ -266,7 +274,8 @@ module ReportportalCucumber
       # @return [Object]
       def cast_value(config_key, raw)
         case config_key
-        when :enabled, :rerun, :reporting_async, :fail_on_reporting_error, :join, :debug_curl_mode
+        when :enabled, :rerun, :reporting_async, :fail_on_reporting_error, :join, :debug_curl_mode,
+             :console_mirror
           !%w[0 false no off].include?(raw.to_s.strip.downcase)
         when :batch_size_logs, :join_wait_timeout_ms, :open_timeout, :read_timeout, :write_timeout,
              :retry_attempts, :exit_flush_timeout_ms

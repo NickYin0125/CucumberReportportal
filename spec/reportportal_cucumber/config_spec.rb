@@ -35,5 +35,13 @@ RSpec.describe ReportportalCucumber::Config do
       expect(config.minio_secret_access_key).to eq("secret")
       expect(config.minio_region).to eq("us-west-2")
     end
+
+    it "parses console mirror mode from environment variables" do
+      enabled = described_class.load(env: { "RP_CONSOLE_MIRROR" => "true" })
+      disabled = described_class.load(env: { "RP_CONSOLE_MIRROR" => "false" })
+
+      expect(enabled).to be_console_mirror
+      expect(disabled).not_to be_console_mirror
+    end
   end
 end

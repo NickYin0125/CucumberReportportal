@@ -5,15 +5,19 @@ module ReportportalCucumber
     # World DSL exposed to step definitions.
     module World
       # @param message [String]
+      # @param level_arg [String, Symbol, nil]
       # @param level [String, Symbol]
       # @param attachment [Hash, nil]
       # @param timestamp [Time]
+      # @param mirror [Boolean]
       # @return [void]
-      def rp_log(message, level: :info, attachment: nil, timestamp: Time.now)
+      def rp_log(message, level_arg = nil, level: :info, attachment: nil, timestamp: Time.now, mirror: true)
         runtime = ReportportalCucumber.current_runtime
         return unless runtime
 
-        runtime.emit_world_log(message: message, level: level, timestamp: timestamp, attachment: attachment)
+        resolved_level = level_arg || level
+        mirror_console_log(message: message, level: resolved_level, runtime: runtime) if mirror
+        runtime.emit_world_log(message: message, level: resolved_level, timestamp: timestamp, attachment: attachment)
       end
 
       # @param io_or_bytes [#read, String]
@@ -106,6 +110,55 @@ module ReportportalCucumber
       # @return [String]
       def mime_detection_filename(filename:, path:)
         File.extname(filename.to_s).empty? ? File.basename(path) : filename
+      end
+
+      # @param message [Object]
+      # @param level [String, Symbol]
+      # @param runtime [Object]
+      # @return [void]
+      def mirror_console_log(message:, level:, runtime:)
+        return unless console_mirror_enabled?(runtime)
+
+        normalized_level = level.to_s.upcase
+        prefix = "[RP-MIRROR] [#{normalized_level}] "
+        output = "#{prefix}#{message}"
+        output = colorize_console_mirror(output, normalized_level) if console_mirror_color?
+        puts(output)
+      end
+
+      # @param runtime [Object]
+      # @return [Boolean]
+      def console_mirror_enabled?(runtime)
+        config = runtime.respond_to?(:config) ? runtime.config : nil
+        return config.console_mirror? if config.respond_to?(:console_mirror?)
+
+        value = ENV["RP_CONSOLE_MIRROR"].to_s.strip
+        !value.empty? && !%w[0 false no off].include?(value.downcase)
+      end
+
+      # @return [Boolean]
+      def console_mirror_color?
+        $stdout.tty? && ENV["NO_COLOR"].to_s.empty?
+      end
+
+      # @param output [String]
+      # @param level [String]
+      # @return [String]
+      def colorize_console_mirror(output, level)
+        color =
+          case level
+          when "FATAL", "ERROR"
+            31
+          when "WARN", "WARNING"
+            33
+          when "INFO"
+            34
+          when "DEBUG", "TRACE"
+            90
+          else
+            36
+          end
+        "\e[#{color}m#{output}\e[0m"
       end
     end
   end
