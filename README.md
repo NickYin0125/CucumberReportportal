@@ -178,6 +178,85 @@ bundle exec cucumber -P features/triple_track/triple_track_logger.feature \
 - 图片、JSON、文本、PDF 等附件继续走 ReportPortal multipart
 - ReportPortal 当前通用附件视图对 MP4 内联播放支持有限；如需浏览器内播放录屏，设置 `RP_VIDEO_UPLOAD_MODE=minio_markdown`，客户端会将 `.mp4` 流式上传到 MinIO/S3，并在当前 step 写入包含 HTML5 `<video>` 的普通 log
 
+## Reporting Experience (Improvement Branch)
+
+`AppLog` keeps the existing terminal-only default. Use `report: true` to send a
+message through Cucumber and the active RP formatter without requiring a physical
+file attachment. `report: false` overrides `attach: true`; omitting `report:` keeps
+the legacy `attach:` behavior. DEBUG and ERROR retain their levels in RP; plain
+Cucumber `log` messages remain INFO.
+
+Bind a logger in your consumer project's `features/support/env.rb`:
+
+```ruby
+require "reportportal_cucumber"
+
+Around do |_scenario, run|
+  AppLog.with_logger(Automation::CucumberLogger.new(world: self)) { run.call }
+end
+```
+
+The scope restores the previous thread/fiber-local logger even when the scenario
+raises. Native Cucumber reporting also works when the RP formatter is not enabled.
+
+```ruby
+AppLog.debug("Margin inputs", report: true, json: { account: "A-17", amount: 100 })
+AppLog.info("Local diagnostic", report: false)
+
+# Record an already observed exchange; this helper performs no HTTP request.
+AppLog.http(
+  method: :post,
+  url: "https://clearing.example.test/trades",
+  request: { headers: { "Authorization" => "Bearer token" }, body: { amount: -1 } },
+  response: { status: 400, body: { code: "INVALID_AMOUNT" } },
+  duration_ms: 84,
+  expected_status: 400
+)
+```
+
+`AppLog.http` defaults to report delivery, prints only a concise terminal summary,
+and reports Request/Response Markdown with bounded body/header previews. It
+redacts common credential headers, URL credentials, and structured sensitive keys
+before rendering. An explicitly expected 400 is INFO; an unexpected status or
+transport error is ERROR; an unspecified 4xx/5xx is WARN. These levels do not
+replace test assertions or change a scenario's result.
+
+Cucumber's `pretty` formatter may also echo the native `world.log` content to the
+terminal. The compact summary guarantee applies to AppLog's own output, not to
+other formatters independently rendering the same evidence.
+
+The sanitizer is **not** a universal PII filter. Existing `rp_log`, ordinary
+`AppLog` messages/JSON, raw files, screenshots, and videos are not automatically
+sanitized by the HTTP helper. Review artifacts before uploading them. The helper
+does not automatically attach complete HTTP bodies when its preview is truncated.
+
+RP text/JSON attachment previews are bounded to 16 KiB and 100 lines for both
+paths and bytes; the full attachment remains available. Path-backed previews use
+bounded reads. The native Cucumber `AppLog(file:)` route still reads the file into
+memory, so prefer direct `rp_attach(path)` for large RP-only artifacts. External
+video logs include an ordinary **Open video** link alongside the video markup;
+playback still depends on the deployed RP renderer, browser, codec, and access policy.
+
+Run the deterministic sample without RP (no external business request):
+
+```bash
+mkdir -p tmp
+bundle exec cucumber examples/reporting_experience/features \
+  --require examples/reporting_experience/features \
+  --format pretty --format html --out tmp/reporting-experience.html
+```
+
+To also report it to your configured RP project, set `RP_ENDPOINT`, `RP_PROJECT`,
+and `RP_API_KEY`, then append:
+
+```bash
+--format ReportPortal::Cucumber::Formatter --out tmp/reporting-experience-rp.log
+```
+
+The structural plan and acceptance gates are in
+`docs/design/reporting-experience-v1-2.md`. This increment does not change the
+Scenario statistics type or claim a native RP network-inspector component.
+
 ## Design Notes
 
 - 所有 HTTP 请求都经过 `ReportportalCucumber::Http::Client`

@@ -62,7 +62,7 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
       expect(payload.fetch(:files).map { |file| file.fetch(:name) }).to eq(["evidence.txt", "evidence-1.txt"])
     end
 
-    it "pretty prints JSON attachments and appends a markdown preview to the log message" do
+    it "preserves JSON attachment bytes and pretty prints only the markdown preview" do
       payload = described_class.build_log_batch(
         [
           {
@@ -84,9 +84,9 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
       file = payload.fetch(:files).first
 
       expect(file.fetch(:name)).to eq("config.json")
-      expect(file.fetch(:bytes)).to include("\"buyer\": \"JPM\"")
+      expect(file.fetch(:bytes)).to eq('{"buyer":"JPM","amount":10}')
       expect(entry.fetch("message")).to include("Structured config snapshot")
-      expect(entry.fetch("message")).to include("```json")
+      expect(entry.fetch("message")).to include("```json", "\"buyer\": \"JPM\"")
     end
 
     it "normalizes attachment filenames before building json_request_part file references" do

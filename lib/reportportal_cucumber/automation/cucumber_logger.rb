@@ -2,6 +2,8 @@
 
 require "json"
 require "mime/types"
+require_relative "report_context"
+require_relative "http_exchange"
 
 module Automation
   # Triple-track logger for Cucumber automation code.
@@ -36,54 +38,60 @@ module Automation
     # @param attach [Boolean]
     # @param file [String, nil]
     # @param json [Object, nil]
+    # @param report [Boolean, nil] Override whether the message is routed to reporting.
     # @return [void]
-    def trace(message, attach: false, file: nil, json: nil)
-      log(:trace, message, attach: attach, file: file, json: json)
+    def trace(message, attach: false, file: nil, json: nil, report: nil)
+      log(:trace, message, attach: attach, file: file, json: json, report: report)
     end
 
     # @param message [Object]
     # @param attach [Boolean]
     # @param file [String, nil]
     # @param json [Object, nil]
+    # @param report [Boolean, nil] Override whether the message is routed to reporting.
     # @return [void]
-    def debug(message, attach: false, file: nil, json: nil)
-      log(:debug, message, attach: attach, file: file, json: json)
+    def debug(message, attach: false, file: nil, json: nil, report: nil)
+      log(:debug, message, attach: attach, file: file, json: json, report: report)
     end
 
     # @param message [Object]
     # @param attach [Boolean]
     # @param file [String, nil]
     # @param json [Object, nil]
+    # @param report [Boolean, nil] Override whether the message is routed to reporting.
     # @return [void]
-    def info(message, attach: false, file: nil, json: nil)
-      log(:info, message, attach: attach, file: file, json: json)
+    def info(message, attach: false, file: nil, json: nil, report: nil)
+      log(:info, message, attach: attach, file: file, json: json, report: report)
     end
 
     # @param message [Object]
     # @param attach [Boolean]
     # @param file [String, nil]
     # @param json [Object, nil]
+    # @param report [Boolean, nil] Override whether the message is routed to reporting.
     # @return [void]
-    def warn(message, attach: false, file: nil, json: nil)
-      log(:warn, message, attach: attach, file: file, json: json)
+    def warn(message, attach: false, file: nil, json: nil, report: nil)
+      log(:warn, message, attach: attach, file: file, json: json, report: report)
     end
 
     # @param message [Object]
     # @param attach [Boolean]
     # @param file [String, nil]
     # @param json [Object, nil]
+    # @param report [Boolean, nil] Override whether the message is routed to reporting.
     # @return [void]
-    def error(message, attach: false, file: nil, json: nil)
-      log(:error, message, attach: attach, file: file, json: json)
+    def error(message, attach: false, file: nil, json: nil, report: nil)
+      log(:error, message, attach: attach, file: file, json: json, report: report)
     end
 
     # @param message [Object]
     # @param attach [Boolean]
     # @param file [String, nil]
     # @param json [Object, nil]
+    # @param report [Boolean, nil] Override whether the message is routed to reporting.
     # @return [void]
-    def fatal(message, attach: false, file: nil, json: nil)
-      log(:fatal, message, attach: attach, file: file, json: json)
+    def fatal(message, attach: false, file: nil, json: nil, report: nil)
+      log(:fatal, message, attach: attach, file: file, json: json, report: report)
     end
 
     # @param level [String, Symbol]
@@ -91,23 +99,55 @@ module Automation
     # @param attach [Boolean]
     # @param file [String, nil]
     # @param json [Object, nil]
+    # @param report [Boolean, nil] Override whether the message is routed to reporting.
     # @return [void]
-    def log(level, message, attach: false, file: nil, json: nil)
+    def log(level, message, attach: false, file: nil, json: nil, report: nil)
       normalized_level = normalize_level(level)
-      write_terminal(terminal_line(level: normalized_level, message: message, attach: attach, file: file, json: json),
+      report_enabled = report.nil? ? attach : report
+      write_terminal(terminal_line(level: normalized_level, message: message, attach: report_enabled, file: file, json: json),
                      normalized_level)
-      return unless attach
+      return unless report_enabled
 
       rich_message = rich_message(message: message, json: json)
-      emit_cucumber_log(rich_message)
-      emit_cucumber_attachment(file) if file
+      emit_cucumber_log(rich_message, normalized_level)
+      emit_cucumber_attachment(file, normalized_level) if file
       emit_reportportal_log(rich_message, normalized_level)
       emit_reportportal_attachment(file, rich_message, normalized_level) if file
+    end
+
+    # @param method [String, Symbol]
+    # @param url [String]
+    # @param request [Hash]
+    # @param response [Hash]
+    # @param duration_ms [Numeric, nil]
+    # @param expected_status [Integer, nil]
+    # @param error [Object, nil]
+    # @param report [Boolean]
+    # @return [void]
+    def http(method:, url:, request: {}, response: {}, duration_ms: nil, expected_status: nil, error: nil, report: true)
+      exchange = HttpExchange.new(
+        method: method,
+        url: url,
+        request: request,
+        response: response,
+        duration_ms: duration_ms,
+        expected_status: expected_status,
+        error: error
+      )
+      level = normalize_level(exchange.level)
+      summary = exchange.summary
+      write_terminal(terminal_line(level: level, message: summary, attach: report, file: nil, json: nil), level)
+      return unless report
+
+      report_message = exchange.to_markdown
+      emit_cucumber_log(report_message, level)
+      emit_reportportal_log(report_message, level)
     end
 
     # @return [Boolean]
     def rp_active?
       return false unless @world && (@world.respond_to?(:rp_log) || @world.respond_to?(:rp_attach))
+      return !!@world.rp_active? if @world.respond_to?(:rp_active?)
       return true unless defined?(::ReportportalCucumber) && ::ReportportalCucumber.respond_to?(:current_runtime)
 
       !::ReportportalCucumber.current_runtime.nil?
@@ -160,16 +200,20 @@ module Automation
       value.to_s
     end
 
-    def emit_cucumber_log(message)
-      safe_call(:world_log) { @world.log(message) if @world&.respond_to?(:log) }
+    def emit_cucumber_log(message, level)
+      safe_call(:world_log) do
+        ReportContext.with(level: level) { @world.log(message) } if @world&.respond_to?(:log)
+      end
     end
 
-    def emit_cucumber_attachment(file)
+    def emit_cucumber_attachment(file, level)
       safe_call(:world_attach) do
         next unless @world&.respond_to?(:attach)
         next unless File.file?(file.to_s)
 
-        @world.attach(File.binread(file.to_s), content_type_for(file), File.basename(file.to_s))
+        ReportContext.with(level: level) do
+          @world.attach(File.binread(file.to_s), content_type_for(file), File.basename(file.to_s))
+        end
       end
     end
 
@@ -180,11 +224,13 @@ module Automation
       safe_call(:rp_log) do
         next unless @world.respond_to?(:rp_log)
 
-        begin
-          @world.rp_log(message, level: level, mirror: false)
-        rescue ArgumentError
-          @world.rp_log(message, level: level)
+        rp_log = @world.method(:rp_log)
+        accepts_mirror = rp_log.parameters.any? do |kind, name|
+          kind == :keyrest || (%i[key keyreq].include?(kind) && name == :mirror)
         end
+        keywords = { level: level }
+        keywords[:mirror] = false if accepts_mirror
+        rp_log.call(message, **keywords)
       end
     end
 

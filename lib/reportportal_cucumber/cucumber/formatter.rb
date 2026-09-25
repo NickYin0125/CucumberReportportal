@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "cucumber/formatter/ast_lookup"
+require_relative "../automation/report_context"
 
 module ReportportalCucumber
   module Cucumber
@@ -159,19 +160,20 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         normalized_type = media_type.to_s.sub(/;base64\z/i, "")
+        level = Automation::ReportContext.current.fetch(:level, :info)
         if normalized_type == "text/x.cucumber.log+plain"
-          emit_world_log(message: src.to_s, level: :info, timestamp: Time.now)
+          emit_world_log(message: src.to_s, level: level, timestamp: Time.now)
           return
         end
 
         body = media_type.to_s.match?(/;base64\z/i) ? Base64.decode64(src.to_s) : src.to_s
-        handle_attachment(
+        handle_attachment({
           file_name: filename || default_attachment_name(normalized_type),
           media_type: normalized_type.empty? ? "application/octet-stream" : normalized_type,
           body: body,
           content_encoding: "identity",
           message: filename ? "Attachment: #{filename}" : "Attachment"
-        )
+        }, level: level)
       end
 
       private
@@ -404,8 +406,9 @@ module ReportportalCucumber
       end
 
       # @param event [Object]
+      # @param level [String, Symbol]
       # @return [void]
-      def handle_attachment(event)
+      def handle_attachment(event, level: :info)
         return unless reporting_enabled?
 
         target_item = runtime_context.item_for_test_step(extract_test_step_id(event))
@@ -420,7 +423,7 @@ module ReportportalCucumber
           item_uuid: target_item.uuid,
           launch_uuid: @launch_uuid,
           message: extract_attachment_message(event, attachment[:name]),
-          level: :info,
+          level: level,
           timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now),
           attachment: attachment
         )

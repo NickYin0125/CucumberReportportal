@@ -6,6 +6,9 @@ module ReportportalCucumber
     module PayloadBuilder
       module_function
 
+      PREVIEW_MAX_BYTES = 16 * 1024
+      PREVIEW_MAX_LINES = 100
+
       MIME_EXTENSION_MAP = {
         "application/json" => ".json",
         "application/pdf" => ".pdf",
@@ -174,7 +177,7 @@ module ReportportalCucumber
             launch_uuid: payload[:launch_uuid] || payload["launch_uuid"],
             item_uuid: payload[:item_uuid] || payload["item_uuid"],
             time: payload[:timestamp] || payload["timestamp"],
-            message: enrich_log_message(payload[:message] || payload["message"], attachment),
+            message: enrich_log_message(payload[:message] || payload["message"], attachment && attachment.merge(name: filename)),
             level: payload[:level] || payload["level"],
             file_name: filename
           )
@@ -212,13 +215,21 @@ module ReportportalCucumber
       # @param width [Integer]
       # @return [String]
       def build_video_markdown_message(message:, url:, width: 640)
+        uri = URI.parse(url.to_s)
+        unless uri.is_a?(URI::HTTP) && uri.host && !uri.host.empty?
+          raise ArgumentError, "Video URL must be an absolute HTTP(S) URL"
+        end
+
         base = message.to_s.strip
         video = "UI Failure Playback:\n\n" \
                 "<video width=\"#{Integer(width)}\" controls preload=\"metadata\">" \
-                "<source src=\"#{CGI.escapeHTML(url.to_s)}\" type=\"video/mp4\"></video>"
+                "<source src=\"#{CGI.escapeHTML(uri.to_s)}\" type=\"video/mp4\"></video>\n\n" \
+                "[Open video](<#{uri}>)"
         return video if base.empty?
 
         "#{base}\n\n#{video}"
+      rescue URI::InvalidURIError
+        raise ArgumentError, "Video URL must be an absolute HTTP(S) URL"
       end
 
       # @param feature_uri [String]
@@ -442,8 +453,6 @@ module ReportportalCucumber
             bytes.to_s
           end
 
-        return "#{pretty_json(raw)}\n" if json_attachment?(mime: mime)
-
         raw
       end
 
@@ -470,31 +479,65 @@ module ReportportalCucumber
       # @return [String, nil]
       def attachment_preview(attachment)
         return nil unless attachment
-        return nil unless attachment.key?(:bytes)
 
-        if json_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
-          "```json\n#{pretty_json(safe_utf8(attachment.fetch(:bytes)))}\n```"
-        elsif text_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
-          text_preview(attachment)
-        end
+        json = json_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
+        text = text_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
+        return nil unless json || text
+
+        raw = preview_source(attachment)
+        truncated = raw.bytesize > PREVIEW_MAX_BYTES
+        content = safe_utf8(raw.byteslice(0, PREVIEW_MAX_BYTES))
+        content = pretty_json(content) if json && !truncated
+        content, display_truncated = bounded_preview(content)
+        preview = fenced_preview(content.rstrip, json ? "json" : "text")
+        return preview unless truncated || display_truncated
+
+        "#{preview}\n\nPreview truncated. Full log is attached as `#{attachment.fetch(:name)}`."
       end
 
       # @param attachment [Hash]
       # @return [String]
-      def text_preview(attachment)
-        content = safe_utf8(attachment.fetch(:bytes))
-        lines = content.lines
-        snippet = lines.first(100).join
-        preview = "```text\n#{snippet.rstrip}\n```"
-        return preview if lines.length <= 100
+      def preview_source(attachment)
+        if attachment[:path]
+          File.open(attachment.fetch(:path), "rb") { |io| io.read(PREVIEW_MAX_BYTES + 1) || "" }
+        else
+          attachment.fetch(:bytes).to_s.byteslice(0, PREVIEW_MAX_BYTES + 1)
+        end
+      end
 
-        "#{preview}\n\nFull log is attached as `#{attachment.fetch(:name)}`."
+      # @param attachment [Hash]
+      # @return [String, nil]
+      def text_preview(attachment)
+        attachment_preview(attachment)
+      end
+
+      # @param content [String]
+      # @return [Array(String, Boolean)]
+      def bounded_preview(content)
+        byte_truncated = content.bytesize > PREVIEW_MAX_BYTES
+        snippet = safe_utf8(content.byteslice(0, PREVIEW_MAX_BYTES))
+        lines = snippet.each_line.take(PREVIEW_MAX_LINES + 1)
+        [lines.first(PREVIEW_MAX_LINES).join, byte_truncated || lines.length > PREVIEW_MAX_LINES]
+      end
+
+      # @param content [String]
+      # @param language [String]
+      # @return [String]
+      def fenced_preview(content, language)
+        fences = ["`", "~"].map do |character|
+          longest = content.scan(/#{Regexp.escape(character)}+/).map(&:length).max || 0
+          character * [3, longest + 1].max
+        end
+        fence = fences.min_by(&:length)
+        "#{fence}#{language}\n#{content}\n#{fence}"
       end
 
       # @param value [Object]
       # @return [String]
       def safe_utf8(value)
-        value.to_s.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?")
+        text = value.to_s.dup
+        text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY
+        text.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?").scrub("?")
       end
 
       # @param content [String]
