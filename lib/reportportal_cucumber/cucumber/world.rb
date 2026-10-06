@@ -51,6 +51,38 @@ module ReportportalCucumber
         runtime.with_manual_step(name, &block)
       end
 
+      # @return [Object, nil] Opaque handle for the currently open action.
+      def rp_capture_target
+        ReportportalCucumber.current_runtime&.rp_capture_target
+      rescue StandardError => error
+        ReportportalCucumber.logger.warn("ReportPortal capture target unavailable: #{error.class}")
+        nil
+      end
+
+      # @param action [Object]
+      # @param error [Object]
+      # @param url [String, nil]
+      # @param details [Object, nil]
+      # @param artifacts [Array<Hash>]
+      # @param target [Object, nil]
+      # @return [Boolean]
+      def rp_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
+        current_runtime = ReportportalCucumber.current_runtime
+        owner_runtime = Runtime::Context::CaptureTarget.owner_for(target) if target.is_a?(Runtime::Context::CaptureTarget)
+        if owner_runtime && current_runtime && !current_runtime.equal?(owner_runtime)
+          ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target belongs to a different active runtime")
+          return false
+        end
+        runtime = target.nil? ? current_runtime : (current_runtime || owner_runtime)
+        return false unless runtime
+
+        runtime.rp_evidence(action: action, error: error, url: url, details: details,
+                            artifacts: artifacts, target: target)
+      rescue StandardError => reporting_error
+        ReportportalCucumber.logger.warn("ReportPortal evidence unavailable: #{reporting_error.class}")
+        false
+      end
+
       private
 
       # @param source [#read, String]

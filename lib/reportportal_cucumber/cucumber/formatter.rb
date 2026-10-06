@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 require "cucumber/formatter/ast_lookup"
+require "cucumber/glue/dsl"
 require_relative "../automation/report_context"
+require_relative "../automation/evidence_redactor"
 
 module ReportportalCucumber
   module Cucumber
@@ -97,6 +99,90 @@ module ReportportalCucumber
         )
       end
 
+      # @return [Runtime::Context::CaptureTarget, nil]
+      def capture_target
+        item = runtime_context.current_step_item
+        return unless reporting_enabled? && !@finalized && item
+
+        runtime_context.capture_target_for(item, launch_uuid: @launch_uuid)
+      end
+
+      # @return [Runtime::Context::CaptureTarget, nil]
+      def rp_capture_target
+        capture_target
+      end
+
+      # @param action [Object]
+      # @param error [Object]
+      # @param url [String, nil]
+      # @param details [Object, nil]
+      # @param artifacts [Array<Hash>]
+      # @param target [Runtime::Context::CaptureTarget, nil]
+      # @return [Boolean]
+      def report_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
+        return false unless reporting_enabled? && !@finalized
+
+        selected = target || capture_target
+        item = runtime_context.acquire_capture_target(selected, launch_uuid: @launch_uuid)
+        unless item
+          ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target is not an open action in this launch")
+          return false
+        end
+        leased = true
+
+        payloads = Array(artifacts).map { |artifact| build_evidence_payload(artifact) }
+        names = payloads.map { |artifact| artifact[:name] }
+        rendered = Service::EvidencePresenter.failure(
+          action: action,
+          error: error,
+          url: url,
+          details: details,
+          artifact_names: names
+        )
+        redactor = Automation::EvidenceRedactor.new
+        summary = redactor.redact_text(rendered.fetch(:summary, rendered.fetch("summary", "Failure evidence")))
+        diagnostic = rendered[:details] || rendered["details"]
+        message = [summary, diagnostic && redactor.redact_text(diagnostic)].compact.reject(&:empty?).join("\n\n")
+        published = runtime_context.publish_capture_target(selected, launch_uuid: @launch_uuid) do |open_item|
+          @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid, message: message,
+                               level: :error, timestamp: monotonic_timestamp(Time.now))
+          payloads.each do |payload|
+            name = payload.fetch(:name)
+            attachment = if payload.key?(:path)
+                           { name: name, mime: payload.fetch(:mime), path: payload.fetch(:path) }
+                         else
+                           bytes = payload.fetch(:bytes)
+                           { name: name, mime: payload.fetch(:mime), bytes: bytes }
+                         end
+            @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid,
+                                 message: "Failure evidence: #{name}", level: :error,
+                                 timestamp: monotonic_timestamp(Time.now), attachment: attachment)
+          end
+        end
+        unless published
+          ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target closed before publication")
+          return false
+        end
+        true
+      rescue StandardError => reporting_error
+        ReportportalCucumber.logger.warn("ReportPortal evidence reporting failed: #{reporting_error.class}")
+        false
+      ensure
+        runtime_context.release_capture_target(selected) if leased
+      end
+
+      # @param action [Object]
+      # @param error [Object]
+      # @param url [String, nil]
+      # @param details [Object, nil]
+      # @param artifacts [Array<Hash>]
+      # @param target [Runtime::Context::CaptureTarget, nil]
+      # @return [Boolean]
+      def rp_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
+        report_evidence(action: action, error: error, url: url, details: details,
+                        artifacts: artifacts, target: target)
+      end
+
       # @param name [String]
       # @yieldreturn [Object]
       # @return [Object]
@@ -131,6 +217,7 @@ module ReportportalCucumber
           metadata: {}
         )
         runtime_context.push_step(item)
+        capture_target = runtime_context.register_capture_target(item, launch_uuid: @launch_uuid, owner: self)
 
         yield
       rescue StandardError => error
@@ -139,7 +226,8 @@ module ReportportalCucumber
         raise
       ensure
         if item_uuid || local_uuid
-          @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+          close_capture_target(capture_target) if capture_target
+          flush_before_finish
           safe_reporting_call do
             @api.finish_item(
               item_uuid: item_uuid || local_uuid,
@@ -178,6 +266,39 @@ module ReportportalCucumber
 
       private
 
+      # @param artifact [Hash]
+      # @return [Hash]
+      def build_evidence_payload(artifact)
+        options = artifact.transform_keys(&:to_sym)
+        redactor = Automation::EvidenceRedactor.new
+        path = options[:path]
+        bytes = options[:bytes]
+        raise ArgumentError, "artifact must include path or bytes" if path.nil? && bytes.nil?
+
+        filename = options[:name].to_s
+        if path
+          path = File.expand_path(path.to_s)
+          raise ArgumentError, "evidence path is not a file" unless File.file?(path)
+
+          filename = File.basename(path) if filename.empty?
+          filename = redactor.redact_text(filename)
+          mime_filename = File.extname(filename).empty? ? File.basename(path) : filename
+          mime = Transport::MultipartHelper.content_type_for(
+            filename: mime_filename, declared_type: options[:mime]
+          )
+          return { name: filename, mime: mime, path: path }
+        end
+
+        bytes = bytes.read(1_048_577) if bytes.respond_to?(:read)
+        bytes = bytes.to_s
+        raise ArgumentError, "in-memory evidence exceeds 1 MiB" if bytes.bytesize > 1_048_576
+
+        filename = Service::PayloadBuilder.default_attachment_name(options[:mime]) if filename.empty?
+        filename = redactor.redact_text(filename)
+        mime = Transport::MultipartHelper.content_type_for(filename: filename, declared_type: options[:mime])
+        { name: filename, mime: mime, bytes: bytes }
+      end
+
       # @return [Boolean]
       def reporting_enabled?
         @config.enabled?
@@ -210,13 +331,14 @@ module ReportportalCucumber
 
       # @return [void]
       def inject_world_module
-        if @cucumber_config.respond_to?(:include)
-          @cucumber_config.include(ReportportalCucumber::Cucumber::World)
-        elsif Kernel.respond_to?(:World)
-          Kernel.World(ReportportalCucumber::Cucumber::World)
-        end
-      rescue StandardError
-        nil
+        dsl = ::Cucumber::Glue::Dsl
+        language = dsl.instance_variable_get(:@rb_language)
+        return unless language
+
+        world_modules = language.instance_variable_get(:@world_modules)
+        return if world_modules&.include?(ReportportalCucumber::Cucumber::World)
+
+        dsl.build_rb_world_factory([ReportportalCucumber::Cucumber::World], {}, nil)
       end
 
       # @return [void]
@@ -399,6 +521,7 @@ module ReportportalCucumber
           }
         )
         runtime_context.push_step(item)
+        runtime_context.register_capture_target(item, launch_uuid: @launch_uuid, owner: self)
         emit_step_markdown_log(item_uuid: step_uuid, description: step_description, timestamp: extract_timestamp(event) || Time.now) if step_descriptor&.rich?
         if (test_step_id = extract_test_step_id(event))
           runtime_context.associate_test_step(test_step_id, item)
@@ -454,7 +577,8 @@ module ReportportalCucumber
         end
 
         debug("Finishing nested step uuid=#{item.uuid} status=#{status}")
-        @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        close_capture_target_for_item(item)
+        flush_before_finish
         finish_time = monotonic_timestamp(extract_timestamp(event) || Time.now)
         safe_reporting_call do
           @api.finish_item(
@@ -516,7 +640,12 @@ module ReportportalCucumber
         return if @finalized
 
         @finalized = true
-        @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        closed = runtime_context.close_capture_targets(
+          launch_uuid: @launch_uuid,
+          timeout: @config.exit_flush_timeout_ms / 1000.0
+        )
+        warn_capture_close_timeout unless closed
+        flush_before_finish
         finish_open_scenarios(status: status, end_time: monotonic_timestamp(end_time))
         finish_feature_items(end_time: monotonic_timestamp(end_time))
         if @launch_uuid && (!@config.join? || @join.primary?)
@@ -586,7 +715,7 @@ module ReportportalCucumber
 
         resolved_status = ReportPortal::Models.normalize_status(status) || aggregate_status(runtime_context.feature_statuses(feature_key))
         debug("Finishing feature feature=#{feature_key} uuid=#{item.uuid} status=#{resolved_status}")
-        @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        flush_before_finish
         safe_reporting_call do
           @api.finish_item(
             item_uuid: item.uuid,
@@ -625,7 +754,7 @@ module ReportportalCucumber
         close_open_steps_for_current_scenario(status: resolved_status, end_time: monotonic_timestamp(end_time)) if close_steps
 
         debug("Finishing scenario uuid=#{scenario_state[:item].uuid} status=#{resolved_status}")
-        @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        flush_before_finish
         safe_reporting_call do
           @api.finish_item(
             item_uuid: scenario_state[:item].uuid,
@@ -646,7 +775,8 @@ module ReportportalCucumber
       # @return [void]
       def close_open_steps_for_current_scenario(status:, end_time:)
         runtime_context.current_step_stack.reverse_each do |item|
-          @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+          close_capture_target_for_item(item)
+          flush_before_finish
           safe_reporting_call do
             @api.finish_item(
               item_uuid: item.uuid,
@@ -690,6 +820,42 @@ module ReportportalCucumber
         raise if @config.fail_on_reporting_error?
 
         fallback
+      end
+
+      # @return [Boolean]
+      def flush_before_finish
+        flushed = @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        return true if flushed
+
+        ReportportalCucumber.logger.warn("ReportPortal log flush timed out before item finish; delivery is unconfirmed")
+        false
+      end
+
+      # @param target [Runtime::Context::CaptureTarget]
+      # @return [Boolean]
+      def close_capture_target(target)
+        closed = runtime_context.close_capture_target(
+          target,
+          timeout: @config.exit_flush_timeout_ms / 1000.0
+        )
+        warn_capture_close_timeout unless closed
+        closed
+      end
+
+      # @param item [Runtime::Context::ItemHandle]
+      # @return [Boolean]
+      def close_capture_target_for_item(item)
+        closed = runtime_context.close_capture_target_for_item(
+          item,
+          timeout: @config.exit_flush_timeout_ms / 1000.0
+        )
+        warn_capture_close_timeout unless closed
+        closed
+      end
+
+      # @return [void]
+      def warn_capture_close_timeout
+        ReportportalCucumber.logger.warn("ReportPortal evidence target close timed out; target was cancelled")
       end
 
       # @param error [StandardError]
@@ -934,7 +1100,7 @@ module ReportportalCucumber
         value = fetch_value(event, :hook_type, :hookType, [:test_step, :hook_type], [:test_step, :hookType])
         return normalize_hook_type(value) unless value.nil?
 
-        hook = fetch_value(event, :hook, [:test_step, :hook])
+        hook = fetch_value(event, :hook, [:test_step, :hook], [:test_step, :hook?])
         if hook == true
           label = fetch_value(event, :step_text, [:test_step, :text], [:test_step, :name], :name)
           return normalize_hook_type(label)

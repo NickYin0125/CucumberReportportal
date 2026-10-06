@@ -134,6 +134,19 @@ module AppLog
       )
     end
 
+    # Records a structured diagnostic without asserting or raising.
+    # @param name [String] Assertion or check name.
+    # @param expected [Object] Expected value to include in the comparison.
+    # @param actual [Object] Observed value to include in the comparison.
+    # @param passed [Boolean] Diagnostic outcome; does not affect the test result.
+    # @param details [Object, nil] Optional supplementary diagnostic details.
+    # @param report [Boolean] Whether to route Markdown to Cucumber and ReportPortal.
+    # @return [void]
+    def assertion(name:, expected:, actual:, passed:, details: nil, report: true)
+      logger.assertion(name: name, expected: expected, actual: actual, passed: passed,
+                       details: details, report: report)
+    end
+
     private
 
     def dispatch(level, message, attach:, file:, json:, report:)

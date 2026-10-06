@@ -237,6 +237,88 @@ memory, so prefer direct `rp_attach(path)` for large RP-only artifacts. External
 video logs include an ordinary **Open video** link alongside the video markup;
 playback still depends on the deployed RP renderer, browser, codec, and access policy.
 
+### Failure Evidence API
+
+Capture the active Step target while that Step is open. `rp_capture_target`
+returns an opaque handle, or `nil` when reporting is disabled or there is no open
+action. Pass it explicitly when evidence is produced by a helper thread; the
+handle remains valid only while its original action is open.
+
+```ruby
+target = rp_capture_target # Capture inside the open Gherkin Step.
+begin
+  perform_risky_action
+rescue StandardError => error
+  rp_evidence(action: "Submit order", error: error, target: target)
+  raise
+end
+```
+
+The API signatures are:
+
+```ruby
+rp_capture_target
+rp_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
+```
+
+`rp_evidence` returns `true` when evidence is queued and `false` when reporting
+is unavailable or the target is invalid, foreign, or already closed. Omitting
+`target:` uses only the currently open action. It never falls back to a Scenario,
+Launch, later Step, or hook when the original Step has closed; a rejected late
+call does not retarget evidence.
+
+Each artifact is a hash with either `path:` or `bytes:`, and optional `name:` and
+`mime:`. Path-backed artifacts remain paths for streaming upload, so large files
+do not need to be read into memory by the caller. In-memory `bytes:` artifacts
+are limited to 1 MiB and larger values are rejected. The tester owns screenshot,
+console, and video capture and decides which binary artifacts to provide.
+
+### Caller-Owned Browser Failure Evidence
+
+`AppLog.assertion` records a redacted, bounded diagnostic comparison; it does not
+raise or affect Cucumber pass/fail. Browser capture remains entirely caller-owned.
+For example, with Playwright Ruby 1.62, a consumer can keep a screenshot and
+console excerpt when a locator fails, report them, and re-raise the original error:
+
+```ruby
+require "fileutils"
+
+target = rp_capture_target # Save attribution while the Gherkin Step is open.
+begin
+  page.get_by_role("button", name: "Submit").click
+rescue Playwright::TimeoutError => error
+  FileUtils.mkdir_p("tmp")
+  screenshot = "tmp/submit-failure.png"
+  begin
+    page.screenshot(path: screenshot) # Explicit caller-owned capture.
+  rescue StandardError
+    screenshot = nil # A secondary capture failure must not replace the locator error.
+  end
+  begin
+    console_excerpt = page.console_messages.last(20).map(&:text).join("\n")
+    AppLog.assertion(
+      name: "Submit button is actionable",
+      expected: "click succeeds",
+      actual: error.message,
+      passed: false,
+      details: "Console:\n#{console_excerpt}"
+    )
+    artifacts = screenshot ? [{ path: screenshot, name: "submit-failure.png" }] : []
+    rp_evidence(
+      action: "Submit order", error: error, url: page.url,
+      details: "Console:\n#{console_excerpt}",
+      artifacts: artifacts, target: target
+    )
+  rescue StandardError
+    # Reporting failures must not replace the original Playwright error.
+  end
+  raise
+end
+```
+
+This consumer-side example adds no Playwright dependency and does not
+automatically inspect pages, capture screenshots, or record video.
+
 Run the deterministic sample without RP (no external business request):
 
 ```bash

@@ -4,6 +4,7 @@ require "json"
 require "mime/types"
 require_relative "report_context"
 require_relative "http_exchange"
+require_relative "../service/evidence_presenter"
 
 module Automation
   # Triple-track logger for Cucumber automation code.
@@ -144,6 +145,28 @@ module Automation
       emit_reportportal_log(report_message, level)
     end
 
+    # Records a structured diagnostic without changing the test result.
+    # @param name [String] Assertion or check name.
+    # @param expected [Object] Expected value to include in the comparison.
+    # @param actual [Object] Observed value to include in the comparison.
+    # @param passed [Boolean] Diagnostic outcome; does not affect the test result.
+    # @param details [Object, nil] Optional supplementary diagnostic details.
+    # @param report [Boolean] Whether to route Markdown to Cucumber and ReportPortal.
+    # @return [void]
+    def assertion(name:, expected:, actual:, passed:, details: nil, report: true)
+      presentation = ReportportalCucumber::Service::EvidencePresenter.assertion(
+        name: name, expected: expected, actual: actual, passed: passed, details: details
+      )
+      level = passed ? :info : :error
+      write_terminal(terminal_line(level: level, message: presentation.fetch(:summary), attach: report,
+                                  file: nil, json: nil), level)
+      return unless report
+
+      markdown = presentation.fetch(:markdown)
+      emit_cucumber_log(markdown, level)
+      emit_reportportal_log(markdown, level)
+    end
+
     # @return [Boolean]
     def rp_active?
       return false unless @world && (@world.respond_to?(:rp_log) || @world.respond_to?(:rp_attach))
@@ -260,7 +283,8 @@ module Automation
     def safe_call(route)
       yield
     rescue StandardError => e
-      write_terminal("[APPLOG] [WARN] #{route} routing failed: #{e.class}: #{e.message}", :warn)
+      safe_message = EvidenceRedactor.new.redact_text(e.message)
+      write_terminal("[APPLOG] [WARN] #{route} routing failed: #{e.class}: #{safe_message}", :warn)
     end
 
     def cucumber_event_bus_backed_by_reportportal?

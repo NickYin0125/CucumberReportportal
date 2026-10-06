@@ -129,6 +129,41 @@ RSpec.describe Automation::EvidenceRedactor do
       expect(result).to include("first line", "last line", REDACTED)
     end
 
+    it "redacts quoted JSON values clipped mid-string, including escaped nested JSON" do
+      secret = "M2-quoted-canary-" + ("q" * 1_000)
+      clipped = %({"password":"#{secret})
+      nested = JSON.generate(payload: JSON.generate(password: secret))[0, 80]
+      nested += "password\\\":\\\"#{secret}"
+
+      [clipped, nested].each do |text|
+        result = redactor.redact_text(text)
+        expect(result).not_to include("M2-quoted-canary-")
+        expect(result).to include(REDACTED)
+      end
+    end
+
+    it "redacts clipped values ending in a dangling escape and values with escaped quotes" do
+      limit = ReportportalCucumber::Service::EvidencePresenter::DETAILS_LIMIT
+      head = '{"password":"CANARY_DANGLING_'
+      dangling_prefix = head + ("x" * (limit - head.bytesize - 1)) + "\\"
+      escaped_quote_prefix = JSON.generate(password: 'CANARY_ESCAPED_"tail' + ("e" * 1_000))[0, 80]
+
+      [dangling_prefix, escaped_quote_prefix].each do |prefix|
+        result = redactor.redact_text(prefix)
+        expect(result).not_to include("CANARY_DANGLING_", "CANARY_ESCAPED_")
+        expect(result).to include(REDACTED)
+      end
+    end
+
+    it "redacts clipped JSON keys separated from values by JSON whitespace" do
+      prefix = %({"password":\r\n "CANARY_MULTILINE_#{"m" * 1_000})
+
+      result = redactor.redact_text(prefix)
+
+      expect(result).not_to include("CANARY_MULTILINE_")
+      expect(result).to include(REDACTED)
+    end
+
     it "sanitizes invalid binary bytes without mutating or truncating the input" do
       text = ("prefix\xFF\n".b + ("x" * 20_000) + "\nPassword: binary-secret\nend\xFE".b).freeze
       original_bytes = text.bytes

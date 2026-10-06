@@ -1,6 +1,6 @@
 # Reporting experience improvement plan
 
-Status: M1 AC01-AC12 verification passed on 2026-09-25 (mock/integration evidence only). This is not live ReportPortal browser certification. Branch: `codex/reporting-experience-v1-2`.
+Status: M1 AC01-AC12 local/mock acceptance verified on 2026-09-25; M2 core live acceptance completed on 2026-10-05 in Launch25. The optional consumer viewport-recording extension completed real RP playback/seek acceptance in Launch26; see [the M2 verification record](reporting-experience-m2-verification.md). This does not certify a production deployment matrix. Branch: `codex/reporting-experience-v1-2`.
 Baseline: `92bebd2`. Existing uncommitted duration-test work is outside this change.
 
 ## Goals and scope
@@ -17,12 +17,22 @@ The milestones below deliberately distinguish delivered code from future work. A
 | Milestone | Work | Release gate |
 | --- | --- | --- |
 | M1: evidence foundations, this branch | Severity-preserving AppLog routing, explicit report delivery, manually recorded HTTP exchanges with credential redaction, bounded path/byte attachment previews, video fallback link | AC01-AC12 below; full RSpec and ordinary Cucumber regression; package load check |
-| M2: diagnosis and capture | Structured assertions, opt-in Selenium/Capybara failure bundle, bounded file handling through the native Cucumber track, common privacy policy across all output/spool routes | Correct failed-action/attempt binding before item finalization; failure capture never replaces the original exception; large-file memory test; cross-sink privacy tests |
+| M2: diagnosis and evidence | Structured assertions, a simple API for framework-supplied failure evidence, explicit step/attempt binding, bounded file handling, and redaction of new diagnostic text across output/spool routes | Evidence stays on the failed action and attempt before item finalization; original exception preserved; Playwright-consumer example, large-file memory, and cross-sink privacy tests |
 | M3: BDD navigation and history | Parsed AST metadata, Rule/localization/Examples correctness, scenario attributes, explicit stable identity strategy and migration, source/CI/TMS links | Complex feature fixtures; stable history across equivalent source edits; retries correctly grouped; real Suite filter drill-down |
 | M4: delivery integrity | Bounded queue and byte-limited batches even at shutdown, completion barrier for joined processes, clear delivery/spool outcomes, controlled replay | Slow/unavailable backend and interrupted-run tests; bounded RSS; records reconciled with server; documented replay duplication limits |
-| M5: release certification | Installed-gem clean room and supported RP/browser matrix, media authentication/retention options, full live browser acceptance | Actual screenshots/recording and playback/seek evidence; no unsupported claim of universal raw-HTML video support |
+| M5: release certification | Installed-gem clean room and supported RP/browser matrix, full live browser acceptance for supplied logs and attachments | Evidence appears under the intended action; optional consumer-managed media links are checked only for deployments that enable them |
 
-M2-M4 remain prerequisites for broad automatic capture or production resilience claims. M1 is a reviewed increment, not completion of every research recommendation.
+M3-M4 remain prerequisites for broad automatic capture or production resilience claims. M1 and M2 are reviewed increments, not completion of every research recommendation.
+
+### M2 reporting boundary and tester experience
+
+The production UI framework uses `playwright-ruby-client` 1.62, but this reporting gem must not own its `Page`, `BrowserContext`, recording lifecycle, or failure-capture policy. The Ruby Cucumber framework and tester decide what to capture, when to retain it, and whether to transform or upload video. M2 adds no Playwright runtime dependency or automatic video workflow. Existing attachment/path and external-link routes remain available for artifacts the consumer deliberately supplies.
+
+For a failed click, the consumer may catch the original Playwright exception while the Cucumber step is open, capture a screenshot or other chosen evidence, and pass an action label, sanitized page URL, error, and artifact paths/bytes to one reporting call. The client creates a concise ERROR summary and separate bounded diagnostic entries, associating all entries with an immutable step/attempt handle rather than whatever item is current later. It queues and flushes them before `finish_item` within a bounded deadline, then leaves the original exception and Cucumber result unchanged. If the consumer supplies no artifact, the error summary still works. If capture or reporting fails, that secondary error must not replace the original failure.
+
+Keep `rp_log` and `rp_attach` backward compatible. The new convenience API should accept already-produced evidence, infer safe MIME/filenames, stream path-backed files where possible, and let a caller choose the active step or an explicit step/attempt handle without exposing raw RP UUID management. It must reject or clearly report late writes to an already-finished item rather than silently attaching them to an After hook or a retry. Redact structured/text evidence before terminal, native Cucumber, RP, and spool delivery; treat binary artifacts as explicitly opted-in evidence because text redaction cannot sanitize their pixels or bytes.
+
+Acceptance fixtures must cover a missing-locator Playwright click with a caller-supplied screenshot and console excerpt, no-artifact failure, retry attempts, a failing hook, capture/reporting failure, concurrent scenarios, and large path-backed files. Assert that the failing action owns its summary and evidence, the next hook/retry does not, memory stays bounded, and the original test failure remains primary. Video recording, retention, transcoding, and playback are outside M2; the Ruby Cucumber framework owns those decisions.
 
 ## Structural design
 
@@ -126,8 +136,8 @@ Video logs retain the configured same-origin/external source. Add a normal click
 | AC11 | Video markup includes a safe, escaped fallback link; no binary read occurs just to generate a video preview | PayloadBuilder specs |
 | AC12 | Full RSpec, ordinary Cucumber regression and built-gem load pass; no unrelated work is removed and no new runtime dependency is needed | Luna final integration checks; Master review |
 
-M1 verifies that local native Cucumber HTML carries the exchange under the correct Gherkin step and that the stateful RP mock receives evidence at the expected step UUID. Remaining live release gates, NOT mock-proven in M1: ReportPortal's UI displays evidence under the intended item; actual RP severity controls and Suite filters work; the supported UI renderer renders Markdown; the real video plays/seeks or displays a usable fallback. Record these as pending until physically exercised.
+M1 verifies that local native Cucumber HTML carries the exchange under the correct Gherkin step and that the stateful RP mock receives evidence at the expected step UUID. Remaining live release gates, NOT mock-proven in M1: ReportPortal's UI displays evidence under the intended item; actual RP severity controls and Suite filters work; the supported UI renderer renders Markdown. If a consumer enables video links, check their fallback and access policy separately. Record these as pending until physically exercised.
 
 ## Review and evidence
 
-M1 is complete for AC01-AC12 based on mock/local verification; live ReportPortal UI/browser acceptance remains deferred. See [the M1 verification record](reporting-experience-m1-verification.md) for commands, evidence and remaining gates. No push, merge, tag or release is authorized by this plan alone.
+M1 is complete for AC01-AC12 based on mock/local verification. M2's core live ReportPortal acceptance completed on 2026-10-05 in Launch25; its optional caller-owned viewport-recording extension completed Launch26 API and master in-app playback/seek acceptance, recorded separately in [the M2 verification record](reporting-experience-m2-verification.md). M3/M4/M5 scopes and production-matrix verification remain unchanged. See [the M1 verification record](reporting-experience-m1-verification.md) for its commands and evidence. No push, merge, tag or release is authorized by this plan alone.

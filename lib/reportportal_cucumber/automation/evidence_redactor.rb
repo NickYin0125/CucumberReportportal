@@ -24,9 +24,15 @@ module Automation
       alternatives = keys.map do |key|
         key.split(/[^a-z0-9]+/i).map { |part| Regexp.escape(part) }.join("[-_.]?")
       end.reject(&:empty?).uniq
-      value_pattern = /"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|Bearer[ \t]+[^\s,;&"'<>]+|[^\s,;&"'<>]+/
+      # Consume incomplete quoted values through the bounded input end, even after a dangling escape.
+      double_quoted_value = /\\?"(?:\\.|[^"\\]|\\\z)*(?:\\?"|\z)/
+      single_quoted_value = /\\?'(?:\\.|[^'\\]|\\\z)*(?:\\?'|\z)/
+      value_pattern = Regexp.union(
+        double_quoted_value, single_quoted_value,
+        /Bearer[ \t]+[^\s,;&"'<>]+/, /[^\s,;&"'<>]+/
+      )
       @key_value_pattern = Regexp.new(
-        "(\\b(?:#{alternatives.join('|')})\\b)([ \\t]*[:=][ \\t]*)(?:#{value_pattern.source})",
+        "(\\b(?:#{alternatives.join('|')})\\b\\\\?\"?)([ \\t\\r\\n]*[:=][ \\t\\r\\n]*)(?:#{value_pattern.source})",
         Regexp::IGNORECASE
       ).freeze
     end

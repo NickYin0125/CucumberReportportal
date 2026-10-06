@@ -2,6 +2,9 @@
 
 require "spec_helper"
 require "tmpdir"
+require "cucumber/hooks"
+require "cucumber/core/test/hook_step"
+require "cucumber/core/events/test_step_started"
 
 RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   FakeConfig = Struct.new(:handlers) do
@@ -225,6 +228,61 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     expect(background.fetch(:body)).to include("name" => "[Background] Given shared customer exists", "type" => "STEP", "hasStats" => false)
     expect(after_hook).to include(path: "/api/v1/demo/item/item-2")
     expect(after_hook.fetch(:body)).to include("name" => "After Hook: close browser", "type" => "AFTER_METHOD", "hasStats" => false)
+  end
+
+  context "with real Cucumber HookStep events" do
+    let(:native_start_items) { [] }
+    let(:native_formatter) { described_class.new(stub_config) }
+
+    before do
+      counter = 0
+      stub_request(:post, "https://rp.example.com/api/v1/demo/launch")
+        .to_return(status: 200, body: '{"id":"launch-1"}')
+      stub_request(:post, %r{\Ahttps://rp\.example\.com/api/v1/demo/item(?:/.*)?\z}).to_return do |request|
+        counter += 1
+        native_start_items << { path: request.uri.path, body: JSON.parse(request.body) }
+        { status: 200, body: { id: "item-#{counter}" }.to_json }
+      end
+      stub_request(:put, %r{\Ahttps://rp\.example\.com/api/v1/demo/item/.*\z})
+        .to_return(status: 200, body: '{"message":"ok"}')
+      stub_request(:put, "https://rp.example.com/api/v1/demo/launch/launch-1/finish")
+        .to_return(status: 200, body: '{"message":"ok"}')
+      native_formatter.ingest_event("type" => "test_run_started")
+      native_formatter.ingest_event("type" => "test_case_started", "feature_uri" => "features/native-hooks.feature",
+                                    "scenario_name" => "Native hooks", "scenario_line" => 3)
+    end
+
+    after do
+      native_formatter.ingest_event("type" => "test_step_finished", "status" => "passed")
+      native_formatter.ingest_event("type" => "test_case_finished", "status" => "passed")
+      native_formatter.ingest_event("type" => "test_run_finished", "success" => true)
+    end
+
+    { before: "BEFORE_METHOD", after: "AFTER_METHOD" }.each do |kind, rp_type|
+      it "maps the installed #{kind} HookStep to #{rp_type} under the Scenario" do
+        location = ::Cucumber::Core::Test::Location.new("features/support/hooks.rb", 10)
+        step = ::Cucumber::Hooks.public_send("#{kind}_hook", "native-#{kind}", location) {}
+        expect(step).to be_a(::Cucumber::Core::Test::HookStep)
+        expect(step.hook?).to eq(true)
+        expect(step.respond_to?(:hook_type)).to eq(false)
+
+        stub_config.handlers.fetch(:test_step_started).call(::Cucumber::Core::Events::TestStepStarted.new(step))
+
+        expect(native_start_items.last).to include(path: "/api/v1/demo/item/item-2")
+        expect(native_start_items.last.fetch(:body)).to include("type" => rp_type, "hasStats" => false, "parentUuid" => "item-2")
+      end
+    end
+
+    it "keeps a real nonhook Gherkin Step named After as STEP" do
+      location = ::Cucumber::Core::Test::Location.new("features/native-hooks.feature", 4)
+      step = ::Cucumber::Core::Test::Step.new("gherkin-after", "After a normal operation", location)
+      expect(step.hook?).to eq(false)
+
+      stub_config.handlers.fetch(:test_step_started).call(::Cucumber::Core::Events::TestStepStarted.new(step))
+
+      expect(native_start_items.last.fetch(:body)).to include("type" => "STEP", "hasStats" => false,
+                                                            "parentUuid" => "item-2", "name" => "After a normal operation")
+    end
   end
 
   it "detects background steps from the feature file when Cucumber events do not flag them" do
