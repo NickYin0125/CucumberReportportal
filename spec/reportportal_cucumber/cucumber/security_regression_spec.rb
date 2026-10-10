@@ -203,7 +203,7 @@ RSpec.describe "Public Cucumber security regression" do
   end
 
   %w[ordinary fallback].each do |mode|
-    it "keeps native public artifact metadata safe in a natural #{mode} transport-failure spool" do
+    it "keeps native public artifact metadata safe after transport failure with #{mode == 'fallback' ? 'an injected missing-artifact builder fault' : 'ordinary spool persistence'}" do
       feature = File.expand_path("../../fixtures/security_regression/security.feature", __dir__)
       steps = File.expand_path("../../fixtures/security_regression/steps.rb", __dir__)
       mock_helper = File.expand_path("../../support/rp_mock_server.rb", __dir__)
@@ -235,6 +235,24 @@ RSpec.describe "Public Cucumber security regression" do
           ReportportalCucumber::SpecSupport::RPMockServer.new(endpoint: endpoint).install!
           requests = []
           transport_cases = []
+          builder_faults = 0
+          original_build = ReportportalCucumber::Service::PayloadBuilder.method(:build_log_batch)
+          ReportportalCucumber::Service::PayloadBuilder.define_singleton_method(:build_log_batch) do |records|
+            missing_after_transport = ENV.fetch("SECURITY_SPOOL_MODE") == "fallback" && !requests.empty? &&
+              records.any? do |record|
+                payload = record.respond_to?(:to_h) ? record.to_h : record
+                attachment = payload[:attachment] || payload["attachment"] || {}
+                path = attachment[:path] || attachment["path"]
+                name = attachment[:name] || attachment["name"]
+                name.to_s.start_with?("long-legitimate-png-path-") &&
+                  path == ENV.fetch("SECURITY_LONG_PNG_PATH") && !File.file?(path)
+              end
+            if missing_after_transport
+              builder_faults += 1
+              raise RuntimeError, "Injected missing-artifact payload-builder failure after transport"
+            end
+            original_build.call(records)
+          end
           finite_transport_errors = {
             original: '{"\\\\u0070assword":"SECURITY_NATIVE_TRANSPORT_SECRET","detail":"safe offline transport diagnostic"}',
             object_close: 'failed: {]"\\\\u0070assword":"SECURITY_READY5_OBJECT_CLOSE"}',
@@ -268,7 +286,8 @@ RSpec.describe "Public Cucumber security regression" do
             File.readlines(path, chomp: true).map { |line| JSON.parse(line) }
           end
           File.write(result_path, JSON.generate(status: status || 0, stdout: stdout.string,
-            stderr: stderr.string, requests: requests, spool: spool, transport_cases: transport_cases))
+            stderr: stderr.string, requests: requests, spool: spool, transport_cases: transport_cases,
+            builder_faults: builder_faults))
         RUBY
 
         stdout, stderr, process_status = Open3.capture3(
@@ -292,7 +311,36 @@ RSpec.describe "Public Cucumber security regression" do
           "trailing_separator", "surrounding_separators"
         )
         raw_records = result.fetch("spool").select { |record| record["rawSpool"] }
+        mode == "fallback" ? expect(result.fetch("builder_faults")).to(be > 0) : expect(result.fetch("builder_faults")).to(eq(0))
         mode == "fallback" ? expect(raw_records).not_to(be_empty) : expect(raw_records).to(be_empty)
+        if mode == "fallback"
+          missing_path_record = raw_records.find do |record|
+            record.dig("attachment", "name")&.start_with?("long-legitimate-png-path-")
+          end
+          expect(missing_path_record).not_to be_nil
+          expect(missing_path_record).to include("itemUuid", "launchUuid", "message")
+          expect(missing_path_record.fetch("itemUuid")).to match(/\A[0-9a-f-]{36}\z/i)
+          expect(missing_path_record.fetch("launchUuid")).to match(/\A[0-9a-f-]{36}\z/i)
+          expect(missing_path_record.fetch("message")).to include(
+            "Failure evidence: long-legitimate-png-path-#{'n' * 140}.png"
+          )
+          expect(missing_path_record.fetch("attachment")).to include(
+            "name" => "long-legitimate-png-path-#{'n' * 140}.png", "mime" => "image/png",
+            "missing" => true, "unavailable" => true
+          )
+          expect(missing_path_record.fetch("attachment")).not_to have_key("spooledPath")
+
+          byte_record = result.fetch("spool").find do |record|
+            record.fetch("message", "").include?("Failure evidence: known-good.png")
+          end
+          expect(byte_record).not_to be_nil
+          expect(byte_record.fetch("itemUuid")).to match(/\A[0-9a-f-]{36}\z/i)
+          expect(byte_record.fetch("launchUuid")).to eq(missing_path_record.fetch("launchUuid"))
+          expect(byte_record.fetch("file")).to include("name" => "known-good.png")
+          expect(byte_record).not_to have_key("rawSpool")
+          expect(byte_record).not_to have_key("attachment")
+          expect(byte_record).not_to include("missing", "unavailable", "spooledPath")
+        end
         request_text = result.fetch("requests").map { |body| Base64.strict_decode64(body) }.join("\n")
         all_sinks = [stdout, stderr, result.fetch("stdout"), result.fetch("stderr"), File.read(messages),
                      request_text, result.fetch("spool").to_json].join("\n")

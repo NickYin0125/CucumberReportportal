@@ -7,7 +7,7 @@ module ReportportalCucumber
   module Transport
     # Shared Net::HTTP transport with retry/backoff and per-thread connection reuse.
     class HTTPClient
-      Response = Struct.new(:status, :headers, :body, keyword_init: true)
+      Response = Struct.new(:status, :headers, :body, :may_duplicate, keyword_init: true)
 
       class Error < ReportportalCucumber::ReportingError
         attr_reader :response
@@ -29,38 +29,66 @@ module ReportportalCucumber
       # @param path [String]
       # @param body [Hash]
       # @param headers [Hash]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
       # @return [Response]
-      def post_json(path:, body:, headers: {})
+      def post_json(path:, body:, headers: {}, deadline: nil)
+        encoded_body = JSON.generate(body)
+        enforce_log_json_limit!(path: path, body: encoded_body)
         request(
           method: :post,
           path: path,
-          body: JSON.generate(body),
-          headers: default_headers.merge(headers).merge("Content-Type" => "application/json")
+          body: encoded_body,
+          headers: default_headers.merge(headers).merge("Content-Type" => "application/json"),
+          deadline: deadline
         )
       end
 
       # @param path [String]
       # @param body [Hash]
       # @param headers [Hash]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
       # @return [Response]
-      def put_json(path:, body:, headers: {})
+      def put_json(path:, body:, headers: {}, deadline: nil)
         request(
           method: :put,
           path: path,
           body: JSON.generate(body),
-          headers: default_headers.merge(headers).merge("Content-Type" => "application/json")
+          headers: default_headers.merge(headers).merge("Content-Type" => "application/json"),
+          deadline: deadline
+        )
+      end
+
+      # @param path [String]
+      # @param headers [Hash]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
+      # @return [Response]
+      def get_json(path:, headers: {}, deadline: nil)
+        request(
+          method: :get,
+          path: path,
+          body: nil,
+          headers: default_headers.merge(headers),
+          deadline: deadline
         )
       end
 
       # @param path [String]
       # @param parts [Array<Hash>]
       # @param headers [Hash]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
       # @return [Response]
-      def post_multipart(path:, parts:, headers: {})
-        boundary = "----rp#{SecureRandom.hex(12)}"
+      def post_multipart(path:, parts:, headers: {}, deadline: nil)
+        boundary = MultipartHelper.standard_boundary
         normalized_parts = MultipartHelper.normalize_parts(parts)
+        max_bytes = log_request?(path) ? batch_max_bytes : nil
+        expected_length = MultipartHelper.encoded_length(parts: normalized_parts, boundary: boundary)
+        raise MultipartHelper::SizeLimitError if max_bytes && expected_length > max_bytes
+
         curl_artifacts = prepare_multipart_curl_artifacts(path: path, parts: normalized_parts)
-        body_source = MultipartHelper.body_source(parts: normalized_parts, boundary: boundary)
+        body_source = MultipartHelper.body_source(parts: normalized_parts, boundary: boundary, max_bytes: max_bytes)
+        actual_length = body_source.stream ? body_source.length : body_source.body.bytesize
+        raise MultipartHelper::SizeLimitError if max_bytes && actual_length > max_bytes
+
         request(
           method: :post,
           path: path,
@@ -68,7 +96,8 @@ module ReportportalCucumber
           body_stream: body_source.stream,
           content_length: body_source.length,
           headers: default_headers.merge(headers).merge("Content-Type" => "multipart/form-data; boundary=#{boundary}"),
-          curl_parts: curl_artifacts
+          curl_parts: curl_artifacts,
+          deadline: deadline
         )
       ensure
         body_source&.tempfile&.close!
@@ -83,6 +112,24 @@ module ReportportalCucumber
 
       private
 
+      # @param path [String]
+      # @param body [String]
+      # @return [void]
+      def enforce_log_json_limit!(path:, body:)
+        raise MultipartHelper::SizeLimitError if log_request?(path) && body.bytesize > batch_max_bytes
+      end
+
+      # @param path [String]
+      # @return [Boolean]
+      def log_request?(path)
+        build_uri(path).path.match?(%r{(?:\A|/)log\z})
+      end
+
+      # @return [Integer]
+      def batch_max_bytes
+        @config.respond_to?(:batch_max_bytes) ? @config.batch_max_bytes : 8 * 1024 * 1024
+      end
+
       # @return [Hash]
       def default_headers
         {
@@ -96,20 +143,28 @@ module ReportportalCucumber
       # @param body [String]
       # @param headers [Hash]
       # @return [Response]
-      def request(method:, path:, body:, headers:, curl_parts: nil, body_stream: nil, content_length: nil)
+      def request(method:, path:, body:, headers:, curl_parts: nil, body_stream: nil, content_length: nil,
+                  deadline: nil)
         attempts = 0
 
         begin
           attempts += 1
-          response = perform(
-            method: method,
-            path: path,
-            body: body,
-            headers: headers,
-            curl_parts: curl_parts,
-            body_stream: body_stream,
-            content_length: content_length
-          )
+          remaining = deadline&.remaining
+          raise Timeout::Error, "reporting deadline expired" if remaining && remaining <= 0
+          response = if remaining
+                       Timeout.timeout(remaining) do
+                         perform(
+                           method: method, path: path, body: body, headers: headers, curl_parts: curl_parts,
+                           body_stream: body_stream, content_length: content_length
+                         )
+                       end
+                     else
+                       perform(
+                         method: method, path: path, body: body, headers: headers, curl_parts: curl_parts,
+                         body_stream: body_stream, content_length: content_length
+                       )
+                     end
+          response.may_duplicate = attempts > 1 if response.respond_to?(:may_duplicate=)
           return response unless retriable_response?(response)
 
           raise Error.new("Retriable HTTP #{response.status}", response: response)
@@ -117,12 +172,13 @@ module ReportportalCucumber
           close_thread_sessions
           raise error if attempts >= @config.retry_attempts
 
-          sleep(backoff_for(attempts))
+          sleep([backoff_for(attempts), deadline ? deadline.remaining : Float::INFINITY].min)
           retry
         rescue Error => error
-          raise error if fatal_response?(error.response) || attempts >= @config.retry_attempts
+          raise error unless retriable_response?(error.response)
+          raise error if attempts >= @config.retry_attempts
 
-          sleep(backoff_for(attempts))
+          sleep([backoff_for(attempts), deadline ? deadline.remaining : Float::INFINITY].min)
           retry
         end
       end
@@ -230,6 +286,8 @@ module ReportportalCucumber
           Net::HTTP::Post
         when :put
           Net::HTTP::Put
+        when :get
+          Net::HTTP::Get
         else
           raise ArgumentError, "Unsupported HTTP method: #{method}"
         end
@@ -241,7 +299,8 @@ module ReportportalCucumber
         Response.new(
           status: response.code.to_i,
           headers: response.each_header.to_h,
-          body: parse_body(response.body.to_s)
+          body: parse_body(response.body.to_s),
+          may_duplicate: false
         )
       end
 
@@ -257,12 +316,6 @@ module ReportportalCucumber
       # @return [Boolean]
       def retriable_response?(response)
         (response && [408, 429].include?(response.status)) || (response && response.status >= 500)
-      end
-
-      # @param response [Response, nil]
-      # @return [Boolean]
-      def fatal_response?(response)
-        response && [400, 401, 403].include?(response.status)
       end
 
       # @return [Array<Class>]

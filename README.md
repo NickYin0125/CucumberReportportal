@@ -102,8 +102,17 @@ rp_log(JSON.pretty_generate(response), "INFO")
 - `RP_RERUN_OF`
 - `RP_REPORTING_ASYNC`
 - `RP_BATCH_SIZE_LOGS`
+- `RP_BATCH_MAX_BYTES`
+- `RP_QUEUE_MAX_RECORDS`
+- `RP_QUEUE_MAX_BYTES`
+- `RP_QUEUE_OVERFLOW_POLICY`
+- `RP_QUEUE_ADMISSION_TIMEOUT_MS`
 - `RP_FLUSH_INTERVAL`
 - `RP_FAIL_ON_REPORTING_ERROR`
+- `RP_CONFIG` (YAML profile path; environment variables override YAML values)
+- `RP_SPOOL_DIR`
+- `RP_SPOOL_MAX_BYTES`
+- `RP_EXIT_FLUSH_TIMEOUT_MS` (one shared monotonic shutdown/finalization budget)
 - `RP_CLIENT_JOIN`
 - `RP_CLIENT_JOIN_LOCK_FILE_NAME`
 - `RP_CLIENT_JOIN_SYNC_FILE_NAME`
@@ -118,6 +127,144 @@ rp_log(JSON.pretty_generate(response), "INFO")
 - `RP_MINIO_ACCESS_KEY_ID`
 - `RP_MINIO_SECRET_ACCESS_KEY`
 - `RP_MINIO_REGION`
+
+Log delivery is bounded by default: at most 1,000 reserved records and 16 MiB
+of accounted resident data (including 256 bytes of metadata allowance per
+record), with requests limited to 20 entries and 8 MiB of complete serialized
+body. Queue overflow rejects new logs and is visible in
+`Formatter#reporting_diagnostics`; `RP_QUEUE_OVERFLOW_POLICY=block` opts into a
+bounded admission wait (100 ms by default). Configure positive integer limits
+in YAML or with the corresponding `RP_*` variables. File-backed attachments
+retain their paths for streaming. `StringIO` contributes its complete backing
+string without changing its cursor; other non-path IO sources are explicitly
+rejected without reading them. The default rejection policy is intentionally
+observable but lossy under overload, not a zero-loss guarantee. The
+`sent_batches` diagnostic counts successful local API calls, not ReportPortal
+log receipts.
+
+`Runtime::LogBuffer#flush` and `#shutdown` (backed by
+`Service::QueueProcessor`) retain Boolean compatibility and mean only that
+accepted work locally settled before the call returned. The receipt-returning
+`flush_receipt(timeout:)` and `shutdown_receipt(timeout:)` methods are also on
+those classes; `Cucumber::Formatter` exposes only `reporting_receipt`. Use that
+formatter method for the final frozen `DeliveryReceipt`. Its `cutoff`
+is the accepted sequence captured when the barrier began; producers accepted
+later do not extend it. Receipt fields include `settled`, v1 `confirmed`,
+v2 `accepted_awaiting_persistence`, `spooled`, `failed`, `ambiguous`,
+`possible_duplicates`, `pending`, and `rejected`. For a flush/shutdown receipt,
+`rejected` is the cumulative rejection count observed at that cutoff call;
+rejections have no accepted sequence and do not extend the cutoff. In
+`reporting_receipt`, it is the whole-run cumulative total. `ambiguous` may also
+be represented in the local spool; a spool copy does not make server
+acceptance known. Async v2 acceptance is explicitly not proof of persistence.
+
+`local_settled` is separate from `complete`. Whole-report `complete` is false
+when any accepted log remains unconfirmed, an admission was rejected, evidence
+capture did not close in time, a reporting start/finish call failed, or video
+upload degraded to plaintext. `RP_FAIL_ON_REPORTING_ERROR` opts into propagating
+reporting exceptions from synchronous formatter calls when there is no original
+business failure. This is an exception-based opt-in, not a complete-report
+policy: a background log-only failure can leave a passing run at exit `0` with
+`complete=false`, even when strict reporting is enabled. Consumers requiring
+reporting completeness must inspect the final `reporting_receipt`. Strict
+reporting does not replace or mask an original business exception. The receipt
+uses cumulative bounded counters and a bounded number of
+active cutoff waiters; it does not retain per-log payloads or a run-long
+outcome map. Shutdown/finalization shares one monotonic budget across its
+barrier, transport retries, capture closure, item/launch finishes, and worker
+join. A zero-timeout shutdown returns immediately and does not synchronously
+spool outstanding work.
+
+HTTP retries remain enabled, but a successful log response after a retry is
+marked in `possible_duplicates`: an earlier attempt may have reached
+ReportPortal before its response was lost. Such a record can be confirmed and
+flagged as possibly duplicated; the whole-run receipt will not claim `complete`.
+
+A Cucumber consumer can retain the reporter while Cucumber is active and inspect
+the reporting result after normal formatter completion, without changing the
+business result:
+
+```ruby
+reporter = nil
+
+Before do
+  reporter ||= ReportportalCucumber.current_runtime
+end
+
+at_exit do
+  receipt = reporter&.reporting_receipt
+  warn("ReportPortal report incomplete: #{receipt.to_h}") if receipt && !receipt.complete
+  # Preserve the process/business exit status; reporting completeness is separate.
+end
+```
+
+The runtime can be cleared after a normal Cucumber run, so retain the reporter
+in the lexical `reporter` variable in `Before`. The formatter exposes
+`reporting_receipt`; it does not expose `flush`, `shutdown`, `flush_receipt`, or
+`shutdown_receipt`. During interruption, `at_exit` ordering is best-effort and
+can precede formatter shutdown; the receipt may still be pending.
+
+See the [M4-B implementation contract](docs/design/reporting-experience-m4b-implementation.md)
+and [M4-B verification record](docs/design/reporting-experience-m4b-verification.md)
+for the receipt schema and acceptance evidence.
+
+### Durable spool and controlled replay
+
+New failures are stored as private, versioned spool transactions under
+`RP_SPOOL_DIR` (default `.reportportal-spool`). `RP_SPOOL_MAX_BYTES` defaults to
+`268435456` bytes and must be a positive decimal integer. Existing unversioned
+NDJSON remains available for inspection but is not imported or replayed
+automatically. Spool data may contain sensitive test evidence; protect and
+retain the directory accordingly.
+`RP_CONFIG` supplies YAML defaults/profile values; environment variables
+override those values. For replay, `--spool-dir` explicitly selects the spool
+root. `RP_EXIT_FLUSH_TIMEOUT_MS` is shared across finalization rather than
+multiplied per item. `RP_FAIL_ON_REPORTING_ERROR` is the exception-based strict
+opt-in described above, not a requirement that every log be confirmed.
+
+Replay is transaction-scoped and dry-run by default. Dry-run reads and validates
+the selected transaction without credentials or HTTP requests. Execution
+requires an explicit `--execute`, checks that the original launch and item are
+still open, and refuses endpoint/project mismatches. It does not reopen or
+recreate ReportPortal targets. A previously interrupted `in_flight` entry is
+uncertain; `--allow-duplicates` explicitly consents to possible duplicate
+delivery for this selected transaction only. Confirmed entries are never sent
+again. Each entry receives one HTTP attempt, so a lost response remains
+ambiguous rather than being retried automatically. Async v2 replay is not
+confirmed and is refused.
+
+Successful dry-run inspection does not mean the transaction is replayable.
+Its `unavailable_artifacts` count is bounded to `0..1000` and includes known
+unavailable markers on confirmed siblings; `unavailable_artifact_reasons` is
+either `[]` or `["source_unavailable"]`, without artifact names or paths.
+These markers have no replayable source bytes; retain the transaction and
+recover original evidence separately. Replay never fabricates replacement
+bytes. A missing published blob or checksum mismatch remains a hard error
+(exit `2`), not a successful unavailable-marker inspection.
+
+To discover transaction IDs without printing evidence contents, list the
+committed marker filenames. This shows candidates only; the selected
+transaction is still fully validated by the dry-run command, and malformed
+committed transactions are reported as errors rather than treated as clean.
+
+```bash
+spool_dir="${RP_SPOOL_DIR:-.reportportal-spool}"
+for marker in "$spool_dir"/tx-*.ndjson; do
+  [ -f "$marker" ] || continue
+  printf '%s\n' "${marker##*/}" | sed 's/\.ndjson$//'
+done
+```
+
+```bash
+reportportal-spool --spool-dir .reportportal-spool --transaction TRANSACTION_ID --dry-run
+RP_ENDPOINT=https://reportportal.example RP_PROJECT=project RP_API_KEY=... \
+  reportportal-spool --spool-dir .reportportal-spool --transaction TRANSACTION_ID \
+  --execute --timeout 30
+```
+
+Exit `0` means dry-run inspection completed or requested confirmations were
+persisted; execute exits `2` if evidence remains refused, pending, failed, or
+ambiguous; invalid CLI syntax exits `1`. A dry-run never sends data.
 
 ### Scenario identity migration
 

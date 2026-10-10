@@ -560,6 +560,10 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     allow(ReportportalCucumber::Runtime::LogBuffer).to receive(:new).and_return(log_buffer)
     allow(log_buffer).to receive(:emit_log) { call_order << :emit_log }
     allow(log_buffer).to receive(:flush) { call_order << :flush_before_finish; true }
+    allow(log_buffer).to receive(:flush_receipt) do
+      call_order << :flush_before_finish
+      double(local_settled: true)
+    end
     allow(log_buffer).to receive(:shutdown).and_return(true)
     allow(api).to receive(:start_item).and_return("manual-uuid")
     allow(api).to receive(:finish_item) { call_order << :finish_item }
@@ -575,6 +579,37 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     end
 
     expect(call_order).to eq(%i[emit_log flush_before_finish finish_item])
+    formatter.instance_variable_set(:@finalized, true)
+  end
+
+  it "preserves the original manual-step error when strict finish reporting and its warning logger fail" do
+    api = instance_double(ReportportalCucumber::ReportPortal::API)
+    allow(ReportportalCucumber::Runtime::LogBuffer).to receive(:new).and_return(
+      instance_double(ReportportalCucumber::Runtime::LogBuffer, emit_log: nil, shutdown: true)
+    )
+    allow(api).to receive(:start_item).and_return("manual-uuid")
+    allow(api).to receive(:finish_item).and_raise(ReportportalCucumber::ReportingError, "finish failed")
+    allow(ReportportalCucumber.logger).to receive(:warn).and_raise(IOError, "logger unavailable")
+    allow(config).to receive(:fail_on_reporting_error?).and_return(true)
+
+    formatter = described_class.new(stub_config)
+    formatter.instance_variable_set(:@api, api)
+    formatter.instance_variable_set(:@launch_uuid, "launch-uuid")
+    scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(
+      uuid: "scenario-1", kind: :scenario, name: "Scenario", type: "STEP", has_stats: true
+    )
+    formatter.runtime_context.start_scenario("features/a.feature:1:uniq", scenario)
+    allow(formatter).to receive(:flush_before_finish)
+    allow(formatter).to receive(:emit_error_log)
+
+    original = RuntimeError.new("business failed")
+    raised = nil
+    expect do
+      formatter.with_manual_step("Manual group") { raise original }
+    end.to raise_error { |error| raised = error }
+
+    expect(raised).to equal(original)
+    expect(raised.message).to eq("business failed")
     formatter.instance_variable_set(:@finalized, true)
   end
 end

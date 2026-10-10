@@ -11,6 +11,21 @@ module ReportportalCucumber
       FILE_CHUNK_SIZE = 1024 * 1024
       BodySource = Struct.new(:body, :stream, :length, :tempfile, keyword_init: true)
 
+      class SizeLimitError < ArgumentError
+        # @param message [String]
+        # @return [void]
+        def initialize(message = "ReportPortal log request exceeds configured byte limit")
+          super(message)
+        end
+      end
+
+      class CountLimitError < SizeLimitError
+        # @return [void]
+        def initialize
+          super("ReportPortal log batch exceeds configured count limit")
+        end
+      end
+
       module_function
 
       # @param parts [Array<Hash>]
@@ -31,6 +46,35 @@ module ReportportalCucumber
         end
         buffer << "--#{boundary}--\r\n".b
         buffer
+      end
+
+      # @param entries [Array<Hash>]
+      # @param files [Array<Hash>]
+      # @return [Integer]
+      def log_batch_bytes(entries:, files:)
+        return JSON.generate(entries.first).bytesize if files.empty? && entries.length == 1
+
+        parts = [{ name: "json_request_part", content_type: "application/json", body: JSON.generate(entries) }]
+        Array(files).each do |file|
+          part = { name: "file", filename: file.fetch(:name), content_type: file.fetch(:mime) }
+          file[:path] ? part[:path] = file.fetch(:path) : part[:body] = file.fetch(:bytes)
+          parts << part
+        end
+        encoded_length(parts: parts, boundary: standard_boundary)
+      end
+
+      # @param parts [Array<Hash>]
+      # @param boundary [String]
+      # @return [Integer]
+      def encoded_length(parts:, boundary:)
+        normalized_parts = normalize_parts(parts)
+        validate_alignment!(normalized_parts)
+        encoded_length_normalized(normalized_parts, boundary)
+      end
+
+      # @return [String]
+      def standard_boundary
+        "----rp#{SecureRandom.hex(12)}"
       end
 
       # @param filename [String, nil]
@@ -160,16 +204,27 @@ module ReportportalCucumber
 
       # @param parts [Array<Hash>]
       # @param boundary [String]
+      # @param max_bytes [Integer, nil]
       # @return [BodySource]
-      def body_source(parts:, boundary:)
+      def body_source(parts:, boundary:, max_bytes: nil)
         normalized_parts = normalize_parts(parts)
         validate_alignment!(normalized_parts)
-        return BodySource.new(body: encode_normalized(normalized_parts, boundary), length: nil) unless streaming_required?(normalized_parts)
+        expected_length = encoded_length_normalized(normalized_parts, boundary)
+        raise SizeLimitError if max_bytes && expected_length > max_bytes
+
+        unless streaming_required?(normalized_parts)
+          body = encode_normalized(normalized_parts, boundary)
+          raise SizeLimitError if max_bytes && body.bytesize > max_bytes
+
+          return BodySource.new(body: body, length: nil)
+        end
 
         tempfile = Tempfile.new(["reportportal-multipart", ".body"])
         tempfile.binmode
-        write_parts(io: tempfile, parts: normalized_parts, boundary: boundary)
+        write_parts(io: tempfile, parts: normalized_parts, boundary: boundary, max_bytes: max_bytes)
         tempfile.flush
+        raise SizeLimitError if max_bytes && tempfile.size > max_bytes
+
         tempfile.rewind
         BodySource.new(stream: tempfile, length: tempfile.size, tempfile: tempfile)
       rescue StandardError
@@ -182,10 +237,7 @@ module ReportportalCucumber
       # @param boundary [String]
       # @return [void]
       def add_file_part(buffer:, part:, boundary:)
-        disposition = %(form-data; name="#{quoted_parameter(part.fetch(:name))}"; filename="#{quoted_parameter(part.fetch(:filename))}")
-        buffer << "--#{boundary}\r\n".b
-        buffer << "Content-Disposition: #{disposition}\r\n".b
-        buffer << "Content-Type: #{part.fetch(:content_type)}\r\n\r\n".b
+        buffer << part_header(part, boundary)
         buffer << part.fetch(:body)
         buffer << "\r\n".b
       end
@@ -195,10 +247,7 @@ module ReportportalCucumber
       # @param boundary [String]
       # @return [void]
       def add_form_part(buffer:, part:, boundary:)
-        disposition = %(form-data; name="#{quoted_parameter(part.fetch(:name))}")
-        buffer << "--#{boundary}\r\n".b
-        buffer << "Content-Disposition: #{disposition}\r\n".b
-        buffer << "Content-Type: #{part.fetch(:content_type)}\r\n\r\n".b
+        buffer << part_header(part, boundary)
         buffer << part.fetch(:body)
         buffer << "\r\n".b
       end
@@ -216,54 +265,77 @@ module ReportportalCucumber
       # @param parts [Array<Hash>]
       # @param boundary [String]
       # @return [void]
-      def write_parts(io:, parts:, boundary:)
+      def write_parts(io:, parts:, boundary:, max_bytes: nil)
         parts.each do |part|
           if part[:filename]
-            write_file_part(io: io, part: part, boundary: boundary)
+            write_file_part(io: io, part: part, boundary: boundary, max_bytes: max_bytes)
           else
-            write_form_part(io: io, part: part, boundary: boundary)
+            write_form_part(io: io, part: part, boundary: boundary, max_bytes: max_bytes)
           end
         end
-        write_bytes(io, "--#{boundary}--\r\n".b)
+        write_bytes(io, "--#{boundary}--\r\n".b, max_bytes: max_bytes)
       end
 
       # @param io [#<<, #write]
       # @param part [Hash]
       # @param boundary [String]
       # @return [void]
-      def write_file_part(io:, part:, boundary:)
-        disposition = %(form-data; name="#{quoted_parameter(part.fetch(:name))}"; filename="#{quoted_parameter(part.fetch(:filename))}")
-        write_bytes(io, "--#{boundary}\r\n".b)
-        write_bytes(io, "Content-Disposition: #{disposition}\r\n".b)
-        write_bytes(io, "Content-Type: #{part.fetch(:content_type)}\r\n\r\n".b)
+      def write_file_part(io:, part:, boundary:, max_bytes: nil)
+        write_bytes(io, part_header(part, boundary), max_bytes: max_bytes)
         if part[:path]
           File.open(part.fetch(:path), "rb") do |file|
-            IO.copy_stream(file, io)
+            if max_bytes
+              while (chunk = file.read([FILE_CHUNK_SIZE, max_bytes - io.pos + 1].min))
+                raise SizeLimitError if chunk.bytesize > max_bytes - io.pos
+
+                write_bytes(io, chunk, max_bytes: max_bytes)
+              end
+            else
+              IO.copy_stream(file, io)
+            end
           end
         else
-          write_bytes(io, part.fetch(:body))
+          write_bytes(io, part.fetch(:body), max_bytes: max_bytes)
         end
-        write_bytes(io, "\r\n".b)
+        write_bytes(io, "\r\n".b, max_bytes: max_bytes)
       end
 
       # @param io [#<<, #write]
       # @param part [Hash]
       # @param boundary [String]
       # @return [void]
-      def write_form_part(io:, part:, boundary:)
-        disposition = %(form-data; name="#{quoted_parameter(part.fetch(:name))}")
-        write_bytes(io, "--#{boundary}\r\n".b)
-        write_bytes(io, "Content-Disposition: #{disposition}\r\n".b)
-        write_bytes(io, "Content-Type: #{part.fetch(:content_type)}\r\n\r\n".b)
-        write_bytes(io, part.fetch(:body))
-        write_bytes(io, "\r\n".b)
+      def write_form_part(io:, part:, boundary:, max_bytes: nil)
+        write_bytes(io, part_header(part, boundary), max_bytes: max_bytes)
+        write_bytes(io, part.fetch(:body), max_bytes: max_bytes)
+        write_bytes(io, "\r\n".b, max_bytes: max_bytes)
       end
 
       # @param io [#<<, #write]
       # @param bytes [String]
       # @return [void]
-      def write_bytes(io, bytes)
+      def write_bytes(io, bytes, max_bytes: nil)
+        raise SizeLimitError if max_bytes && io.pos + bytes.bytesize > max_bytes
+
         io.respond_to?(:write) ? io.write(bytes) : io << bytes
+      end
+
+      # @param part [Hash]
+      # @param boundary [String]
+      # @return [String]
+      def part_header(part, boundary)
+        disposition = %(form-data; name="#{quoted_parameter(part.fetch(:name))}")
+        disposition += %(; filename="#{quoted_parameter(part.fetch(:filename))}") if part[:filename]
+        "--#{boundary}\r\nContent-Disposition: #{disposition}\r\nContent-Type: #{part.fetch(:content_type)}\r\n\r\n".b
+      end
+
+      # @param parts [Array<Hash>]
+      # @param boundary [String]
+      # @return [Integer]
+      def encoded_length_normalized(parts, boundary)
+        parts.sum do |part|
+          part_header(part, boundary).bytesize +
+            (part[:path] ? File.size(part.fetch(:path)) : part.fetch(:body).bytesize) + 2
+        end + "--#{boundary}--\r\n".b.bytesize
       end
 
       # @param body [Object]

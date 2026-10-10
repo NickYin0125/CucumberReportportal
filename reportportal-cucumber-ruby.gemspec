@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
       "LICENSE",
       "README.md",
       "examples/**/*",
+      "exe/**/*",
       "features/**/*",
       "lib/**/*",
       "spec/**/*",
@@ -33,6 +34,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.bindir = "exe"
+  spec.executables = Dir["exe/*"].map { |path| File.basename(path) }
   spec.require_paths = ["lib"]
 
   spec.add_dependency "cucumber", ">= 9.0", "< 11.0"

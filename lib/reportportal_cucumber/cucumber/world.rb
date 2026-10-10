@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "stringio"
+require "tempfile"
+
 module ReportportalCucumber
   module Cucumber
     # World DSL exposed to step definitions.
@@ -85,11 +88,13 @@ module ReportportalCucumber
 
       private
 
-      # @param source [#read, String]
+      # @param source [String, File, Tempfile, StringIO, #read]
       # @param name [String, nil]
       # @param mime [String, nil]
       # @return [Hash]
       def build_attachment_payload(source, name:, mime:)
+        name = nil unless name.nil? || name.instance_of?(String)
+        mime = nil unless mime.nil? || mime.instance_of?(String)
         if (path = attachment_path(source))
           filename = name || File.basename(path)
           content_type = Transport::MultipartHelper.content_type_for(
@@ -103,14 +108,7 @@ module ReportportalCucumber
           }
         end
 
-        bytes =
-          if source.respond_to?(:read)
-            data = source.read
-            source.rewind if source.respond_to?(:rewind)
-            data
-          else
-            source.to_s
-          end
+        bytes = source.instance_of?(StringIO) ? source.string : source
         filename = name || Service::PayloadBuilder.default_attachment_name(mime)
         content_type = Transport::MultipartHelper.content_type_for(filename: filename, declared_type: mime)
 
@@ -124,16 +122,12 @@ module ReportportalCucumber
       # @param source [Object]
       # @return [String, nil]
       def attachment_path(source)
-        path =
-          if source.is_a?(String)
-            source
-          elsif source.respond_to?(:path)
-            source.path.to_s
-          end
-        return nil unless path && File.file?(File.expand_path(path))
+        path = source if source.instance_of?(String)
+        path = source.path if source.instance_of?(File) || source.instance_of?(Tempfile)
+        return nil unless path && File.file?(path)
 
         File.expand_path(path)
-      rescue ArgumentError
+      rescue ArgumentError, SystemCallError
         nil
       end
 

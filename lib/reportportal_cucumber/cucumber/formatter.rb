@@ -33,6 +33,15 @@ module ReportportalCucumber
         @feature_states = {}
         @scenario_states = {}
         @identity_warnings = Set.new
+        @evidence_admission_warning_mutex = Mutex.new
+        @evidence_admission_warning_emitted = false
+        @reporting_failures = 0
+        @capture_close_timeouts = 0
+        @finalization_deadline = nil
+        @finalization_finished = false
+        @business_failed = false
+        @strict_reporting_error = nil
+        @incomplete_summary_emitted = false
         @stable_scenario_outcomes = Hash.new { |hash, key| hash[key] = {} }
         @launch_uuid = nil
         @finalized = false
@@ -120,6 +129,18 @@ module ReportportalCucumber
         capture_target
       end
 
+      # @return [Hash] Immutable, thread-safe queue admission diagnostics.
+      def reporting_diagnostics
+        @log_buffer.diagnostics
+      end
+
+      # @return [ReportportalCucumber::Service::DeliveryReceipt]
+      def reporting_receipt
+        @log_buffer.reporting_receipt(capture_close_timeouts: @capture_close_timeouts,
+                                      metadata_failures: @reporting_failures,
+                                      finalization_complete: @finalization_finished)
+      end
+
       # @param action [Object]
       # @param error [Object]
       # @param url [String, nil]
@@ -151,9 +172,10 @@ module ReportportalCucumber
         summary = redactor.redact_text(rendered.fetch(:summary, rendered.fetch("summary", "Failure evidence")))
         diagnostic = rendered[:details] || rendered["details"]
         message = [summary, diagnostic && redactor.redact_text(diagnostic)].compact.reject(&:empty?).join("\n\n")
+        admissions = []
         published = runtime_context.publish_capture_target(selected, launch_uuid: @launch_uuid) do |open_item|
-          @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid, message: message,
-                               level: :error, timestamp: monotonic_timestamp(Time.now))
+          admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid, message: message,
+                                              level: :error, timestamp: monotonic_timestamp(Time.now))
           payloads.each do |payload|
             name = payload.fetch(:name)
             attachment = if payload.key?(:path)
@@ -162,13 +184,17 @@ module ReportportalCucumber
                            bytes = payload.fetch(:bytes)
                            { name: name, mime: payload.fetch(:mime), bytes: bytes }
                          end
-            @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid,
-                                 message: "Failure evidence: #{name}", level: :error,
-                                 timestamp: monotonic_timestamp(Time.now), attachment: attachment)
+            admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid,
+                                                message: "Failure evidence: #{name}", level: :error,
+                                                timestamp: monotonic_timestamp(Time.now), attachment: attachment)
           end
         end
         unless published
           ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target closed before publication")
+          return false
+        end
+        unless admissions.all?
+          warn_evidence_admission_once
           return false
         end
         true
@@ -203,6 +229,7 @@ module ReportportalCucumber
         start_time = monotonic_timestamp(Time.now)
         local_uuid = SecureRandom.uuid
         failure = nil
+        active_original = $!
         item_uuid = safe_reporting_call(fallback: local_uuid) do
           @api.start_item(
             name: name,
@@ -236,8 +263,8 @@ module ReportportalCucumber
         if item_uuid || local_uuid
           close_capture_target(capture_target) if capture_target
           flush_before_finish
-          safe_reporting_call do
-            @api.finish_item(
+          safe_reporting_call(preserve_business_exception: !active_original.nil? || !failure.nil?) do
+            finish_item_request(
               item_uuid: item_uuid || local_uuid,
               launch_uuid: @launch_uuid,
               end_time: monotonic_timestamp(Time.now),
@@ -618,6 +645,8 @@ module ReportportalCucumber
         status = extract_status(event)
         if status == "failed"
           error = extract_error(event)
+          # Native Cucumber can report a strict formatter exception as another failed-step event.
+          @business_failed ||= !error.equal?(@strict_reporting_error)
           emit_error_log(item_uuid: item.uuid, error: error, timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now))
         end
 
@@ -626,7 +655,7 @@ module ReportportalCucumber
         flush_before_finish
         finish_time = monotonic_timestamp(extract_timestamp(event) || Time.now)
         safe_reporting_call do
-          @api.finish_item(
+          finish_item_request(
             item_uuid: item.uuid,
             launch_uuid: @launch_uuid,
             end_time: finish_time,
@@ -643,6 +672,8 @@ module ReportportalCucumber
       # @return [void]
       def handle_test_case_finished(event)
         return unless reporting_enabled?
+
+        @business_failed ||= extract_status(event).to_s.downcase == "failed"
 
         scenario_key = runtime_context.current_scenario_key
         return unless @scenario_states[scenario_key]
@@ -684,10 +715,12 @@ module ReportportalCucumber
       def finalize_reporting(status:, end_time:)
         return if @finalized
 
+        @business_failed ||= ReportPortal::Models.normalize_status(status).to_s.downcase == "failed"
         @finalized = true
+        @finalization_deadline = Service::ReportingDeadline.new(timeout: @config.exit_flush_timeout_ms / 1000.0)
         closed = runtime_context.close_capture_targets(
           launch_uuid: @launch_uuid,
-          timeout: @config.exit_flush_timeout_ms / 1000.0
+          timeout: @finalization_deadline.remaining
         )
         warn_capture_close_timeout unless closed
         flush_before_finish
@@ -696,7 +729,7 @@ module ReportportalCucumber
         if @launch_uuid && (!@config.join? || @join.primary?)
           debug("Finalizing launch uuid=#{@launch_uuid} status=#{status}")
           safe_reporting_call do
-            @api.finish_launch(
+            finish_launch_request(
               launch_uuid: @launch_uuid,
               end_time: monotonic_timestamp(end_time),
               status: status,
@@ -704,7 +737,10 @@ module ReportportalCucumber
             )
           end
         end
-        @log_buffer.shutdown(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        @log_buffer.shutdown_receipt(timeout: @finalization_deadline.remaining, deadline: @finalization_deadline)
+        @finalization_finished = true
+      ensure
+        emit_incomplete_reporting_summary(status) if @finalized
       end
 
       # @param feature_uri [String]
@@ -762,7 +798,7 @@ module ReportportalCucumber
         debug("Finishing feature feature=#{feature_key} uuid=#{item.uuid} status=#{resolved_status}")
         flush_before_finish
         safe_reporting_call do
-          @api.finish_item(
+          finish_item_request(
             item_uuid: item.uuid,
             launch_uuid: @launch_uuid,
             end_time: monotonic_timestamp(end_time),
@@ -801,7 +837,7 @@ module ReportportalCucumber
         debug("Finishing scenario uuid=#{scenario_state[:item].uuid} status=#{resolved_status}")
         flush_before_finish
         safe_reporting_call do
-          @api.finish_item(
+          finish_item_request(
             item_uuid: scenario_state[:item].uuid,
             launch_uuid: @launch_uuid,
             end_time: monotonic_timestamp(end_time),
@@ -827,7 +863,7 @@ module ReportportalCucumber
           close_capture_target_for_item(item)
           flush_before_finish
           safe_reporting_call do
-            @api.finish_item(
+            finish_item_request(
               item_uuid: item.uuid,
               launch_uuid: @launch_uuid,
               end_time: monotonic_timestamp(end_time),
@@ -860,21 +896,27 @@ module ReportportalCucumber
       end
 
       # @param fallback [Object, nil]
+      # @param preserve_business_exception [Boolean]
       # @yieldreturn [Object]
       # @return [Object]
-      def safe_reporting_call(fallback: nil)
+      def safe_reporting_call(fallback: nil, preserve_business_exception: false)
         yield
       rescue StandardError => error
+        @reporting_failures += 1
         handle_reporting_error(error)
-        raise if @config.fail_on_reporting_error?
+        if @config.fail_on_reporting_error? && !@business_failed && !preserve_business_exception
+          @strict_reporting_error = error
+          raise
+        end
 
         fallback
       end
 
       # @return [Boolean]
       def flush_before_finish
-        flushed = @log_buffer.flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
-        return true if flushed
+        receipt = @log_buffer.flush_receipt(timeout: remaining_finalization_budget,
+                                            deadline: @finalization_deadline)
+        return true if receipt.local_settled
 
         ReportportalCucumber.logger.warn("ReportPortal log flush timed out before item finish; delivery is unconfirmed")
         false
@@ -885,7 +927,7 @@ module ReportportalCucumber
       def close_capture_target(target)
         closed = runtime_context.close_capture_target(
           target,
-          timeout: @config.exit_flush_timeout_ms / 1000.0
+          timeout: remaining_finalization_budget
         )
         warn_capture_close_timeout unless closed
         closed
@@ -896,7 +938,7 @@ module ReportportalCucumber
       def close_capture_target_for_item(item)
         closed = runtime_context.close_capture_target_for_item(
           item,
-          timeout: @config.exit_flush_timeout_ms / 1000.0
+          timeout: remaining_finalization_budget
         )
         warn_capture_close_timeout unless closed
         closed
@@ -904,7 +946,52 @@ module ReportportalCucumber
 
       # @return [void]
       def warn_capture_close_timeout
+        @capture_close_timeouts += 1
         ReportportalCucumber.logger.warn("ReportPortal evidence target close timed out; target was cancelled")
+      end
+
+      # @return [Float]
+      def remaining_finalization_budget
+        @finalization_deadline ? @finalization_deadline.remaining : @config.exit_flush_timeout_ms / 1000.0
+      end
+
+      # Emit a bounded whole-run summary without allowing logger failure to affect the business result.
+      # @param status [String, Symbol, nil]
+      # @return [void]
+      def emit_incomplete_reporting_summary(status)
+        return unless reporting_enabled? && !@incomplete_summary_emitted
+
+        @incomplete_summary_emitted = true
+        receipt = reporting_receipt
+        return if receipt.complete
+
+        business = @business_failed || ReportPortal::Models.normalize_status(status).to_s.downcase == "failed" ? "failed" : "passed"
+        message = "ReportPortal reporting incomplete: business=#{business} reporting=incomplete " \
+                  "confirmed=#{receipt.confirmed} spooled=#{receipt.spooled} pending=#{receipt.pending} " \
+                  "ambiguous=#{receipt.ambiguous} possible_duplicates=#{receipt.possible_duplicates}"
+        ReportportalCucumber.logger.warn(message)
+      rescue StandardError
+        nil
+      end
+
+      # @param arguments [Hash]
+      # @return [Object]
+      def finish_item_request(**arguments)
+        if @finalization_deadline
+          @api.finish_item(**arguments, deadline: @finalization_deadline)
+        else
+          @api.finish_item(**arguments)
+        end
+      end
+
+      # @param arguments [Hash]
+      # @return [Object]
+      def finish_launch_request(**arguments)
+        if @finalization_deadline
+          @api.finish_launch(**arguments, deadline: @finalization_deadline)
+        else
+          @api.finish_launch(**arguments)
+        end
       end
 
       # @param error [StandardError]
@@ -912,6 +999,20 @@ module ReportportalCucumber
       def handle_reporting_error(error)
         diagnostic = Service::EvidencePresenter.sanitize_diagnostic(error.message, limit: 2048)
         ReportportalCucumber.logger.warn("#{error.class}: #{diagnostic}")
+      rescue StandardError
+        nil
+      end
+
+      # @return [void]
+      def warn_evidence_admission_once
+        emit = @evidence_admission_warning_mutex.synchronize do
+          next false if @evidence_admission_warning_emitted
+
+          @evidence_admission_warning_emitted = true
+        end
+        ReportportalCucumber.logger.warn("ReportPortal failure evidence was partially rejected by the bounded queue") if emit
+      rescue StandardError
+        nil
       end
 
       # @param item_uuid [String]

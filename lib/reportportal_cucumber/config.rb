@@ -20,6 +20,11 @@ module ReportportalCucumber
       rerun_of: nil,
       reporting_async: false,
       batch_size_logs: 20,
+      batch_max_bytes: 8 * 1024 * 1024,
+      queue_max_records: 1000,
+      queue_max_bytes: 16 * 1024 * 1024,
+      queue_overflow_policy: "reject_new",
+      queue_admission_timeout_ms: 100,
       flush_interval: 1.0,
       fail_on_reporting_error: false,
       join: true,
@@ -33,6 +38,7 @@ module ReportportalCucumber
       retry_base_interval: 0.5,
       retry_max_interval: 10.0,
       spool_dir: ".reportportal-spool",
+      spool_max_bytes: 268_435_456,
       exit_flush_timeout_ms: 5_000,
       debug_curl_mode: false,
       debug_curl_dir: ".reportportal-curl",
@@ -72,6 +78,11 @@ module ReportportalCucumber
       "RP_RERUN_OF" => :rerun_of,
       "RP_REPORTING_ASYNC" => :reporting_async,
       "RP_BATCH_SIZE_LOGS" => :batch_size_logs,
+      "RP_BATCH_MAX_BYTES" => :batch_max_bytes,
+      "RP_QUEUE_MAX_RECORDS" => :queue_max_records,
+      "RP_QUEUE_MAX_BYTES" => :queue_max_bytes,
+      "RP_QUEUE_OVERFLOW_POLICY" => :queue_overflow_policy,
+      "RP_QUEUE_ADMISSION_TIMEOUT_MS" => :queue_admission_timeout_ms,
       "RP_FLUSH_INTERVAL" => :flush_interval,
       "RP_FAIL_ON_REPORTING_ERROR" => :fail_on_reporting_error,
       "RP_CLIENT_JOIN" => :join,
@@ -85,6 +96,7 @@ module ReportportalCucumber
       "RP_HTTP_RETRY_BASE_INTERVAL" => :retry_base_interval,
       "RP_HTTP_RETRY_MAX_INTERVAL" => :retry_max_interval,
       "RP_SPOOL_DIR" => :spool_dir,
+      "RP_SPOOL_MAX_BYTES" => :spool_max_bytes,
       "RP_EXIT_FLUSH_TIMEOUT_MS" => :exit_flush_timeout_ms,
       "RP_DEBUG_CURL_MODE" => :debug_curl_mode,
       "RP_DEBUG_CURL_DIR" => :debug_curl_dir,
@@ -204,7 +216,17 @@ module ReportportalCucumber
       @rerun = truthy?(config[:rerun])
       @rerun_of = strip(config[:rerun_of])
       @reporting_async = truthy?(config[:reporting_async])
-      @batch_size_logs = integer(config[:batch_size_logs], minimum: 1)
+      @batch_size_logs = positive_integer(config[:batch_size_logs], option: "RP_BATCH_SIZE_LOGS")
+      @batch_max_bytes = positive_integer(config[:batch_max_bytes], option: "RP_BATCH_MAX_BYTES")
+      @queue_max_records = positive_integer(config[:queue_max_records], option: "RP_QUEUE_MAX_RECORDS")
+      @queue_max_bytes = positive_integer(config[:queue_max_bytes], option: "RP_QUEUE_MAX_BYTES")
+      policy = config[:queue_overflow_policy]
+      @queue_overflow_policy = policy if policy.instance_of?(String)
+      @queue_overflow_policy ||= policy.to_s if policy.is_a?(Symbol)
+      unless %w[reject_new block].include?(@queue_overflow_policy)
+        raise ArgumentError, "Invalid ReportPortal queue configuration"
+      end
+      @queue_admission_timeout_ms = positive_integer(config[:queue_admission_timeout_ms], option: "RP_QUEUE_ADMISSION_TIMEOUT_MS")
       @flush_interval = float(config[:flush_interval], minimum: 0.1)
       @fail_on_reporting_error = truthy?(config[:fail_on_reporting_error])
       @join = truthy?(config[:join])
@@ -218,6 +240,7 @@ module ReportportalCucumber
       @retry_base_interval = float(config[:retry_base_interval], minimum: 0.01)
       @retry_max_interval = float(config[:retry_max_interval], minimum: @retry_base_interval)
       @spool_dir = strip(config[:spool_dir]) || DEFAULTS[:spool_dir]
+      @spool_max_bytes = positive_integer(config[:spool_max_bytes], option: "RP_SPOOL_MAX_BYTES")
       @exit_flush_timeout_ms = integer(config[:exit_flush_timeout_ms], minimum: 1)
       @debug_curl_mode = truthy?(config[:debug_curl_mode])
       @debug_curl_dir = strip(config[:debug_curl_dir]) || DEFAULTS[:debug_curl_dir]
@@ -344,7 +367,10 @@ module ReportportalCucumber
         when :enabled, :rerun, :reporting_async, :fail_on_reporting_error, :join, :debug_curl_mode,
              :console_mirror, :scenario_attributes_enabled, :scenario_links_enabled
           !%w[0 false no off].include?(raw.to_s.strip.downcase)
-        when :batch_size_logs, :join_wait_timeout_ms, :open_timeout, :read_timeout, :write_timeout,
+        when :batch_size_logs, :batch_max_bytes, :queue_max_records, :queue_max_bytes, :spool_max_bytes,
+             :queue_admission_timeout_ms
+          raw
+        when :join_wait_timeout_ms, :open_timeout, :read_timeout, :write_timeout,
              :retry_attempts, :exit_flush_timeout_ms
           raw.to_i
         when :flush_interval, :retry_base_interval, :retry_max_interval
@@ -402,6 +428,24 @@ module ReportportalCucumber
     # @return [Integer]
     def integer(value, minimum:)
       [value.to_i, minimum].max
+    end
+
+    # @param value [Object]
+    # @param option [String] Fixed public option label, never the supplied value.
+    # @return [Integer]
+    def positive_integer(value, option:)
+      parsed = if value.is_a?(Integer)
+                 value
+               elsif value.is_a?(String) && value.match?(/\A[0-9]+\z/)
+                 Integer(value, 10)
+               else
+                 raise ArgumentError
+               end
+      raise ArgumentError unless parsed.positive?
+
+      parsed
+    rescue ArgumentError, TypeError
+      raise ArgumentError, "#{option} must be a positive decimal integer"
     end
 
     # @param value [Object]

@@ -78,13 +78,20 @@ RSpec.describe ReportportalCucumber::Runtime::LogBuffer do
 
       ndjson = Dir[File.join(dir, "spool", "*.ndjson")].first
       record = JSON.parse(File.read(ndjson))
-      attachment_path = Dir[File.join(dir, "spool", "*.attachments", "*")].first
+      transaction_id = File.basename(ndjson, ".ndjson")
+      transaction = ReportportalCucumber::Service::SpoolStore.new(config: spool_config)
+                                                          .load_transaction(id: transaction_id)
+      file = transaction.fetch(:files).first
+      attachment_path = File.join(spool_config.spool_dir, record.fetch("attachment").fetch("spooledPath"))
 
       expect(errors.first).to be_a(ArgumentError)
       expect(api).not_to have_received(:log_batch)
-      expect(record).to include("rawSpool" => true, "message" => "raw evidence")
+      expect(record).to include("rawSpool" => true, "message" => "raw evidence",
+                               "itemUuid" => "step-1", "launchUuid" => "launch-1", "time" => "1780142400000")
       expect(record.dig("attachment", "name")).to eq("trace_bad.log")
-      expect(File.basename(attachment_path)).to eq("trace_bad.log")
+      expect(file).to include(name: "trace_bad.log", entry_index: 0)
+      expect(attachment_path).to eq(file.fetch(:path))
+      expect(attachment_path).to eq(File.join(transaction.fetch(:directory), transaction.fetch(:manifest).fetch("files").first.fetch("path")))
       expect(File.binread(attachment_path)).to eq("trace")
     end
   end

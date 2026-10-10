@@ -67,16 +67,27 @@ RSpec.describe "Queue spool diagnostic security" do
       config = config_for(directory)
       api = ReportportalCucumber::ReportPortal::API.new(config: config)
       processor = ReportportalCucumber::Service::QueueProcessor.new(api: api, config: config)
-      calls = 0
-      unstable_message = Object.new
-      unstable_message.define_singleton_method(:to_s) do
-        calls += 1
-        raise RuntimeError, "SECURITY_SPOOL_FALLBACK_#{transport_message}" if calls == 2
+      transport_failed = false
+      allow(api).to receive(:log_batch).and_wrap_original do |original, **arguments|
+        begin
+          original.call(**arguments)
+        rescue StandardError
+          transport_failed = true
+          raise
+        end
+      end
+      injected_faults = 0
+      allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records|
+        if transport_failed
+          injected_faults += 1
+          raise RuntimeError, "SECURITY_SPOOL_FALLBACK_#{transport_message}"
+        end
 
-        "safe short fallback diagnostic"
+        original.call(records)
       end
       processor.emit_log(item_uuid: "synthetic-step", launch_uuid: "synthetic-launch",
-                         message: unstable_message, level: :error, timestamp: Time.now)
+                         message: "safe short fallback diagnostic".freeze,
+                         level: :error, timestamp: Time.now)
 
       expect(processor.flush(timeout: 3)).to be(true)
       expect(processor.shutdown(timeout: 3)).to be(true)
@@ -87,7 +98,8 @@ RSpec.describe "Queue spool diagnostic security" do
       expect_no_adversarial_canaries(records.to_json)
       expect(records.first.fetch("spoolError").bytesize).to be <= 2_048
       expect(records.first.fetch("fallbackSpoolError").bytesize).to be <= 2_048
-      expect(calls).to eq(3)
+      expect(injected_faults).to eq(1)
+      expect(a_request(:post, "https://security-spool.example.test/api/v1/demo/log")).to have_been_made.once
     ensure
       processor&.shutdown(timeout: 2)
     end
@@ -129,16 +141,27 @@ RSpec.describe "Queue spool diagnostic security" do
       config = config_for(directory)
       api = ReportportalCucumber::ReportPortal::API.new(config: config)
       processor = ReportportalCucumber::Service::QueueProcessor.new(api: api, config: config)
-      calls = 0
-      unstable_message = Object.new
-      unstable_message.define_singleton_method(:to_s) do
-        calls += 1
-        raise RuntimeError, fallback_error if calls == 2
+      transport_failed = false
+      allow(api).to receive(:log_batch).and_wrap_original do |original, **arguments|
+        begin
+          original.call(**arguments)
+        rescue StandardError
+          transport_failed = true
+          raise
+        end
+      end
+      injected_faults = 0
+      allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records|
+        if transport_failed
+          injected_faults += 1
+          raise RuntimeError, fallback_error
+        end
 
-        "safe short fallback diagnostic"
+        original.call(records)
       end
       processor.emit_log(item_uuid: "synthetic-step", launch_uuid: "synthetic-launch",
-                         message: unstable_message, level: :error, timestamp: Time.now)
+                         message: "safe short fallback diagnostic".freeze,
+                         level: :error, timestamp: Time.now)
 
       expect(processor.flush(timeout: 3)).to be(true)
       expect(processor.shutdown(timeout: 3)).to be(true)
@@ -149,7 +172,8 @@ RSpec.describe "Queue spool diagnostic security" do
       expect(record.fetch("spoolError")).not_to include(original_secret)
       expect(record.fetch("fallbackSpoolError")).not_to include(fallback_secret, user)
       expect(record.fetch("fallbackSpoolError")).to include("example.test")
-      expect(calls).to eq(3)
+      expect(injected_faults).to eq(1)
+      expect(a_request(:post, "https://security-spool.example.test/api/v1/demo/log")).to have_been_made.once
     ensure
       processor&.shutdown(timeout: 2)
     end

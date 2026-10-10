@@ -192,15 +192,24 @@ RSpec.describe ReportportalCucumber::Cucumber::World do
     formatter.ingest_event("type" => "test_step_finished", "step_id" => "step-first", "status" => "failed")
     first_step = calls.find { |type, _uuid, body| type == :start_item && body["hasStats"] == false && body["name"].include?("browser action") }
     first_uuid = first_step.fetch(1)
-    first_log_index = calls.index { |type, body| type == :log && body.include?("find submit button") }
     first_finish_index = calls.index { |type, path, _body| type == :finish_item && path.end_with?(first_uuid) }
-    expect(first_log_index).not_to be_nil
     expect(first_finish_index).not_to be_nil
-    expect(first_log_index).to be < first_finish_index
     log_requests = calls.select { |type, _body| type == :log }
-    evidence_log_request = log_requests.find { |_type, body| body.include?("find submit button") }.last
-    expect(evidence_log_request).to include(first_uuid)
-    expect(evidence_log_request).to include("image/png")
+    summary_request = log_requests.find { |_type, body| body.include?("find submit button") }
+    attachment_request = log_requests.find do |_type, body|
+      body.include?("failure.png") && body.include?("image/png")
+    end
+    expect(summary_request).not_to be_nil
+    expect(attachment_request).not_to be_nil
+    expect(attachment_request).not_to equal(summary_request)
+    expect(summary_request.last).to include(first_uuid, "caller supplied diagnostic")
+    expect(attachment_request.last).to include(first_uuid, "image/png", "failure.png")
+    summary_log_index = calls.index { |type, body| type == :log && body.include?("find submit button") }
+    attachment_log_index = calls.index do |type, body|
+      type == :log && body.include?("failure.png") && body.include?("image/png")
+    end
+    expect(summary_log_index).to be < first_finish_index
+    expect(attachment_log_index).to be < first_finish_index
 
     formatter.ingest_event("type" => "test_step_started", "step_id" => "after-1",
                            "step_text" => "close browser", "hook_type" => "after")
@@ -411,7 +420,10 @@ RSpec.describe ReportportalCucumber::Cucumber::World do
       next unless kind == :log
 
       json_part = body[/Content-Type: application\/json\r?\n\r?\n(.*?)\r?\n--/m, 1]
-      JSON.parse(json_part) if json_part
+      payload = json_part || body
+      parsed = JSON.parse(payload)
+      expect(parsed).to satisfy { |value| value.is_a?(Hash) || value.is_a?(Array) }
+      parsed
     end.flatten
     %w[alpha beta].each do |name|
       record = log_records.find { |entry| entry.fetch("message").include?("evidence #{name}") }

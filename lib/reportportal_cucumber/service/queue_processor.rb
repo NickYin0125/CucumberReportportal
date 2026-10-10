@@ -1,12 +1,28 @@
 # frozen_string_literal: true
 
 require_relative "evidence_presenter"
+require_relative "spool_store"
 
 module ReportportalCucumber
   module Service
-    # Background processor that batches logs and attachments before sending them to ReportPortal.
+    # Background processor with bounded admission and bounded FIFO request bodies.
     class QueueProcessor
-      LogRecord = Struct.new(:item_uuid, :launch_uuid, :message, :level, :timestamp, :attachment, keyword_init: true)
+      RECORD_OVERHEAD_BYTES = 256
+      MAX_CONTROL_REQUESTS = 64
+      SPOOL_WARNING_REASONS = %i[
+        quota_exceeded deadline_expired lock_timeout quota_lock_failed unsafe_root
+        missing_root root_unavailable unsafe_path unsafe_evidence changed_evidence
+        publish_failed persistence_failed
+      ].freeze
+      DIAGNOSTIC_KEYS = %i[
+        accepted rejected_overflow rejected_admission_timeout rejected_oversized
+        rejected_unsupported rejected_closed control_rejected control_timed_out
+        sent_batches delivery_failed oversized_wire spool_failed worker_failed
+        confirmed accepted_awaiting_persistence spooled failed ambiguous settled degraded_evidence possible_duplicates
+      ].freeze
+      LogRecord = Struct.new(:item_uuid, :launch_uuid, :message, :level, :timestamp,
+                             :attachment, :accounted_bytes, :sequence, keyword_init: true)
+      class SnapshotError < ArgumentError; end
 
       # @param api [ReportportalCucumber::ReportPortal::API]
       # @param config [ReportportalCucumber::Config]
@@ -21,8 +37,19 @@ module ReportportalCucumber
         @condition = ConditionVariable.new
         @records = []
         @in_flight_records = []
+        @in_flight_unsettled = []
+        @spool_store = Service::SpoolStore.new(config: config)
         @flush_requests = []
+        @accepted_sequence = 0
+        @settled_sequence = 0
+        @reserved_records = 0
+        @reserved_bytes = 0
+        @peak_records = 0
+        @peak_bytes = 0
+        @counters = DIAGNOSTIC_KEYS.to_h { |key| [key, 0] }
+        @warned_reasons = {}
         @closed = false
+        @worker_failed = false
         @worker = Thread.new { worker_loop }
         @worker.name = "reportportal-log-buffer" if @worker.respond_to?(:name=)
       end
@@ -33,101 +60,463 @@ module ReportportalCucumber
       # @param level [String, Symbol]
       # @param timestamp [Time, String, Integer, Float]
       # @param attachment [Hash, nil]
-      # @return [void]
+      # @return [Boolean] Whether this record was admitted to the local queue.
       def emit_log(item_uuid:, launch_uuid:, message:, level:, timestamp:, attachment: nil)
-        @mutex.synchronize do
-          return if @closed
+        estimate, reason, = estimate_record(item_uuid, launch_uuid, message, level, timestamp, attachment)
+        return reject(reason) if reason
+        return reject(:rejected_oversized) if estimate > queue_max_bytes
 
-          @records << LogRecord.new(
-            item_uuid: item_uuid,
-            launch_uuid: launch_uuid,
-            message: message,
-            level: level,
-            timestamp: timestamp,
-            attachment: attachment
-          )
-          @condition.signal
+        warning = nil
+        admitted = false
+        deadline = monotonic_now + queue_admission_timeout_ms / 1000.0
+        @mutex.synchronize do
+          loop do
+            if @closed || @worker_failed || !@worker.alive?
+              warning = increment_rejection(:rejected_closed)
+              break
+            end
+
+            estimate, reason, plan = estimate_record(item_uuid, launch_uuid, message, level, timestamp, attachment)
+            if reason
+              warning = increment_rejection(reason)
+              break
+            end
+            if estimate > queue_max_bytes
+              warning = increment_rejection(:rejected_oversized)
+              break
+            end
+
+            if capacity_available?(estimate)
+              admitted = reserve_and_commit_snapshot(plan, estimate)
+              warning = increment_rejection(:rejected_unsupported) unless admitted
+              break
+            end
+
+            if queue_overflow_policy == "reject_new"
+              warning = increment_rejection(:rejected_overflow)
+              break
+            end
+
+            remaining = deadline - monotonic_now
+            if remaining <= 0
+              warning = increment_rejection(:rejected_admission_timeout)
+              break
+            end
+            @condition.wait(@mutex, remaining)
+          end
+        end
+        warn_rejection(warning) if warning
+        admitted
+      end
+
+      # @return [Hash] Immutable point-in-time admission and occupancy diagnostics.
+      def diagnostics
+        @mutex.synchronize do
+          {
+            counters: @counters.dup.freeze,
+            current_records: @reserved_records,
+            current_bytes: @reserved_bytes,
+            peak_records: @peak_records,
+            peak_bytes: @peak_bytes,
+            closed: @closed,
+            worker_alive: @worker.alive? && !@worker_failed
+          }.freeze
         end
       end
 
       # @param timeout [Numeric]
       # @return [Boolean]
       def flush(timeout: @config.exit_flush_timeout_ms / 1000.0)
-        acknowledge(timeout: timeout) do |ack|
-          @flush_requests << ack
-          @condition.signal
-        end
+        flush_receipt(timeout: timeout).local_settled
+      end
+
+      # @param timeout [Numeric]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
+      # @return [ReportportalCucumber::Service::DeliveryReceipt]
+      def flush_receipt(timeout: @config.exit_flush_timeout_ms / 1000.0, deadline: nil)
+        barrier_receipt(timeout: timeout, deadline: deadline)
       end
 
       # @param timeout [Numeric]
       # @return [Boolean]
       def shutdown(timeout: @config.exit_flush_timeout_ms / 1000.0)
-        result = acknowledge(timeout: timeout) do |ack|
-          return true if @closed && !@worker.alive?
+        shutdown_receipt(timeout: timeout).local_settled
+      end
 
-          @closed = true
-          @flush_requests << ack
-          @condition.broadcast
+      # @param timeout [Numeric]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
+      # @return [ReportportalCucumber::Service::DeliveryReceipt]
+      def shutdown_receipt(timeout: @config.exit_flush_timeout_ms / 1000.0, deadline: nil)
+        deadline ||= Service::ReportingDeadline.new(timeout: timeout)
+        receipt = barrier_receipt(timeout: timeout, deadline: deadline, close: true)
+        remaining = deadline.remaining
+        @worker.join(remaining) if remaining.positive?
+        receipt
+      end
+
+      # @param rejected [Integer]
+      # @param capture_close_timeouts [Integer]
+      # @param metadata_failures [Integer]
+      # @param degraded_evidence [Integer]
+      # @param finalization_complete [Boolean]
+      # @return [ReportportalCucumber::Service::DeliveryReceipt]
+      def reporting_receipt(rejected: nil, capture_close_timeouts: 0, metadata_failures: 0,
+                            degraded_evidence: 0, finalization_complete: false)
+        @mutex.synchronize do
+          totals = @counters
+          rejected_count = rejected || %i[rejected_overflow rejected_admission_timeout rejected_oversized
+                                         rejected_unsupported rejected_closed].sum { |key| totals[key] }
+          complete = @settled_sequence >= @accepted_sequence && totals[:confirmed] == @accepted_sequence &&
+                     rejected_count.zero? && capture_close_timeouts.zero? && metadata_failures.zero? &&
+                     degraded_evidence.zero? && totals[:degraded_evidence].zero? &&
+                     totals[:possible_duplicates].zero? && finalization_complete
+          degraded_evidence += totals[:degraded_evidence]
+          counts = @counters.slice(*zero_outcomes.keys)
+          counts[:pending] = [@accepted_sequence - @settled_sequence, 0].max
+          build_receipt(cutoff: @accepted_sequence, counts: counts, rejected: rejected_count,
+                        capture_close_timeouts: capture_close_timeouts, metadata_failures: metadata_failures,
+                        degraded_evidence: degraded_evidence, timed_out: false, complete: complete)
         end
-        spool_unflushed("Log buffer shutdown timed out") unless result
-        @worker.join(timeout)
-        result
       end
 
       private
 
-      # @param timeout [Numeric]
-      # @yieldparam ack [Queue]
-      # @return [Boolean]
-      def acknowledge(timeout:)
-        acknowledgement = Queue.new
-        @mutex.synchronize { yield acknowledgement }
-        Timeout.timeout(timeout) { acknowledgement.pop }
-      rescue Timeout::Error
+      def estimate_record(item_uuid, launch_uuid, message, level, timestamp, attachment)
+        return [0, :rejected_unsupported] unless message.instance_of?(String)
+        return [0, :rejected_unsupported] unless valid_optional_string?(item_uuid) && valid_optional_string?(launch_uuid)
+        return [0, :rejected_unsupported] unless level.instance_of?(String) || level.instance_of?(Symbol)
+        return [0, :rejected_unsupported] unless [Time, String, Integer, Float].any? { |type| timestamp.instance_of?(type) }
+
+        values = { item_uuid: item_uuid, launch_uuid: launch_uuid, message: message,
+                   level: level, timestamp: timestamp }
+        attachment_values = nil
+        if attachment
+          return [0, :rejected_unsupported] unless attachment.instance_of?(Hash)
+
+          attachment_values = {
+            path: attachment[:path] || attachment["path"] || attachment[:file_path] || attachment["file_path"],
+            bytes: attachment[:bytes] || attachment["bytes"],
+            name: attachment[:name] || attachment["name"],
+            mime: attachment[:mime] || attachment["mime"]
+          }
+          values.merge!(attachment_values)
+        end
+        path = values[:path]
+        data = values[:bytes]
+        name = values[:name]
+        mime = values[:mime]
+        return [0, :rejected_unsupported] if path && data
+        return [0, :rejected_unsupported] unless valid_optional_string?(name) && valid_optional_string?(mime)
+        return [0, :rejected_unsupported] unless path.nil? || path.instance_of?(String)
+        return [0, :rejected_unsupported] unless data.nil? || data.instance_of?(String)
+        return [0, :rejected_unsupported] if attachment && data.nil? && path.nil?
+
+        sizes = values.each_with_object({}) do |(key, value), memo|
+          memo[key] = value.bytesize if value.instance_of?(String)
+        end
+        bytes = RECORD_OVERHEAD_BYTES + values.sum do |key, value|
+          sizes.fetch(key) { value.to_s.bytesize }
+        end
+        [bytes, nil, { values: values, sizes: sizes, attachment: attachment,
+                       attachment_values: attachment_values }]
+      end
+
+      def valid_optional_string?(value)
+        value.nil? || value.instance_of?(String)
+      end
+
+      def reserve_and_commit_snapshot(plan, estimate)
+        reserved = false
+        committed = false
+        published = false
+        previous_records = @reserved_records
+        previous_bytes = @reserved_bytes
+        begin
+          # Object also covers Thread#kill; preparation itself stays interruptible.
+          Thread.handle_interrupt(Object => :never) do
+            reserved = true
+            @reserved_records += 1
+            @reserved_bytes += estimate
+          end
+          record = snapshot_record(plan, estimate)
+          actual = record.accounted_bytes
+          raise SnapshotError if actual > estimate || actual > queue_max_bytes
+
+          Thread.handle_interrupt(Object => :never) do
+            @accepted_sequence += 1
+            record.sequence = @accepted_sequence
+            record.freeze
+            @records << record
+            published = true
+            @reserved_bytes -= estimate - actual
+            @peak_records = [@peak_records, @reserved_records].max
+            @peak_bytes = [@peak_bytes, @reserved_bytes].max
+            @counters[:accepted] += 1
+            committed = true
+            @condition.signal
+          end
+          true
+        rescue SnapshotError
+          false
+        ensure
+          if reserved && !committed
+            Thread.handle_interrupt(Object => :never) do
+              @records.pop if published
+              @reserved_records = previous_records
+              @reserved_bytes = previous_bytes
+              @condition.broadcast
+            end
+          end
+        end
+      end
+
+      def snapshot_record(plan, estimate)
+        values = plan.fetch(:values)
+        sizes = plan.fetch(:sizes)
+        budget = estimate - RECORD_OVERHEAD_BYTES
+        detached = {}
+        values.each do |key, value|
+          if value.instance_of?(String)
+            copy, budget = bounded_snapshot(value, sizes.fetch(key), budget)
+            raise SnapshotError unless copy
+            detached[key] = copy
+          else
+            detached[key] = value.instance_of?(Time) ? value.dup.freeze : value
+          end
+        end
+        if plan[:attachment] && !attachment_values_match?(plan[:attachment], plan[:attachment_values])
+          raise SnapshotError
+        end
+        normalized_attachment = nil
+        if values.key?(:name) || values.key?(:mime) || values.key?(:path) || values.key?(:bytes)
+          detached_name = detached[:name]
+          detached_mime = detached[:mime]
+          normalized_attachment = {
+            name: detached_name,
+            mime: detached_mime
+          }
+          normalized_attachment[:path] = detached[:path] if values[:path]
+          normalized_attachment[:bytes] = detached[:bytes] if values[:bytes]
+          normalized_attachment.freeze
+        end
+        actual = RECORD_OVERHEAD_BYTES + detached.sum do |key, value|
+          value.instance_of?(String) ? value.bytesize : value.to_s.bytesize
+        end
+        LogRecord.new(
+          item_uuid: detached[:item_uuid],
+          launch_uuid: detached[:launch_uuid],
+          message: detached[:message],
+          level: detached[:level],
+          timestamp: detached[:timestamp],
+          attachment: normalized_attachment,
+          accounted_bytes: actual
+        )
+      end
+
+      def bounded_snapshot(value, expected_size, remaining_budget)
+        return [nil, remaining_budget] if expected_size > remaining_budget || value.bytesize != expected_size
+
+        copy = value.byteslice(0, [expected_size, remaining_budget].min)
+        return [nil, remaining_budget] unless value.bytesize == expected_size && copy && copy.bytesize == expected_size
+
+        [copy.freeze, remaining_budget - copy.bytesize]
+      end
+
+      def attachment_values_match?(attachment, captured)
+        current = {
+          path: attachment[:path] || attachment["path"] || attachment[:file_path] || attachment["file_path"],
+          bytes: attachment[:bytes] || attachment["bytes"],
+          name: attachment[:name] || attachment["name"],
+          mime: attachment[:mime] || attachment["mime"]
+        }
+        captured.all? { |key, value| current[key].equal?(value) }
+      end
+
+      def capacity_available?(bytes)
+        @reserved_records < queue_max_records && @reserved_bytes + bytes <= queue_max_bytes
+      end
+
+      def reject(reason)
+        warning = @mutex.synchronize { increment_rejection(reason) }
+        warn_rejection(warning) if warning
         false
       end
 
-      # @return [void]
-      def worker_loop
-        loop do
-          batch, acknowledgements, should_stop = next_work_unit
-          mark_in_flight(batch)
-          flush_batch(batch) unless batch.empty?
-          mark_in_flight([])
-          acknowledgements.each { |ack| ack << true }
-          break if should_stop
-        end
-      rescue StandardError => error
-        mark_in_flight([])
-        fail_pending_flushes
-        handle_error(error)
+      def increment_rejection(reason)
+        @counters[reason] += 1
+        return unless @warned_reasons[reason].nil?
+
+        @warned_reasons[reason] = true
+        reason
       end
 
-      # @return [Array<Array<LogRecord>, Array<Queue>, Boolean>]
+      def warn_rejection(reason)
+        ReportportalCucumber.logger.warn("ReportPortal log admission rejected (#{reason.to_s.delete_prefix('rejected_')})")
+      rescue StandardError
+        nil
+      end
+
+      def barrier_receipt(timeout:, deadline: nil, close: false)
+        acknowledgement = Queue.new
+        cutoff = nil
+        request = nil
+        already_settled = false
+        enqueued = @mutex.synchronize do
+          cutoff = @accepted_sequence
+          already_settled = cutoff <= @settled_sequence
+          if deadline
+            @work_deadline = deadline
+            @work_deadline_cutoff = cutoff
+          end
+          request = { acknowledgement: acknowledgement, cutoff: cutoff, from: @settled_sequence,
+                      counts: @counters.slice(*zero_outcomes.keys), rejected: rejected_count }
+          @closed = true if close
+          @condition.broadcast if close
+          if cutoff <= @settled_sequence
+            acknowledgement << true
+            true
+          else
+            if @worker_failed || !@worker.alive? || @flush_requests.length >= MAX_CONTROL_REQUESTS
+              @counters[:control_rejected] += 1
+              false
+            else
+              @flush_requests << request
+              # Producers and the worker share this condition; wake the worker
+              # rather than relying on ConditionVariable#signal choosing it.
+              @condition.broadcast
+              true
+            end
+          end
+        end
+        remaining = deadline ? deadline.remaining : [timeout.to_f, 0].max
+        completed = already_settled || (enqueued && remaining.positive? && (acknowledgement.pop(true) rescue false))
+        if enqueued && !completed && remaining.positive?
+          completed = Timeout.timeout(remaining) { acknowledgement.pop }
+        end
+        @mutex.synchronize do
+          @flush_requests.delete(request) unless completed
+          @counters[:control_timed_out] += 1 if enqueued && !completed && remaining.positive?
+          if deadline && @work_deadline.equal?(deadline) && (already_settled || !enqueued)
+            @work_deadline = nil
+            @work_deadline_cutoff = nil
+          end
+          request[:counts][:pending] = [cutoff - request[:counts][:settled], 0].max
+          build_receipt(cutoff: cutoff, counts: request[:counts], rejected: request[:rejected],
+                        capture_close_timeouts: 0, metadata_failures: 0, degraded_evidence: 0,
+                        timed_out: !completed, complete: false)
+        end
+      rescue Timeout::Error
+        @mutex.synchronize do
+          @flush_requests.delete(request)
+          @counters[:control_timed_out] += 1
+          request[:counts][:pending] = [cutoff - request[:counts][:settled], 0].max
+          build_receipt(cutoff: cutoff, counts: request[:counts], rejected: request[:rejected],
+                        capture_close_timeouts: 0, metadata_failures: 0, degraded_evidence: 0,
+                        timed_out: true, complete: false)
+        end
+      end
+
+      def zero_outcomes
+        %i[settled confirmed accepted_awaiting_persistence spooled failed ambiguous possible_duplicates]
+          .to_h { |key| [key, 0] }
+      end
+
+      def rejected_count
+        %i[rejected_overflow rejected_admission_timeout rejected_oversized
+           rejected_unsupported rejected_closed].sum { |key| @counters[key] }
+      end
+
+      def build_receipt(cutoff:, counts:, rejected:, capture_close_timeouts:, metadata_failures:,
+                        degraded_evidence:, timed_out:, complete:)
+        Service::DeliveryReceipt.new(
+          cutoff: cutoff, settled: counts[:settled], confirmed: counts[:confirmed],
+          accepted_awaiting_persistence: counts[:accepted_awaiting_persistence],
+          spooled: counts[:spooled], failed: counts[:failed],
+          ambiguous: counts[:ambiguous], possible_duplicates: counts[:possible_duplicates],
+          pending: counts[:pending] || [cutoff - counts[:settled], 0].max,
+          rejected: rejected,
+          capture_close_timeouts: capture_close_timeouts, metadata_failures: metadata_failures,
+          degraded_evidence: degraded_evidence, complete: complete,
+          local_settled: counts[:pending].zero? && !timed_out, timed_out: timed_out
+        )
+      end
+
+      def locally_drained?
+        @records.empty? && @in_flight_records.empty? && @reserved_records.zero? && @reserved_bytes.zero?
+      end
+
+      def worker_loop
+        begin
+          loop do
+            batch, should_stop = next_work_unit
+            break if should_stop
+            next if batch.empty?
+
+            begin
+              flush_batch(batch)
+              release_records(batch)
+            rescue Exception => error
+              fail_worker(error)
+              raise unless error.is_a?(StandardError)
+              break
+            end
+          end
+        ensure
+          unless @worker_failed || worker_quiescent?
+            begin
+              fail_worker(ReportportalCucumber::ReportingError.new("Log buffer worker terminated unexpectedly"))
+            rescue Exception
+              # Do not replace an exception that caused worker termination.
+            end
+          end
+        end
+      end
+
+      def worker_quiescent?
+        @mutex.synchronize do
+          locally_drained? && @flush_requests.empty?
+        end
+      end
+
+      def release_records(records)
+        count = records.length
+        bytes = records.sum(&:accounted_bytes)
+        @mutex.synchronize do
+          Thread.handle_interrupt(Object => :never) do
+            @in_flight_records = []
+            @in_flight_unsettled = []
+            @reserved_records -= count
+            @reserved_bytes -= bytes
+            @condition.broadcast
+          end
+        end
+      end
+
       def next_work_unit
         @mutex.synchronize do
           wait_for_work
           wait_for_batch_fill if @records.any? && @flush_requests.empty? && !@closed
-
-          batch_size = (@flush_requests.any? || @closed) ? @records.length : @config.batch_size_logs
-          batch = @records.shift(batch_size)
-          acknowledgements = @flush_requests.shift(@flush_requests.length)
-          should_stop = @closed && @records.empty?
-          [batch, acknowledgements, should_stop]
+          count = [@records.length, batch_size_logs].min
+          Thread.handle_interrupt(Object => :never) do
+            batch = @records.shift(count)
+            @in_flight_records = batch
+            @in_flight_unsettled = batch.dup
+            drained = batch.empty? && @records.empty? && @in_flight_records.empty? && @reserved_records.zero?
+            should_stop = @closed && drained
+            [batch, should_stop]
+          end
         end
       end
 
-      # @return [void]
       def wait_for_work
         while @records.empty? && @flush_requests.empty? && !@closed
           @condition.wait(@mutex)
         end
       end
 
-      # @return [void]
       def wait_for_batch_fill
         deadline = monotonic_now + @config.flush_interval
-        while @records.length < @config.batch_size_logs && @flush_requests.empty? && !@closed
+        while @records.length < batch_size_logs && @flush_requests.empty? && !@closed
           remaining = deadline - monotonic_now
           break if remaining <= 0
 
@@ -135,290 +524,363 @@ module ReportportalCucumber
         end
       end
 
-      # @param records [Array<LogRecord>]
-      # @return [void]
       def flush_batch(records)
-        return if records.empty?
-
-        attempts = 0
-
-        begin
-          attempts += 1
-          routed_records ||= route_external_video_records(records)
-          payload = Service::PayloadBuilder.build_log_batch(routed_records)
-          @api.log_batch(entries: payload.fetch(:entries), files: payload.fetch(:files))
-        rescue StandardError => error
-          if retryable_reporting_error?(error) && attempts < @config.retry_attempts
-            sleep(backoff_for(attempts))
-            retry
+        unsettled = records.dup
+        routed = route_external_video_records(records)
+        chunk = []
+        routed.each do |record|
+          candidate = chunk + [record]
+          payload = build_payload(candidate)
+          size = Transport::MultipartHelper.log_batch_bytes(entries: payload.fetch(:entries), files: payload.fetch(:files))
+          if size <= batch_max_bytes
+            chunk = candidate
+            next
           end
 
-          safe_spool(records, error)
-          handle_error(error)
+          unless chunk.empty?
+            send_chunk(chunk)
+            sent_sequences = chunk.map(&:sequence)
+            unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
+          end
+          chunk = []
+          single = build_payload([record])
+          single_size = Transport::MultipartHelper.log_batch_bytes(entries: single.fetch(:entries), files: single.fetch(:files))
+          if single_size > batch_max_bytes
+            warn_diagnostic_once(:oversized_wire, "ReportPortal log exceeded the request byte limit; preserved in local spool best-effort")
+            error = Transport::MultipartHelper::SizeLimitError.new
+            spooled = safe_spool([record], error, outcome: :failed)
+            record_delivery([record], [:failed], spooled_indexes: spooled ? [0] : [])
+            unsettled.delete(record)
+          else
+            chunk = [record]
+          end
         end
+        unless chunk.empty?
+          send_chunk(chunk)
+          sent_sequences = chunk.map(&:sequence)
+          unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
+        end
+      rescue StandardError => error
+        unless unsettled.empty?
+          spooled = safe_spool(unsettled, error)
+          record_delivery(unsettled, Array.new(unsettled.length, :ambiguous),
+                          spooled_indexes: spooled ? (0...unsettled.length).to_a : [])
+        end
+        mark_diagnostic(:delivery_failed)
+        handle_error(error)
       end
 
-      # @return [ReportportalCucumber::Transport::MinioUploader, nil]
+      def build_payload(records)
+        Service::PayloadBuilder.build_log_batch(records)
+      end
+
+      def method_accepts_deadline?(method)
+        method.parameters.any? { |kind, name| kind == :key && name == :deadline }
+      end
+
+      def send_chunk(records)
+        payload = build_payload(records)
+        deadline = @mutex.synchronize { @work_deadline }
+        result = begin
+          use_result_api = @api.respond_to?(:log_batch_result) &&
+                           (@api.is_a?(ReportPortal::API) || !@api.respond_to?(:log_batch))
+          if use_result_api
+            if deadline && method_accepts_deadline?(@api.method(:log_batch_result))
+              @api.log_batch_result(entries: payload.fetch(:entries), files: payload.fetch(:files), deadline: deadline)
+            else
+              @api.log_batch_result(entries: payload.fetch(:entries), files: payload.fetch(:files))
+            end
+          elsif deadline
+            if method_accepts_deadline?(@api.method(:log_batch))
+              @api.log_batch(entries: payload.fetch(:entries), files: payload.fetch(:files), deadline: deadline)
+            else
+              @api.log_batch(entries: payload.fetch(:entries), files: payload.fetch(:files))
+            end
+          else
+            @api.log_batch(entries: payload.fetch(:entries), files: payload.fetch(:files))
+          end
+        rescue StandardError => error
+          response = error.respond_to?(:response) ? error.response : nil
+          rejected_status = response && response.status >= 400 && response.status < 500 && ![408, 429].include?(response.status)
+          category = error.is_a?(Transport::MultipartHelper::SizeLimitError) || rejected_status ? :failed : :ambiguous
+          spooled = safe_spool(records, error, outcome: category)
+          record_delivery(records, Array.new(records.length, category),
+                          spooled_indexes: spooled ? (0...records.length).to_a : [])
+          if error.is_a?(Transport::MultipartHelper::SizeLimitError)
+            warn_diagnostic_once(:oversized_wire, "ReportPortal log exceeded the request byte limit; preserved in local spool best-effort")
+          else
+            mark_diagnostic(:delivery_failed)
+          end
+          handle_error(error)
+          return
+        end
+
+        response = result.respond_to?(:body) ? result.body : result
+        may_duplicate = result.respond_to?(:may_duplicate) && result.may_duplicate
+        outcomes = Service::LogResponseParser.outcomes(body: response, entries: payload.fetch(:entries))
+        spooled = []
+        %i[failed ambiguous].each do |category|
+          indexes = outcomes.each_index.select { |index| outcomes[index] == category }
+          next if indexes.empty?
+
+          success = safe_spool(indexes.map { |index| records[index] },
+                               ReportingError.new("Log acknowledgement incomplete"), outcome: category)
+          spooled.concat(indexes) if success
+        end
+        duplicate_indexes = may_duplicate ? (0...records.length).to_a : []
+        record_delivery(records, outcomes, spooled_indexes: spooled,
+                        possible_duplicate_indexes: duplicate_indexes)
+        mark_diagnostic(:sent_batches)
+      end
+
       def default_video_uploader
         return nil unless @config.minio_markdown_video?
 
         Transport::MinioUploader.new(config: @config)
       end
 
-      # @param records [Array<LogRecord>]
-      # @return [Array<LogRecord>]
       def route_external_video_records(records)
         return records unless @video_uploader
 
-        records.map { |record| route_external_video_record(record) }
+        records.map do |record|
+          attachment = Service::PayloadBuilder.normalize_attachment(record.attachment)
+          next record unless Service::PayloadBuilder.video_attachment?(attachment)
+
+          public_url = @video_uploader.upload_video(path: attachment[:path], bytes: attachment[:bytes],
+                                                   name: attachment.fetch(:name), content_type: attachment.fetch(:mime))
+          message = if video_upload_url?(public_url)
+                      Service::PayloadBuilder.build_video_markdown_message(message: record.message, url: public_url)
+                    else
+                      mark_diagnostic(:degraded_evidence)
+                      [record.message, public_url.to_s].reject(&:empty?).join("\n\n")
+                    end
+          LogRecord.new(item_uuid: record.item_uuid, launch_uuid: record.launch_uuid, message: message,
+                        level: :error, timestamp: record.timestamp, attachment: nil,
+                        accounted_bytes: record.accounted_bytes, sequence: record.sequence).freeze
+        end
       end
 
-      # @param record [LogRecord]
-      # @return [LogRecord]
-      def route_external_video_record(record)
-        attachment = Service::PayloadBuilder.normalize_attachment(record.attachment)
-        return record unless Service::PayloadBuilder.video_attachment?(attachment)
-
-        public_url = @video_uploader.upload_video(
-          path: attachment[:path],
-          bytes: attachment[:bytes],
-          name: attachment.fetch(:name),
-          content_type: attachment.fetch(:mime)
-        )
-        message =
-          if video_upload_url?(public_url)
-            video_markdown_message(record, public_url)
-          else
-            video_fallback_message(record, public_url)
-          end
-        LogRecord.new(
-          item_uuid: record.item_uuid,
-          launch_uuid: record.launch_uuid,
-          message: message,
-          level: :error,
-          timestamp: record.timestamp,
-          attachment: nil
-        )
-      end
-
-      # @param value [Object]
-      # @return [Boolean]
       def video_upload_url?(value)
         value.to_s.match?(%r{\Ahttps?://})
       end
 
-      # @param record [LogRecord]
-      # @param public_url [String]
-      # @return [String]
-      def video_markdown_message(record, public_url)
-        Service::PayloadBuilder.build_video_markdown_message(message: record.message, url: public_url)
-      end
+      def safe_spool(records, error, outcome: :ambiguous)
+        deadline = @mutex.synchronize { @work_deadline }
+        return false if deadline&.expired?
 
-      # @param record [LogRecord]
-      # @param fallback [String]
-      # @return [String]
-      def video_fallback_message(record, fallback)
-        [record.message.to_s, fallback.to_s].reject(&:empty?).join("\n\n")
-      end
-
-      # @param error [StandardError]
-      # @return [Boolean]
-      def retryable_reporting_error?(error)
-        response = error.respond_to?(:response) ? error.response : nil
-        return false if response && [400, 401, 403].include?(response.status)
-
+        spool(records, error, outcome: outcome)
         true
-      end
-
-      # @param records [Array<LogRecord>]
-      # @param error [StandardError]
-      # @return [void]
-      def safe_spool(records, error)
-        spool(records, error)
-      rescue StandardError => spool_error
-        fallback_spool(records, error, spool_error)
-      end
-
-      # @param records [Array<LogRecord>]
-      # @param error [StandardError]
-      # @return [void]
-      def spool(records, error)
-        directory = File.expand_path(@config.spool_dir, Dir.pwd)
-        FileUtils.mkdir_p(directory)
-
-        basename = "#{Time.now.utc.strftime('%Y%m%d%H%M%S')}-#{SecureRandom.hex(6)}"
-        payload = Service::PayloadBuilder.build_log_batch(records)
-        attachments_dir = File.join(directory, "#{basename}.attachments")
-        FileUtils.mkdir_p(attachments_dir)
-
-        payload.fetch(:files).each do |file|
-          attachment_path = File.join(attachments_dir, file.fetch(:name))
-          if file[:path]
-            IO.copy_stream(file.fetch(:path), attachment_path)
-          else
-            File.binwrite(attachment_path, file.fetch(:bytes))
-          end
-        end
-
-        File.open(File.join(directory, "#{basename}.ndjson"), "wb") do |file|
-          payload.fetch(:entries).each do |entry|
-            file.puts(JSON.generate(entry.merge("spoolError" => safe_exception_text(error))))
-          end
-        end
-      end
-
-      # @param records [Array<LogRecord>]
-      # @param original_error [StandardError]
-      # @param spool_error [StandardError]
-      # @return [void]
-      def fallback_spool(records, original_error, spool_error)
+      rescue Service::SpoolStore::Error => spool_error
+        warn_spool_failure(spool_error.reason)
+        false
+      rescue StandardError => builder_error
         begin
-          raw_spool(records, original_error, spool_error, File.expand_path(@config.spool_dir, Dir.pwd))
+          raw_spool(records, error, builder_error, File.expand_path(@config.spool_dir, Dir.pwd), outcome)
+          true
         rescue StandardError
-          begin
-            raw_spool(records, original_error, spool_error, File.join(Dir.tmpdir, "reportportal-cucumber-spool"))
-          rescue StandardError => final_error
-            handle_error(final_error)
-          end
+          warn_spool_failure(:persistence_failed)
+          false
         end
       end
 
-      # @param records [Array<LogRecord>]
-      # @param original_error [StandardError]
-      # @param spool_error [StandardError]
-      # @param directory [String]
-      # @return [void]
-      def raw_spool(records, original_error, spool_error, directory)
-        FileUtils.mkdir_p(directory)
-        basename = "#{Time.now.utc.strftime('%Y%m%d%H%M%S')}-#{SecureRandom.hex(6)}"
-        attachments_dir = File.join(directory, "#{basename}.attachments")
-        FileUtils.mkdir_p(attachments_dir)
+      def warn_spool_failure(reason)
+        label = SPOOL_WARNING_REASONS.include?(reason) ? reason : :store_error
+        warn_diagnostic_once(:spool_failed,
+                             "ReportPortal durable log retention failed (#{label}); reporting remains incomplete")
+      end
 
-        File.open(File.join(directory, "#{basename}.ndjson"), "wb") do |file|
+      def record_delivery(records, outcomes, spooled_indexes: [], possible_duplicate_indexes: [])
+        @mutex.synchronize do
           records.each_with_index do |record, index|
-            attachment = raw_attachment(record, attachments_dir, index)
-            file.puts(
-              JSON.generate(
-                raw_record(record).merge(
-                  "attachment" => attachment,
-                  "rawSpool" => true,
-                  "spoolError" => safe_exception_summary(original_error),
-                  "fallbackSpoolError" => safe_exception_summary(spool_error)
-                ).compact
-              )
-            )
+            outcome = outcomes[index] || :ambiguous
+            outcome = :accepted_awaiting_persistence if outcome == :confirmed && @config.respond_to?(:reporting_async?) && @config.reporting_async?
+            @counters[outcome] += 1 if @counters.key?(outcome)
+            spooled = spooled_indexes.include?(index)
+            @counters[:spooled] += 1 if spooled
+            possible_duplicate = possible_duplicate_indexes.include?(index)
+            @counters[:possible_duplicates] += 1 if possible_duplicate
+            @counters[:settled] += 1
+            @in_flight_unsettled.reject! { |pending| pending.sequence == record.sequence }
+            @settled_sequence = [@settled_sequence, record.sequence || 0].max
+            @flush_requests.each do |request|
+              next unless record.sequence && record.sequence <= request[:cutoff] && record.sequence > request[:from]
+
+              request[:counts][:settled] += 1
+              request[:counts][outcome] += 1 if request[:counts].key?(outcome)
+              request[:counts][:spooled] += 1 if spooled
+              request[:counts][:possible_duplicates] += 1 if possible_duplicate
+            end
           end
+          finished = @flush_requests.select { |request| request[:counts][:settled] >= request[:cutoff] }
+          finished.each do |request|
+            @flush_requests.delete(request)
+            request[:acknowledgement] << true
+          end
+          if @work_deadline_cutoff && @settled_sequence >= @work_deadline_cutoff
+            @work_deadline = nil
+            @work_deadline_cutoff = nil
+          end
+          @condition.broadcast
         end
       end
 
-      # @param record [LogRecord]
-      # @return [Hash]
+      def spool(records, error, outcome: :ambiguous)
+        payload = build_payload(records)
+        deadline = @mutex.synchronize { @work_deadline }
+        @spool_store.persist(entries: payload.fetch(:entries), files: payload.fetch(:files), outcome: outcome,
+                             diagnostics: { spoolError: safe_exception_text(error) }, deadline: deadline)
+      end
+
+      def raw_spool(records, original_error, spool_error, directory, outcome = :ambiguous)
+        entries = []
+        files = []
+        used_names = Hash.new(0)
+        records.each_with_index do |record, index|
+          attachment = normalize_raw_attachment(record.attachment)
+          filename = attachment && Service::PayloadBuilder.unique_filename(attachment.fetch(:name), used_names)
+          raw_entry = Service::PayloadBuilder.build_log_entry(
+            launch_uuid: record.launch_uuid, item_uuid: record.item_uuid, time: record.timestamp,
+            message: record.message,
+            level: record.level, file_name: filename
+          )
+          raw_entry["time"] = raw_time(record.timestamp)
+          entries << raw_entry
+          next unless attachment
+
+          file = { name: filename, mime: attachment.fetch(:mime), entry_index: index }
+          file[attachment.key?(:path) ? :path : :bytes] = attachment.fetch(attachment.key?(:path) ? :path : :bytes)
+          files << file
+        end
+        deadline = @mutex.synchronize { @work_deadline }
+        @spool_store.persist(entries: entries, files: files, outcome: outcome,
+                             diagnostics: { rawSpool: true, spoolError: safe_exception_summary(original_error),
+                                            fallbackSpoolError: safe_exception_summary(spool_error) },
+                             deadline: deadline)
+      end
+
+      def normalize_raw_attachment(attachment)
+        return Service::PayloadBuilder.normalize_attachment(attachment) unless attachment && attachment[:path]
+
+        # Preserve the admitted path descriptor; Store owns safe copying and
+        # explicit unavailable markers when the source disappears after send.
+        path = attachment.fetch(:path)
+        name = Transport::MultipartHelper.safe_filename(attachment[:name] || File.basename(path))
+        mime = Transport::MultipartHelper.content_type_for(
+          filename: Service::PayloadBuilder.mime_detection_filename(name: name, path: path),
+          declared_type: attachment[:mime]
+        )
+        name = Transport::MultipartHelper.ensure_filename_extension(
+          name: name, content_type: mime, fallback: Service::PayloadBuilder.default_attachment_name(mime)
+        )
+        { name: name, mime: mime, path: path }
+      end
+
       def raw_record(record)
-        {
-          "itemUuid" => record.item_uuid,
-          "launchUuid" => record.launch_uuid,
-          "message" => record.message.to_s,
-          "level" => record.level.to_s,
-          "time" => raw_time(record.timestamp)
-        }.compact
+        { "itemUuid" => record.item_uuid, "launchUuid" => record.launch_uuid,
+          "message" => record.message, "level" => record.level.to_s, "time" => raw_time(record.timestamp) }.compact
       end
 
-      # @param value [Time, String, Integer, Float]
-      # @return [String]
       def raw_time(value)
-        case value
-        when Time
-          (value.to_r * 1000).to_i.to_s
-        when Integer
-          value.to_s
-        when Float
-          value.to_i.to_s
-        else
-          value.to_s
-        end
+        return (value.to_r * 1000).to_i.to_s if value.is_a?(Time)
+        return value.to_i.to_s if value.is_a?(Float)
+
+        value.to_s
       end
 
-      # @param error [Exception]
-      # @return [String] Bounded, credential-redacted exception text for spool metadata.
       def safe_exception_text(error)
         Service::EvidencePresenter.sanitize_diagnostic(error.message, limit: 2048)
       end
 
-      # @param error [Exception]
-      # @return [String] Safe exception class metadata and bounded diagnostic text.
       def safe_exception_summary(error)
-        class_name = Service::EvidencePresenter.sanitize_diagnostic(error.class.name, limit: 256)
-        "#{class_name}: #{safe_exception_text(error)}"
+        klass = Service::EvidencePresenter.sanitize_diagnostic(error.class.name, limit: 256)
+        "#{klass}: #{safe_exception_text(error)}"
       end
 
-      # @param record [LogRecord]
-      # @param directory [String]
-      # @param index [Integer]
-      # @return [Hash, nil]
-      def raw_attachment(record, directory, index)
-        attachment = record.attachment
-        return nil unless attachment
-
-        payload = attachment.respond_to?(:to_h) ? attachment.to_h : attachment
-        name = Transport::MultipartHelper.safe_filename(payload[:name] || payload["name"] || "attachment-#{index}")
-        path = payload[:path] || payload["path"] || payload[:file_path] || payload["file_path"]
-        if path && File.file?(File.expand_path(path.to_s))
-          IO.copy_stream(File.expand_path(path.to_s), File.join(directory, name))
-        else
-          bytes = payload[:bytes] || payload["bytes"] || ""
-          data = bytes.respond_to?(:read) ? bytes.read : bytes.to_s
-          bytes.rewind if bytes.respond_to?(:rewind)
-          File.binwrite(File.join(directory, name), data)
-        end
-        {
-          "name" => name,
-          "mime" => payload[:mime] || payload["mime"],
-          "spooledPath" => File.join(File.basename(directory), name)
-        }.compact
-      end
-
-      # @param message [String]
-      # @return [void]
       def spool_unflushed(message)
-        records = nil
-        @mutex.synchronize do
-          records = @in_flight_records + @records
+        records = @mutex.synchronize { @in_flight_unsettled + @records }
+        records.each_slice(batch_size_logs) do |bounded_records|
+          safe_spool(bounded_records, ReportportalCucumber::ReportingError.new(message))
+        end unless records.empty?
+      end
+
+      def fail_worker(error)
+        pending = nil
+        charged = nil
+        begin
+          @mutex.synchronize do
+            Thread.handle_interrupt(Object => :never) do
+              return if @worker_failed
+
+              pending = @in_flight_unsettled.dup + @records
+              charged = @in_flight_records.dup + @records
+              @worker_failed = true
+              @closed = true
+              @records.clear
+              @counters[:worker_failed] += 1
+              @condition.broadcast
+            end
+          end
+          pending.each_slice(batch_size_logs) do |bounded_records|
+            spooled = safe_spool(bounded_records, error)
+            record_delivery(bounded_records, Array.new(bounded_records.length, :ambiguous),
+                            spooled_indexes: spooled ? (0...bounded_records.length).to_a : [])
+          end unless pending.empty?
+        ensure
+          release_records(charged) if charged
         end
-        return if records.empty?
-
-        safe_spool(records, ReportportalCucumber::ReportingError.new(message))
+        handle_error(error)
+      rescue StandardError
+        nil
       end
 
-      # @return [void]
-      def fail_pending_flushes
-        @mutex.synchronize do
-          @flush_requests.shift(@flush_requests.length).each { |ack| ack << false }
+      def mark_diagnostic(key)
+        @mutex.synchronize { @counters[key] += 1 }
+      end
+
+      def warn_diagnostic_once(key, message)
+        emit = @mutex.synchronize do
+          @counters[key] += 1
+          next false if @warned_reasons[key]
+
+          @warned_reasons[key] = true
         end
+        ReportportalCucumber.logger.warn(message) if emit
+      rescue StandardError
+        nil
       end
 
-      # @param records [Array<LogRecord>]
-      # @return [void]
-      def mark_in_flight(records)
-        @mutex.synchronize { @in_flight_records = records.dup }
-      end
-
-      # @param attempt [Integer]
-      # @return [Float]
-      def backoff_for(attempt)
-        base = @config.retry_base_interval * (2**(attempt - 1))
-        capped = [base, @config.retry_max_interval].min
-        capped + rand * (capped / 4.0)
-      end
-
-      # @return [Float]
-      def monotonic_now
-        Process.clock_gettime(Process::CLOCK_MONOTONIC)
-      end
-
-      # @param error [StandardError]
-      # @return [void]
       def handle_error(error)
         @on_error&.call(error)
+      rescue StandardError
+        raise if @config.fail_on_reporting_error?
+      end
+
+      def queue_max_records
+        @config.respond_to?(:queue_max_records) ? @config.queue_max_records : 1000
+      end
+
+      def queue_max_bytes
+        @config.respond_to?(:queue_max_bytes) ? @config.queue_max_bytes : 16 * 1024 * 1024
+      end
+
+      def queue_overflow_policy
+        @config.respond_to?(:queue_overflow_policy) ? @config.queue_overflow_policy : "reject_new"
+      end
+
+      def queue_admission_timeout_ms
+        @config.respond_to?(:queue_admission_timeout_ms) ? @config.queue_admission_timeout_ms : 100
+      end
+
+      def batch_size_logs
+        @config.batch_size_logs
+      end
+
+      def batch_max_bytes
+        @config.respond_to?(:batch_max_bytes) ? @config.batch_max_bytes : 8 * 1024 * 1024
+      end
+
+      def monotonic_now
+        Process.clock_gettime(Process::CLOCK_MONOTONIC)
       end
     end
   end

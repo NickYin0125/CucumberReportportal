@@ -193,13 +193,25 @@ RSpec.describe "ReportPortal backend chaos sandbox" do
         expect(buffer.shutdown(timeout: 2)).to be(true)
 
         ndjson_files = Dir[File.join(dir, "spool", "*.ndjson")]
-        attachment_files = Dir[File.join(dir, "spool", "*.attachments", "*")]
         spooled_lines = ndjson_files.flat_map { |path| File.readlines(path, chomp: true) }
+        store = ReportportalCucumber::Service::SpoolStore.new(config: config)
+        transactions = store.transactions.map { |id| store.load_transaction(id: id) }
+        attachment_files = transactions.flat_map { |transaction| transaction.fetch(:files) }
+        entries = transactions.flat_map { |transaction| transaction.fetch(:entries) }
 
         expect(errors).not_to be_empty
         expect(ndjson_files.length).to eq(1)
         expect(spooled_lines.length).to eq(2)
-        expect(attachment_files.map { |path| File.basename(path) }).to contain_exactly("trace.log", "config.json")
+        expect(transactions.length).to eq(1)
+        expect(attachment_files.map { |file| file.fetch(:name) }).to contain_exactly("trace.log", "config.json")
+        files_by_name = attachment_files.to_h { |file| [file.fetch(:name), file.fetch(:path)] }
+        expect(File.binread(files_by_name.fetch("trace.log"))).to eq("line 1\n")
+        expect(JSON.parse(File.read(files_by_name.fetch("config.json")))).to eq("enabled" => true)
+        expect(entries.length).to eq(2)
+        expect(entries).to all(include("itemUuid" => "step-uuid", "launchUuid" => "launch-uuid",
+                                       "time" => ((Time.utc(2026, 5, 30).to_r * 1000).to_i.to_s)))
+        expect(entries.find { |entry| entry.dig("file", "name") == "config.json" }.fetch("message"))
+          .to include(JSON.pretty_generate("enabled" => true))
       end
     end
 

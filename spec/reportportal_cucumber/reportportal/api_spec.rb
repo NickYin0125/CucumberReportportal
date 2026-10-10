@@ -50,4 +50,19 @@ RSpec.describe ReportportalCucumber::ReportPortal::API do
 
     expect(result).to eq("item-uuid")
   end
+
+  it "does not retain per-instance thread metadata for ordinary public log calls" do
+    response = ReportportalCucumber::Http::Client::Response.new(
+      status: 200, headers: {}, body: { "id" => "log-id" }
+    )
+    allow(client).to receive(:post_json).and_return(response)
+    entries = [{ "message" => "direct call" }]
+    baseline = Thread.current.keys
+
+    100.times do
+      described_class.new(config: config, client: client).log_batch(entries: entries, files: [])
+    end
+
+    expect(Thread.current.keys).to eq(baseline)
+  end
 end

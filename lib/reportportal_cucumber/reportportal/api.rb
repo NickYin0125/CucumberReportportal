@@ -4,6 +4,13 @@ module ReportportalCucumber
   module ReportPortal
     # ReportPortal API wrapper that maps formatter/runtime events to REST endpoints.
     class API
+      LogBatchResult = Struct.new(:body, :may_duplicate, keyword_init: true) do
+        def initialize(**values)
+          super
+          freeze
+        end
+      end
+
       # @param config [ReportportalCucumber::Config]
       # @param client [ReportportalCucumber::Http::Client]
       def initialize(config:, client: Http::Client.new(config:))
@@ -15,6 +22,7 @@ module ReportportalCucumber
       # @param start_time [Time, String, Integer, Float]
       # @param description [String, nil]
       # @param attributes [Array<Hash>, nil]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
       # @param mode [String, nil]
       # @param rerun [Boolean]
       # @param rerun_of [String, nil]
@@ -38,17 +46,38 @@ module ReportportalCucumber
       # @param launch_uuid [String]
       # @param end_time [Time, String, Integer, Float]
       # @param status [String, Symbol, nil]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
       # @param attributes [Array<Hash>, nil]
       # @return [Hash, String]
-      def finish_launch(launch_uuid:, end_time:, status: nil, attributes: nil)
+      def finish_launch(launch_uuid:, end_time:, status: nil, attributes: nil, deadline: nil)
         body = Models.build_launch_finish(
           launch_uuid: launch_uuid,
           end_time: end_time,
           status: status,
           attributes: attributes
         )
-        response = @client.put_json(path: "#{@config.api_base_path}/launch/#{launch_uuid}/finish", body: body)
+        response = if deadline
+                     @client.put_json(path: "#{@config.api_base_path}/launch/#{launch_uuid}/finish", body: body, deadline: deadline)
+                   else
+                     @client.put_json(path: "#{@config.api_base_path}/launch/#{launch_uuid}/finish", body: body)
+                   end
         response.body
+      end
+
+      # Fetch the original v1 launch target without creating or changing it.
+      # @param uuid [String]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
+      # @return [Hash, Array, String]
+      def launch_by_uuid(uuid:, deadline: nil)
+        lookup_by_uuid(resource: "launch", uuid: uuid, deadline: deadline)
+      end
+
+      # Fetch the original v1 item target without creating or changing it.
+      # @param uuid [String]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
+      # @return [Hash, Array, String]
+      def item_by_uuid(uuid:, deadline: nil)
+        lookup_by_uuid(resource: "item", uuid: uuid, deadline: deadline)
       end
 
       # @param name [String]
@@ -101,25 +130,70 @@ module ReportportalCucumber
       # @param launch_uuid [String]
       # @param end_time [Time, String, Integer, Float]
       # @param status [String, Symbol, nil]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
       # @return [Hash, String]
-      def finish_item(item_uuid:, launch_uuid:, end_time:, status: nil)
+      def finish_item(item_uuid:, launch_uuid:, end_time:, status: nil, deadline: nil)
         body = Models.build_item_finish(
           item_uuid: item_uuid,
           launch_uuid: launch_uuid,
           end_time: end_time,
           status: status
         )
-        response = @client.put_json(path: "#{@config.api_base_path}/item/#{item_uuid}", body: body)
+        response = if deadline
+                     @client.put_json(path: "#{@config.api_base_path}/item/#{item_uuid}", body: body, deadline: deadline)
+                   else
+                     @client.put_json(path: "#{@config.api_base_path}/item/#{item_uuid}", body: body)
+                   end
         response.body
       end
 
       # @param entries [Array<Hash>]
       # @param files [Array<Hash>]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
       # @return [Hash, Array]
-      def log_batch(entries:, files:)
+      def log_batch(entries:, files:, deadline: nil)
+        result = perform_log_batch(entries: entries, files: files, deadline: deadline)
+        key = @log_batch_metadata_key
+        Thread.current[key] = result.may_duplicate if key && Thread.current[key] == :collecting
+        result.body
+      end
+
+      # @param entries [Array<Hash>]
+      # @param files [Array<Hash>]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
+      # @return [ReportportalCucumber::ReportPortal::API::LogBatchResult]
+      def log_batch_result(entries:, files:, deadline: nil)
+        key = log_batch_metadata_key
+        Thread.current[key] = :collecting
+        body = log_batch(entries: entries, files: files, deadline: deadline)
+        LogBatchResult.new(body: body, may_duplicate: !!Thread.current[key] && Thread.current[key] != :collecting)
+      ensure
+        Thread.current[key] = nil if key
+      end
+
+      private
+
+      def lookup_by_uuid(resource:, uuid:, deadline: nil)
+        raise ArgumentError, "Invalid ReportPortal UUID" unless uuid.is_a?(String) && uuid.match?(/\A[0-9a-f-]{16,64}\z/i)
+
+        path = "/api/v1/#{@config.project}/#{resource}/uuid/#{URI.encode_www_form_component(uuid)}"
+        response = @client.get_json(path: path, deadline: deadline)
+        response.body
+      end
+
+      def perform_log_batch(entries:, files:, deadline: nil)
+        if entries.length > batch_size_logs
+          raise Transport::MultipartHelper::CountLimitError
+        end
+        raise Transport::MultipartHelper::SizeLimitError if Transport::MultipartHelper.log_batch_bytes(entries: entries, files: files) > batch_max_bytes
+
         if files.empty? && entries.length == 1
-          response = @client.post_json(path: "#{@config.api_base_path}/log", body: entries.first)
-          return response.body
+          response = if deadline
+                       @client.post_json(path: "#{@config.api_base_path}/log", body: entries.first, deadline: deadline)
+                     else
+                       @client.post_json(path: "#{@config.api_base_path}/log", body: entries.first)
+                     end
+          return LogBatchResult.new(body: response.body, may_duplicate: !!response.may_duplicate)
         end
 
         parts = [{
@@ -140,11 +214,27 @@ module ReportportalCucumber
           end
           parts << part
         end
-        response = @client.post_multipart(path: "#{@config.api_base_path}/log", parts: parts)
-        response.body
+        response = if deadline
+                     @client.post_multipart(path: "#{@config.api_base_path}/log", parts: parts, deadline: deadline)
+                   else
+                     @client.post_multipart(path: "#{@config.api_base_path}/log", parts: parts)
+                   end
+        LogBatchResult.new(body: response.body, may_duplicate: !!response.may_duplicate)
       end
 
-      private
+      def log_batch_metadata_key
+        @log_batch_metadata_key ||= "reportportal_log_batch_metadata_#{object_id}".to_sym
+      end
+
+      # @return [Integer]
+      def batch_size_logs
+        @config.respond_to?(:batch_size_logs) ? @config.batch_size_logs : 20
+      end
+
+      # @return [Integer]
+      def batch_max_bytes
+        @config.respond_to?(:batch_max_bytes) ? @config.batch_max_bytes : 8 * 1024 * 1024
+      end
 
       # @param body [Hash, String]
       # @param fallback [String, nil]

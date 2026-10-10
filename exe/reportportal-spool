@@ -1,0 +1,110 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "optparse"
+require "json"
+require "reportportal_cucumber"
+require "reportportal_cucumber/service/spool_store"
+require "reportportal_cucumber/service/spool_replay"
+
+SAFE_CONFIG_MESSAGES = %w[
+  RP_SPOOL_MAX_BYTES RP_BATCH_SIZE_LOGS RP_BATCH_MAX_BYTES RP_QUEUE_MAX_RECORDS
+  RP_QUEUE_MAX_BYTES RP_QUEUE_ADMISSION_TIMEOUT_MS
+].to_h do |option|
+  message = "#{option} must be a positive decimal integer"
+  [message, message]
+end.freeze
+
+SAFE_STORE_MESSAGES = {
+  missing_transaction: "missing_transaction: verify the spool root and selected transaction; recover missing transaction metadata from a trusted copy",
+  missing_attachment: "missing_attachment: recover the original artifact bytes before replay",
+  corrupt_attachment: "corrupt_attachment: restore the original artifact bytes from a trusted copy; do not replay altered evidence",
+  corrupt_entries: "corrupt_entries: restore the original transaction from a trusted copy; do not replay altered entries",
+  unsafe_path: "unsafe_path: use a private non-symlink spool root and safe transaction-relative artifact paths",
+  quota_exceeded: "quota_exceeded: check RP_SPOOL_MAX_BYTES and available spool capacity; retain unconfirmed evidence",
+  deadline_expired: "deadline_expired: review --timeout and lock contention; inspect checkpoints before retrying",
+  invalid_schema: "invalid_schema: use a complete supported transaction schema; retain the original evidence",
+  invalid_transaction_id: "invalid_selection: select a published transaction ID; review --transaction"
+}.tap do |messages|
+  messages[:missing_root] = messages.fetch(:missing_transaction)
+  %i[unsafe_root unsafe_evidence].each { |reason| messages[reason] = messages.fetch(:unsafe_path) }
+  %i[invalid_manifest invalid_checkpoint invalid_json invalid_entry invalid_entries invalid_file invalid_files
+     file_alignment invalid_publication checkpoint_regression invalid_transaction metadata_limit].each do |reason|
+    messages[reason] = messages.fetch(:invalid_schema)
+  end
+end.freeze
+
+# @param error [StandardError]
+# @return [String] A fixed, bounded diagnostic without input values or artifact details.
+def safe_error(error)
+  response = error.respond_to?(:response) ? error.response : nil
+  if response&.status.is_a?(Integer) && response.status.between?(100, 599)
+    return "ReportPortal request failed with HTTP #{response.status}"
+  end
+
+  message = error.message.to_s
+  if error.is_a?(ArgumentError) && (configuration = SAFE_CONFIG_MESSAGES[message])
+    return configuration
+  end
+  if error.is_a?(ReportportalCucumber::Service::SpoolStore::Error) && (reason = SAFE_STORE_MESSAGES[error.reason])
+    return reason
+  end
+  if message == "Replay deadline expired during transaction validation"
+    return SAFE_STORE_MESSAGES.fetch(:deadline_expired)
+  end
+
+  allowed = [
+    "Transaction has too many entries", "Async v2 replay is not supported",
+    "ReportPortal credentials are required for execution", "Original target was not found",
+    "Original target is not open", "Transaction contains no replayable entries",
+    "Transaction entry schema is not replayable", "Transaction attachment is unavailable",
+    "Transaction attachment path is unsafe", "Transaction entry exceeds the configured request limit",
+    "Configured endpoint/project does not match the selected transaction",
+    "Transaction checkpoint schema is invalid", "Invalid ReportPortal UUID"
+  ]
+  allowed.find { |known| known == message } || "Replay was refused or incomplete; inspect the selected transaction and local configuration"
+end
+
+options = { timeout: 30.0, execute: false, dry_run: false, allow_duplicates: false }
+parser = OptionParser.new do |opts|
+  opts.banner = "Usage: reportportal-spool --spool-dir DIR --transaction ID [options]"
+  opts.on("--spool-dir DIR", "Spool root") { |value| options[:spool_dir] = value }
+  opts.on("--transaction ID", "Select exactly one published transaction") { |value| options[:transaction] = value }
+  opts.on("--dry-run", "Validate without credentials or HTTP (the default)") { options[:dry_run] = true }
+  opts.on("--execute", "Send selected pending/definitely-failed records") { options[:execute] = true }
+  opts.on("--allow-duplicates", "Allow uncertain records in the selected transaction") { options[:allow_duplicates] = true }
+  opts.on("--timeout SECONDS", Float, "Overall execution budget (default 30)") { |value| options[:timeout] = value }
+  opts.on("-h", "--help", "Show this help") { puts opts; exit 0 }
+end
+
+begin
+  parser.parse!
+  raise OptionParser::InvalidArgument, "unexpected positional arguments" unless ARGV.empty?
+  raise OptionParser::MissingArgument, "--spool-dir" unless options[:spool_dir]
+  raise OptionParser::MissingArgument, "--transaction" unless options[:transaction]
+  unless options[:timeout].finite? && options[:timeout] >= 0
+    raise OptionParser::InvalidArgument, "--timeout must be a finite non-negative number"
+  end
+  if options[:allow_duplicates] && !options[:execute]
+    raise OptionParser::InvalidArgument, "--allow-duplicates requires --execute"
+  end
+  if options[:dry_run] && options[:execute]
+    raise OptionParser::InvalidArgument, "--dry-run cannot be combined with --execute"
+  end
+
+  config = ReportportalCucumber::Config.load(
+    overrides: { spool_dir: options[:spool_dir], retry_attempts: 1 }
+  )
+  store = ReportportalCucumber::Service::SpoolStore.new(config: config)
+  replay = ReportportalCucumber::Service::SpoolReplay.new(store: store, config: config)
+  result = replay.run(transaction_id: options[:transaction], execute: options[:execute],
+                      allow_duplicates: options[:allow_duplicates], timeout: options[:timeout])
+  puts JSON.generate(result)
+  exit(options[:execute] && result[:retained] ? 2 : 0)
+rescue OptionParser::ParseError => error
+  warn("reportportal-spool: invalid command-line options; review --spool-dir, --transaction, --timeout, --dry-run, --execute, and --allow-duplicates")
+  exit 1
+rescue StandardError => error
+  warn("reportportal-spool: #{error.class}: #{safe_error(error)}")
+  exit 2
+end
