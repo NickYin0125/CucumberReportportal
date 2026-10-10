@@ -119,6 +119,61 @@ rp_log(JSON.pretty_generate(response), "INFO")
 - `RP_MINIO_SECRET_ACCESS_KEY`
 - `RP_MINIO_REGION`
 
+### Scenario identity migration
+
+Scenario identity remains `legacy` by default. To pilot stable identities, opt in
+explicitly and keep the namespace fixed across CI workers that should share
+history:
+
+```bash
+RP_IDENTITY_STRATEGY=stable_v1 \
+RP_IDENTITY_ROOT="$PWD" \
+RP_IDENTITY_NAMESPACE="payments-ci" \
+bundle exec cucumber features --format ReportPortal::Cucumber::Formatter
+```
+
+In `stable_v1`, `RP_TEST_CASE_ID` and `@tms:` values seed an opaque
+`rp:stable-v1:<digest>` ReportPortal `testCaseId`; the raw seed is not the wire
+ID, and UI search by the raw TMS value is not guaranteed. The default `legacy`
+strategy preserves existing IDs and histories. Stable-v1 starts a separate
+history baseline; it does not rewrite, merge, or backfill server history. Review
+the [M3B migration contract](docs/design/reporting-experience-m3b-implementation.md)
+before opting in.
+
+### Scenario business attributes (M3C)
+
+Scenario attributes are opt-in; set `RP_SCENARIO_ATTRIBUTES_ENABLED=true` to
+publish allowlisted business values on Scenario items only. The default keys are
+`component,team,owner,layer,priority,browser,tms`; defaults are an empty JSON
+object/list, for example `RP_SCENARIO_ATTRIBUTES='{"component":"payments"}'`.
+Tags use `@key:value` and inherit from Feature, Rule, Scenario, then the executed
+Examples row. A later scope overrides an earlier value; conflicting values for
+one key in the same scope are ignored for that scope. `tms` is derived only from
+the effective explicit test-case ID (`RP_TEST_CASE_ID` first, otherwise the
+existing scenario ID tag selection). Existing `@tms:` identity tags still work;
+the attribute mapper does not independently reselect the ID from inherited
+tags or configured defaults. See the [usage example](examples/m3c_attributes/README.md)
+and [M3C implementation contract](docs/design/reporting-experience-m3c-attributes-implementation.md).
+
+### Scenario source, CI, and TMS links (M3C)
+
+Scenario references are separately opt-in and default to disabled. Set
+`RP_SCENARIO_LINKS_ENABLED=true` to append configured Source, CI Run, and TMS
+Markdown links to the existing Scenario description. Configure source links with
+`RP_SOURCE_URL_TEMPLATE`, `RP_SOURCE_COMMIT`, and `RP_SOURCE_ROOT`; the template
+uses `{commit}`, `{path}`, and `{line}`. Configure an explicit run URL with
+`RP_CI_RUN_URL`, and a TMS template with `{id}` using
+`RP_TMS_URL_TEMPLATE`. No CI provider or environment variables are detected
+automatically. See the [links example](examples/m3c_links/README.md) and
+[M3C links contract](docs/design/reporting-experience-m3c-links-implementation.md).
+
+Links are description-only metadata. This does not add ReportPortal link fields,
+logs, or test items, and does not affect scenario identity or the separate
+business-attribute setting. The implementation uses bounded, validated URLs;
+invalid references are skipped without including their raw values in diagnostics.
+This repository's local request-capture tests do not certify a live ReportPortal
+UI deployment.
+
 ## DSL
 
 在 step definitions 里可直接使用：
@@ -225,10 +280,20 @@ Cucumber's `pretty` formatter may also echo the native `world.log` content to th
 terminal. The compact summary guarantee applies to AppLog's own output, not to
 other formatters independently rendering the same evidence.
 
-The sanitizer is **not** a universal PII filter. Existing `rp_log`, ordinary
-`AppLog` messages/JSON, raw files, screenshots, and videos are not automatically
-sanitized by the HTTP helper. Review artifacts before uploading them. The helper
-does not automatically attach complete HTTP bodies when its preview is truncated.
+The HTTP helper's redaction is not a universal PII filter. Existing `rp_log`,
+ordinary `AppLog` messages/JSON, raw files, screenshots, and videos are not
+automatically sanitized by that helper. Review artifacts before uploading them.
+Failure-evidence and assertion diagnostic text is separately credential-redacted
+before clipping; inputs above 64 KiB, malformed JSON-shaped diagnostics, and URLs
+that cannot be parsed safely are replaced with a fixed omission marker. This
+bounded policy also applies to transport-error warning text and spool exception
+metadata. It does not sanitize raw file/video bytes, ordinary `AppLog`
+messages/JSON, legacy `rp_log` content, arbitrary attachment contents, automatic
+Step/manual-step exception or backtrace logs, or native Cucumber core failure
+payloads. If a framework publishes safe `rp_evidence` and then re-raises the
+original browser error, separate legacy failure logs may still carry it; this
+sanitizer does not mutate or suppress that error. The HTTP helper does not
+automatically attach complete HTTP bodies when its preview is truncated.
 
 RP text/JSON attachment previews are bounded to 16 KiB and 100 lines for both
 paths and bytes; the full attachment remains available. Path-backed previews use

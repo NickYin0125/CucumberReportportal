@@ -1,0 +1,9 @@
+# M3B stable identity migration fixture
+
+This fixture is for the M3B identity acceptance work, not a general-purpose example. The paired Gherkin sources in `spec/fixtures/m3b/` have the same cases and values, but the second inserts an unrelated line and reverses Examples header order. For source fallback comparison, run each variant sequentially by overwriting one temporary feature file at the exact same URI. They exercise an explicit `@tms:` ID, a source-derived case, two dataset rows, and a fail-once native retry.
+
+Run only after the M3B implementation source is frozen and approved. Keep `RP_IDENTITY_NAMESPACE` identical across workers that should share history. Start with `RP_IDENTITY_STRATEGY=legacy` (the default), compare the emitted request payloads, and opt in to `stable_v1` only after checking the migration implications in `docs/design/reporting-experience-m3b-implementation.md`.
+
+In `stable_v1`, `RP_TEST_CASE_ID` and `@tms:` values are identity seeds; ReportPortal receives an opaque `rp:stable-v1:<digest>` `testCaseId`, not the literal TMS value. Do not assume the UI can search by that raw seed. M3C human-readable attributes/links are not implemented. Stable-v1 sorts canonical wire parameters, but does not reorder M3A display names or source Examples/DataTable columns.
+
+Use Cucumber progress/pretty output and write the ReportPortal formatter to a separate output file. Do not enable native message/HTML formatters in this fixture lane: the recorded Cucumber 10.2.0 standalone control fails before it can establish reporter compatibility. Cucumber 10.2.0 `BeforeAll` can abort before the reporter's event stream begins, so it is not used as evidence for `BEFORE_CLASS` reporting. Local mock captures verify client payloads only; real ReportPortal `testCaseHash`, history grouping, retry statistics, and UI remain separate live acceptance gates.

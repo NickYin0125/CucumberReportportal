@@ -58,6 +58,27 @@ RSpec.describe ReportportalCucumber::Cucumber::World do
     end
   end
 
+  it "rejects an explicit false target while a later step is open without enqueueing" do
+    config = ReportportalCucumber::Config.new(endpoint: "https://m2-false-target.example.test",
+      project: "demo", api_key: "token", join: false)
+    allow(ReportportalCucumber::Config).to receive(:load).and_return(config)
+    formatter = ReportportalCucumber::Cucumber::Formatter.new(formatter_config)
+    context = formatter.runtime_context
+    next_target = Object.new.freeze
+    allow(formatter).to receive(:reporting_enabled?).and_return(true)
+    allow(formatter).to receive(:capture_target).and_return(next_target)
+    allow(context).to receive(:acquire_capture_target).with(false, launch_uuid: nil).and_return(nil)
+    expect(formatter).not_to receive(:capture_target)
+    expect(context).not_to receive(:acquire_capture_target).with(next_target, launch_uuid: nil)
+    expect(formatter.instance_variable_get(:@log_buffer)).not_to receive(:emit_log)
+
+    expect(formatter.rp_evidence(action: "false adapter sentinel", error: RuntimeError.new("synthetic"),
+                                 target: false)).to be(false)
+  ensure
+    formatter&.instance_variable_get(:@log_buffer)&.shutdown(timeout: 2)
+    ReportportalCucumber.current_runtime = nil
+  end
+
   it "preserves path-backed artifacts and enforces the in-memory bytes ceiling" do
     runtime = double("runtime")
     ReportportalCucumber.current_runtime = runtime

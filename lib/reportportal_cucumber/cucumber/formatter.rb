@@ -2,13 +2,22 @@
 
 require "cucumber/formatter/ast_lookup"
 require "cucumber/glue/dsl"
+require "json"
+require_relative "ast_metadata"
 require_relative "../automation/report_context"
 require_relative "../automation/evidence_redactor"
+require_relative "../service/evidence_presenter"
+require_relative "../service/scenario_identity"
+require_relative "../service/scenario_attributes"
+require_relative "../service/scenario_links"
 
 module ReportportalCucumber
   module Cucumber
     # Cucumber formatter that streams execution state to ReportPortal in real time.
     class Formatter
+      SAFE_SCENARIO_LINK_DIAGNOSTICS = Service::ScenarioLinks::DIAGNOSTIC_REASONS.map(&:to_s).freeze
+      EVIDENCE_FILENAME_LIMIT = 512
+
       attr_reader :config, :runtime_context
 
       # @param cucumber_config [Object]
@@ -20,12 +29,11 @@ module ReportportalCucumber
         @join = Runtime::Join.new(config: @config)
         @log_buffer = Runtime::LogBuffer.new(api: @api, config: @config, on_error: method(:handle_reporting_error))
         @ast_lookup = build_ast_lookup
+        @ast_metadata = AstMetadata.new(ast_lookup: @ast_lookup)
         @feature_states = {}
         @scenario_states = {}
-        @outline_metadata_cache = {}
-        @feature_description_cache = {}
-        @scenario_description_cache = {}
-        @background_step_texts_cache = {}
+        @identity_warnings = Set.new
+        @stable_scenario_outcomes = Hash.new { |hash, key| hash[key] = {} }
         @launch_uuid = nil
         @finalized = false
         @last_timestamp_ms = nil
@@ -122,7 +130,7 @@ module ReportportalCucumber
       def report_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
         return false unless reporting_enabled? && !@finalized
 
-        selected = target || capture_target
+        selected = target.nil? ? capture_target : target
         item = runtime_context.acquire_capture_target(selected, launch_uuid: @launch_uuid)
         unless item
           ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target is not an open action in this launch")
@@ -270,18 +278,21 @@ module ReportportalCucumber
       # @return [Hash]
       def build_evidence_payload(artifact)
         options = artifact.transform_keys(&:to_sym)
-        redactor = Automation::EvidenceRedactor.new
         path = options[:path]
         bytes = options[:bytes]
         raise ArgumentError, "artifact must include path or bytes" if path.nil? && bytes.nil?
 
-        filename = options[:name].to_s
+        filename = options[:name].is_a?(String) ? options[:name] : ""
         if path
-          path = File.expand_path(path.to_s)
+          raise ArgumentError, "evidence path must be a string" unless path.is_a?(String)
+
+          path = File.expand_path(path)
           raise ArgumentError, "evidence path is not a file" unless File.file?(path)
 
           filename = File.basename(path) if filename.empty?
-          filename = redactor.redact_text(filename)
+          filename = Service::EvidencePresenter.sanitize_diagnostic(
+            filename, limit: EVIDENCE_FILENAME_LIMIT
+          )
           mime_filename = File.extname(filename).empty? ? File.basename(path) : filename
           mime = Transport::MultipartHelper.content_type_for(
             filename: mime_filename, declared_type: options[:mime]
@@ -294,7 +305,9 @@ module ReportportalCucumber
         raise ArgumentError, "in-memory evidence exceeds 1 MiB" if bytes.bytesize > 1_048_576
 
         filename = Service::PayloadBuilder.default_attachment_name(options[:mime]) if filename.empty?
-        filename = redactor.redact_text(filename)
+        filename = Service::EvidencePresenter.sanitize_diagnostic(
+          filename, limit: EVIDENCE_FILENAME_LIMIT
+        )
         mime = Transport::MultipartHelper.content_type_for(filename: filename, declared_type: options[:mime])
         { name: filename, mime: mime, bytes: bytes }
       end
@@ -406,37 +419,68 @@ module ReportportalCucumber
 
         scenario_name = extract_scenario_name(event)
         scenario_line = extract_scenario_line(event)
-        scenario_description = extract_scenario_description(feature_uri: feature_uri, scenario_line: scenario_line)
         parameters = extract_parameters(event)
+        source_metadata = @ast_metadata.scenario(uri: feature_uri, location_line: event_location_line(event))
+        scenario_description = extract_scenario_description(
+          feature_uri: feature_uri,
+          scenario_line: scenario_line,
+          metadata: source_metadata
+        )
         code_ref = ReportPortal::Models.build_code_ref(feature_uri: feature_uri, scenario_line: scenario_line)
         explicit_test_case_id = explicit_test_case_id_for(event)
-        test_case_id = ReportPortal::Models.build_test_case_id(
+        scenario_description = build_scenario_links_description(
+          description: scenario_description,
+          feature_uri: feature_uri,
+          scenario_line: scenario_line,
+          source: source_metadata,
+          explicit_id: explicit_test_case_id
+        )
+        identity = scenario_identity(
+          feature_uri: feature_uri,
+          code_ref: code_ref,
+          parameters: parameters,
+          explicit_id: explicit_test_case_id,
+          source: source_metadata
+        )
+        test_case_id = identity ? identity.test_case_id : ReportPortal::Models.build_test_case_id(
           explicit_id: explicit_test_case_id,
           code_ref: code_ref,
           parameters: parameters
         )
-        unique_id = ReportPortal::Models.build_unique_id(code_ref: code_ref, parameters: parameters)
+        unique_id = identity ? identity.unique_id : ReportPortal::Models.build_unique_id(code_ref: code_ref, parameters: parameters)
+        parameters = identity.parameters if identity && identity.strategy.to_s == "stable_v1"
         scenario_key = build_scenario_key(feature_uri: feature_uri, scenario_line: scenario_line, unique_id: unique_id)
-        attempt = runtime_context.next_scenario_attempt(scenario_key)
+        attempt_key = if identity && identity.strategy.to_s == "stable_v1"
+                        stable_retry_key(parent_uuid: feature_parent_uuid, wire_name: "Scenario: #{scenario_name}", unique_id: unique_id)
+                      else
+                        scenario_key
+                      end
+        attempt = runtime_context.next_scenario_attempt(attempt_key)
         retry_flag = attempt > 1
         debug("Starting scenario name=#{scenario_name.inspect} code_ref=#{code_ref} retry=#{retry_flag} parameters=#{parameters.inspect}")
+        scenario_attributes = build_scenario_attributes(
+          source: source_metadata,
+          explicit_id: explicit_test_case_id
+        )
         local_uuid = SecureRandom.uuid
+        scenario_item = {
+          name: "Scenario: #{scenario_name}",
+          start_time: start_time,
+          type: "STEP",
+          launch_uuid: @launch_uuid,
+          parent_uuid: feature_parent_uuid,
+          description: scenario_description,
+          code_ref: code_ref,
+          parameters: parameters,
+          has_stats: true,
+          retry: retry_flag,
+          uuid: local_uuid,
+          test_case_id: test_case_id,
+          unique_id: unique_id
+        }
+        scenario_item[:attributes] = scenario_attributes unless scenario_attributes.nil?
         scenario_uuid = safe_reporting_call(fallback: local_uuid) do
-          @api.start_item(
-            name: "Scenario: #{scenario_name}",
-            start_time: start_time,
-            type: "STEP",
-            launch_uuid: @launch_uuid,
-            parent_uuid: feature_parent_uuid,
-            description: scenario_description,
-            code_ref: code_ref,
-            parameters: parameters,
-            has_stats: true,
-            retry: retry_flag,
-            uuid: local_uuid,
-            test_case_id: test_case_id,
-            unique_id: unique_id
-          )
+          @api.start_item(**scenario_item)
         end
 
         item = Runtime::Context::ItemHandle.new(
@@ -463,6 +507,7 @@ module ReportportalCucumber
         @scenario_states[scenario_key] = {
           item: item,
           feature_key: feature_uri,
+          stable_retry_key: identity && identity.strategy.to_s == "stable_v1" ? attempt_key : nil,
           statuses: [],
           test_case_started_id: test_case_started_id
         }
@@ -700,7 +745,7 @@ module ReportportalCucumber
       # @return [void]
       def finish_feature_items(end_time:)
         runtime_context.feature_items.each do |feature_key, item|
-          finish_feature_state(feature_key: feature_key, status: aggregate_status(runtime_context.feature_statuses(feature_key)), end_time: end_time, item: item)
+          finish_feature_state(feature_key: feature_key, status: aggregate_status(feature_statuses_for_reporting(feature_key)), end_time: end_time, item: item)
         end
       end
 
@@ -713,7 +758,7 @@ module ReportportalCucumber
         item ||= runtime_context.feature_item(feature_key)
         return unless item
 
-        resolved_status = ReportPortal::Models.normalize_status(status) || aggregate_status(runtime_context.feature_statuses(feature_key))
+        resolved_status = ReportPortal::Models.normalize_status(status) || aggregate_status(feature_statuses_for_reporting(feature_key))
         debug("Finishing feature feature=#{feature_key} uuid=#{item.uuid} status=#{resolved_status}")
         flush_before_finish
         safe_reporting_call do
@@ -763,7 +808,11 @@ module ReportportalCucumber
             status: resolved_status
           )
         end
-        runtime_context.record_feature_status(scenario_state[:feature_key], resolved_status)
+        if scenario_state[:stable_retry_key]
+          @stable_scenario_outcomes[scenario_state[:feature_key]][scenario_state[:stable_retry_key]] = resolved_status
+        else
+          runtime_context.record_feature_status(scenario_state[:feature_key], resolved_status)
+        end
         scenario_state[:statuses] << resolved_status
         runtime_context.release_test_case_started(scenario_state[:test_case_started_id]) if scenario_state[:test_case_started_id]
         runtime_context.finish_scenario(expected_uuid: scenario_state[:item].uuid) if runtime_context.current_scenario_key == scenario_key
@@ -861,7 +910,8 @@ module ReportportalCucumber
       # @param error [StandardError]
       # @return [void]
       def handle_reporting_error(error)
-        ReportportalCucumber.logger.warn("#{error.class}: #{error.message}")
+        diagnostic = Service::EvidencePresenter.sanitize_diagnostic(error.message, limit: 2048)
+        ReportportalCucumber.logger.warn("#{error.class}: #{diagnostic}")
       end
 
       # @param item_uuid [String]
@@ -936,7 +986,14 @@ module ReportportalCucumber
 
       # @return [String]
       def overall_status
-        aggregate_status(runtime_context.feature_items.keys.flat_map { |key| runtime_context.feature_statuses(key) })
+        aggregate_status(runtime_context.feature_items.keys.flat_map { |key| feature_statuses_for_reporting(key) })
+      end
+
+      # @param feature_key [String]
+      # @return [Array<String>]
+      def feature_statuses_for_reporting(feature_key)
+        stable_outcomes = @stable_scenario_outcomes && @stable_scenario_outcomes[feature_key]
+        runtime_context.feature_statuses(feature_key) + Array(stable_outcomes&.values)
       end
 
       # @param event [Object]
@@ -970,6 +1027,61 @@ module ReportportalCucumber
         [feature_uri, scenario_line, unique_id].join(":")
       end
 
+      # @param feature_uri [String]
+      # @param code_ref [String]
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @param explicit_id [String, nil]
+      # @param source [Hash, nil]
+      # @return [Service::ScenarioIdentity::Result, nil]
+      def scenario_identity(feature_uri:, code_ref:, parameters:, explicit_id:, source:)
+        strategy = @config.respond_to?(:identity_strategy) ? @config.identity_strategy : "legacy"
+        return unless strategy.to_s == "stable_v1"
+
+        result = Service::ScenarioIdentity.build(
+          strategy: strategy,
+          explicit_id: explicit_id,
+          code_ref: code_ref,
+          parameters: parameters,
+          feature_uri: feature_uri,
+          source: source,
+          root: @config.identity_root,
+          namespace: @config.identity_namespace
+        )
+        warn_identity_once(result.fallback_reason) if result.strategy.to_s != "stable_v1"
+        result
+      rescue StandardError => error
+        raise if @config.respond_to?(:fail_on_reporting_error?) && @config.fail_on_reporting_error?
+
+        warn_identity_once("identity_error_#{error.class}")
+        nil
+      end
+
+      # @param reason [Object]
+      # @return [void]
+      def warn_identity_once(reason)
+        value = reason.to_s
+        key = if %w[missing_source ambiguous_source].include?(value)
+                value
+              elsif value.match?(/\Aidentity_error_[A-Z]\w*(?:::\w+)*\z/)
+                value
+              else
+                "fallback"
+              end
+        @identity_warnings ||= Set.new
+        return if @identity_warnings.include?(key)
+
+        @identity_warnings << key
+        ReportportalCucumber.logger.warn("Stable scenario identity unavailable; using legacy identity (#{key})")
+      end
+
+      # @param parent_uuid [String]
+      # @param wire_name [String]
+      # @param unique_id [String]
+      # @return [String]
+      def stable_retry_key(parent_uuid:, wire_name:, unique_id:)
+        JSON.generate([@launch_uuid, parent_uuid, wire_name, unique_id])
+      end
+
       # @param event [Object]
       # @return [String]
       def explicit_test_case_id_for(event)
@@ -988,6 +1100,115 @@ module ReportportalCucumber
         nil
       end
 
+      # @param source [Hash, nil]
+      # @param explicit_id [String, nil]
+      # @return [Array<Hash>, nil] Scenario attributes, or nil when disabled/unavailable
+      def build_scenario_attributes(source:, explicit_id:)
+        return unless @config.respond_to?(:scenario_attributes_enabled)
+        return unless @config.scenario_attributes_enabled
+
+        result = Service::ScenarioAttributes.build(
+          defaults: @config.scenario_attributes,
+          tag_scopes: source&.fetch(:tag_scopes, nil),
+          allowed_keys: @config.scenario_attribute_keys,
+          explicit_id: explicit_id
+        )
+        Array(result.diagnostics).each do |diagnostic|
+          warn_scenario_attribute_diagnostic(diagnostic, allowed_keys: @config.scenario_attribute_keys)
+        end
+        result.attributes
+      rescue StandardError => error
+        ReportportalCucumber.logger.warn("Scenario attributes unavailable (#{error.class})")
+        nil
+      end
+
+      # @param description [String, nil]
+      # @param feature_uri [String]
+      # @param scenario_line [Integer]
+      # @param source [Hash, nil]
+      # @param explicit_id [String, nil]
+      # @return [String, nil]
+      def build_scenario_links_description(description:, feature_uri:, scenario_line:, source:, explicit_id:)
+        enabled = if @config.respond_to?(:scenario_links_enabled?)
+                    @config.scenario_links_enabled?
+                  elsif @config.respond_to?(:scenario_links_enabled)
+                    @config.scenario_links_enabled
+                  else
+                    false
+                  end
+        return description unless enabled
+
+        result = Service::ScenarioLinks.build(
+          description: description,
+          feature_uri: expanded_scenario_link_feature_uri(feature_uri),
+          scenario_line: scenario_line,
+          example_row_line: source&.fetch(:example_row_line, nil),
+          explicit_id: explicit_id,
+          source_url_template: optional_config_value(:source_url_template),
+          source_commit: optional_config_value(:source_commit),
+          source_root: optional_config_value(:source_root),
+          ci_run_url: optional_config_value(:ci_run_url),
+          tms_url_template: optional_config_value(:tms_url_template)
+        )
+        warn_scenario_link_diagnostics(result.diagnostics)
+        result.description
+      rescue StandardError => error
+        ReportportalCucumber.logger.warn("Scenario links unavailable (#{error.class})")
+        description
+      end
+
+      # @param name [Symbol]
+      # @return [Object, nil]
+      def optional_config_value(name)
+        @config.public_send(name) if @config.respond_to?(name)
+      end
+
+      # @param diagnostics [Array<Object>]
+      # @return [void]
+      def warn_scenario_link_diagnostics(diagnostics)
+        Array(diagnostics).each do |diagnostic|
+          reason = diagnostic.is_a?(Hash) ? diagnostic[:reason] || diagnostic["reason"] : diagnostic
+          safe_reason = if (reason.is_a?(Symbol) || reason.is_a?(String)) && SAFE_SCENARIO_LINK_DIAGNOSTICS.include?(reason.to_s)
+                          reason.to_s
+                        else
+                          "invalid_link"
+                        end
+          ReportportalCucumber.logger.warn("Scenario link omitted (#{safe_reason})")
+        end
+      end
+
+      # @param feature_uri [Object]
+      # @return [Object]
+      def expanded_scenario_link_feature_uri(feature_uri)
+        return feature_uri unless feature_uri.is_a?(String)
+        return feature_uri unless [Encoding::UTF_8, Encoding::US_ASCII].include?(feature_uri.encoding)
+        return feature_uri unless feature_uri.valid_encoding?
+        return feature_uri if feature_uri.match?(/[\\\x00-\x1f\x7f]/)
+        return feature_uri if feature_uri.split("/").include?("..")
+
+        File.expand_path(feature_uri, Dir.pwd)
+      rescue StandardError
+        feature_uri
+      end
+
+      # @param diagnostic [Hash]
+      # @param allowed_keys [Array<String>]
+      # @return [void]
+      def warn_scenario_attribute_diagnostic(diagnostic, allowed_keys:)
+        return unless diagnostic.is_a?(Hash)
+
+        reason = diagnostic[:reason]
+        scope = diagnostic[:scope]
+        key = diagnostic[:key]
+        safe_reason = %w[conflict invalid_value invalid_entry missing_source].include?(reason.to_s) ? reason.to_s : "invalid_attribute"
+        safe_scope = %w[default feature rule scenario examples explicit_id].include?(scope.to_s) ? scope.to_s : nil
+        allowed = Array(allowed_keys).map { |entry| entry.to_s.downcase }
+        normalized_key = key.to_s.downcase if !key.nil? && key.to_s.match?(/\A[a-z][a-z0-9_.-]*\z/i)
+        safe_key = normalized_key if normalized_key && allowed.include?(normalized_key)
+        details = [safe_reason, safe_scope && "scope=#{safe_scope}", safe_key && "key=#{safe_key}"].compact.join(", ")
+        ReportportalCucumber.logger.warn("Scenario attribute ignored (#{details})")
+      end
+
       # @param event [Object]
       # @return [Array<String>]
       def extract_tags(event)
@@ -1004,8 +1225,11 @@ module ReportportalCucumber
       # @param event [Object]
       # @return [Hash, Array<Hash>, nil]
       def extract_parameters(event)
-        fetch_value(event, :parameters, [:example, :parameters], [:test_case, :parameters], [:pickle, :parameters]) ||
-          extract_outline_metadata(event)&.fetch(:parameters, nil)
+        provided = fetch_value(event, :parameters, [:example, :parameters], [:test_case, :parameters], [:pickle, :parameters])
+        return provided unless provided.nil?
+
+        metadata = extract_outline_metadata(event)
+        metadata&.fetch(:parameters, nil)
       end
 
       # @param event [Object]
@@ -1017,9 +1241,10 @@ module ReportportalCucumber
       # @param feature_uri [String]
       # @return [String]
       def extract_feature_name(feature_uri)
-        feature_line = feature_file_lines(feature_uri).find { |line| line.strip.match?(/\AFeature:/) }
-        name = feature_line.to_s.strip.sub(/\AFeature:\s*/, "")
-        return "Feature: #{name}" unless name.empty?
+        metadata = @ast_metadata.feature(uri: feature_uri)
+        name = metadata && metadata[:name].to_s
+        keyword = metadata && metadata[:keyword].to_s
+        return "#{keyword}: #{name}" unless name.to_s.empty?
 
         "Feature: #{File.basename(feature_uri, File.extname(feature_uri)).tr('_', ' ')}"
       end
@@ -1027,11 +1252,7 @@ module ReportportalCucumber
       # @param feature_uri [String]
       # @return [String, nil]
       def extract_feature_description(feature_uri)
-        @feature_description_cache[feature_uri] ||= begin
-          lines = feature_file_lines(feature_uri)
-          feature_index = lines.index { |line| line.strip.match?(/\AFeature:/) }
-          extract_description_after(lines, feature_index, stop_pattern: /\A(?:Background:|Rule:|Scenario(?: Outline| Template)?:|@)/)
-        end
+        @ast_metadata.feature(uri: feature_uri)&.fetch(:description, nil)
       end
 
       # @param event [Object]
@@ -1051,17 +1272,23 @@ module ReportportalCucumber
       # @param feature_uri [String]
       # @param scenario_line [Integer]
       # @return [String, nil]
-      def extract_scenario_description(feature_uri:, scenario_line:)
-        key = [feature_uri, scenario_line.to_i]
-        @scenario_description_cache[key] ||= begin
-          lines = feature_file_lines(feature_uri)
-          index = scenario_line.to_i - 1
-          extract_description_after(
-            lines,
-            index,
-            stop_pattern: /\A(?:Given |When |Then |And |But |\* |Examples:|Background:|Rule:|Scenario(?: Outline| Template)?:|@)/
-          )
+      def extract_scenario_description(feature_uri:, scenario_line:, metadata: nil)
+        metadata ||= @ast_metadata.scenario(uri: feature_uri, location_line: scenario_line)
+        return unless metadata
+
+        parts = []
+        parts << metadata[:description]
+        if metadata[:rule_name]
+          parts << "Rule: #{metadata[:rule_name]}"
+          parts << metadata[:rule_description]
         end
+        if metadata[:examples_name] || metadata[:example_row_line]
+          parts << "Examples: #{metadata[:examples_name]}" if metadata[:examples_name]
+          parts << "Example row: #{metadata[:example_row_line]}" if metadata[:example_row_line]
+          parameters = metadata[:parameters]
+          parts << parameter_description_table(parameters) if parameters
+        end
+        parts.compact.reject { |part| part.to_s.empty? }.join("\n\n").then { |value| value.empty? ? nil : value }
       end
 
       # @param event [Object]
@@ -1173,15 +1400,25 @@ module ReportportalCucumber
       # @return [Boolean]
       def extract_background?(event, descriptor: nil)
         value = fetch_value(event, :background, :background_step, [:test_step, :background], [:pickle_step, :background])
-        return value if value == true || value == false
+        return true if value == true
+
+        test_step = fetch_value(event, :test_step)
+        metadata = test_step && @ast_metadata.step(test_step)
+        return true if metadata && metadata[:background]
+        return false if value == false
+
+        unless test_step && fetch_value(test_step, [:location, :lines], [:location, :line])
+          feature_uri = extract_feature_uri(event)
+          feature_uri = runtime_context.current_feature_key if feature_uri == "unknown.feature"
+          step_text = background_candidate_text(event, descriptor: descriptor)
+          metadata = @ast_metadata.background_for_text(uri: feature_uri, text: step_text)
+          return true if metadata
+        end
 
         keyword = fetch_value(event, :keyword, [:test_step, :keyword], [:pickle_step, :keyword]).to_s
         return true if keyword.match?(/\Abackground\b/i)
 
-        step_text = background_candidate_text(event, descriptor: descriptor)
-        feature_uri = extract_feature_uri(event)
-        feature_uri = runtime_context.current_feature_key if feature_uri == "unknown.feature"
-        !step_text.to_s.empty? && background_step_texts(feature_uri).include?(step_text)
+        false
       end
 
       # @param event [Object]
@@ -1298,106 +1535,51 @@ module ReportportalCucumber
       # @return [Hash, nil]
       def extract_outline_metadata(event)
         feature_uri = extract_feature_uri(event)
-        location_line = fetch_value(event, :scenario_line, [:test_case, :location, :line], [:location, :line], [:pickle, :location, :line])
+        location_line = event_location_line(event)
         return nil if feature_uri.to_s.empty? || location_line.nil?
 
-        cache_key = [feature_uri, location_line.to_i]
-        @outline_metadata_cache[cache_key] ||= parse_outline_metadata(feature_uri, location_line.to_i)
+        metadata = @ast_metadata.scenario(uri: feature_uri, location_line: location_line)
+        metadata if metadata && metadata[:parameters]
       end
 
       # @param feature_uri [String]
       # @param location_line [Integer]
       # @return [Hash, nil]
       def parse_outline_metadata(feature_uri, location_line)
-        return nil unless File.file?(feature_uri)
+        metadata = @ast_metadata.scenario(uri: feature_uri, location_line: location_line)
+        return unless metadata && metadata[:parameters]
 
-        lines = feature_file_lines(feature_uri)
-        row_index = location_line - 1
-        return nil unless row_index.between?(0, lines.length - 1)
-        return nil unless lines[row_index].strip.start_with?("|")
-
-        table_start = row_index
-        while table_start.positive? && lines[table_start - 1].strip.start_with?("|")
-          table_start -= 1
-        end
-        return nil if table_start == row_index
-
-        outline_index = table_start - 1
-        while outline_index >= 0
-          stripped = lines[outline_index].strip
-          break if stripped.start_with?("Scenario Outline:", "Scenario Template:")
-
-          outline_index -= 1
-        end
-        return nil if outline_index.negative?
-
-        headers = split_table_row(lines[table_start])
-        values = split_table_row(lines[row_index])
-        return nil if headers.empty? || headers.length != values.length
-
-        {
-          scenario_line: outline_index + 1,
-          parameters: headers.zip(values).to_h
-        }
+        { scenario_line: metadata[:scenario_line], parameters: metadata[:parameters] }
       end
 
-      # @param row [String]
-      # @return [Array<String>]
-      def split_table_row(row)
-        row.strip.sub(/\A\|/, "").sub(/\|\z/, "").split("|").map(&:strip)
-      end
-
-      # @param feature_uri [String]
-      # @return [Array<String>]
-      def feature_file_lines(feature_uri)
-        return [] unless File.file?(feature_uri)
-
-        File.readlines(feature_uri, chomp: true)
-      rescue StandardError
-        []
-      end
-
-      # @param feature_uri [String]
-      # @return [Array<String>]
-      def background_step_texts(feature_uri)
-        @background_step_texts_cache[feature_uri] ||= begin
-          lines = feature_file_lines(feature_uri)
-          background_index = lines.index { |line| line.strip.match?(/\ABackground:/) }
-          parse_background_step_texts(lines, background_index)
+      # @param parameters [Hash<String, String>]
+      # @return [String]
+      def parameter_description_table(parameters)
+        rows = [parameters.keys, Array.new(parameters.length, "---"), parameters.values].map do |cells|
+          "| #{cells.map do |cell|
+            cell.to_s.gsub(/\\|\r\n|[|\r\n]/) do |character|
+              case character
+              when "\\" then "\\\\"
+              when "|" then "\\|"
+              else "<br>"
+              end
+            end
+          end.join(' | ')} |"
         end
+        rows.join("\n")
       end
 
-      # @param lines [Array<String>]
-      # @param background_index [Integer, nil]
-      # @return [Array<String>]
-      def parse_background_step_texts(lines, background_index)
-        return [] unless background_index && background_index >= 0
-
-        lines[(background_index + 1)..].to_a.each_with_object([]) do |line, memo|
-          stripped = line.strip
-          break memo if stripped.match?(/\A(?:Rule:|Scenario(?: Outline| Template)?:|@)/)
-
-          match = stripped.match(/\A(?:Given|When|Then|And|But|\*)\s+(.+)\z/)
-          memo << match[1].strip if match
+      # @param event [Object]
+      # @return [Integer, nil]
+      def event_location_line(event)
+        fetch_value(event, [:test_case, :location, :lines], [:test_case, :location, :line],
+                    [:location, :lines], [:location, :line], [:pickle, :location, :line], :scenario_line).then do |value|
+          if value.is_a?(Array) || value.is_a?(Set) || value.respond_to?(:to_a)
+            values = Array(value.to_a).flat_map { |item| item.respond_to?(:to_a) ? item.to_a : [item] }
+            value = values.map { |item| fetch_value(item, :line) || item }.max
+          end
+          value&.to_i
         end
-      end
-
-      # @param lines [Array<String>]
-      # @param start_index [Integer, nil]
-      # @param stop_pattern [Regexp]
-      # @return [String, nil]
-      def extract_description_after(lines, start_index, stop_pattern:)
-        return nil unless start_index && start_index >= 0
-
-        description_lines = []
-        lines[(start_index + 1)..]&.each do |line|
-          stripped = line.strip
-          break if stripped.match?(stop_pattern)
-
-          description_lines << stripped
-        end
-        description = description_lines.join("\n").strip
-        description.empty? ? nil : description
       end
 
       # @param message [String]

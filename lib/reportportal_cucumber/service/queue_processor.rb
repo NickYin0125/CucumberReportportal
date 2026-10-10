@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative "evidence_presenter"
+
 module ReportportalCucumber
   module Service
     # Background processor that batches logs and attachments before sending them to ReportPortal.
@@ -260,7 +262,7 @@ module ReportportalCucumber
 
         File.open(File.join(directory, "#{basename}.ndjson"), "wb") do |file|
           payload.fetch(:entries).each do |entry|
-            file.puts(JSON.generate(entry.merge("spoolError" => error.message)))
+            file.puts(JSON.generate(entry.merge("spoolError" => safe_exception_text(error))))
           end
         end
       end
@@ -300,8 +302,8 @@ module ReportportalCucumber
                 raw_record(record).merge(
                   "attachment" => attachment,
                   "rawSpool" => true,
-                  "spoolError" => "#{original_error.class}: #{original_error.message}",
-                  "fallbackSpoolError" => "#{spool_error.class}: #{spool_error.message}"
+                  "spoolError" => safe_exception_summary(original_error),
+                  "fallbackSpoolError" => safe_exception_summary(spool_error)
                 ).compact
               )
             )
@@ -334,6 +336,19 @@ module ReportportalCucumber
         else
           value.to_s
         end
+      end
+
+      # @param error [Exception]
+      # @return [String] Bounded, credential-redacted exception text for spool metadata.
+      def safe_exception_text(error)
+        Service::EvidencePresenter.sanitize_diagnostic(error.message, limit: 2048)
+      end
+
+      # @param error [Exception]
+      # @return [String] Safe exception class metadata and bounded diagnostic text.
+      def safe_exception_summary(error)
+        class_name = Service::EvidencePresenter.sanitize_diagnostic(error.class.name, limit: 256)
+        "#{class_name}: #{safe_exception_text(error)}"
       end
 
       # @param record [LogRecord]

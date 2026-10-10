@@ -2,6 +2,7 @@
 
 require "json"
 require "uri"
+require_relative "credential_keys"
 
 module Automation
   # Redacts common credentials from structured HTTP evidence and text.
@@ -9,10 +10,7 @@ module Automation
   # This is intended for HTTP request/response evidence, not as a universal
   # sanitizer for arbitrary free text, video, or attachments.
   class EvidenceRedactor
-    DEFAULT_SENSITIVE_KEYS = %w[
-      authorization proxy-authorization cookie set-cookie token access_token
-      refresh_token api_key x-api-key password secret client_secret
-    ].freeze
+    DEFAULT_SENSITIVE_KEYS = CredentialKeys::DEFAULT_KEYS
     MASK = "[REDACTED]".freeze
     BEARER_PATTERN = /\bBearer[ \t]+[^\s,;&"'<>]+/i
 
@@ -21,8 +19,8 @@ module Automation
     def initialize(sensitive_keys: [])
       keys = DEFAULT_SENSITIVE_KEYS + Array(sensitive_keys).map { |key| valid_utf8(key.to_s) }
       @sensitive_keys = keys.map { |key| normalize_key(key).freeze }.reject(&:empty?).uniq.freeze
-      alternatives = keys.map do |key|
-        key.split(/[^a-z0-9]+/i).map { |part| Regexp.escape(part) }.join("[-_.]?")
+      alternatives = @sensitive_keys.map do |key|
+        key.chars.map { |character| Regexp.escape(character) }.join("[-_.]*")
       end.reject(&:empty?).uniq
       # Consume incomplete quoted values through the bounded input end, even after a dangling escape.
       double_quoted_value = /\\?"(?:\\.|[^"\\]|\\\z)*(?:\\?"|\z)/
@@ -32,7 +30,8 @@ module Automation
         /Bearer[ \t]+[^\s,;&"'<>]+/, /[^\s,;&"'<>]+/
       )
       @key_value_pattern = Regexp.new(
-        "(\\b(?:#{alternatives.join('|')})\\b\\\\?\"?)([ \\t\\r\\n]*[:=][ \\t\\r\\n]*)(?:#{value_pattern.source})",
+        "((?<![a-z0-9_.-])[-_.]*(?:#{alternatives.join('|')})[-_.]*(?![a-z0-9_.-])\\\\?\"?)" \
+        "([ \\t\\r\\n]*[:=][ \\t\\r\\n]*)(?:#{value_pattern.source})",
         Regexp::IGNORECASE
       ).freeze
     end
@@ -54,6 +53,18 @@ module Automation
       end
     end
 
+    # @param key [Object]
+    # @return [Boolean] Whether a key matches the built-in or configured policy.
+    def sensitive_key?(key)
+      @sensitive_keys.include?(normalize_key(key)) || CredentialKeys.sensitive?(key)
+    end
+
+    # @param source [String]
+    # @return [Boolean] Whether all JSON string escapes use the strict JSON escape set.
+    def valid_json_string_escapes?(source)
+      !malformed_json_string_escape?(source)
+    end
+
     # @param url [#to_s] URL to sanitize.
     # @return [String] URL with userinfo and sensitive query values masked.
     def redact_url(url)
@@ -65,7 +76,7 @@ module Automation
       end
       uri.query = redact_query(uri.query) if uri.query
       uri.path = redact_plain_segment(uri.path) unless uri.path.nil?
-      uri.fragment = redact_plain_segment(uri.fragment) if uri.fragment
+      uri.fragment = redact_fragment(uri.fragment) if uri.fragment
       uri.to_s
     rescue URI::Error, ArgumentError
       fallback_redact_url(original)
@@ -84,10 +95,6 @@ module Automation
     end
 
     private
-
-    def sensitive_key?(key)
-      @sensitive_keys.include?(normalize_key(key))
-    end
 
     def normalize_key(key)
       valid_utf8(key.to_s).downcase.gsub(/[^a-z0-9]/, "")
@@ -137,6 +144,102 @@ module Automation
           pair
         end
       end.join("&")
+    end
+
+    def redact_fragment(fragment)
+      json_fragment = redact_encoded_json_fragment(fragment)
+      return json_fragment unless json_fragment.nil?
+
+      fragment.split("?", -1).map { |query| redact_fragment_query(query) }.join("?")
+    end
+
+    def redact_fragment_query(query)
+      json_fragment = redact_encoded_json_fragment(query)
+      return json_fragment unless json_fragment.nil?
+
+      query.split(/([&;])/, -1).map do |part|
+        if part == "&" || part == ";"
+          part
+        else
+          encoded = redact_encoded_json_fragment(part) || redact_encoded_fragment(part)
+          encoded || (part.include?("=") ? redact_query(part) : redact_plain_segment(part))
+        end
+      end.join
+    end
+
+    def redact_encoded_fragment(fragment)
+      return unless fragment.include?("%")
+
+      decoded = valid_utf8(URI.decode_www_form_component(fragment))
+      sensitive = decoded.split(/[?&;]/, -1).any? do |pair|
+        key, value = pair.split("=", 2)
+        next false if value.nil?
+
+        sensitive_key?(URI.decode_www_form_component(key))
+      rescue ArgumentError
+        true
+      end
+      "[REDACTED]" if sensitive
+    rescue ArgumentError
+      "[REDACTED]"
+    end
+
+    def redact_encoded_json_fragment(fragment)
+      return unless fragment.match?(/%[0-9a-f]{2}/i)
+
+      decoded = valid_utf8(URI::DEFAULT_PARSER.unescape(fragment))
+      return unless decoded.match?(/\A\s*[\[{]/)
+      return "[REDACTED]" if malformed_json_string_escape?(decoded)
+
+      parsed = JSON.parse(decoded, max_nesting: 10)
+      safe = redact(parsed)
+      return if safe == parsed
+
+      encode_fragment_component(JSON.generate(safe))
+    rescue JSON::ParserError, JSON::NestingError, JSON::GeneratorError, ArgumentError, EncodingError
+      "[REDACTED]"
+    end
+
+    def malformed_json_string_escape?(source)
+      source.to_enum(:scan, /"((?:\\.|[^"\\])*)"/).any? do
+        body = Regexp.last_match(1)
+        index = 0
+        malformed = false
+        while index < body.length
+          if body[index] == "\\"
+            escaped = body[index + 1]
+            unless %w[" \\ / b f n r t u].include?(escaped)
+              malformed = true
+              break
+            end
+            if escaped == "u"
+              codepoint = body[index + 2, 4]
+              unless codepoint&.match?(/\A[0-9a-f]{4}\z/i)
+                malformed = true
+                break
+              end
+              index += 6
+            else
+              index += 2
+            end
+          else
+            index += 1
+          end
+        end
+        malformed
+      end
+    end
+
+    def encode_fragment_component(value)
+      value.b.bytes.map do |byte|
+        character = byte.chr
+        if (byte >= 0x30 && byte <= 0x39) || (byte >= 0x41 && byte <= 0x5a) ||
+           (byte >= 0x61 && byte <= 0x7a) || "-._~".include?(character)
+          character
+        else
+          format("%%%02X", byte)
+        end
+      end.join
     end
 
     def fallback_redact_url(original)

@@ -56,6 +56,21 @@ RSpec.describe Automation::EvidenceRedactor do
       expect(result.inspect).not_to include("custom-secret")
     end
 
+    it "normalizes credential keys with repeated separators at every nesting level" do
+      input = {
+        "outer" => [{ "P___A---S_S_W_O_R_D" => "separator-password-canary",
+                      "x_____api-----key" => "separator-api-canary",
+                      "visible" => "kept" }]
+      }
+
+      result = redactor.redact(input)
+
+      expect(result.dig("outer", 0, "P___A---S_S_W_O_R_D")).to eq(REDACTED)
+      expect(result.dig("outer", 0, "x_____api-----key")).to eq(REDACTED)
+      expect(result.dig("outer", 0, "visible")).to eq("kept")
+      expect(result.inspect).not_to include("separator-password-canary", "separator-api-canary")
+    end
+
     it "does not mutate deeply frozen input" do
       input = {
         "headers" => { "Authorization" => "Bearer frozen-secret" }.freeze,

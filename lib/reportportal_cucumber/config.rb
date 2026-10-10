@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "yaml"
+require "json"
+require_relative "service/scenario_attributes"
 
 module ReportportalCucumber
   # Loads configuration from defaults, YAML profiles, and environment variables.
@@ -36,6 +38,18 @@ module ReportportalCucumber
       debug_curl_dir: ".reportportal-curl",
       console_mirror: false,
       video_upload_mode: "reportportal_multipart",
+      identity_strategy: "legacy",
+      identity_root: nil,
+      identity_namespace: nil,
+      scenario_attributes_enabled: false,
+      scenario_attribute_keys: Service::ScenarioAttributes::DEFAULT_ALLOWED_KEYS,
+      scenario_attributes: [],
+      scenario_links_enabled: false,
+      source_url_template: nil,
+      source_commit: nil,
+      source_root: nil,
+      ci_run_url: nil,
+      tms_url_template: nil,
       minio_endpoint: "http://localhost:9000",
       minio_public_base_url: "http://localhost:9000",
       minio_bucket: "automation-videos",
@@ -76,6 +90,18 @@ module ReportportalCucumber
       "RP_DEBUG_CURL_DIR" => :debug_curl_dir,
       "RP_CONSOLE_MIRROR" => :console_mirror,
       "RP_VIDEO_UPLOAD_MODE" => :video_upload_mode,
+      "RP_IDENTITY_STRATEGY" => :identity_strategy,
+      "RP_IDENTITY_ROOT" => :identity_root,
+      "RP_IDENTITY_NAMESPACE" => :identity_namespace,
+      "RP_SCENARIO_ATTRIBUTES_ENABLED" => :scenario_attributes_enabled,
+      "RP_SCENARIO_ATTRIBUTE_KEYS" => :scenario_attribute_keys,
+      "RP_SCENARIO_ATTRIBUTES" => :scenario_attributes,
+      "RP_SCENARIO_LINKS_ENABLED" => :scenario_links_enabled,
+      "RP_SOURCE_URL_TEMPLATE" => :source_url_template,
+      "RP_SOURCE_COMMIT" => :source_commit,
+      "RP_SOURCE_ROOT" => :source_root,
+      "RP_CI_RUN_URL" => :ci_run_url,
+      "RP_TMS_URL_TEMPLATE" => :tms_url_template,
       "RP_MINIO_ENDPOINT" => :minio_endpoint,
       "RP_MINIO_PUBLIC_BASE_URL" => :minio_public_base_url,
       "RP_MINIO_PUBLIC_ENDPOINT" => :minio_public_base_url,
@@ -197,6 +223,37 @@ module ReportportalCucumber
       @debug_curl_dir = strip(config[:debug_curl_dir]) || DEFAULTS[:debug_curl_dir]
       @console_mirror = truthy?(config[:console_mirror])
       @video_upload_mode = strip(config[:video_upload_mode]) || DEFAULTS[:video_upload_mode]
+      @identity_strategy = (strip(config[:identity_strategy]) || DEFAULTS[:identity_strategy]).downcase
+      unless %w[legacy stable_v1].include?(@identity_strategy)
+        raise ArgumentError, "RP_IDENTITY_STRATEGY must be legacy or stable_v1"
+      end
+      @identity_root = File.expand_path(strip(config[:identity_root]) || Dir.pwd)
+      @identity_namespace = strip(config[:identity_namespace])
+      @scenario_attributes_enabled = truthy?(config[:scenario_attributes_enabled])
+      raw_attribute_keys = config[:scenario_attribute_keys]
+      raw_attribute_keys = raw_attribute_keys.split(",").map(&:strip) if raw_attribute_keys.is_a?(String)
+      @scenario_attribute_keys = Service::ScenarioAttributes.normalize_allowed_keys(raw_attribute_keys)
+      @scenario_attributes = self.class.parse_scenario_attributes(config[:scenario_attributes])
+      @scenario_links_enabled = truthy?(config[:scenario_links_enabled])
+      if @scenario_links_enabled
+        @source_url_template = self.class.optional_link_string(config[:source_url_template])
+        @source_commit = self.class.optional_link_string(config[:source_commit])
+        @source_root = self.class.expand_link_root(self.class.optional_link_string(config[:source_root]))
+        @ci_run_url = self.class.optional_link_string(config[:ci_run_url])
+        @tms_url_template = self.class.optional_link_string(config[:tms_url_template])
+      else
+        @source_url_template = config[:source_url_template]
+        @source_commit = config[:source_commit]
+        root = config[:source_root]
+        @source_root = if root.is_a?(String) && [Encoding::UTF_8, Encoding::US_ASCII].include?(root.encoding) &&
+                         root.valid_encoding? && !root.include?("\0")
+                         self.class.expand_link_root(root)
+                       else
+                         Dir.pwd
+                       end
+        @ci_run_url = config[:ci_run_url]
+        @tms_url_template = config[:tms_url_template]
+      end
       @minio_endpoint = strip(config[:minio_endpoint]) || DEFAULTS[:minio_endpoint]
       @minio_public_base_url = strip(config[:minio_public_base_url]) || DEFAULTS[:minio_public_base_url]
       @minio_bucket = strip(config[:minio_bucket]) || DEFAULTS[:minio_bucket]
@@ -242,6 +299,16 @@ module ReportportalCucumber
     end
 
     # @return [Boolean]
+    def scenario_attributes_enabled?
+      @scenario_attributes_enabled
+    end
+
+    # @return [Boolean]
+    def scenario_links_enabled?
+      @scenario_links_enabled
+    end
+
+    # @return [Boolean]
     def minio_markdown_video?
       @video_upload_mode.to_s.downcase == "minio_markdown"
     end
@@ -275,7 +342,7 @@ module ReportportalCucumber
       def cast_value(config_key, raw)
         case config_key
         when :enabled, :rerun, :reporting_async, :fail_on_reporting_error, :join, :debug_curl_mode,
-             :console_mirror
+             :console_mirror, :scenario_attributes_enabled, :scenario_links_enabled
           !%w[0 false no off].include?(raw.to_s.strip.downcase)
         when :batch_size_logs, :join_wait_timeout_ms, :open_timeout, :read_timeout, :write_timeout,
              :retry_attempts, :exit_flush_timeout_ms
@@ -284,10 +351,48 @@ module ReportportalCucumber
           raw.to_f
         when :launch_attributes
           normalize_attributes(raw)
+        when :scenario_attribute_keys
+          raw.to_s.split(",").map(&:strip)
+        when :scenario_attributes
+          parse_scenario_attributes(raw)
         else
           raw
         end
       end
+
+      # @param value [Object]
+      # @return [Hash, Array<Hash>]
+      def parse_scenario_attributes(value)
+        parsed = value.is_a?(String) ? JSON.parse(value) : value
+        unless parsed.is_a?(Hash) || parsed.is_a?(Array)
+          raise ArgumentError, "Invalid scenario attribute defaults"
+        end
+
+        parsed
+      rescue JSON::ParserError
+        raise ArgumentError, "Invalid scenario attribute defaults"
+      end
+
+      # @param value [Object]
+      # @return [String, nil]
+      def optional_link_string(value)
+        return nil if value.nil?
+        unless value.is_a?(String) && [Encoding::UTF_8, Encoding::US_ASCII].include?(value.encoding) &&
+               value.valid_encoding? && !value.include?("\0")
+          raise ArgumentError, "Invalid scenario link configuration"
+        end
+
+        value.empty? ? nil : value.dup
+      end
+
+      # @param value [String, nil]
+      # @return [String]
+      def expand_link_root(value)
+        File.expand_path(value || Dir.pwd)
+      rescue StandardError
+        raise ArgumentError, "Invalid scenario link configuration"
+      end
+
     end
 
     private
