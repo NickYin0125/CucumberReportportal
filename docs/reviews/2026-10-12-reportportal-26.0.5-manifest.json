@@ -1,0 +1,873 @@
+{
+  "validation_date": "2026-10-12",
+  "acceptance": "client_compatibility_passed_with_recorded_constraints",
+  "production_security_certified": false,
+  "release": {
+    "reportportal": "26.0.5",
+    "upstream_chart": "26.8.12",
+    "wrapper_chart": "1.2.0-rc.2",
+    "helm_release": "reportportal-latest",
+    "namespace": "reportportal-latest",
+    "revision": 3,
+    "endpoint": "http://rp-latest.localhost",
+    "project": "superadmin_personal"
+  },
+  "tested_sdk": {
+    "version": "1.2.0.pre.1",
+    "prerelease": true,
+    "source_git_base": "dc5559b0d077ca3dcca78257889c4c8e59d3d3f9",
+    "source_had_uncommitted_sdk_fixes": true,
+    "library_sha256": {
+      "lib/reportportal/models/step_desc.rb": "036d520801917748665be9ccd94e101e0131e127147835b3af872f20043d6e52",
+      "lib/reportportal/transport/multipart_helper.rb": "3e2422ac298797ddba46fd2293e4c2e72cf73f47f49db41e432ca26b7a9bc14c",
+      "lib/reportportal_cucumber.rb": "0488ad6afbe4256b2c34c0b885ef906ccaa48dc7c5f29ae919f7c53476e042bd",
+      "lib/reportportal_cucumber/automation/app_log.rb": "4d9adc07cb4856b3abd8ba9daa876ac772171fab90ce306879ea1aea2bc358fa",
+      "lib/reportportal_cucumber/automation/credential_keys.rb": "3b95a3c8f94cf3b870af6ddd50762862262387b34a9eb34b6b8effa97e83bdb3",
+      "lib/reportportal_cucumber/automation/cucumber_logger.rb": "f6baafa3c25c6bbed69b947f18a37d96d19da012eecc35ef98a4e5dfd1ed467e",
+      "lib/reportportal_cucumber/automation/evidence_redactor.rb": "2b191e9d5e6b0cddaaa40a04d69920ca57d4f3bf6872793978aab05c1cf1a703",
+      "lib/reportportal_cucumber/automation/http_exchange.rb": "61c5577fda1ac1dc912c8cae623421ec880a94389f5b5391c0a83e4660a201f1",
+      "lib/reportportal_cucumber/automation/report_context.rb": "3297c5f421f41db6e6f35468e2483fe8488f2b26fbf444f2e6e666db00bfbe92",
+      "lib/reportportal_cucumber/config.rb": "28e159c79c27b986d3dcd2f9fbf2bd33f3cad72db136bd71c288092a33eed00a",
+      "lib/reportportal_cucumber/cucumber/ast_metadata.rb": "d94d5aa8a72925bc175d6651d61bbd9226660e90434e1b7a0df04b8ed42ee71b",
+      "lib/reportportal_cucumber/cucumber/formatter.rb": "e13ad16528a8f80eacafd023a8c7b8de9146a941c552c716e407019e549d1135",
+      "lib/reportportal_cucumber/cucumber/native_lifecycle.rb": "6283303736198f35e1cde352df70bb411f2cec15f3cb3f0dcacd582900c6e944",
+      "lib/reportportal_cucumber/cucumber/world.rb": "efd7257c4deac1ee7fb1de6de543cc9f7beeab27c92ddeab6c054d4f680ca171",
+      "lib/reportportal_cucumber/http/client.rb": "faef9d7820cc9fe5d0a2713f64f192a2c50bfc422afcc570a1361da22a08a5df",
+      "lib/reportportal_cucumber/reportportal/api.rb": "69a44781fe0c1980bb6a223cfaeccd8f3e7f5205ce9de6584e5cc3a26535145f",
+      "lib/reportportal_cucumber/reportportal/models.rb": "c7fdc5bcd8cb0d44a1dbad114561067f53c0695504a4a8e8a8fb9b78b883dee2",
+      "lib/reportportal_cucumber/reportportal/models/step_desc.rb": "2ca8c667e53b2e309355df245be4c611fffb8ce849d1baf60c91526cadf3b76b",
+      "lib/reportportal_cucumber/runtime/context.rb": "6b1dec29e08d7ac2717470e9f117ed96faf80d2ec00785b677ce18cc99a32d22",
+      "lib/reportportal_cucumber/runtime/join.rb": "251b101d22845ffe0560a9b7c150baf3f73ae7dcb0d748a2a1e7625595fe4913",
+      "lib/reportportal_cucumber/runtime/log_buffer.rb": "d0e10d5b59bbd105e81e3ab37b9c2796f04bee8e4d22c3aebf37b08b1e3491d9",
+      "lib/reportportal_cucumber/service/delivery_receipt.rb": "e2cf43166cf88f0085d0d907535b295d1f4d3930a4e8a33b80f078f1f5b0b904",
+      "lib/reportportal_cucumber/service/evidence_presenter.rb": "b06ac52013e0596e7df8013be9e7df4645a2c83fb600e8aa6cc2b9e508bd6704",
+      "lib/reportportal_cucumber/service/log_response_parser.rb": "4ea7ea58524b39355c53f51634d0b4bfc0cdd53c661a12edf4de12f82e579998",
+      "lib/reportportal_cucumber/service/payload_builder.rb": "2384293fe5ab6a91139053883b93525be5420fc3ecadd65e7e930302784dd0d7",
+      "lib/reportportal_cucumber/service/queue_processor.rb": "b6c4bd12ca2d837515ee521836b90ff7ab2d8396aadd259e8d5231d45d256af1",
+      "lib/reportportal_cucumber/service/reporting_deadline.rb": "9a55cf0e68ea7f29283e43460e230a2ba51f64066d0e94ccdbb3df96f774ff79",
+      "lib/reportportal_cucumber/service/scenario_attributes.rb": "94587d88c24ee5bd7528f62d114ce5cbc9edeaec74895614d77fa815ce222d76",
+      "lib/reportportal_cucumber/service/scenario_identity.rb": "ce6b6737726a8783291f957f8265d4bbb5199d779a24a0003c6e230b398e78ae",
+      "lib/reportportal_cucumber/service/scenario_links.rb": "4f6f12503b77a5116bbc41aa08cf52051256aad26b316244660d7bff3d025cfd",
+      "lib/reportportal_cucumber/service/spool_replay.rb": "527013e8d3747a66d136587ec9e8831c71753bf7b8313dff8cf9ab7d2ada472e",
+      "lib/reportportal_cucumber/service/spool_store.rb": "1501cf09a68373e2fbfc9e17085fb27b1f2f1547ae9cfca1aa2a806119640c4b",
+      "lib/reportportal_cucumber/transport/http_client.rb": "6035abef231af83d5eb34029299de9251b068bd0a3bb8a0aa7ed5cca5369ab51",
+      "lib/reportportal_cucumber/transport/minio_uploader.rb": "5c058c75d85fecf2077875a1cb9d442da86934823cbc2fb77ed17b91d142a767",
+      "lib/reportportal_cucumber/transport/multipart_helper.rb": "91c05c272635eed8c754ba20faa73b228ca6ac9859e09fe9f9d6f068fbd7f445",
+      "lib/reportportal_cucumber/version.rb": "c13695df5f982197df926c87bdb33d639f1a9823a547b46c83d385d33e1f5668"
+    }
+  },
+  "bundle_constraints": {
+    "c9": {
+      "cucumber": "9.2.1",
+      "expressions": "17.1.0"
+    },
+    "c10": {
+      "cucumber": "10.2.0",
+      "expressions": "18.0.1"
+    }
+  },
+  "regression": {
+    "9": {
+      "duration": 133.25247,
+      "example_count": 655,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0,
+      "exit_status": 0
+    },
+    "10": {
+      "duration": 117.163516,
+      "example_count": 655,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0,
+      "exit_status": 0
+    }
+  },
+  "core_live": [
+    {
+      "name": "rp2605-c9-ast-b46048",
+      "launch_id": 8,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/8",
+      "native_exit": 0,
+      "counts": {
+        "suites": 2,
+        "cases": 8,
+        "actions": 40,
+        "logs": 16
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 16,
+        "settled": 16,
+        "confirmed": 16,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c9-identity-a-19ce51",
+      "launch_id": 9,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/9",
+      "native_exit": 0,
+      "counts": {
+        "suites": 1,
+        "cases": 4,
+        "actions": 4,
+        "logs": 4
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 4,
+        "settled": 4,
+        "confirmed": 4,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c9-identity-b-dae0f3",
+      "launch_id": 10,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/10",
+      "native_exit": 0,
+      "counts": {
+        "suites": 1,
+        "cases": 4,
+        "actions": 4,
+        "logs": 4
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 4,
+        "settled": 4,
+        "confirmed": 4,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c9-attributes-links-8ef879",
+      "launch_id": 11,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/11",
+      "native_exit": 1,
+      "counts": {
+        "suites": 2,
+        "cases": 5,
+        "actions": 13,
+        "logs": 5
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 5,
+        "settled": 5,
+        "confirmed": 5,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c9-typewords-7b6918",
+      "launch_id": 12,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/12",
+      "native_exit": 1,
+      "counts": {
+        "suites": 1,
+        "cases": 3,
+        "actions": 10,
+        "logs": 5
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 5,
+        "settled": 5,
+        "confirmed": 5,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c9-api-ui-example-603489",
+      "launch_id": 13,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/13",
+      "native_exit": 0,
+      "counts": {
+        "suites": 2,
+        "cases": 5,
+        "actions": 25,
+        "logs": 51
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 51,
+        "settled": 51,
+        "confirmed": 51,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c10-ast-8b5604",
+      "launch_id": 21,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/21",
+      "native_exit": 0,
+      "counts": {
+        "suites": 2,
+        "cases": 8,
+        "actions": 40,
+        "logs": 16
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 16,
+        "settled": 16,
+        "confirmed": 16,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c10-identity-a-82556f",
+      "launch_id": 22,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/22",
+      "native_exit": 0,
+      "counts": {
+        "suites": 1,
+        "cases": 4,
+        "actions": 4,
+        "logs": 4
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 4,
+        "settled": 4,
+        "confirmed": 4,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c10-identity-b-bce44a",
+      "launch_id": 23,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/23",
+      "native_exit": 0,
+      "counts": {
+        "suites": 1,
+        "cases": 4,
+        "actions": 4,
+        "logs": 4
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 4,
+        "settled": 4,
+        "confirmed": 4,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c10-attributes-links-5dc948",
+      "launch_id": 24,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/24",
+      "native_exit": 1,
+      "counts": {
+        "suites": 2,
+        "cases": 5,
+        "actions": 13,
+        "logs": 5
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 5,
+        "settled": 5,
+        "confirmed": 5,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c10-typewords-94000c",
+      "launch_id": 25,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/25",
+      "native_exit": 1,
+      "counts": {
+        "suites": 1,
+        "cases": 3,
+        "actions": 10,
+        "logs": 5
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 5,
+        "settled": 5,
+        "confirmed": 5,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    },
+    {
+      "name": "rp2605-c10-api-ui-example-a25634",
+      "launch_id": 26,
+      "launch_url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/26",
+      "native_exit": 0,
+      "counts": {
+        "suites": 2,
+        "cases": 5,
+        "actions": 25,
+        "logs": 51
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 51,
+        "settled": 51,
+        "confirmed": 51,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      }
+    }
+  ],
+  "finalized_recordings": [
+    {
+      "lane": "c9",
+      "launch_id": 15,
+      "counts": {
+        "suites": 1,
+        "cases": 1,
+        "actions": 4,
+        "logs": 5
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 5,
+        "settled": 5,
+        "confirmed": 5,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      },
+      "owner": {
+        "id": 320,
+        "name": "Finalize and publish testcase recording",
+        "type": "STEP",
+        "parent": 319
+      },
+      "parent": {
+        "id": 319,
+        "name": "After Hook: After hook",
+        "type": "AFTER_METHOD",
+        "parent": 316
+      },
+      "public_get": "200",
+      "range": "206",
+      "sha256": "8c5fd90857471ea65ea7fa850e96e704bf6d3d1834b455971acedf43fe266883"
+    },
+    {
+      "lane": "c10",
+      "launch_id": 18,
+      "counts": {
+        "suites": 1,
+        "cases": 1,
+        "actions": 4,
+        "logs": 5
+      },
+      "checks": {
+        "native_exit": true,
+        "native_cases": true,
+        "rp_cases": true,
+        "suite_parentage": true,
+        "action_parentage": true,
+        "unique_uuids": true,
+        "statistics_total": true,
+        "statistics_failed": true,
+        "statistics_passed": true,
+        "launch_status": true,
+        "delivery_complete": true,
+        "logs_present": true,
+        "log_parentage": true,
+        "privacy": true
+      },
+      "receipt": {
+        "cutoff": 5,
+        "settled": 5,
+        "confirmed": 5,
+        "accepted_awaiting_persistence": 0,
+        "spooled": 0,
+        "failed": 0,
+        "ambiguous": 0,
+        "possible_duplicates": 0,
+        "pending": 0,
+        "rejected": 0,
+        "capture_close_timeouts": 0,
+        "metadata_failures": 0,
+        "degraded_evidence": 0,
+        "complete": true,
+        "local_settled": true,
+        "timed_out": false
+      },
+      "owner": {
+        "id": 335,
+        "name": "Finalize and publish testcase recording",
+        "type": "STEP",
+        "parent": 334
+      },
+      "parent": {
+        "id": 334,
+        "name": "After Hook: After hook",
+        "type": "AFTER_METHOD",
+        "parent": 331
+      },
+      "public_get": "200",
+      "range": "206",
+      "sha256": "42a314ad64d37c5b9fb52d6df1bf3486a49aa073a39400fedf445465e7f8efbb"
+    }
+  ],
+  "replay": {
+    "launch_uuid": "f3c57014-3da7-4822-9d9c-e03cc0afddcf",
+    "item_uuid": "75501eee-d5d8-4baa-bc83-9a4c548cfb7b",
+    "replay": {
+      "transaction": "tx-98f75878255b15651aa5db300765e8bc",
+      "dry_run": false,
+      "async_v2": false,
+      "confirmed": 2,
+      "ambiguous": 0,
+      "failed": 0,
+      "pending": 0,
+      "retained": false
+    },
+    "resumed": {
+      "transaction": "tx-98f75878255b15651aa5db300765e8bc",
+      "dry_run": false,
+      "async_v2": false,
+      "confirmed": 2,
+      "ambiguous": 0,
+      "failed": 0,
+      "pending": 0,
+      "retained": false
+    },
+    "closed_error": "Original target is not open",
+    "exact_logs": 2,
+    "png_sha256": "5b7a247dac8fc35737fe3485fd1242dfe15e9505f6b8eaba12c6065a85a4a5d2",
+    "checkpoint_preserved": true
+  },
+  "browser": {
+    "uncaught_errors": [],
+    "rendered_table": {
+      "url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/8/181/182/log?item1Params=filter.eq.hasStats%3Dtrue%26filter.eq.hasChildren%3Dfalse%26filter.in.type%3DSTEP%26filter.in.status%3DPASSED",
+      "tables": [
+        "key\tvalue\tescaped\tnewline\ttrailing\nordinary\tplain\tA|B\tline\nnext\t"
+      ]
+    },
+    "playback": {
+      "url": "http://rp-latest.localhost/ui/#superadmin_personal/launches/all/18/330/331/log",
+      "metadata": {
+        "duration": 9.56,
+        "readyState": 4,
+        "source": "http://rp-latest.localhost/automation-videos/videos/2026/10/12/da429d19-7706-4018-b5f4-6dc7ac1b3373-typewords-testcase-recording.mp4",
+        "width": 1280,
+        "height": 720,
+        "controls": true
+      },
+      "played": {
+        "currentTime": 0.164371,
+        "paused": false
+      },
+      "seeked": {
+        "currentTime": 4.78,
+        "duration": 9.56,
+        "seeking": false
+      }
+    }
+  },
+  "old_environment": {
+    "paused": true,
+    "history_migrated": false,
+    "preserved_pvcs": [
+      {
+        "name": "data-reportportal-postgresql-0",
+        "uid": "4e670e8c-e292-4728-b9d3-cdf724dac266",
+        "phase": "Bound"
+      },
+      {
+        "name": "data-reportportal-rabbitmq-0",
+        "uid": "439fe48b-de80-4660-8c34-27d8ec658d9e",
+        "phase": "Bound"
+      },
+      {
+        "name": "opensearch-cluster-master-opensearch-cluster-master-0",
+        "uid": "2efe7705-7500-47d9-9433-18aaf4eae6cb",
+        "phase": "Bound"
+      },
+      {
+        "name": "reportportal-minio",
+        "uid": "c61fb644-0cf5-46eb-868a-d3bf92fe6030",
+        "phase": "Bound"
+      }
+    ]
+  },
+  "docker_settings": {
+    "disk_mib": 81920,
+    "memory_mib": 12288
+  },
+  "database_integrity": {
+    "pg_amcheck_passed": true,
+    "relations": 605,
+    "pages": 1398
+  },
+  "opensearch": {
+    "status": "yellow",
+    "nodes": 1,
+    "active_primary_shards": 5,
+    "unassigned_replica_shards": 2
+  },
+  "artifact_sha256": {
+    "reportportal-rich-experience-1.2.0-rc.2.tgz": "c322202ca7b93b556e2cddef83c65dd34b2b7d09c142f8adfca378d35bf66df9",
+    "reportportal-26.8.12.tgz": "13ed42cc1272ad6992d7dee5c7be3eb09260f30bf49fa3059da57c148b06724f"
+  },
+  "excluded_gates": [
+    "legacy_public_bucket_write_delete_policy",
+    "existing_bucket_permission_revocation",
+    "historical_database_migration",
+    "multi_node_ha_and_capacity",
+    "cucumber11",
+    "expressions19_native_html_messages",
+    "external_issue_tracker_availability",
+    "new_independent_agent_review"
+  ]
+}

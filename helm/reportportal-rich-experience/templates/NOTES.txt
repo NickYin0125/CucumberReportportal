@@ -2,6 +2,7 @@ ReportPortal rich-experience chart was rendered.
 
 Official ReportPortal is installed as the `reportportal` dependency.
 
+{{ if .Values.videoBucket.enabled }}
 For Ruby video playback mode, configure test runners with:
 
   RP_VIDEO_UPLOAD_MODE=minio_markdown
@@ -15,3 +16,15 @@ For Ruby video playback mode, configure test runners with:
 The extra Ingress routes {{ .Values.videoBucket.ingress.path }} to service
 {{ include "reportportal-rich-experience.minioServiceName" . }}:{{ .Values.videoBucket.ingress.servicePort }}
 without rewriting the path, so path-style MinIO URLs keep the bucket name.
+
+WARNING: the legacy 'public' bucket policy allows anonymous writes and deletes,
+not just video reads. Verify a restricted policy before production exposure.
+{{ else }}
+The automation video bucket extension is disabled. No extra video Ingress or
+bucket initialization Job is created by this release configuration.
+Disabling this extension does not revoke permissions on an existing bucket.
+{{ end }}
+
+Read this chart's README before deployment. PostgreSQL and OpenSearch major-version
+changes require the official migration procedure; never reuse old database volumes
+as an in-place upgrade. The production example requires external Secrets and TLS.

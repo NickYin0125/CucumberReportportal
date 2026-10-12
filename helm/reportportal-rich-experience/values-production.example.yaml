@@ -1,0 +1,37 @@
+# Fresh installation only. Replace DNS/TLS placeholders and provision the Secret first.
+# Sizing, backups, network policy and HA must be tailored to your environment.
+reportportal:
+  ingress:
+    hosts: [reportportal.example.com]
+    tls:
+      certificates:
+        - secretName: reportportal-tls
+          hosts: [reportportal.example.com]
+  database:
+    secretName: rp-runtime-auth
+    passwordKeyName: postgresql-password
+  postgresql:
+    auth:
+      existingSecret: rp-runtime-auth
+      secretKeys:
+        adminPasswordKey: postgresql-password
+  msgbroker:
+    secretName: rp-runtime-auth
+  rabbitmq:
+    auth:
+      existingSecret: rp-runtime-auth
+      existingPasswordKey: rabbitmq-password
+      existingErlangCookieKey: erlang-cookie
+  storage:
+    secretName: rp-runtime-auth
+  minio:
+    auth:
+      existingSecret: rp-runtime-auth
+  uat:
+    superadminInitPasswd:
+      secretName: rp-runtime-auth
+      passwordKeyName: superadmin-password
+# The legacy public policy grants anonymous writes/deletes, not just reads.
+# Disabling this extension does NOT revoke permissions on previously created buckets.
+videoBucket:
+  enabled: false

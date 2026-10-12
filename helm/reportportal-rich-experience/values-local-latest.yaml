@@ -1,0 +1,43 @@
+# Independent, single-node acceptance environment; not a production sizing profile.
+# Create the rp-runtime-auth Secret described in README.md before installation.
+reportportal:
+  ingress:
+    hosts: [rp-latest.localhost]
+  database:
+    secretName: rp-runtime-auth
+    passwordKeyName: postgresql-password
+  postgresql:
+    auth:
+      existingSecret: rp-runtime-auth
+      secretKeys:
+        adminPasswordKey: postgresql-password
+    resources:
+      requests: {cpu: 100m, memory: 256Mi}
+      limits: {cpu: "1", memory: 1Gi}
+  msgbroker:
+    secretName: rp-runtime-auth
+  rabbitmq:
+    auth:
+      existingSecret: rp-runtime-auth
+      existingPasswordKey: rabbitmq-password
+      existingErlangCookieKey: erlang-cookie
+    resources:
+      requests: {cpu: 100m, memory: 256Mi}
+      limits: {cpu: "1", memory: 1Gi}
+  storage:
+    secretName: rp-runtime-auth
+  minio:
+    auth:
+      existingSecret: rp-runtime-auth
+  uat:
+    superadminInitPasswd:
+      secretName: rp-runtime-auth
+      passwordKeyName: superadmin-password
+  opensearch:
+    opensearchJavaOpts: "-Xms512m -Xmx512m"
+    resources:
+      requests: {cpu: 100m, memory: 1Gi}
+      limits: {cpu: "1", memory: 2Gi}
+videoBucket:
+  auth:
+    existingSecret: rp-runtime-auth

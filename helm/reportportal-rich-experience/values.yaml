@@ -27,6 +27,13 @@ reportportal:
   uat:
     superadminInitPasswd:
       password: erebus
+  rabbitmq:
+    config:
+      # CloudPirates otherwise grants the bootstrap user access to '/' only.
+      # For a custom msgbroker.vhost, change default_vhost here as well.
+      extraConfiguration: |
+        deprecated_features.permit.queue_master_locator = true
+        default_vhost = analyzer
 
 # Extra resources for this Ruby client project's MinIO-backed MP4 playback mode.
 videoBucket:

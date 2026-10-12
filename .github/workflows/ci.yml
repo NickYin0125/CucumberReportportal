@@ -18,6 +18,18 @@ jobs:
           ruby-version: "3.3"
           bundler-cache: true
 
+      - uses: azure/setup-helm@v5
+        with:
+          version: "v3.18.4"
+
+      - name: Build locked Helm dependency
+        run: helm dependency build ./helm/reportportal-rich-experience
+
+      - name: Validate Helm deployment profiles
+        run: |
+          helm lint ./helm/reportportal-rich-experience -f ./helm/reportportal-rich-experience/values-local-latest.yaml
+          helm lint ./helm/reportportal-rich-experience -f ./helm/reportportal-rich-experience/values-production.example.yaml
+
       - name: Run RSpec
         run: bundle exec rspec
 
