@@ -3,6 +3,58 @@
 require "spec_helper"
 
 RSpec.describe ReportportalCucumber::Transport::MultipartHelper do
+  it "rejects aligned duplicates and sanitization collisions across all multipart construction paths" do
+    [
+      ["evidence.txt", "evidence.txt"],
+      ["../../evidence.txt", "evidence.txt"],
+      ["bad\r\nname.txt", "bad name.txt"]
+    ].each do |names|
+      entries = names.each_with_index.map do |name, index|
+        { "itemUuid" => "item-#{index}", "file" => { "name" => described_class.safe_filename(name) } }
+      end
+      parts = [{ name: "json_request_part", content_type: "application/json", body: JSON.generate(entries) }]
+      names.each_with_index { |name, index| parts << { name: "file", filename: name, body: "distinct-bytes-#{index}" } }
+      [:encode, :body_source, :encoded_length].each do |method|
+        expect { described_class.public_send(method, parts: parts, boundary: "collision-boundary") }
+          .to raise_error(ArgumentError, /Multipart log payload mismatch/)
+      end
+      expect { described_class.validate_alignment!(parts) }.to raise_error(ArgumentError, /Multipart log payload mismatch/)
+    end
+  end
+
+  it "requires JSON to name the exact sanitized wire parts without silently rewriting its references" do
+    parts = [
+      { name: "json_request_part", content_type: "application/json", body: '[{"file":{"name":"../../evidence.txt"}}]' },
+      { name: "file", filename: "../../evidence.txt", body: "evidence" }
+    ]
+    [:encode, :body_source, :encoded_length].each do |method|
+      expect { described_class.public_send(method, parts: parts, boundary: "exact-boundary") }
+        .to raise_error(ArgumentError, /Multipart log payload mismatch/)
+    end
+  end
+
+  it "keeps unique sanitized filenames, exact framing lengths and distinct bytes valid" do
+    parts = [
+      { name: "json_request_part", content_type: "application/json", body: '[{"file":{"name":"evidence.txt"}},{"file":{"name":"evidence-1.txt"}}]' },
+      { name: "file", filename: "../../evidence.txt", body: "bytes-one" },
+      { name: "file", filename: "evidence-1.txt", body: "bytes-two" }
+    ]
+    body = described_class.encode(parts: parts, boundary: "valid-boundary")
+    source = described_class.body_source(parts: parts, boundary: "valid-boundary")
+    expect(source.body).to eq(body)
+    expect(described_class.encoded_length(parts: parts, boundary: "valid-boundary")).to eq(body.bytesize)
+    expect(body).to include('filename="evidence.txt"', 'filename="evidence-1.txt"', "bytes-one", "bytes-two")
+  end
+
+  it "rejects duplicate filenames supplied directly to API.log_batch before any HTTP request" do
+    config = ReportportalCucumber::Config.new(endpoint: "https://multipart-collision.example.test", project: "capture", api_key: "synthetic")
+    api = ReportportalCucumber::ReportPortal::API.new(config: config)
+    entries = 2.times.map { |index| { "itemUuid" => "item-#{index}", "file" => { "name" => "evidence.txt" } } }
+    files = 2.times.map { |index| { name: "evidence.txt", mime: "text/plain", bytes: "bytes-#{index}" } }
+    expect { api.log_batch(entries: entries, files: files) }.to raise_error(ArgumentError, /Multipart log payload mismatch/)
+    expect(a_request(:post, %r{multipart-collision\.example\.test/.*/log})).not_to have_been_made
+  end
+
   it "detects MIME types from file names and keeps multipart parts aligned" do
     body = described_class.encode(
       parts: [

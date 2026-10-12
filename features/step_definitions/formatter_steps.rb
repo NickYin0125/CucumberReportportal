@@ -26,7 +26,7 @@ Given("ReportPortal HTTP is stubbed") do
 
   stub_request(:post, "https://rp.example.com/api/v1/demo/log").to_return do |request|
     @calls << [:log_batch, request.body]
-    { status: 200, body: '{"responses":[{"message":"ok"}]}' }
+    { status: 200, body: '{"responses":[{"id":"log-1"}]}' }
   end
 
   stub_request(:put, %r{\Ahttps://rp\.example\.com/api/v1/demo/item/.*\z}).to_return do |request|
@@ -49,10 +49,10 @@ When("I replay the NDJSON fixture through the formatter") do
     def include(_mod); end
   end.new({})
 
-  formatter = ReportportalCucumber::Cucumber::Formatter.new(fake_config)
+  @fixture_formatter = ReportportalCucumber::Cucumber::Formatter.new(fake_config)
   fixture = File.expand_path("../../spec/fixtures/events.ndjson", __dir__)
   File.readlines(fixture, chomp: true).each do |line|
-    formatter.ingest_event(JSON.parse(line))
+    @fixture_formatter.ingest_event(JSON.parse(line))
   end
 end
 
@@ -69,4 +69,8 @@ Then("the ReportPortal call sequence is correct") do
     :finish_launch
   ])
   expect(@calls.find { |name, _| name == :log_batch }.last).to include("shot.png")
+  receipt = @fixture_formatter.reporting_receipt
+  expect(receipt.complete).to be(true)
+  expect(receipt.confirmed).to eq(1)
+  expect(receipt.spooled).to eq(0)
 end

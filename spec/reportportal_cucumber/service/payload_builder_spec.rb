@@ -28,6 +28,33 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
   end
 
   describe ".build_log_batch" do
+    it "keeps globally unique wire names and original bytes/owners in every collision permutation" do
+      names = ["evidence.txt", "evidence.txt", "evidence-1.txt", "bad\r\nname.txt", "bad name.txt", "bad name-1.txt"]
+      records = names.each_with_index.map do |name, index|
+        { item_uuid: "item-#{index}", launch_uuid: "launch-1", timestamp: Time.utc(2026),
+          level: :info, message: "owner-#{index}",
+          attachment: { name: name, mime: "text/plain", bytes: "distinct-bytes-#{index}" } }
+      end
+      records.permutation.each do |ordered|
+        payload = described_class.build_log_batch(ordered)
+        wire_names = payload.fetch(:files).map { |file| file.fetch(:name) }
+        expect(wire_names.uniq.length).to eq(records.length)
+        expect(payload.fetch(:entries).map { |entry| entry.dig("file", "name") }).to eq(wire_names)
+        payload.fetch(:entries).zip(payload.fetch(:files), ordered).each do |entry, file, original|
+          expect(entry.fetch("itemUuid")).to eq(original.fetch(:item_uuid))
+          expect(file.fetch(:bytes)).to eq(original.dig(:attachment, :bytes))
+          expect(entry.fetch("message")).to include(original.fetch(:message))
+        end
+      end
+    end
+
+    it "rejects duplicated multipart names even when JSON and file lists align" do
+      entries = 2.times.map { { "file" => { "name" => "duplicate.txt" } } }
+      files = 2.times.map { { name: "duplicate.txt", bytes: "different" } }
+      expect { described_class.send(:validate_log_batch!, entries: entries, files: files) }
+        .to raise_error(ArgumentError, /Multipart log payload mismatch/)
+    end
+
     it "keeps multipart file names aligned with json_request_part and de-duplicates duplicates" do
       payload = described_class.build_log_batch(
         [

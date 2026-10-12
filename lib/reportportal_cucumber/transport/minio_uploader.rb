@@ -4,23 +4,19 @@ require "aws-sdk-s3"
 require "cgi"
 require "securerandom"
 require "stringio"
+require_relative "../service/evidence_presenter"
 
 module ReportportalCucumber
   module Transport
     # Uploads large video artifacts to S3-compatible storage and returns public object URLs.
     class MinioUploader
+      DIAGNOSTIC_LIMIT = 2048
+
       # @param config [ReportportalCucumber::Config]
       # @param client [Aws::S3::Client, nil]
       def initialize(config:, client: nil)
         @config = config
-        @client = client || Aws::S3::Client.new(
-          endpoint: @config.minio_endpoint,
-          access_key_id: @config.minio_access_key_id,
-          secret_access_key: @config.minio_secret_access_key,
-          region: @config.minio_region,
-          force_path_style: true,
-          ssl_verify_peer: false
-        )
+        @client = client || Aws::S3::Client.new(**client_options)
       end
 
       # @param path [String, nil]
@@ -39,13 +35,28 @@ module ReportportalCucumber
         )
         public_url_for(key)
       rescue StandardError => error
-        warn_video_upload_failure(error)
-        fallback_message(name: name, error: error)
+        diagnostic = safe_diagnostic(error)
+        warn_video_upload_failure(diagnostic)
+        fallback_message(name: name, diagnostic: diagnostic)
       ensure
         body.close if body.respond_to?(:close) && body.respond_to?(:path)
       end
 
       private
+
+      def client_options
+        options = {
+          endpoint: @config.minio_endpoint,
+          access_key_id: @config.minio_access_key_id,
+          secret_access_key: @config.minio_secret_access_key,
+          region: @config.minio_region,
+          force_path_style: true,
+          ssl_verify_peer: !(@config.respond_to?(:minio_ssl_verify_peer) && @config.minio_ssl_verify_peer == false)
+        }
+        ca_bundle = @config.minio_ssl_ca_bundle if @config.respond_to?(:minio_ssl_ca_bundle)
+        options[:ssl_ca_bundle] = ca_bundle unless ca_bundle.nil?
+        options
+      end
 
       # @param name [String]
       # @return [String]
@@ -88,18 +99,29 @@ module ReportportalCucumber
         "#{base}/#{bucket}/#{object}"
       end
 
-      # @param error [StandardError]
+      # @param diagnostic [String] Already sanitized diagnostic.
       # @return [void]
-      def warn_video_upload_failure(error)
-        $stderr.puts("[WARN] Video upload failed: #{error.message}")
+      def warn_video_upload_failure(diagnostic)
+        $stderr.puts("[WARN] Video upload failed: #{diagnostic}")
+      rescue StandardError
+        nil
       end
 
       # @param name [String]
-      # @param error [StandardError]
+      # @param diagnostic [String] Already sanitized diagnostic.
       # @return [String]
-      def fallback_message(name:, error:)
-        "Video upload failed for #{name}: #{error.message}. " \
+      def fallback_message(name:, diagnostic:)
+        safe_name = Service::EvidencePresenter.sanitize_diagnostic(name, limit: 256)
+          .gsub(/[\x00-\x1f\x7f]/, " ")
+        "Video upload failed for #{safe_name}: #{diagnostic}. " \
           "The Cucumber run was not interrupted; inspect the local recording artifact if it is available."
+      end
+
+      def safe_diagnostic(error)
+        Service::EvidencePresenter.sanitize_diagnostic(error.message, limit: DIAGNOSTIC_LIMIT)
+          .gsub(/[\x00-\x1f\x7f]/, " ")
+      rescue StandardError
+        Service::EvidencePresenter::OMITTED
       end
 
       # @param value [String]

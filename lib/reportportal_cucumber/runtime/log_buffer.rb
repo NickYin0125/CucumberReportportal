@@ -23,16 +23,26 @@ module ReportportalCucumber
       # @param level [String, Symbol]
       # @param timestamp [Time, String, Integer, Float]
       # @param attachment [Hash, nil]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil]
+      # @param cancelled [#call, nil]
       # @return [Boolean] Whether the record was admitted to the local queue.
-      def emit_log(item_uuid:, launch_uuid:, message:, level:, timestamp:, attachment: nil)
+      def emit_log(item_uuid:, launch_uuid:, message:, level:, timestamp:, attachment: nil, deadline: nil, cancelled: nil)
         @processor.emit_log(
           item_uuid: item_uuid,
           launch_uuid: launch_uuid,
           message: message,
           level: level,
           timestamp: timestamp,
-          attachment: attachment
+          attachment: attachment,
+          deadline: deadline,
+          cancelled: cancelled
         )
+      end
+
+      # @param count [Integer] Number of records refused before payload construction.
+      # @return [Boolean] Always false.
+      def reject_logs(count:)
+        @processor.reject_logs(count: count)
       end
 
       # @return [Hash] Immutable, thread-safe queue counters and occupancy.

@@ -84,9 +84,12 @@ RSpec.describe "AppLog ReportPortal routing" do
   end
 
   def finalize_formatter(formatter)
+    buffer = formatter.instance_variable_get(:@log_buffer)
+    return unless buffer
+
     formatter.send(:finalize_reporting, status: "passed", end_time: Time.now)
   ensure
-    formatter.instance_variable_get(:@log_buffer).shutdown(timeout: 2)
+    buffer&.shutdown(timeout: 2)
   end
 
   it "routes exactly one DEBUG and ERROR record to the active step and keeps native world.log at INFO" do
@@ -200,6 +203,8 @@ RSpec.describe "AppLog ReportPortal routing" do
     disabled_config = config
     allow(disabled_config).to receive(:enabled?).and_return(false)
     allow(ReportportalCucumber::Config).to receive(:load).and_return(disabled_config)
+    expect(ReportportalCucumber::ReportPortal::API).not_to receive(:new)
+    expect(ReportportalCucumber::Runtime::LogBuffer).not_to receive(:new)
     formatter = build_formatter(start: false)
     world = RoutingWorld.new(formatter)
     AppLog.bind(world, output: StringIO.new, color: false)
@@ -207,6 +212,8 @@ RSpec.describe "AppLog ReportPortal routing" do
     expect { AppLog.info("native only", report: true) }.not_to raise_error
     expect(world.native_logs).to eq(["native only"])
     expect(@mock_server.logs).to be_empty
+    expect(formatter.instance_variable_get(:@api)).to be_nil
+    expect(formatter.instance_variable_get(:@log_buffer)).to be_nil
   end
 
   it "keeps attach:false terminal-only and lets report:false override attach:true" do

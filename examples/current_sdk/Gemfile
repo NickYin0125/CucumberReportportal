@@ -1,0 +1,8 @@
+source "https://rubygems.org"
+
+# Install the 1.2.0 release archive before resolving this independent consumer.
+gem "reportportal-cucumber-ruby", "= 1.2.0"
+gem "cucumber", ENV.fetch("CUCUMBER_VERSION", "~> 10.0")
+# Cucumber <= 10's native message builder expects non-nil group children.
+gem "cucumber-cucumber-expressions", "< 19"
+gem "playwright-ruby-client", "= 1.62.0"

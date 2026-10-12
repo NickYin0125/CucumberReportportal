@@ -26,12 +26,12 @@ module Automation
     def initialize(method:, url:, request: {}, response: {}, duration_ms: nil, expected_status: nil, error: nil,
                    sensitive_keys: [])
       @redactor = EvidenceRedactor.new(sensitive_keys: sensitive_keys)
-      @method = @redactor.redact_text(valid_utf8(method.to_s).upcase).freeze
+      @method = @redactor.redact_text(method.to_s).upcase.freeze
       @url = @redactor.redact_url(url.to_s).freeze
-      @request = request.is_a?(Hash) ? immutable_copy(@redactor.redact(request)) : {}.freeze
-      @response = response.is_a?(Hash) ? immutable_copy(@redactor.redact(response)) : {}.freeze
-      @duration_ms = duration_ms.nil? ? nil : @redactor.redact_text(duration_ms.to_s).freeze
-      @expected_status = immutable_copy(expected_status)
+      @request = safe_section(request)
+      @response = safe_section(response)
+      @duration_ms = duration_ms.nil? ? nil : @redactor.redact(duration_ms).to_s.freeze
+      @expected_status = immutable_copy(@redactor.redact(expected_status))
       @error = error.nil? ? nil : error_snapshot(error)
       status = fetch(@response, :status)
       @status_text = status.nil? ? "unknown" : @redactor.redact_text(status.to_s).freeze
@@ -75,6 +75,25 @@ module Automation
     end
 
     private
+
+    def safe_section(section)
+      return {}.freeze unless section.is_a?(Hash)
+
+      # Evidence budgets must not erase the independently observed HTTP status.
+      headers = @redactor.redact(fetch(section, :headers))
+      headers = { "[omitted]" => EvidenceRedactor::OMITTED } if headers == EvidenceRedactor::OMITTED
+      immutable_copy(status: safe_status(fetch(section, :status)), headers: headers,
+                     body: @redactor.redact(fetch(section, :body)))
+    end
+
+    def safe_status(status)
+      if status.is_a?(Integer)
+        return status if (100..599).cover?(status)
+      elsif status.is_a?(String) && status.bytesize == 3 && status.match?(/\A[1-5][0-9]{2}\z/)
+        return status
+      end
+      nil
+    end
 
     def append_section(lines, section, preview_budget)
       append_headers(lines, section, preview_budget)
@@ -199,15 +218,15 @@ module Automation
     end
 
     def error_snapshot(error)
-      sanitized = @redactor.redact(error)
+      sanitized = @redactor.redact(error.is_a?(Exception) ? error.message : error)
       text = if sanitized.is_a?(Hash) || sanitized.is_a?(Array)
                JSON.generate(sanitized)
              else
-               @redactor.redact_text(error.to_s)
+               sanitized.to_s
              end
       immutable_copy(text)
-    rescue JSON::GeneratorError
-      immutable_copy(@redactor.redact_text(error.to_s))
+    rescue StandardError
+      EvidenceRedactor::OMITTED
     end
 
     def immutable_copy(value)

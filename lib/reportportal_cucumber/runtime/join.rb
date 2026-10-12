@@ -2,7 +2,8 @@
 
 module ReportportalCucumber
   module Runtime
-    # Shares a single launch UUID between local processes via a lock file and a sync file.
+    # Legacy local UUID sharing; does not coordinate all-worker launch completion.
+    # CI-owned launch mode bypasses this helper and never creates coordination files.
     class Join
       TimeoutError = Class.new(ReportportalCucumber::ReportingError)
 
@@ -17,6 +18,8 @@ module ReportportalCucumber
       # @yieldreturn [String] block that creates the launch when this process becomes primary
       # @return [String]
       def acquire_or_wait_launch_uuid
+        return mark_secondary(@config.launch_uuid) if @config.ci_owned_launch?
+
         deadline = monotonic_now + (@config.join_wait_timeout_ms / 1000.0)
         FileUtils.mkdir_p(File.dirname(lock_path))
 

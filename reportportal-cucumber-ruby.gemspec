@@ -6,31 +6,28 @@ Gem::Specification.new do |spec|
   spec.name = "reportportal-cucumber-ruby"
   spec.version = ReportportalCucumber::VERSION
   spec.authors = ["Codex"]
-  spec.email = ["codex@example.com"]
 
   spec.summary = "Real-time ReportPortal client and Cucumber formatter for Ruby"
   spec.description = "Streams Ruby Cucumber execution events to ReportPortal launches, items, and logs in real time."
-  spec.homepage = "https://example.com/reportportal-cucumber-ruby"
+  spec.homepage = "https://github.com/NickYin0125/CucumberReportportal"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.1"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
-  spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/README.md"
+  spec.metadata["changelog_uri"] = "#{spec.homepage}/blob/main/CHANGELOG.md"
 
   spec.files = Dir.chdir(__dir__) do
     Dir[
-      ".github/workflows/*",
       "LICENSE",
       "README.md",
+      "CHANGELOG.md",
+      "docs/design/*.md",
+      "helm/reportportal-rich-experience/README.md",
       "examples/**/*",
       "exe/**/*",
-      "features/**/*",
-      "lib/**/*",
-      "spec/**/*",
-      "Gemfile",
-      "Rakefile"
-    ]
+      "lib/**/*"
+    ].select { |path| File.file?(path) }.sort
   end
 
   spec.bindir = "exe"
@@ -38,12 +35,18 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "cucumber", ">= 9.0", "< 11.0"
+  # Cucumber 9/10 native HTML/messages require the compatible parameter-group model.
+  spec.add_dependency "cucumber-cucumber-expressions", ">= 17.0", "< 19.0"
   spec.add_dependency "aws-sdk-s3", ">= 1.180"
   spec.add_dependency "mime-types", ">= 3.5"
 
   spec.add_development_dependency "bundler", ">= 2.6"
   spec.add_development_dependency "rake", ">= 13.0"
   spec.add_development_dependency "parallel_tests", ">= 4.0"
+  spec.add_development_dependency "puma", ">= 6.0"
+  spec.add_development_dependency "rackup", ">= 2.2"
+  spec.add_development_dependency "rantly", ">= 2.0"
+  spec.add_development_dependency "sinatra", ">= 4.1"
   spec.add_development_dependency "rspec", ">= 3.13"
   spec.add_development_dependency "webmock", ">= 3.23"
 end

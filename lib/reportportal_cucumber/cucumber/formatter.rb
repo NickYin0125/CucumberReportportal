@@ -4,6 +4,7 @@ require "cucumber/formatter/ast_lookup"
 require "cucumber/glue/dsl"
 require "json"
 require_relative "ast_metadata"
+require_relative "native_lifecycle"
 require_relative "../automation/report_context"
 require_relative "../automation/evidence_redactor"
 require_relative "../service/evidence_presenter"
@@ -17,6 +18,8 @@ module ReportportalCucumber
     class Formatter
       SAFE_SCENARIO_LINK_DIAGNOSTICS = Service::ScenarioLinks::DIAGNOSTIC_REASONS.map(&:to_s).freeze
       EVIDENCE_FILENAME_LIMIT = 512
+      # Excessive batches are refused and counted, never silently truncated.
+      EVIDENCE_MAX_ARTIFACTS = 16
 
       attr_reader :config, :runtime_context
 
@@ -25,9 +28,11 @@ module ReportportalCucumber
         @cucumber_config = cucumber_config
         @config = Config.load
         @runtime_context = Runtime::Context.new
-        @api = ReportPortal::API.new(config: @config)
-        @join = Runtime::Join.new(config: @config)
-        @log_buffer = Runtime::LogBuffer.new(api: @api, config: @config, on_error: method(:handle_reporting_error))
+        if @config.enabled?
+          @api = ReportPortal::API.new(config: @config)
+          @join = Runtime::Join.new(config: @config) if @config.join? && !@config.ci_owned_launch?
+          @log_buffer = Runtime::LogBuffer.new(api: @api, config: @config, on_error: method(:handle_reporting_error))
+        end
         @ast_lookup = build_ast_lookup
         @ast_metadata = AstMetadata.new(ast_lookup: @ast_lookup)
         @feature_states = {}
@@ -35,7 +40,9 @@ module ReportportalCucumber
         @identity_warnings = Set.new
         @evidence_admission_warning_mutex = Mutex.new
         @evidence_admission_warning_emitted = false
-        @reporting_failures = 0
+        @missing_reporting_options = @config.reporting_requested? ? @config.missing_reporting_options : [].freeze
+        @configuration_failed = !@missing_reporting_options.empty?
+        @reporting_failures = @configuration_failed ? 1 : 0
         @capture_close_timeouts = 0
         @finalization_deadline = nil
         @finalization_finished = false
@@ -48,9 +55,14 @@ module ReportportalCucumber
         @last_timestamp_ms = nil
         ReportportalCucumber.current_runtime = self
 
+        @native_lifecycle = reporting_lifecycle_active? && NativeLifecycle.attach(cucumber_config: @cucumber_config, formatter: self)
+        if reporting_enabled? && @config.join? && !@config.ci_owned_launch?
+          ReportportalCucumber.logger.warn("ReportPortal legacy join cannot guarantee shared launch completion; use RP_LAUNCH_UUID with CI-owned completion")
+        end
+
         inject_world_module
         subscribe_to_events
-        install_exit_flush
+        install_exit_flush if reporting_lifecycle_active?
       end
 
       # @param payload [Hash]
@@ -131,14 +143,45 @@ module ReportportalCucumber
 
       # @return [Hash] Immutable, thread-safe queue admission diagnostics.
       def reporting_diagnostics
-        @log_buffer.diagnostics
+        return @log_buffer.diagnostics if @log_buffer
+
+        { reporting_requested: @config.reporting_requested?, missing_configuration: @missing_reporting_options,
+          metadata_failures: @reporting_failures }.freeze
       end
 
       # @return [ReportportalCucumber::Service::DeliveryReceipt]
       def reporting_receipt
+        unless @log_buffer
+          values = Service::DeliveryReceipt::FIELDS.to_h { |field| [field, 0] }
+          return Service::DeliveryReceipt.new(**values.merge(complete: !@configuration_failed,
+                                                            metadata_failures: @reporting_failures,
+                                                            local_settled: true, timed_out: false))
+        end
+
         @log_buffer.reporting_receipt(capture_close_timeouts: @capture_close_timeouts,
                                       metadata_failures: @reporting_failures,
                                       finalization_complete: @finalization_finished)
+      end
+
+      # Completes reporting only after genuine native AfterAll execution.
+      # @param error [Exception, nil] The original native run-hook exception, never replaced.
+      # @return [void]
+      def complete_native_run(error: nil)
+        return unless reporting_lifecycle_active? && !@finalized
+
+        @business_failed ||= !error.nil? && !error.equal?(@strict_reporting_error)
+        @finalization_deadline ||= Service::ReportingDeadline.new(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        if error && @launch_uuid
+          diagnostic = Service::EvidencePresenter.sanitize_diagnostic(error.message, limit: 2048)
+          safe_reporting_call(preserve_business_exception: true) do
+            @log_buffer.emit_log(item_uuid: nil, launch_uuid: @launch_uuid,
+                                 message: "Native AfterAll failed (#{error.class}): #{diagnostic}",
+                                 level: :error, timestamp: monotonic_timestamp(Time.now),
+                                 deadline: @finalization_deadline)
+          end
+        end
+        status = error ? "failed" : (@native_run_status || "failed")
+        finalize_reporting(status: status, end_time: Time.now)
       end
 
       # @param action [Object]
@@ -151,6 +194,7 @@ module ReportportalCucumber
       def report_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
         return false unless reporting_enabled? && !@finalized
 
+        deadline = Service::ReportingDeadline.new(timeout: @config.exit_flush_timeout_ms / 1000.0)
         selected = target.nil? ? capture_target : target
         item = runtime_context.acquire_capture_target(selected, launch_uuid: @launch_uuid)
         unless item
@@ -159,7 +203,13 @@ module ReportportalCucumber
         end
         leased = true
 
-        payloads = Array(artifacts).map { |artifact| build_evidence_payload(artifact) }
+        artifacts = Array(artifacts)
+        if artifacts.length > EVIDENCE_MAX_ARTIFACTS
+          @log_buffer.reject_logs(count: artifacts.length + 1)
+          ReportportalCucumber.logger.warn("ReportPortal evidence rejected: batch exceeds #{EVIDENCE_MAX_ARTIFACTS} artifacts")
+          return false
+        end
+        payloads = artifacts.map { |artifact| build_evidence_payload(artifact) }
         names = payloads.map { |artifact| artifact[:name] }
         rendered = Service::EvidencePresenter.failure(
           action: action,
@@ -173,9 +223,10 @@ module ReportportalCucumber
         diagnostic = rendered[:details] || rendered["details"]
         message = [summary, diagnostic && redactor.redact_text(diagnostic)].compact.reject(&:empty?).join("\n\n")
         admissions = []
-        published = runtime_context.publish_capture_target(selected, launch_uuid: @launch_uuid) do |open_item|
+        published = runtime_context.publish_capture_target(selected, launch_uuid: @launch_uuid) do |open_item, cancelled|
           admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid, message: message,
-                                              level: :error, timestamp: monotonic_timestamp(Time.now))
+                                              level: :error, timestamp: monotonic_timestamp(Time.now),
+                                              deadline: deadline, cancelled: cancelled)
           payloads.each do |payload|
             name = payload.fetch(:name)
             attachment = if payload.key?(:path)
@@ -186,11 +237,13 @@ module ReportportalCucumber
                          end
             admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid,
                                                 message: "Failure evidence: #{name}", level: :error,
-                                                timestamp: monotonic_timestamp(Time.now), attachment: attachment)
+                                                timestamp: monotonic_timestamp(Time.now), attachment: attachment,
+                                                deadline: deadline, cancelled: cancelled)
           end
         end
         unless published
-          ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target closed before publication")
+          @log_buffer.reject_logs(count: payloads.length + 1) if admissions.empty?
+          ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target closed before publication completed")
           return false
         end
         unless admissions.all?
@@ -344,6 +397,11 @@ module ReportportalCucumber
         @config.enabled?
       end
 
+      # @return [Boolean] Observe required reporting even when transport cannot be configured.
+      def reporting_lifecycle_active?
+        reporting_enabled? || (@configuration_failed && @config.require_complete_reporting?)
+      end
+
       # @return [void]
       def subscribe_to_events
         return unless @cucumber_config.respond_to?(:on_event)
@@ -386,6 +444,8 @@ module ReportportalCucumber
         at_exit do
           next if @finalized
 
+          # If native teardown never returned, do not infer success from scenario events.
+          @business_failed = true
           finalize_reporting(status: "failed", end_time: Time.now)
         end
       end
@@ -414,7 +474,9 @@ module ReportportalCucumber
         end
 
         @launch_uuid =
-          if @config.join?
+          if @config.ci_owned_launch?
+            @config.launch_uuid
+          elsif @config.join?
             @join.acquire_or_wait_launch_uuid(&creator)
           else
             creator.call
@@ -689,7 +751,13 @@ module ReportportalCucumber
       # @param event [Object]
       # @return [void]
       def handle_test_run_finished(event)
-        return unless reporting_enabled?
+        return unless reporting_lifecycle_active?
+
+        if @native_lifecycle
+          @native_run_status = extract_run_status(event)
+          @business_failed ||= @native_run_status == "failed"
+          return
+        end
 
         finalize_reporting(status: extract_run_status(event), end_time: monotonic_timestamp(extract_timestamp(event) || Time.now))
       end
@@ -713,11 +781,17 @@ module ReportportalCucumber
       # @param end_time [Time]
       # @return [void]
       def finalize_reporting(status:, end_time:)
-        return if @finalized
+        return if @finalized || !reporting_lifecycle_active?
 
         @business_failed ||= ReportPortal::Models.normalize_status(status).to_s.downcase == "failed"
         @finalized = true
-        @finalization_deadline = Service::ReportingDeadline.new(timeout: @config.exit_flush_timeout_ms / 1000.0)
+        unless @log_buffer
+          @finalization_finished = true
+          enforce_complete_reporting
+          return
+        end
+
+        @finalization_deadline ||= Service::ReportingDeadline.new(timeout: @config.exit_flush_timeout_ms / 1000.0)
         closed = runtime_context.close_capture_targets(
           launch_uuid: @launch_uuid,
           timeout: @finalization_deadline.remaining
@@ -726,7 +800,7 @@ module ReportportalCucumber
         flush_before_finish
         finish_open_scenarios(status: status, end_time: monotonic_timestamp(end_time))
         finish_feature_items(end_time: monotonic_timestamp(end_time))
-        if @launch_uuid && (!@config.join? || @join.primary?)
+        if @launch_uuid && !@config.ci_owned_launch? && (!@config.join? || @join.primary?)
           debug("Finalizing launch uuid=#{@launch_uuid} status=#{status}")
           safe_reporting_call do
             finish_launch_request(
@@ -739,8 +813,24 @@ module ReportportalCucumber
         end
         @log_buffer.shutdown_receipt(timeout: @finalization_deadline.remaining, deadline: @finalization_deadline)
         @finalization_finished = true
+        enforce_complete_reporting
       ensure
         emit_incomplete_reporting_summary(status) if @finalized
+        if @finalized && ReportportalCucumber.current_runtime.equal?(self)
+          ReportportalCucumber.current_runtime = nil
+        end
+      end
+
+      # @return [void] Fail only otherwise successful runs, without reflecting configuration values.
+      def enforce_complete_reporting
+        return unless @config.require_complete_reporting? && !@business_failed && $!.nil? && !reporting_receipt.complete
+
+        message = if @configuration_failed
+                    "ReportPortal required reporting configuration is incomplete: missing #{@missing_reporting_options.join(', ')}"
+                  else
+                    "ReportPortal final reporting receipt is incomplete"
+                  end
+        raise ReportportalCucumber::ReportingError, message
       end
 
       # @param feature_uri [String]
@@ -959,7 +1049,7 @@ module ReportportalCucumber
       # @param status [String, Symbol, nil]
       # @return [void]
       def emit_incomplete_reporting_summary(status)
-        return unless reporting_enabled? && !@incomplete_summary_emitted
+        return unless reporting_lifecycle_active? && !@incomplete_summary_emitted
 
         @incomplete_summary_emitted = true
         receipt = reporting_receipt

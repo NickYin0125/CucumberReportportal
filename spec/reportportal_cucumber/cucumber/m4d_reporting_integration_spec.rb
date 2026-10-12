@@ -200,7 +200,10 @@ RSpec.describe "M4-D public Cucumber reporting outcomes" do
       expect(retained.map { |entry| entry.fetch("message") }).not_to include("M4-D JSON acknowledgement") if mode == "partial"
       retained_png = result.fetch("transactions").flat_map { |transaction| transaction.fetch("files") }
       expect(retained_png).to include(hash_including("sha256" => Digest::SHA256.hexdigest(PNG), "length" => PNG.bytesize))
-      expect(result.fetch("cucumber_version")).to start_with("10.")
+      parent_version = Gem.loaded_specs.fetch("cucumber").version
+      expect(parent_version).to be >= Gem::Version.new("9.0")
+      expect(parent_version).to be < Gem::Version.new("11.0")
+      expect(result.fetch("cucumber_version")).to eq(parent_version.to_s)
       expect(result.fetch("loaded_sdk").keys).to all(start_with(File.realpath(File.expand_path("../../..", __dir__)) + "/lib/"))
     end
   end

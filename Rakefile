@@ -63,7 +63,6 @@ namespace :rp do
       "bundle",
       "exec",
       "cucumber",
-      "-P",
       "features/deep_water",
       "--format",
       "ReportPortal::Cucumber::Formatter",

@@ -1,103 +1,290 @@
 # reportportal-cucumber-ruby
 
-`reportportal-cucumber-ruby` 是一个 Ruby Cucumber formatter gem，用于把 Cucumber 运行时事件实时映射到 ReportPortal Launch、Test Item 和 Log API。
+Real-time ReportPortal reporting for Ruby Cucumber, with readable BDD structure,
+contextual API diagnostics, caller-owned UI evidence, and explicit delivery receipts.
+The SDK reports your tests; it does not run HTTP assertions, own your browser, or
+decide when screenshots and recordings should be captured.
 
-实现遵循本项目的调研结论与约束：
+### What You See In ReportPortal
 
-- 最小上报流：`start launch -> start item -> save log -> finish item -> finish launch`
-- 默认层级：`Launch -> Feature(SUITE) -> Scenario(STEP, hasStats=true) -> nested step/hook(STEP/HOOK, hasStats=false)`
-- 支持 `rerun`、最小可用 `retry`、批量日志、附件、多进程 join、HTTP 重试与退出 flush
-- 提供 World DSL：`rp_log`、`rp_attach`、`rp_step`
-- Gherkin step 会保留 `Given/When/Then` 语义，并把 DataTable / DocString 渲染成 Markdown 描述
-- JSON、文本、图片、视频等附件会自动做 MIME 识别与更友好的 RP 日志预览
+```text
+Launch
+  Feature                       SUITE, hasStats=true
+    Scenario / Examples row     STEP, hasStats=true (one statistical test)
+      Before / After Hook       BEFORE_METHOD / AFTER_METHOD, hasStats=false
+      Given / When / Then       STEP, hasStats=false
+        Manual business group   STEP, hasStats=false
+          Logs and attachments
+```
 
-> ReportPortal UI 的 Suite/Launch 统计链接会按 `type=STEP&hasStats=true&hasChildren=false` 查询统计叶子。
-> 因此本 formatter 与官方 pytest-reportportal 的 BDD 拓扑对齐：Scenario 作为统计叶子 `STEP` 上报，Gherkin step/hook 作为非统计子 item 承载日志和附件。
+Scenario is a test in business terms, but its wire type is deliberately `STEP`,
+not `TEST`. The verified ReportPortal UI statistics drilldown filters statistical
+leaves with `type=STEP&hasStats=true&hasChildren=false`; non-statistical children
+carry evidence without becoming additional test results. Background steps retain
+their `[Background]` prefix, and DataTables/DocStrings become Markdown descriptions
+and rich step logs. Each executed Examples row gets its own item UUID.
+
+Use `AppLog` for terminal, native Cucumber HTML/messages, and RP logging; use
+`rp_attach`, `rp_step`, and explicit capture targets for RP-specific evidence.
+Delivery uses bounded batching, HTTP backoff, exit barriers, and durable spool
+transactions. These safeguards make incomplete reporting observable, not a
+zero-loss or exactly-once promise.
+
+**Start here:** [complete API and Playwright example](examples/current_sdk/README.md).
+For an existing framework, follow [Usage](#usage), [Test Organization](#test-organization),
+and [Reporting Experience](#reporting-experience).
+
+| Your goal | Read next |
+| --- | --- |
+| Run real API/UI examples and inspect their evidence | [Example project](examples/current_sdk/README.md) |
+| Understand where each log appears | [Log routing](#reporting-experience) |
+| Find Scenarios, DEBUG logs, and attachments in RP | [RP inspection checklist](#inspect-logs-in-reportportal) |
+| Keep UI failures and screenshots correctly attributed | [Failure evidence](#failure-evidence-api) |
+| Share a Launch across isolated CI workers | [CI-owned Launch contract](#ci-owned-launches-and-legacy-local-join) |
+| Diagnose an incomplete report or retry retained evidence | [Receipts](#configuration) and [controlled replay](#durable-spool-and-controlled-replay) |
 
 ## Installation
 
+Gem **1.2.0** is distributed as an installable archive in the
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.2.0).
+RubyGems.org publication is separate; do not assume an unversioned registry install
+selects this release. The companion chart remains **1.2.0-rc.2**
+(`appVersion: 26.0.5`, official chart `26.8.12`), not production security/HA
+certification. See [the changelog](CHANGELOG.md) for scope and limitations.
+
+Requirements: Ruby `>= 3.1`, Bundler, and Cucumber `>= 9, < 11`.
+The latest independent acceptance used Ruby 3.4.2 with Cucumber 9.2.1 and 10.2.0;
+the declared Ruby range is not a claim that every Ruby version was exercised.
+Playwright is an optional dependency of your UI test project, not of this SDK.
+
+Download the release archive and install it:
+
+```bash
+curl -fL -o reportportal-cucumber-ruby-1.2.0.gem \
+  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.2.0/reportportal-cucumber-ruby-1.2.0.gem
+gem install ./reportportal-cucumber-ruby-1.2.0.gem --no-document
+```
+
+Alternatively, build the same version from the tagged checkout:
+
+```bash
+mkdir -p pkg
+gem build reportportal-cucumber-ruby.gemspec \
+  --output pkg/reportportal-cucumber-ruby-1.2.0.gem
+gem install ./pkg/reportportal-cucumber-ruby-1.2.0.gem --no-document
+```
+
+Pin the installed release in your automation project's Gemfile:
+
 ```ruby
-# Gemfile
-gem "reportportal-cucumber-ruby"
+source "https://rubygems.org"
+gem "cucumber", ">= 9", "< 11"
+gem "reportportal-cucumber-ruby", "= 1.2.0"
 ```
 
 ```bash
 bundle install
+bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
+
+The SDK itself constrains cucumber-expressions to `>=17,<19`. Bundler can use
+the locally installed release. `bundle install --local` is an
+offline alternative only when **all** required dependencies are already cached.
+For SDK development, `path:` must point to the source directory containing the
+gemspec, never to a `.gem` archive or an unpacked directory without a gemspec.
+Do not remove the version pin or assume RubyGems.org publication is configured.
+The example's independent installation exposed a Cucumber 10.2.0 message-builder
+failure with expressions 19.x. The gem dependency cap protects native HTML/messages;
+it is not an SDK monkey patch. The
+[upstream changelog](https://github.com/cucumber/cucumber-ruby/blob/main/CHANGELOG.md)
+records the nil-group-children fix in Cucumber 11, which is outside this SDK's
+supported range. See the [example verification](examples/current_sdk/verification.md)
+for the exact tested dependency combinations.
 
 ## Usage
 
-最小运行方式：
+In your project's `features/support/env.rb`, load the DSL and bind a logger around
+each scenario. `with_logger` restores the previous thread/fiber-local logger with
+`ensure`, including on failures:
+
+```ruby
+require "reportportal_cucumber"
+World(ReportportalCucumber::Cucumber::World)
+
+Around do |_scenario, run|
+  AppLog.with_logger(Automation::CucumberLogger.new(world: self)) { run.call }
+end
+```
+
+Start locally with `RP_ENABLED=false`: native Cucumber reports and AppLog still
+work without an RP connection. To enable RP, provide your existing endpoint,
+project, and API key through your secret manager or shell environment; never
+commit a real token to YAML. For example, from this SDK checkout:
 
 ```bash
+RP_ENABLED=true \
 RP_ENDPOINT=https://reportportal.example.com \
 RP_PROJECT=demo \
-RP_API_KEY=token \
+RP_API_KEY="$RP_API_KEY" \
 RP_LAUNCH="Ruby Cucumber Demo" \
-bundle exec cucumber examples/minimal/features \
+bundle exec cucumber --no-profile examples/minimal/features \
   --require examples/minimal/features \
   --format ReportPortal::Cucumber::Formatter
 ```
 
-也可以使用 YAML 配置。默认会读取当前目录下的 `.reportportal.yml` 或 `config/reportportal.yml`。
+Configuration is read from `.reportportal.yml` or `config/reportportal.yml` in the
+current working directory, or the path in `RP_CONFIG`. Environment variables
+override YAML. Keep credentials out of source-controlled configuration:
 
 ```yaml
 default:
   endpoint: https://reportportal.example.com
   project: demo
-  api_key: token
   launch: Ruby Cucumber Demo
+  launch_description: API and browser regression
   launch_mode: DEFAULT
   launch_attributes:
     - key: build
       value: "0.1"
     - value: smoke
   batch_size_logs: 2
-  join: true
+  join: false
 ```
 
-如果使用 profile，可通过 `CUCUMBER_PROFILE` 选择：
+Use `CUCUMBER_PROFILE` to select an RP YAML profile. Cucumber's own `-p` profiles
+select command-line options; keep the two configuration layers explicit:
 
 ```bash
 CUCUMBER_PROFILE=ci bundle exec cucumber --format ReportPortal::Cucumber::Formatter
 ```
 
-如果需要同时在终端查看 `pretty` 输出并启用 ReportPortal formatter，Cucumber 10+
-要求其中一个 formatter 显式指定 `--out`，否则两个 formatter 都会默认写
-STDOUT 并报错：
+Give each additional formatter its own `--out`; only one formatter should own
+STDOUT. Creating the output directory is the caller's responsibility:
 
 ```bash
-bundle exec cucumber features/deep_water \
-  --format ReportPortal::Cucumber::Formatter --out tmp/reportportal-formatter.log \
-  --format pretty
+mkdir -p tmp
+bundle exec cucumber --no-profile features \
+  --format progress \
+  --format html --out tmp/report.html \
+  --format message --out tmp/messages.ndjson \
+  --format ReportPortal::Cucumber::Formatter --out tmp/reportportal-formatter.log
 ```
 
-本地调试 `rp_log` 时可以开启控制台镜像，避免一边看终端一边等 UI
-刷新时出现“暗箱感”。开启后，`rp_log` 会继续实时上报 ReportPortal，同时向
-STDOUT 打印一份带 `[RP-MIRROR]` 前缀的日志：
+`progress` keeps the terminal compact while AppLog prints concise summaries.
+Choose `pretty` instead when you also want Gherkin text and native `world.log`
+content echoed locally. Pretty may print the full Markdown JSON; AppLog's compact
+summary cannot suppress another formatter's output.
+The RP formatter's `--out` reserves a separate output destination; the formatter
+does not write a log stream there, and the file may not exist. Inspect RP logs in
+the RP UI, use AppLog/console mirror locally, and read the final reporting receipt
+for delivery status rather than treating that path as a report.
+
+Legacy `rp_log` does not write native Cucumber HTML evidence. To mirror these
+RP-only calls to STDOUT, opt in to `[RP-MIRROR]` output:
 
 ```bash
-RP_CONSOLE_MIRROR=true bundle exec rake rp:regression
+RP_CONSOLE_MIRROR=true bundle exec cucumber --no-profile features \
+  --format progress \
+  --format ReportPortal::Cucumber::Formatter --out tmp/reportportal-formatter.log
 ```
 
-DSL 同时支持 keyword 与位置参数两种 level 写法：
+Both keyword and positional log levels are supported:
 
 ```ruby
 rp_log(JSON.pretty_generate(response), level: :info)
 rp_log(JSON.pretty_generate(response), "INFO")
 ```
 
+## Test Organization
+
+Keep business intent in features, assertions in step definitions, and reusable
+HTTP/browser operations in helpers or page objects. A practical layout is:
+
+```text
+automation/
+  Gemfile
+  cucumber.yml                    # Local, API, UI, and RP execution profiles
+  .reportportal.yml               # Non-secret reporting settings
+  features/
+    api/                          # Contract and negative-response scenarios
+    ui/                           # User journeys and failure-evidence scenarios
+    step_definitions/             # Thin business assertions and orchestration
+    support/
+      env.rb                      # World, AppLog Around scope, configuration
+      hooks.rb                    # Browser setup, evidence capture, cleanup
+  lib/
+    clients/                      # Make HTTP calls; AppLog.http observes results
+    pages/                        # Playwright locators and user actions
+    workflows/                    # Domain helpers; log without passing World around
+  tmp/                            # HTML, messages, screenshots, receipts (gitignored)
+```
+
+- Tag scenarios `@api`, `@ui`, and `@expected_failure` so a healthy smoke run and
+  deliberate failure demonstration are separate, explicit commands.
+- Use Background for common business prerequisites, Scenario Outline for data
+  variants, and `rp_step` only for meaningful sub-actions, not every Ruby call.
+- Bind one AppLog per scenario. Give every browser scenario its own context and
+  close it in `ensure`; never share pages through globals.
+- Assert the observed outcome with your test framework. Logging an ERROR or
+  `AppLog.assertion(passed: false)` alone does not fail a Cucumber scenario.
+- Capture failure evidence before its Step closes. An After hook can publish
+  evidence to that hook, but cannot revive a closed Step target.
+- Retain file-backed artifacts until final reporting settles; do not remove a
+  queued screenshot immediately after `rp_attach` returns.
+
+The [current SDK example](examples/current_sdk/README.md) implements this separation
+with real local HTTP calls and Playwright, including an optional Typewords target.
+Start with its passing suite, then deliberately run its failure profile to inspect
+the original error and screenshot placement.
+
+### Inspect Logs In ReportPortal
+
+Open your RP UI, select the configured project and Launch, then:
+
+1. Open the Feature suite or its Passed/Failed count. The rows are Scenarios and
+   Examples iterations, not the individual Given/When/Then operations.
+2. Open a Scenario's Log View and expand the relevant Step or Hook. API request/
+   response Markdown, DataTables, JSON, and attachments belong to that action.
+3. Include DEBUG/TRACE in the log-level filter when inspecting `AppLog.debug` or
+   `AppLog.trace`; INFO-only filters can hide valid logs.
+4. Click a JSON or PNG attachment to inspect it. Bounded previews are not the full
+   artifact; the file remains available independently of preview length.
+5. Compare the business result with the final reporting receipt. A complete
+   receipt means the requested synchronous delivery was confirmed, not that
+   every test passed. A passing test can still have an incomplete report.
+
+Logs are batched asynchronously: visibility can lag by the flush interval plus
+network/backend processing. Refresh the UI rather than assuming it streams updates
+automatically. Native HTML/messages let you inspect evidence when RP is unavailable.
+
 ## Configuration
 
-支持的主要环境变量：
+The main environment variables are listed below. The example project provides
+safe local/remote profiles; configuration defaults do not create an RP account
+or token.
 
+| Setting | Default | Practical meaning |
+| --- | --- | --- |
+| `RP_ENABLED` | `true` | Reporting is requested; missing credentials keep transport inert but produce an incomplete receipt. Use `false` intentionally for local-only runs. |
+| `RP_CLIENT_JOIN` | `false` | Separate workers create separate Launches unless CI supplies `RP_LAUNCH_UUID`. |
+| `RP_BATCH_SIZE_LOGS` / `RP_FLUSH_INTERVAL` | `20` / `1.0` seconds | Batch by count or interval, subject to the byte limit. |
+| `RP_QUEUE_MAX_RECORDS` / `RP_QUEUE_MAX_BYTES` | `1000` / `16777216` | Bound reserved records and accounted resident data. |
+| `RP_BATCH_MAX_BYTES` | `8388608` | Bound the complete serialized HTTP batch body. |
+| `RP_QUEUE_OVERFLOW_POLICY` | `reject_new` | Rejections are visible in diagnostics/receipts; `block` waits for a bounded admission interval instead. |
+| `RP_EXIT_FLUSH_TIMEOUT_MS` | `5000` | One shared exit/finalization budget, not a new timeout for every item. |
+| `RP_REQUIRE_COMPLETE_REPORTING` | `false` | Opt in to a separate incomplete-report failure after business execution and teardown. |
+| `RP_IDENTITY_STRATEGY` | `legacy` | Preserve existing history unless deliberately migrating to `stable_v1`. |
+| `RP_MINIO_SSL_VERIFY_PEER` | `true` | Verify optional S3 upload peers; it does not govern RP/browser access policies. |
+
+- `RP_ENABLED` (`false` intentionally keeps the formatter inert; missing endpoint/project/API key prevents transport and leaves requested reporting incomplete)
 - `RP_ENDPOINT`
 - `RP_PROJECT`
 - `RP_API_KEY`
 - `RP_LAUNCH`
+- `RP_LAUNCH_UUID` (existing CI-owned launch; YAML `launch_uuid`)
 - `RP_LAUNCH_DESCRIPTION`
 - `RP_LAUNCH_MODE`
-- `RP_ATTRIBUTES`，例如 `build:0.1,smoke`
+- `RP_ATTRIBUTES` (launch attributes, for example `build:0.1,smoke`)
 - `RP_RERUN`
 - `RP_RERUN_OF`
 - `RP_REPORTING_ASYNC`
@@ -109,24 +296,68 @@ rp_log(JSON.pretty_generate(response), "INFO")
 - `RP_QUEUE_ADMISSION_TIMEOUT_MS`
 - `RP_FLUSH_INTERVAL`
 - `RP_FAIL_ON_REPORTING_ERROR`
+- `RP_REQUIRE_COMPLETE_REPORTING` (separate opt-in completeness gate; YAML `require_complete_reporting`)
 - `RP_CONFIG` (YAML profile path; environment variables override YAML values)
 - `RP_SPOOL_DIR`
 - `RP_SPOOL_MAX_BYTES`
 - `RP_EXIT_FLUSH_TIMEOUT_MS` (one shared monotonic shutdown/finalization budget)
-- `RP_CLIENT_JOIN`
+- `RP_CLIENT_JOIN` (default `false`; YAML `join`)
 - `RP_CLIENT_JOIN_LOCK_FILE_NAME`
 - `RP_CLIENT_JOIN_SYNC_FILE_NAME`
 - `RP_CLIENT_JOIN_FILE_WAIT_TIMEOUT_MS`
 - `RP_CONSOLE_MIRROR`
 - `RP_DEBUG_CURL_MODE`
 - `RP_DEBUG_CURL_DIR`
-- `RP_VIDEO_UPLOAD_MODE`，默认 `reportportal_multipart`；设置为 `minio_markdown` 时会把 MP4 上传到 MinIO，并把可播放 `<video>` 片段作为普通 log 写入当前 step
+- `RP_HTTP_OPEN_TIMEOUT`, `RP_HTTP_READ_TIMEOUT`, `RP_HTTP_WRITE_TIMEOUT` (seconds)
+- `RP_HTTP_RETRY_ATTEMPTS`, `RP_HTTP_RETRY_BASE_INTERVAL`, `RP_HTTP_RETRY_MAX_INTERVAL`
+- `RP_VIDEO_UPLOAD_MODE` (default `reportportal_multipart`; optional `minio_markdown` is subject to the rollout restrictions below)
 - `RP_MINIO_ENDPOINT`
 - `RP_MINIO_PUBLIC_BASE_URL`
 - `RP_MINIO_BUCKET`
 - `RP_MINIO_ACCESS_KEY_ID`
 - `RP_MINIO_SECRET_ACCESS_KEY`
 - `RP_MINIO_REGION`
+- `RP_MINIO_SSL_VERIFY_PEER` (default `true`; YAML `minio_ssl_verify_peer`)
+- `RP_MINIO_SSL_CA_BUNDLE` (trusted CA bundle path; YAML `minio_ssl_ca_bundle`)
+
+### CI-owned launches and legacy local join
+
+For shared CI reporting, CI must create one launch, pass its original UUID as
+`RP_LAUNCH_UUID` to every worker, collect every worker's business exit status and
+final reporting receipt, and finish that launch only after all workers have
+completed. Workers use that UUID for items/logs, bypass local file join, and
+neither start nor finish the launch. A worker receipt is not a cross-process
+aggregate or proof that CI finalized the launch. CI owns late workers, missing
+receipts, crashed workers, deadlines, and original business-failure precedence;
+this gem is not a distributed scheduler.
+
+Supply a UUID-shaped string for an already-open launch in the configured
+endpoint/project. Environment values override YAML. Do not combine
+`RP_LAUNCH_UUID` with `RP_RERUN`/`RP_RERUN_OF`: launch creation and rerun ownership
+belong to CI, and this conflicting configuration is rejected.
+
+Local join defaults to `false`; without an externally owned UUID, each worker
+creates and finishes its own independent launch. Legacy `RP_CLIENT_JOIN=true`
+remains an explicit compatibility opt-in but is deprecated for
+production shared completion. It is same-host file coordination only: the primary
+can finish before secondaries, and a later worker can split into another launch
+after the primary exits. Do not use it as a CI completion barrier. Without an
+externally owned UUID, `RP_CLIENT_JOIN=false` creates independent worker launches.
+
+### External video TLS and rollout boundary
+
+MinIO/S3 HTTPS verifies the server certificate by default. For a private CA,
+provide a trusted PEM bundle through `RP_MINIO_SSL_CA_BUNDLE`; the corresponding
+YAML keys are listed above. Do not disable verification in production. These
+settings are for the optional S3 uploader, not the ReportPortal HTTP client or
+browser playback access policy.
+
+Keep `RP_VIDEO_UPLOAD_MODE=reportportal_multipart` for the default
+pilot's ordinary image/JSON/text uploads. This guide does not upload or certify
+MP4 attachments under that mode. The Helm anonymous public/write/delete and public-to-private revocation
+findings (D4/D10) are deliberately unresolved in this patch. TLS verification
+does not repair bucket permissions; external playback remains gated on a
+separate effective-policy review. No deployment or bucket policy is changed.
 
 Log delivery is bounded by default: at most 1,000 reserved records and 16 MiB
 of accounted resident data (including 256 bytes of metadata allowance per
@@ -167,7 +398,23 @@ business failure. This is an exception-based opt-in, not a complete-report
 policy: a background log-only failure can leave a passing run at exit `0` with
 `complete=false`, even when strict reporting is enabled. Consumers requiring
 reporting completeness must inspect the final `reporting_receipt`. Strict
-reporting does not replace or mask an original business exception. The receipt
+reporting does not replace or mask an original business exception.
+`RP_REQUIRE_COMPLETE_REPORTING=true` separately opts into enforcing the final
+whole-run receipt rather than only synchronous exceptions; it defaults to
+`false`. CI must still collect each worker receipt and actual process exit,
+preserve original business failures, and distinguish an incomplete report from
+a failed business test. On an otherwise passing native run, an incomplete final
+receipt raises `ReportportalCucumber::ReportingError` (Cucumber exit `2`); original
+business/run-hook errors are not replaced by that reporting error. It does not
+turn spooling or async acceptance into server confirmation. If reporting is
+requested (the default) but endpoint, project or API key is missing, no API,
+Join, queue worker or network resources are created. The receipt is
+`complete=false` with `metadata_failures=1`; `reporting_diagnostics` exposes
+`reporting_requested` and `missing_configuration` option names, never values.
+Required mode still runs business code and genuine `AfterAll` before raising
+the configuration reporting error on an otherwise successful run. Best-effort
+mode remains exit `0`, and explicit `RP_ENABLED=false` bypasses this gate.
+The receipt
 uses cumulative bounded counters and a bounded number of
 active cutoff waiters; it does not retain per-log payloads or a run-long
 outcome map. Shutdown/finalization shares one monotonic budget across its
@@ -203,6 +450,28 @@ in the lexical `reporter` variable in `Before`. The formatter exposes
 `reporting_receipt`; it does not expose `flush`, `shutdown`, `flush_receipt`, or
 `shutdown_receipt`. During interruption, `at_exit` ordering is best-effort and
 can precede formatter shutdown; the receipt may still be pending.
+
+### Native run-hook accounting
+
+In native Cucumber 9/10, `BeforeAll` executes before formatter construction. If
+it aborts, this formatter creates no launch and does not fabricate a class-hook
+item. A per-registry observer waits for the real `AfterAll` execution before
+finalizing reporting. An `AfterAll` error is recorded as a credential-sanitized
+launch-level ERROR log; the original hook/business exception is preserved,
+including when reporting fails. Native run hooks are not represented as
+`BEFORE_CLASS`/`AFTER_CLASS` test-step items.
+
+CI-owned workers still never finish the shared launch: CI must combine their
+actual process outcomes and final receipts before finalizing it. A complete
+delivery receipt does not mean the business run or teardown passed. Sequential
+native runtimes and duplicate formatter configurations now pass source-level
+native Cucumber 9.2.1 and 10.2.0 subprocess regressions, including event-bus isolation,
+original hook-exception precedence and strict reporting-completeness faults.
+The observer depends on Cucumber 9/10's private DSL registry/configuration
+association. The 2026-10-12 independent candidate acceptance exercised installed
+gems, native Cucumber 9.2.1/10.2.0, duplicate/sequential runtimes, and real RP
+AfterAll-failure Launch readback. This does not certify native class-hook items,
+other Ruby versions, or every ReportPortal deployment.
 
 See the [M4-B implementation contract](docs/design/reporting-experience-m4b-implementation.md)
 and [M4-B verification record](docs/design/reporting-experience-m4b-verification.md)
@@ -323,44 +592,50 @@ UI deployment.
 
 ## DSL
 
-在 step definitions 里可直接使用：
+Use these methods in Cucumber World/step definitions. They route to RP only;
+use AppLog or native `log`/`attach` when local HTML/messages are also required:
 
 ```ruby
 rp_log("business checkpoint")
 
-rp_attach(File.binread("tmp/screenshot.png"),
+rp_attach("tmp/screenshot.png",
   name: "screenshot.png",
   mime: "image/png",
   message: "screenshot after login")
 
-rp_attach("tmp/failure-recording.mp4",
-  mime_type: nil,
-  message: "screen recording for the failed step")
+rp_attach(JSON.generate({ account: "A-17", status: "ok" }),
+  name: "response.json", mime: "application/json", message: "Sanitized response")
 
 rp_step("Prepare data") do
   rp_log("seed user")
 end
 ```
 
-`attachment` 结构参考 `pytest-reportportal` 的使用体验，支持 `name`、`bytes`、`mime` 三元组；文件路径形式会以 path-backed multipart 上传，适合大附件，避免在 step 里整文件读入内存。
+An `rp_log(..., attachment:)` hash supports `name`, `bytes`, and `mime`.
+`rp_attach` accepts an existing file path, File/Tempfile, StringIO, or byte string;
+arbitrary non-path IO objects are refused without reading them. Path-backed
+multipart streams the file and avoids reading the whole artifact in the Step.
+Keep the file available until the reporting barrier settles.
 
 ### Triple-Track Smart Logger
 
-深层业务 helper 可以不依赖 Cucumber World 参数，直接使用线程局部代理
-`AppLog`。它会把同一条诊断路由到三个轨道：终端摘要、Cucumber
-Event Bus / HTML 报告，以及 ReportPortal 当前 Step。
+Deep business helpers can call the thread/fiber-local `AppLog` proxy without a
+World argument. With a bound World, it routes a diagnostic to the terminal,
+Cucumber event bus (HTML/messages), and active ReportPortal formatter.
 
 ```ruby
-AppLog.info("Margin Payload", attach: true, json: { status: "ok" })
-AppLog.error("Payment failed", attach: true, file: "tmp/failure.png")
+AppLog.info("Margin payload", report: true, json: { status: "ok" })
+AppLog.error("Payment failed", report: true, file: "tmp/failure.png")
+AppLog.debug("Local diagnostic") # Terminal only by default.
 ```
 
-`attach: false` 时只输出终端摘要，不会污染 Cucumber/RP 报告。`json:`
-payload 会在终端保持一行摘要，并在 Cucumber/RP 中写入 Markdown fenced
-JSON。Cucumber 的 stdout formatter 可能会额外展示 `world.log` 内容；这是
-Cucumber 原生报告轨道的输出，不是 ReportPortal 重复上报。
+For ordinary log methods, `attach: false` is terminal-only when `report:` is
+omitted. Legacy `attach: true` still enables reporting; explicit `report:` takes
+precedence. The `json:` payload becomes Markdown fenced JSON in reports, while
+AppLog's own terminal output stays a single summary line. Another STDOUT formatter
+may echo `world.log`; this is not a duplicate RP log submission.
 
-最小黑盒验证：
+The existing small logger scenario can be run from the repository:
 
 ```bash
 RP_ENDPOINT=http://localhost \
@@ -372,15 +647,34 @@ bundle exec cucumber -P features/triple_track/triple_track_logger.feature \
   --format html --out tmp/triple-track-report.html
 ```
 
-附件和 step 的绑定规则：
+Attachment ownership and presentation:
 
-- `rp_attach` 默认挂到当前 active step，而不是漂到 scenario 外层
-- `application/json` 附件会自动 prettify，并把 JSON 代码块追加到日志消息
-- `text/plain` / `.log` 附件会在日志消息中展示前 100 行预览，完整内容仍保留在附件文件中
-- 图片、JSON、文本、PDF 等附件继续走 ReportPortal multipart
-- ReportPortal 当前通用附件视图对 MP4 内联播放支持有限；如需浏览器内播放录屏，设置 `RP_VIDEO_UPLOAD_MODE=minio_markdown`，客户端会将 `.mp4` 流式上传到 MinIO/S3，并在当前 step 写入包含 HTML5 `<video>` 的普通 log
+- `rp_attach` uses the current active Step/Hook or manual nested Step.
+- JSON produces a bounded pretty-printed fenced preview; valid MIME metadata and
+  the original file bytes are preserved.
+- Text/log previews are bounded to 100 lines and 16 KiB; the full file is retained.
+- Images, JSON, text, PDF, and binary files use RP multipart with matching JSON
+  filenames and binary part filenames, including collision-safe names.
+- Video capture/finalization belongs to your framework. MP4 multipart upload does
+  not guarantee inline playback. Optional `minio_markdown` uploads to S3/MinIO and
+  writes video markup plus an Open video link; it is **not** enabled by this guide
+  and remains subject to the policy/renderer restrictions below.
 
-## Reporting Experience (Improvement Branch)
+## Reporting Experience
+
+| Call | Terminal | Native Cucumber HTML/messages | ReportPortal |
+| --- | --- | --- | --- |
+| `AppLog.info("message")` | Compact summary | No | No |
+| `AppLog.info("message", report: true, json: payload)` | Summary, not full JSON | Markdown JSON via the bound World | Same evidence at the active action when enabled |
+| `AppLog.error("failure", report: true, file: path)` | Summary and filename | Log plus file attachment | Native-event forwarding when enabled |
+| `AppLog.http(...)` / `AppLog.assertion(...)` | Compact diagnostic | Report by default | Report by default when enabled; does not assert business success |
+| `rp_log(...)` / `rp_attach(...)` | Only optional `rp_log` console mirror | No | RP-only evidence |
+| Native `log(...)` / `attach(...)` | Depends on the chosen formatter | Yes | Forwarded by the RP formatter; plain native logs use INFO |
+
+The AppLog report tracks require a bound World; without one, the proxy is a
+terminal logger, not a hidden global report collector. With a native RP formatter,
+AppLog forwards through the Cucumber event bus rather than submitting the same
+evidence twice.
 
 `AppLog` keeps the existing terminal-only default. Use `report: true` to send a
 message through Cucumber and the active RP formatter without requiring a physical
@@ -456,6 +750,13 @@ returns an opaque handle, or `nil` when reporting is disabled or there is no ope
 action. Pass it explicitly when evidence is produced by a helper thread; the
 handle remains valid only while its original action is open.
 
+Execution state is isolated per reporting context and thread/fiber.
+`Thread.current[:rp_context_stack]` and
+`Thread.current[:reportportal_cucumber_context_state]` are diagnostic, read-only
+snapshots of the most recently accessed context, not authoritative storage.
+Directly modifying these mirrors is unsupported and does not change ownership;
+use the public DSL and explicit capture-target APIs to route evidence.
+
 ```ruby
 target = rp_capture_target # Capture inside the open Gherkin Step.
 begin
@@ -473,8 +774,9 @@ rp_capture_target
 rp_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
 ```
 
-`rp_evidence` returns `true` when evidence is queued and `false` when reporting
-is unavailable or the target is invalid, foreign, or already closed. Omitting
+`rp_evidence` returns `true` when all evidence admissions succeed and `false` when
+reporting is unavailable, the target is invalid/foreign/closed, or any admission
+is rejected or cancelled. Queue admission is not server confirmation. Omitting
 `target:` uses only the currently open action. It never falls back to a Scenario,
 Launch, later Step, or hook when the original Step has closed; a rejected late
 call does not retarget evidence.
@@ -484,6 +786,15 @@ Each artifact is a hash with either `path:` or `bytes:`, and optional `name:` an
 do not need to be read into memory by the caller. In-memory `bytes:` artifacts
 are limited to 1 MiB and larger values are rejected. The tester owns screenshot,
 console, and video capture and decides which binary artifacts to provide.
+
+Each `rp_evidence` call accepts at most 16 artifacts. Larger batches are rejected,
+not silently truncated. All admissions in a call share one monotonic
+`RP_EXIT_FLUSH_TIMEOUT_MS` budget rather than multiplying the wait per artifact.
+Target closure cancels pending admissions; publication does not hold the context
+lock while waiting for queue space. Finalization includes lock acquisition and
+capture closure in its shared budget. Rejected evidence and closure timeouts
+remain visible as incomplete reporting. Some entries may already have been
+accepted when a later admission fails; a `false` return does not roll them back.
 
 ### Caller-Owned Browser Failure Evidence
 
@@ -553,68 +864,131 @@ Scenario statistics type or claim a native RP network-inspector component.
 
 ## Design Notes
 
-- 所有 HTTP 请求都经过 `ReportportalCucumber::Http::Client`
-- 支持同步 `/api/v1` 与异步 `/api/v2` 前缀切换
-- launch/item 创建请求会预生成 `uuid`，重试时复用，降低重复创建风险
-- `Runtime::LogBuffer` 在后台线程按 `batch_size_logs` 或 `flush_interval` 触发批量发送
-- 发送失败会按指数退避重试；最终失败则写入 spool 目录
-- 多进程 join 通过文件锁和 sync 文件共享 `launchUuid`
-- `ReportPortal::Models::StepDesc` 负责把 Gherkin Step 转成 Markdown 描述
-- `Transport::MultipartHelper` 负责 multipart `json_request_part` 与 binary parts 的一致性校验和 MIME 识别
-- `Transport::MinioUploader` 负责可选的 MP4 外部存储链路，使用 path-style S3 API 直连 MinIO，避免视频文件进入 RP multipart 导致前端附件视图崩溃
-- `RP_DEBUG_CURL_MODE=true` 会通过 logger 输出可复制的 `curl` 命令；multipart 请求会把临时 form 文件写入 `RP_DEBUG_CURL_DIR`
+- RP requests go through `ReportportalCucumber::Http::Client`; optional S3 uploads
+  use the separate AWS SDK transport.
+- `RP_REPORTING_ASYNC` selects `/api/v2` instead of `/api/v1`. Async acceptance is
+  not a synchronous persistence confirmation.
+- Launch/item UUIDs are generated before creation and reused on retries. This
+  reduces duplicate creation risk; log retries may still duplicate accepted logs.
+- `Runtime::LogBuffer` delegates bounded batching to a background
+  `Service::QueueProcessor`, flushing by count, bytes, or interval.
+- Retryable HTTP/network failures use exponential backoff; exhausted delivery
+  can be recorded as a durable spool transaction, subject to the disk quota.
+- CI-owned shared Launches bypass local file join. Explicit legacy join uses
+  file locks and a sync file, not a distributed completion protocol.
+- `ReportPortal::Models::StepDesc` renders Gherkin semantics as Markdown;
+  `Transport::MultipartHelper` validates metadata/file associations and MIME types.
+- `Transport::MinioUploader` is the optional path-style S3 video uploader, with
+  TLS verification and sanitized fail-safe degradation.
+- `RP_DEBUG_CURL_MODE=true` logs reproducible transport commands. Multipart
+  replay files are written to `RP_DEBUG_CURL_DIR`. These files may contain full
+  test evidence: restrict permissions/retention and do not enable them by default
+  in a production secret-bearing run.
 
 ## Testing
 
+Use Ruby >=3.1 and the locked Bundler environment, including native child
+processes. Cucumber is supported at `>=9,<11`; selecting it only in the parent
+does not prevent an unbundled child from activating ambient Cucumber 11.
+
 ```bash
-bundle exec rspec
+RUBYOPT=-rbundler/setup bundle exec rspec -Ilib -Ispec spec
 bundle exec cucumber
 ```
 
-测试覆盖：
+For the Homebrew Ruby environment used in this review, prepend
+`/opt/homebrew/opt/ruby/bin` to `PATH`. Packaging verification builds and installs
+the gem in a private consumer without source-path loading. The historical
+[candidate operator guide](docs/design/production-candidate-packaging-20261011.md)
+documents the isolated test procedure and its no-live-service boundary.
 
-- 请求体映射与 `testCaseId` 生成
-- HTTP retry/fail-fast
-- 批量日志 flush
-- fork 多进程 join
-- formatter 事件序列、附件、失败日志、rerun 载荷
+The 2026-10-12 candidate acceptance ran the full suite separately
+against Cucumber 9.2.1 and 10.2.0: **655 examples, 0 failures, 0 pending per lane**,
+including the six latest-Helm contract checks.
+It also exercised installed-gem API/Playwright consumers, real RP log/attachment
+ownership and byte reconciliation, CI-owned late workers, and native teardown
+failures. These are recorded results for that candidate, not an automatic promise
+that an edited checkout or another deployment passes.
+
+Coverage includes payload/identity/attribute/link mapping, HTTP backoff/fail-fast,
+bounded batching, durable spool/replay, capture closure and receipts, formatter
+ownership/lifecycle, privacy controls, TLS handshakes, attachment collisions,
+disabled reporting, rerun, and independent package installation.
+
+Run the [current example's acceptance commands](examples/current_sdk/README.md)
+for end-user workflow checks without running the SDK's historical duration/chaos
+experiments. The example separates healthy smoke scenarios from deliberate failures.
+
+## Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Two formatters cannot both write STDOUT | Give RP, HTML, and message formatters distinct `--out` files; create their parent directories. |
+| AppLog is terminal-only | Bind a World with `Around`/`with_logger` and set `report: true` (or legacy `attach: true`). |
+| `rp_log` appears in RP but not HTML | This is the RP-only DSL; use AppLog or native `world.log` for both report tracks. |
+| No DEBUG/TRACE messages in RP | Widen the UI log-level filter and refresh after the flush interval. |
+| ERROR evidence but the Scenario passed | Logging is diagnostic, not an assertion; explicitly assert or raise in your step. |
+| An After hook cannot use an earlier capture target | The Step has closed. Capture/report while it is open, or intentionally attach to the current Hook. |
+| A passing run has an incomplete receipt | Inspect rejected/pending/spooled/ambiguous/degraded evidence and metadata failures; business and reporting outcomes are separate. |
+| Required mode exits `2` with no HTTP traffic | Requested RP configuration may be missing; inspect option names in diagnostics without printing their values. |
+| Shared Launch finishes too early | Use CI-owned `RP_LAUNCH_UUID`; do not rely on legacy file join as a completion barrier. |
+| Playwright cannot launch | Install the compatible Node CLI and Chromium; SDK installation does not install browsers. |
+| Cucumber 11 was selected | Pin the SDK and supported Cucumber range, and run parent/child processes through the same Bundler environment. |
+| Replay refuses a transaction | Dry-run first; targets must still be open, endpoint/project must match, and original artifact checksums must validate. |
 
 ## Kubernetes / Helm
 
-本仓库提供一个 ReportPortal umbrella chart，用于部署官方 ReportPortal
-Helm chart，并额外创建 `automation-videos` Public Bucket 与同源 Ingress
-路由，服务 `minio_markdown` 视频播放模式：
+Chart `1.2.0-rc.2` pins ReportPortal `26.0.5` independently of the Ruby SDK version.
+The chart operator guide includes isolated local deployment and an external-Secret
+production example with the legacy public video extension disabled. The following historical
+setup is a demo, **not a production-safe profile**: its public bucket policy can
+grant anonymous writes/deletes, and `makePublic=false` does not revoke a prior
+policy. Do not enable that legacy public policy in production without a separate security review.
 
-```bash
-helm repo add reportportal https://k8s.reportportal.io/
-helm dependency update helm/reportportal-rich-experience
-helm install reportportal ./helm/reportportal-rich-experience \
-  --namespace reportportal \
-  --create-namespace
-```
+The repository contains an umbrella chart wrapping the official ReportPortal
+chart, a MinIO initialization job, and a same-origin `/automation-videos` Ingress
+route. Its historical demo route preserves the bucket path without rewriting;
+same-origin routing satisfies the deployed browser access constraints but does
+not secure object storage. The `public` bucket policy is not read-only, and
+disabling initialization does not revoke an existing policy.
 
-本地默认登录仍对齐 ReportPortal demo 习惯：`superadmin/erebus`。生产环境
-请通过 `--set reportportal.uat.superadminInitPasswd.password=...` 覆盖。
-
-默认会把 `/automation-videos(/|$)(.*)` 路由到 K8s 内部
-`reportportal-minio:9000`，不做 path rewrite，因此浏览器访问
-`http://localhost/automation-videos/videos/<file>.mp4` 时仍然是 MinIO
-path-style bucket URL。
+See the [Helm operator README](helm/reportportal-rich-experience/README.md) for
+version-specific deployment and migration instructions; the security restrictions above still apply.
+Do not treat a successful video demo, TLS verification, or chart package build
+as production authorization. No Helm deployment or bucket-policy changes are
+needed to run the API/PNG/JSON examples in this README.
 
 ## Runtime Dependencies
 
-- `cucumber`：formatter 需要挂接 Cucumber 事件总线
-- `aws-sdk-s3`：可选 MP4 外部存储链路需要兼容 MinIO 的 S3 API；普通图片/JSON/TXT 附件不依赖该链路
-- `mime-types`：根据文件名和 MIME 元数据自动补全附件 content type / 后缀，保证 RP 图片、视频和文本附件预览稳定
+- `cucumber`: the runtime event bus and formatter integration (`>= 9, < 11`).
+- `cucumber-cucumber-expressions`: the existing Cucumber parameter parser, now
+  directly constrained to `>=17,<19` for native Cucumber 9/10 HTML/message compatibility.
+- `aws-sdk-s3`: compatible S3/MinIO transport for the optional external-video
+  route; ordinary image/JSON/text uploads do not use that route.
+- `mime-types`: infer content types and appropriate attachment extensions.
 
-其余实现尽量使用 Ruby 标准库：`Net::HTTP`、`JSON`、`Time`、`SecureRandom`、`Base64`、`File`、`Mutex`、`Queue`。
+The rest uses Ruby's standard library where practical: `Net::HTTP`, `JSON`,
+`Time`, `SecureRandom`, `Base64`, `File`, `Mutex`, and `Queue`. HTTP assertion
+libraries and `playwright-ruby-client` belong to the consuming automation project.
+Install the Node CLI/browser version compatible with your Playwright Ruby gem;
+follow the [Playwright Ruby setup guide](https://playwright-ruby-client.vercel.app/docs/article/getting_started).
 
 ## Known Limitations
 
-- 多机 join 暂不支持，当前仅支持同机文件锁协作
-- join 模式下默认只有 primary 进程负责 `finish launch`
-- Scenario Outline 参数提取提供了通用入口，但对不同 Cucumber 事件对象的细节兼容仍以常见结构为主
-- spool 文件当前采用 NDJSON + 附件目录的简化格式
+- Legacy file join is same-host only and does not coordinate whole-run completion;
+  use the CI-owned `RP_LAUNCH_UUID` contract for cross-worker shared reporting.
+- Only legacy local join lets its primary finish the launch; CI-owned UUID workers
+  never finish it. CI must finalize after collecting all outcomes and receipts.
+- Native Cucumber 9/10 integration uses a private registry association; later
+  major versions require separate compatibility work.
+- Stable identity, business attributes, and links are opt-in. Identity migration
+  creates a new history baseline; it cannot merge or rewrite backend history.
+- Browser failure capture, recording finalization, and data privacy remain
+  caller-owned. Diagnostic redaction is bounded, not a universal PII filter.
+- Queue overload can reject evidence. Receipts expose loss/ambiguity; spooling
+  does not mean server delivery, and replay cannot target a finished item/Launch.
+- Inline MP4 rendering depends on the RP renderer, codec, browser, and storage
+  policy; the unresolved Helm anonymous-permission findings remain a rollout gate.
 
 ## License
 

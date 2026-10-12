@@ -60,19 +60,25 @@ module ReportportalCucumber
       # @param level [String, Symbol]
       # @param timestamp [Time, String, Integer, Float]
       # @param attachment [Hash, nil]
+      # @param deadline [ReportportalCucumber::Service::ReportingDeadline, nil] Shared publication budget.
+      # @param cancelled [#call, nil] Revocation check; must be quick and must not call the queue.
       # @return [Boolean] Whether this record was admitted to the local queue.
-      def emit_log(item_uuid:, launch_uuid:, message:, level:, timestamp:, attachment: nil)
+      def emit_log(item_uuid:, launch_uuid:, message:, level:, timestamp:, attachment: nil, deadline: nil, cancelled: nil)
         estimate, reason, = estimate_record(item_uuid, launch_uuid, message, level, timestamp, attachment)
         return reject(reason) if reason
         return reject(:rejected_oversized) if estimate > queue_max_bytes
 
         warning = nil
         admitted = false
-        deadline = monotonic_now + queue_admission_timeout_ms / 1000.0
+        admission_deadline = monotonic_now + queue_admission_timeout_ms / 1000.0
         @mutex.synchronize do
           loop do
-            if @closed || @worker_failed || !@worker.alive?
+            if @closed || @worker_failed || !@worker.alive? || cancelled&.call
               warning = increment_rejection(:rejected_closed)
+              break
+            end
+            if deadline && deadline.remaining <= 0
+              warning = increment_rejection(:rejected_admission_timeout)
               break
             end
 
@@ -97,16 +103,33 @@ module ReportportalCucumber
               break
             end
 
-            remaining = deadline - monotonic_now
+            remaining = admission_deadline - monotonic_now
+            remaining = [remaining, deadline.remaining].min if deadline
             if remaining <= 0
               warning = increment_rejection(:rejected_admission_timeout)
               break
             end
+            # Close does not own the queue condition; poll only cancellable callers.
+            remaining = [remaining, 0.01].min if cancelled
             @condition.wait(@mutex, remaining)
           end
         end
         warn_rejection(warning) if warning
         admitted
+      end
+
+      # Account for records refused before payload construction, such as an excessive evidence batch.
+      # @param count [Integer] Number of refused records.
+      # @return [Boolean] Always false, matching unsuccessful admission.
+      def reject_logs(count:)
+        raise ArgumentError, "Rejected record count must be a positive integer" unless count.is_a?(Integer) && count.positive?
+
+        warning = @mutex.synchronize do
+          @counters[:rejected_unsupported] += count - 1
+          increment_rejection(:rejected_unsupported)
+        end
+        warn_rejection(warning) if warning
+        false
       end
 
       # @return [Hash] Immutable point-in-time admission and occupancy diagnostics.

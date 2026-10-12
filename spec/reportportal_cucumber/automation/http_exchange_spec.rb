@@ -120,6 +120,56 @@ RSpec.describe Automation::HttpExchange do
     expect(request[:body][0]["password"]).to eq("frozen-body-secret")
   end
 
+  it "preserves independently observed status and timing when evidence is unsafe or oversized" do
+    cycle = { "password" => "HTTP_OMITTED_CYCLE_SECRET" }
+    cycle["cycle"] = cycle
+    bodies = [
+      "HTTP_OMITTED_LARGE_SECRET" + ("x" * Automation::EvidenceRedactor::MAX_INPUT_BYTES),
+      cycle,
+      Array.new(Automation::EvidenceRedactor::MAX_STRUCTURE_NODES + 1, "HTTP_OMITTED_NODE_SECRET")
+    ]
+    bodies.each do |body|
+      exchange = build_exchange(method: :post, expected_status: 200, duration_ms: 18.5,
+                                response: { status: 200, headers: {}, body: body })
+      expect(exchange.level).to eq(:info)
+      expect(exchange.summary).to include("POST", "status=200", "18.5ms")
+      expect(exchange.to_markdown).to include("Status: `200`", Automation::EvidenceRedactor::OMITTED)
+      expect(exchange.to_markdown).not_to include("HTTP_OMITTED_")
+    end
+  end
+
+  it "preserves valid string status when oversized headers are omitted independently" do
+    headers = { "X-Diagnostic" => "HTTP_HEADER_SECRET" + ("x" * Automation::EvidenceRedactor::MAX_INPUT_BYTES) }
+    exchange = build_exchange(expected_status: 200, response: { status: "200", headers: headers, body: "safe response" })
+    expect(exchange.level).to eq(:info)
+    expect(exchange.to_markdown).to include("Status: `200`", "safe response", Automation::EvidenceRedactor::OMITTED)
+    expect(exchange.to_markdown).not_to include("HTTP_HEADER_SECRET")
+  end
+
+  it "does not stringify unsafe cyclic or oversized structured errors after traversal omission" do
+    cycle = { "password" => "HTTP_ERROR_PRIVATE_CYCLE" }
+    cycle["self"] = cycle
+    huge = Array.new(1100, "HTTP_ERROR_PRIVATE_NODES")
+    [cycle, huge].each do |error|
+      allow(error).to receive(:to_s).and_raise("raw structured error must not be stringified")
+      Timeout.timeout(2) do
+        exchange = build_exchange(error: error)
+        expect(exchange.level).to eq(:error)
+        expect(exchange.summary).to include(Automation::EvidenceRedactor::OMITTED)
+        expect(exchange.to_markdown).not_to include("HTTP_ERROR_PRIVATE_")
+      end
+    end
+  end
+
+  it "snapshots exception diagnostics without modifying the original exception" do
+    message = 'diagnostic: {"pass\u0077ord":"HTTP_ERROR_PRIVATE_EXCEPTION"}'
+    original = RuntimeError.new(message)
+    exchange = build_exchange(error: original)
+    expect(exchange.summary).not_to include("HTTP_ERROR_PRIVATE_")
+    expect(original.message).to eq(message)
+    expect { raise original }.to raise_error { |caught| expect(caught).to equal(original) }
+  end
+
   describe "#summary" do
     it "includes method, status, and timing without including request or response bodies" do
       exchange = build_exchange(

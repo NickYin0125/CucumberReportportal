@@ -4,7 +4,8 @@ require "spec_helper"
 require "tmpdir"
 require "cucumber/hooks"
 require "cucumber/core/test/hook_step"
-require "cucumber/core/events/test_step_started"
+# Core 13 keeps events together; Core 16 splits them behind this common registry.
+require "cucumber/core/events"
 
 RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   FakeConfig = Struct.new(:handlers) do
@@ -266,7 +267,9 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
         expect(step.hook?).to eq(true)
         expect(step.respond_to?(:hook_type)).to eq(false)
 
-        stub_config.handlers.fetch(:test_step_started).call(::Cucumber::Core::Events::TestStepStarted.new(step))
+        event = ::Cucumber::Core::Events.registry.fetch(:test_step_started).new(step)
+        expect(event.test_step).to equal(step)
+        stub_config.handlers.fetch(:test_step_started).call(event)
 
         expect(native_start_items.last).to include(path: "/api/v1/demo/item/item-2")
         expect(native_start_items.last.fetch(:body)).to include("type" => rp_type, "hasStats" => false, "parentUuid" => "item-2")
@@ -278,7 +281,9 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
       step = ::Cucumber::Core::Test::Step.new("gherkin-after", "After a normal operation", location)
       expect(step.hook?).to eq(false)
 
-      stub_config.handlers.fetch(:test_step_started).call(::Cucumber::Core::Events::TestStepStarted.new(step))
+      event = ::Cucumber::Core::Events.registry.fetch(:test_step_started).new(step)
+      expect(event.test_step).to equal(step)
+      stub_config.handlers.fetch(:test_step_started).call(event)
 
       expect(native_start_items.last.fetch(:body)).to include("type" => "STEP", "hasStats" => false,
                                                             "parentUuid" => "item-2", "name" => "After a normal operation")

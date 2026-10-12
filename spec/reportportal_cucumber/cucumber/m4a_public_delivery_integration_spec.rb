@@ -20,6 +20,11 @@ RSpec.describe "M4-A public bounded delivery integration" do
             When I report bounded public evidence
       FEATURE
       File.write(File.join(support_dir, "delivery_steps.rb"), <<~RUBY)
+        Before do
+          $m4a_reporter ||= ReportportalCucumber.current_runtime
+          raise "Active formatter missing before scenario" unless $m4a_reporter
+        end
+
         When("I report bounded public evidence") do
           attempt = if File.exist?(ENV.fetch("M4A_ATTEMPT_MARKER"))
                       2
@@ -83,7 +88,9 @@ RSpec.describe "M4-A public bounded delivery integration" do
           Cucumber::Cli::Main.new(args, stdout, stderr, M4AIntegrationKernel.new).execute!
         end
         status = 0 if status.nil?
-        runtime = ReportportalCucumber.current_runtime
+        runtime = $m4a_reporter
+        raise "Retained formatter missing after completion" unless runtime
+        raise "SDK active formatter was not cleared after completion" unless ReportportalCucumber.current_runtime.nil?
       File.write(capture_path, JSON.generate(
           status: status,
           stdout: stdout.string,
@@ -93,7 +100,7 @@ RSpec.describe "M4-A public bounded delivery integration" do
           items: mock_server.items,
           item_requests: mock_server.item_requests,
           multipart_requests: mock_server.multipart_requests,
-          diagnostics: runtime&.reporting_diagnostics,
+          diagnostics: runtime.reporting_diagnostics,
           ruby_version: RUBY_VERSION,
           cucumber_version: Gem.loaded_specs.fetch("cucumber").version.to_s,
           library_path: $LOADED_FEATURES.find { |path| path.end_with?("/lib/reportportal_cucumber.rb") }.then { |path| File.expand_path(path) },

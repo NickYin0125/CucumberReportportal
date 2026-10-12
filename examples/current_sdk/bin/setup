@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../helpers/command_support"
+require "rubygems/package"
+CurrentSDK::Commands.prepare
+package = File.expand_path(ARGV.fetch(0) { abort "Usage: ruby bin/setup /absolute/path/reportportal-cucumber-ruby-1.2.0.gem" })
+spec = Gem::Package.new(package).spec
+abort "Expected reportportal-cucumber-ruby 1.2.0" unless
+  spec.name == "reportportal-cucumber-ruby" && spec.version.to_s == "1.2.0"
+
+# A normal gem installation, not a Bundler path aimed at a .gem archive.
+install = [RbConfig.ruby, "-e", 'require "rubygems/gem_runner"; Gem::GemRunner.new.run(ARGV)',
+           "--", "install", package, "--no-document"]
+install << "--local" if ENV["GEM_INSTALL_LOCAL"] == "true"
+abort "Gem installation failed" unless system(*install)
+bundle_executable = Gem.bin_path("bundler", "bundle", ">= 2.6")
+bundle = [RbConfig.ruby, bundle_executable, "install"]
+bundle << "--local" if ENV["BUNDLE_LOCAL"] == "true"
+abort "Bundle installation failed" unless system(*bundle)
+unless ENV["SKIP_BROWSER_SETUP"] == "true"
+  version = IO.popen([RbConfig.ruby, bundle_executable, "exec", RbConfig.ruby, "-e",
+                     'require "playwright/version"; puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION'], &:read).strip
+  abort "Cannot determine compatible Playwright CLI" unless $?.success? && version.match?(/\A\d+\.\d+\.\d+\z/)
+  abort "npm installation failed" unless system("npm", "install", "--no-save", "playwright-core@#{version}")
+  cli = ENV.fetch("PLAYWRIGHT_CLI_EXECUTABLE_PATH", File.join(Dir.pwd, "node_modules/.bin/playwright-core"))
+  abort "Chromium installation failed" unless system(cli, "install", "chromium")
+end
+puts "Setup complete. Run: bundle exec ruby bin/verify"

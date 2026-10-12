@@ -165,7 +165,7 @@ module ReportportalCucumber
       # @param records [Array<#to_h, Hash>]
       # @return [Hash]
       def build_log_batch(records)
-        used_names = Hash.new(0)
+        used_names = {}
         entries = []
         files = []
 
@@ -429,7 +429,7 @@ module ReportportalCucumber
       def validate_log_batch!(entries:, files:)
         referenced_files = entries.filter_map { |entry| entry.dig("file", "name") }
         actual_files = files.map { |file| file.fetch(:name) }
-        return if referenced_files == actual_files
+        return if referenced_files == actual_files && actual_files.uniq.length == actual_files.length
 
         raise ArgumentError, "Multipart log payload mismatch between json_request_part and file parts"
       end
@@ -574,16 +574,19 @@ module ReportportalCucumber
       end
 
       # @param filename [String]
-      # @param used_names [Hash<String, Integer>]
+      # @param used_names [Hash<String, Boolean>]
       # @return [String]
       def unique_filename(filename, used_names)
-        count = used_names[filename]
-        used_names[filename] += 1
-        return filename if count.zero?
-
         extension = File.extname(filename)
         stem = extension.empty? ? filename : filename.delete_suffix(extension)
-        "#{stem}-#{count}#{extension}"
+        candidate = filename
+        count = 0
+        while used_names.key?(candidate)
+          count += 1
+          candidate = "#{stem}-#{count}#{extension}"
+        end
+        used_names[candidate] = true
+        candidate
       end
     end
   end

@@ -13,6 +13,14 @@ module Automation
     DEFAULT_SENSITIVE_KEYS = CredentialKeys::DEFAULT_KEYS
     MASK = "[REDACTED]".freeze
     BEARER_PATTERN = /\bBearer[ \t]+[^\s,;&"'<>]+/i
+    MAX_INPUT_BYTES = 64 * 1024
+    MAX_STRUCTURE_BYTES = 256 * 1024
+    MAX_STRUCTURE_NODES = 1024
+    MAX_STRUCTURE_DEPTH = 10
+    OMITTED = "[REDACTED] [evidence omitted: unsafe or oversized input]".freeze
+
+    class UnsafeInput < StandardError; end
+    private_constant :UnsafeInput
 
     # @param sensitive_keys [Array<String, Symbol>] Additional sensitive key names.
     # @return [EvidenceRedactor]
@@ -37,20 +45,11 @@ module Automation
     end
 
     # @param value [Object] A nested Hash, Array, or scalar value.
-    # @return [Object] A recursively redacted copy; the input is not modified.
+    # @return [Object] A bounded redacted copy, or an omission marker for unsafe input.
     def redact(value)
-      case value
-      when Hash
-        value.each_with_object({}) do |(key, item), output|
-          output[key] = sensitive_key?(key) ? MASK : redact(item)
-        end
-      when Array
-        value.map { |item| redact(item) }
-      when String
-        redact_text(value)
-      else
-        value
-      end
+      redact_value(value, new_budget, 0)
+    rescue UnsafeInput, JSON::GeneratorError, EncodingError
+      OMITTED
     end
 
     # @param key [Object]
@@ -68,7 +67,7 @@ module Automation
     # @param url [#to_s] URL to sanitize.
     # @return [String] URL with userinfo and sensitive query values masked.
     def redact_url(url)
-      original = valid_utf8(url.to_s)
+      original = bounded_source(url.to_s)
       uri = URI.parse(original)
       if uri.userinfo
         uri.user = nil
@@ -80,21 +79,136 @@ module Automation
       uri.to_s
     rescue URI::Error, ArgumentError
       fallback_redact_url(original)
+    rescue UnsafeInput, EncodingError
+      OMITTED
     end
 
     # @param text [#to_s] Text to sanitize, including JSON and bearer values.
-    # @return [String] Redacted text.
+    # @return [String] Redacted text, or an omission marker for ambiguous/oversized input.
     def redact_text(text)
-      source = valid_utf8(text.to_s)
-      parsed = JSON.parse(source)
-      return JSON.generate(redact(parsed)) if parsed.is_a?(Hash) || parsed.is_a?(Array)
-
-      redact_plain_text(source)
-    rescue JSON::ParserError, JSON::GeneratorError
-      redact_plain_text(source)
+      sanitize_text(text.to_s, new_budget, 0)
+    rescue UnsafeInput, JSON::GeneratorError, EncodingError
+      OMITTED
     end
 
     private
+
+    def new_budget
+      { nodes: MAX_STRUCTURE_NODES, bytes: MAX_STRUCTURE_BYTES }
+    end
+
+    def consume_node(budget, depth)
+      raise UnsafeInput if depth > MAX_STRUCTURE_DEPTH || budget[:nodes] <= 0
+
+      budget[:nodes] -= 1
+    end
+
+    def bounded_source(text, budget = nil)
+      raise UnsafeInput if text.bytesize > MAX_INPUT_BYTES
+
+      source = valid_utf8(text)
+      raise UnsafeInput if source.bytesize > MAX_INPUT_BYTES
+
+      if budget
+        budget[:bytes] -= source.bytesize
+        raise UnsafeInput if budget[:bytes] < 0
+      end
+      source
+    end
+
+    def redact_value(value, budget, depth, urls: true)
+      consume_node(budget, depth)
+      case value
+      when Hash
+        value.each_with_object({}) do |(key, item), output|
+          raise UnsafeInput unless key.is_a?(String) || key.is_a?(Symbol)
+
+          consume_node(budget, depth + 1)
+          raw_key = bounded_source(key.to_s, budget)
+          raise UnsafeInput if raw_key.include?("\\")
+
+          safe_key_text = sanitize_text(raw_key, budget, depth + 1, urls: urls)
+          safe_key = key.is_a?(Symbol) && safe_key_text == raw_key ? key : safe_key_text
+          output[safe_key] = sensitive_key?(raw_key) ? MASK : redact_value(item, budget, depth + 1, urls: urls)
+        end
+      when Array
+        value.map { |item| redact_value(item, budget, depth + 1, urls: urls) }
+      when String
+        sanitize_text(value, budget, depth, urls: urls)
+      when Integer
+        raise UnsafeInput if value.bit_length > 10_000
+
+        budget[:bytes] -= value.bit_length + 2
+        raise UnsafeInput if budget[:bytes] < 0
+
+        value
+      when Float
+        budget[:bytes] -= 32
+        raise UnsafeInput if budget[:bytes] < 0
+
+        value.finite? ? value : OMITTED
+      when Symbol
+        sanitize_text(value.to_s, budget, depth, urls: urls)
+      when TrueClass, FalseClass, NilClass
+        value
+      else
+        OMITTED
+      end
+    end
+
+    def sanitize_text(text, budget, depth, urls: true)
+      consume_node(budget, depth)
+      source = bounded_source(text, budget)
+      begin
+        raise JSON::ParserError unless valid_json_string_escapes?(source)
+
+        parsed = JSON.parse(source, max_nesting: MAX_STRUCTURE_DEPTH)
+        if parsed.is_a?(Hash) || parsed.is_a?(Array)
+          return JSON.generate(redact_value(parsed, budget, depth + 1, urls: urls))
+        end
+        return sanitize_text(parsed, budget, depth + 1, urls: urls) if parsed.is_a?(String)
+      rescue JSON::ParserError
+        # Never send ambiguous JSON to the regex fallback, even if preview clipping
+        # would hide the escape that makes a credential key unrecognizable.
+        return OMITTED if source.match?(/\A\s*[\[{]/) || ambiguous_embedded_json?(source)
+      end
+      # Nested URLs in encoded URL components are ambiguous; do not recursively
+      # re-enter URL parsing with a fresh traversal budget.
+      return OMITTED if !urls && source.match?(%r{(?:https?:)?//}i)
+
+      urls ? redact_plain_text(source) : redact_plain_segment(source)
+    end
+
+    def ambiguous_embedded_json?(source)
+      # Missing opening braces still leave escaped credential keys ambiguous.
+      if source.include?("\\")
+        separator = [source.rindex(":"), source.rindex("=")].compact.max
+        escaped_key = [source.index('"'), source.index("'"), source.index("\\u")].compact.min
+        return true if separator && escaped_key && escaped_key < separator
+      end
+
+      brackets = []
+      quote = nil
+      index = 0
+      while index < source.bytesize
+        byte = source.getbyte(index)
+        return true if byte == 92 && !brackets.empty?
+
+        if quote
+          quote = nil if byte == quote
+        elsif !brackets.empty? && (byte == 34 || byte == 39)
+          quote = byte
+        elsif byte == 123 || byte == 91
+          return true if brackets.length >= MAX_STRUCTURE_DEPTH
+
+          brackets << (byte == 123 ? 125 : 93)
+        elsif byte == brackets.last
+          brackets.pop
+        end
+        index += 1
+      end
+      false
+    end
 
     def normalize_key(key)
       valid_utf8(key.to_s).downcase.gsub(/[^a-z0-9]/, "")
@@ -134,7 +248,7 @@ module Automation
           "#{key}=#{URI.encode_www_form_component(MASK)}"
         else
           decoded_value = valid_utf8(URI.decode_www_form_component(raw_value))
-          redacted_value = redact_plain_segment(decoded_value)
+          redacted_value = sanitize_text(decoded_value, new_budget, 0, urls: false)
           redacted_value == decoded_value ? pair : "#{key}=#{URI.encode_www_form_component(redacted_value)}"
         end
       rescue ArgumentError
@@ -179,8 +293,11 @@ module Automation
       rescue ArgumentError
         true
       end
-      "[REDACTED]" if sensitive
-    rescue ArgumentError
+      return MASK if sensitive
+
+      safe = sanitize_text(decoded, new_budget, 0, urls: false)
+      encode_fragment_component(safe) unless safe == decoded
+    rescue ArgumentError, UnsafeInput
       "[REDACTED]"
     end
 
@@ -192,11 +309,11 @@ module Automation
       return "[REDACTED]" if malformed_json_string_escape?(decoded)
 
       parsed = JSON.parse(decoded, max_nesting: 10)
-      safe = redact(parsed)
+      safe = redact_value(parsed, new_budget, 0, urls: false)
       return if safe == parsed
 
       encode_fragment_component(JSON.generate(safe))
-    rescue JSON::ParserError, JSON::NestingError, JSON::GeneratorError, ArgumentError, EncodingError
+    rescue JSON::ParserError, JSON::NestingError, JSON::GeneratorError, ArgumentError, EncodingError, UnsafeInput
       "[REDACTED]"
     end
 
@@ -248,7 +365,7 @@ module Automation
       path, query = base.split("?", 2)
       path = redact_plain_segment(path)
       path += "?#{redact_query(query)}" unless query.nil?
-      path += "##{redact_plain_segment(fragment)}" unless fragment.nil?
+      path += "##{redact_fragment(fragment)}" unless fragment.nil?
       path
     end
   end

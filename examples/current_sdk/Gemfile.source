@@ -1,0 +1,7 @@
+source "https://rubygems.org"
+
+# Developer-only alternative, not package acceptance.
+gem "reportportal-cucumber-ruby", path: ENV.fetch("SDK_SOURCE_ROOT", "../..")
+gem "cucumber", ENV.fetch("CUCUMBER_VERSION", "~> 10.0")
+gem "cucumber-cucumber-expressions", "< 19"
+gem "playwright-ruby-client", "= 1.62.0"

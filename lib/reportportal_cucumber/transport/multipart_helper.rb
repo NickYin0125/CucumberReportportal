@@ -145,8 +145,8 @@ module ReportportalCucumber
           hash = entry.respond_to?(:to_h) ? entry.to_h : entry
           hash.dig("file", "name") || hash.dig(:file, :name)
         end
-        actual_files = parts.filter_map { |part| part[:filename] }
-        return if referenced_files == actual_files
+        actual_files = parts.filter_map { |part| safe_filename(part[:filename]) if part[:filename] }
+        return if referenced_files == actual_files && actual_files.uniq.length == actual_files.length
 
         raise ArgumentError, "Multipart log payload mismatch between json_request_part and file parts"
       rescue JSON::ParserError => error

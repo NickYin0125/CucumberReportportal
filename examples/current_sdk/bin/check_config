@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../helpers/command_support"
+CurrentSDK::Commands.prepare
+cases = [["https://reportportal.example.test", false, true],
+         ["http://localhost", false, false], ["http://localhost", true, true],
+         ["http://127.0.0.1:8080", true, true], ["http://reportportal.example.test", true, false],
+         ["https://user@reportportal.example.test", false, false],
+         ["https://reportportal.example.test?key=", false, false],
+         ["https://reportportal.example.test#fragment", false, false],
+         ["//localhost", true, false], ["not a URL", false, false]]
+cases.each do |url, opt_in, expected|
+  actual = CurrentSDK::Commands.safe_reporting_endpoint?(url, allow_local_http: opt_in)
+  raise "Endpoint policy mismatch for #{url}" unless actual == expected
+end
+puts "10 endpoint policy checks passed without network requests or credentials."

@@ -7,12 +7,17 @@ require_relative "service/scenario_attributes"
 module ReportportalCucumber
   # Loads configuration from defaults, YAML profiles, and environment variables.
   class Config
+    REQUIRED_REPORTING_OPTIONS = {
+      endpoint: "RP_ENDPOINT", project: "RP_PROJECT", api_key: "RP_API_KEY"
+    }.freeze
+
     DEFAULTS = {
       enabled: true,
       endpoint: nil,
       project: nil,
       api_key: nil,
       launch: "Cucumber",
+      launch_uuid: nil,
       launch_description: nil,
       launch_mode: "DEFAULT",
       launch_attributes: [],
@@ -27,7 +32,8 @@ module ReportportalCucumber
       queue_admission_timeout_ms: 100,
       flush_interval: 1.0,
       fail_on_reporting_error: false,
-      join: true,
+      require_complete_reporting: false,
+      join: false,
       join_lock_file_name: ".reportportal.lock",
       join_sync_file_name: ".reportportal-launch.json",
       join_wait_timeout_ms: 30_000,
@@ -62,6 +68,8 @@ module ReportportalCucumber
       minio_access_key_id: "minioadmin",
       minio_secret_access_key: "minioadmin",
       minio_region: "us-east-1",
+      minio_ssl_verify_peer: true,
+      minio_ssl_ca_bundle: nil,
       profile: nil
     }.freeze
 
@@ -71,6 +79,7 @@ module ReportportalCucumber
       "RP_PROJECT" => :project,
       "RP_API_KEY" => :api_key,
       "RP_LAUNCH" => :launch,
+      "RP_LAUNCH_UUID" => :launch_uuid,
       "RP_LAUNCH_DESCRIPTION" => :launch_description,
       "RP_LAUNCH_MODE" => :launch_mode,
       "RP_ATTRIBUTES" => :launch_attributes,
@@ -85,6 +94,7 @@ module ReportportalCucumber
       "RP_QUEUE_ADMISSION_TIMEOUT_MS" => :queue_admission_timeout_ms,
       "RP_FLUSH_INTERVAL" => :flush_interval,
       "RP_FAIL_ON_REPORTING_ERROR" => :fail_on_reporting_error,
+      "RP_REQUIRE_COMPLETE_REPORTING" => :require_complete_reporting,
       "RP_CLIENT_JOIN" => :join,
       "RP_CLIENT_JOIN_LOCK_FILE_NAME" => :join_lock_file_name,
       "RP_CLIENT_JOIN_SYNC_FILE_NAME" => :join_sync_file_name,
@@ -120,9 +130,19 @@ module ReportportalCucumber
       "RP_MINIO_BUCKET" => :minio_bucket,
       "RP_MINIO_ACCESS_KEY_ID" => :minio_access_key_id,
       "RP_MINIO_SECRET_ACCESS_KEY" => :minio_secret_access_key,
-      "RP_MINIO_REGION" => :minio_region
+      "RP_MINIO_REGION" => :minio_region,
+      "RP_MINIO_SSL_VERIFY_PEER" => :minio_ssl_verify_peer,
+      "RP_MINIO_SSL_CA_BUNDLE" => :minio_ssl_ca_bundle
     }.freeze
 
+    # @!attribute [r] launch_uuid
+    #   @return [String, nil] Existing launch whose lifecycle is owned by CI.
+    # @!attribute [r] require_complete_reporting
+    #   @return [Boolean] Opt-in final receipt completeness policy.
+    # @!attribute [r] minio_ssl_verify_peer
+    #   @return [Boolean] Whether the optional storage client authenticates its TLS peer.
+    # @!attribute [r] minio_ssl_ca_bundle
+    #   @return [String, nil] Readable trusted CA bundle path.
     attr_reader(*DEFAULTS.keys)
 
     # @param profile [String, nil]
@@ -146,9 +166,9 @@ module ReportportalCucumber
 
       raw = YAML.safe_load(File.read(config_path), permitted_classes: [Symbol], aliases: true) || {}
       data = symbolize_keys(raw)
-      defaults = symbolize_keys(data[:default] || {})
+      defaults = normalize_yaml_options(data[:default] || {})
       profiles = symbolize_keys(data[:profiles] || {})
-      selected = symbolize_keys(profiles[profile&.to_sym] || data[profile&.to_sym] || {})
+      selected = normalize_yaml_options(profiles[profile&.to_sym] || data[profile&.to_sym] || {})
       defaults.merge(selected)
     end
 
@@ -210,11 +230,15 @@ module ReportportalCucumber
       @project = strip(config[:project])
       @api_key = strip(config[:api_key])
       @launch = strip(config[:launch]) || DEFAULTS[:launch]
+      @launch_uuid = self.class.optional_launch_uuid(config[:launch_uuid])
       @launch_description = strip(config[:launch_description])
       @launch_mode = strip(config[:launch_mode]) || DEFAULTS[:launch_mode]
       @launch_attributes = self.class.normalize_attributes(config[:launch_attributes])
       @rerun = truthy?(config[:rerun])
       @rerun_of = strip(config[:rerun_of])
+      if @launch_uuid && (@rerun || @rerun_of)
+        raise ArgumentError, "RP_LAUNCH_UUID cannot be combined with rerun launch creation options"
+      end
       @reporting_async = truthy?(config[:reporting_async])
       @batch_size_logs = positive_integer(config[:batch_size_logs], option: "RP_BATCH_SIZE_LOGS")
       @batch_max_bytes = positive_integer(config[:batch_max_bytes], option: "RP_BATCH_MAX_BYTES")
@@ -229,6 +253,7 @@ module ReportportalCucumber
       @queue_admission_timeout_ms = positive_integer(config[:queue_admission_timeout_ms], option: "RP_QUEUE_ADMISSION_TIMEOUT_MS")
       @flush_interval = float(config[:flush_interval], minimum: 0.1)
       @fail_on_reporting_error = truthy?(config[:fail_on_reporting_error])
+      @require_complete_reporting = self.class.strict_boolean(config[:require_complete_reporting], option: "RP_REQUIRE_COMPLETE_REPORTING")
       @join = truthy?(config[:join])
       @join_lock_file_name = strip(config[:join_lock_file_name]) || DEFAULTS[:join_lock_file_name]
       @join_sync_file_name = strip(config[:join_sync_file_name]) || DEFAULTS[:join_sync_file_name]
@@ -283,12 +308,24 @@ module ReportportalCucumber
       @minio_access_key_id = strip(config[:minio_access_key_id]) || DEFAULTS[:minio_access_key_id]
       @minio_secret_access_key = strip(config[:minio_secret_access_key]) || DEFAULTS[:minio_secret_access_key]
       @minio_region = strip(config[:minio_region]) || DEFAULTS[:minio_region]
+      @minio_ssl_verify_peer = self.class.strict_boolean(config[:minio_ssl_verify_peer], option: "RP_MINIO_SSL_VERIFY_PEER")
+      @minio_ssl_ca_bundle = self.class.optional_ca_bundle(config[:minio_ssl_ca_bundle])
       @profile = strip(config[:profile])
     end
 
     # @return [Boolean]
     def enabled?
       @enabled && endpoint && project && api_key
+    end
+
+    # @return [Boolean] Reporting intent before required connection options are checked.
+    def reporting_requested?
+      @enabled
+    end
+
+    # @return [Array<String>] Missing option labels only, never configured values.
+    def missing_reporting_options
+      REQUIRED_REPORTING_OPTIONS.filter_map { |option, label| label if public_send(option).nil? }.freeze
     end
 
     # @return [Boolean]
@@ -309,6 +346,16 @@ module ReportportalCucumber
     # @return [Boolean]
     def fail_on_reporting_error?
       @fail_on_reporting_error
+    end
+
+    # @return [Boolean] Whether an incomplete final receipt fails an otherwise successful run.
+    def require_complete_reporting?
+      @require_complete_reporting
+    end
+
+    # @return [Boolean] Whether CI owns launch creation and completion.
+    def ci_owned_launch?
+      !@launch_uuid.nil?
     end
 
     # @return [Boolean]
@@ -367,6 +414,8 @@ module ReportportalCucumber
         when :enabled, :rerun, :reporting_async, :fail_on_reporting_error, :join, :debug_curl_mode,
              :console_mirror, :scenario_attributes_enabled, :scenario_links_enabled
           !%w[0 false no off].include?(raw.to_s.strip.downcase)
+        when :require_complete_reporting
+          strict_boolean(raw, option: "RP_REQUIRE_COMPLETE_REPORTING")
         when :batch_size_logs, :batch_max_bytes, :queue_max_records, :queue_max_bytes, :spool_max_bytes,
              :queue_admission_timeout_ms
           raw
@@ -384,6 +433,54 @@ module ReportportalCucumber
         else
           raw
         end
+      end
+
+      # @param value [Hash]
+      # @return [Hash] YAML keys may use Ruby names or dotted RP names.
+      def normalize_yaml_options(value)
+        symbolize_keys(value).each_with_object({}) do |(key, item), options|
+          env_key = key.to_s.tr(".", "_").upcase
+          options[ENV_KEY_MAP.fetch(env_key, key)] = item
+        end
+      end
+
+      # @param value [Object]
+      # @return [String, nil]
+      def optional_launch_uuid(value)
+        return nil if value.nil?
+        unless value.is_a?(String) && value.ascii_only? &&
+               value.strip.match?(/\A[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\z/i)
+          raise ArgumentError, "RP_LAUNCH_UUID must be an existing launch UUID"
+        end
+
+        value.strip.freeze
+      end
+
+      # @param value [Object]
+      # @param option [String]
+      # @return [Boolean]
+      def strict_boolean(value, option:)
+        return value if value == true || value == false
+        return true if value.is_a?(String) && %w[true 1 yes on].include?(value.strip.downcase)
+        return false if value.is_a?(String) && %w[false 0 no off].include?(value.strip.downcase)
+
+        raise ArgumentError, "#{option} must be a boolean"
+      end
+
+      # @param value [Object]
+      # @return [String, nil]
+      def optional_ca_bundle(value)
+        return nil if value.nil?
+        unless value.is_a?(String) && value.valid_encoding? && !value.include?("\0") && !value.strip.empty?
+          raise ArgumentError, "RP_MINIO_SSL_CA_BUNDLE must be a readable CA bundle path"
+        end
+
+        path = File.expand_path(value.strip)
+        unless File.file?(path) && File.readable?(path)
+          raise ArgumentError, "RP_MINIO_SSL_CA_BUNDLE must be a readable CA bundle path"
+        end
+
+        path
       end
 
       # @param value [Object]

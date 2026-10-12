@@ -3,6 +3,17 @@
 require "spec_helper"
 
 RSpec.describe ReportportalCucumber::Runtime::Join do
+  it "never touches coordination files or invokes a creator when CI supplies the UUID" do
+    Dir.mktmpdir do |dir|
+      uuid = "01234567-89ab-4cde-8123-456789abcdef"
+      config = ReportportalCucumber::Config.new(launch_uuid: uuid, join: true)
+      join = described_class.new(config: config, cwd: dir)
+      expect(join.acquire_or_wait_launch_uuid { raise "must not create launch" }).to eq(uuid)
+      expect(join).not_to be_primary
+      expect(Dir.children(dir)).to be_empty
+    end
+  end
+
   it "shares a single launch uuid across forked processes and creates it once" do
     Dir.mktmpdir do |dir|
       config = ReportportalCucumber::Config.new(

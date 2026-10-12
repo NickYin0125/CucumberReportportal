@@ -1,0 +1,180 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "json"
+require "base64"
+require "digest"
+require "securerandom"
+require_relative "../helpers/command_support"
+CurrentSDK::Commands.prepare
+# Acceptance is deliberately no-RP, even if the parent shell has credentials.
+ENV["RP_ENABLED"] = "false"
+ENV["RP_CLIENT_JOIN"] = "false"
+ENV["RP_REQUIRE_COMPLETE_REPORTING"] = "false"
+base = File.expand_path(ENV.fetch("VERIFY_OUTPUT", "artifacts/acceptance"))
+root = File.join(base, "#{Time.now.utc.strftime('%Y%m%dT%H%M%SZ')}-#{SecureRandom.hex(3)}")
+FileUtils.mkdir_p(root)
+
+def spool_inventory(directory)
+  Dir.glob(File.join(directory, "**/*"), File::FNM_DOTMATCH).sort.filter_map do |path|
+    next if %w[. ..].include?(File.basename(path))
+
+    [path, File.file?(path) ? Digest::SHA256.file(path).hexdigest : "directory"]
+  end.to_h
+end
+
+spool = File.expand_path(ENV.fetch("RP_SPOOL_DIR", "artifacts/reportportal-spool"))
+spool_before = spool_inventory(spool)
+
+def require_check(condition, message)
+  raise message unless condition
+end
+
+def execute(script, output, env = {}, *arguments)
+  FileUtils.mkdir_p(File.dirname(output))
+  system(env, RbConfig.ruby, script, *arguments, out: output, err: [:child, :out])
+  $?.exitstatus || 1
+end
+
+def canonical_messages(messages, relevant)
+  starts = messages.filter_map { |entry| entry["testCaseStarted"] }.to_h do |entry|
+    [entry.fetch("id"), "#{entry.fetch('testCaseId')}:#{entry.fetch('attempt')}"]
+  end
+  messages.select { |entry| (entry.keys & relevant).any? }.map do |entry|
+    kind, payload = entry.first
+    # Independent native formatters generate run/start IDs and timestamps.
+    # Reconcile the actual scenario/attempt owner, retaining Step IDs and bodies.
+    normalized = payload.reject { |key, _| %w[timestamp testRunStartedId].include?(key) }
+    normalized["id"] = starts.fetch(payload.fetch("id")) if kind == "testCaseStarted"
+    if payload.key?("testCaseStartedId")
+      normalized["testCaseStartedId"] = starts.fetch(payload.fetch("testCaseStartedId"))
+    end
+    if kind == "testStepFinished" && payload.dig("testStepResult", "status") == "FAILED"
+      result = normalized.fetch("testStepResult").dup
+      # HTML 22.3.0 escapes '<' in rendered backtraces to literal 'x3C'.
+      # Normalize only failure trace text; compare evidence bodies unchanged.
+      result["message"] = result["message"].gsub("<", "x3C") if result["message"]
+      if result["exception"]
+        exception = result.fetch("exception").dup
+        exception["stackTrace"] = exception["stackTrace"].gsub("<", "x3C") if exception["stackTrace"]
+        result["exception"] = exception
+      end
+      normalized["testStepResult"] = result
+    end
+    {kind => normalized}
+  end
+end
+
+def inspect_report(directory, failed:)
+  messages = File.readlines(File.join(directory, "messages.ndjson")).map { |line| JSON.parse(line) }
+  outcomes = messages.filter_map { |entry| entry["testStepFinished"] }
+  errors = outcomes.select { |entry| entry.dig("testStepResult", "status") == "FAILED" }
+  require_check(failed ? errors.length == 1 : errors.empty?, "Unexpected failed step count")
+  require_check(outcomes.all? { |entry| %w[PASSED FAILED].include?(entry.dig("testStepResult", "status")) }, "Skipped/undefined/pending steps")
+  runs = messages.filter_map { |entry| entry["testCaseStarted"] }
+  require_check(runs.length == (failed ? 1 : 5), "Unexpected scenario count")
+  require_check(messages.any? { |entry| entry.dig("testRunFinished", "success") == !failed }, "Wrong native run outcome")
+  cases = messages.filter_map { |entry| entry["testCase"] }.to_h { |entry| [entry.fetch("id"), entry] }
+  started = runs.to_h { |entry| [entry.fetch("id"), entry] }
+  attachments = messages.filter_map { |entry| entry["attachment"] }
+  attachments.each do |attachment|
+    test_case = cases.fetch(started.fetch(attachment.fetch("testCaseStartedId")).fetch("testCaseId"))
+    require_check(test_case.fetch("testSteps").any? { |step| step["id"] == attachment["testStepId"] }, "Evidence has no matching Step/Hook")
+  end
+  html = File.read(File.join(directory, "cucumber.html"))
+  require_check(html.bytesize > 1000 && html.downcase.include?("cucumber"), "Missing native HTML")
+  embedded = html.match(/window\.CUCUMBER_MESSAGES\s*=\s*(\[.*?\]);\s*<\/script>/m)
+  require_check(embedded, "Unsupported native HTML message embedding")
+  html_messages = JSON.parse(embedded[1])
+  relevant = %w[pickle hook testCase testCaseStarted testStepStarted testStepFinished attachment testRunFinished]
+  html_evidence = canonical_messages(html_messages, relevant)
+  native_evidence = canonical_messages(messages, relevant)
+  require_check(html_evidence == native_evidence, "HTML evidence/Step owners differ from NDJSON")
+  require_check(File.file?(File.join(directory, "progress.txt")), "Missing distinct progress output")
+  if failed
+    require_check(errors.first.to_json.include?("TimeoutError") && errors.first.to_json.include?("Deliberately missing button"), "Original Playwright failure was replaced")
+    pngs = attachments.select { |attachment| attachment["mediaType"] == "image/png" }
+    require_check(pngs.length == 1, "Expected one screenshot")
+    png = pngs.first
+    bytes = Base64.strict_decode64(png.fetch("body"))
+    require_check(bytes.start_with?("\x89PNG\r\n\x1a\n".b), "Invalid screenshot payload")
+    test_case = cases.fetch(started.fetch(png.fetch("testCaseStartedId")).fetch("testCaseId"))
+    hook = test_case.fetch("testSteps").find { |step| step["id"] == png["testStepId"] }
+    require_check(hook.key?("hookId"), "After screenshot not attributed to a known Hook")
+    require_check(png["testStepId"] != errors.first["testStepId"], "Closed failed Step incorrectly claimed as target")
+    failure_index = messages.index { |entry| entry["testStepFinished"] == errors.first }
+    hook_start = messages.index do |entry|
+      event = entry["testStepStarted"]
+      event && event["testCaseStartedId"] == png["testCaseStartedId"] && event["testStepId"] == png["testStepId"]
+    end
+    png_index = messages.index { |entry| entry["attachment"] == png }
+    require_check(hook_start && failure_index < hook_start && hook_start < png_index,
+                  "Screenshot Hook did not start after original failed Step completed")
+    routing = attachments.find { |attachment| attachment["fileName"] == "failure-routing.json" }
+    require_check(routing, "Missing failure routing evidence")
+    routing_body = routing["contentEncoding"] == "BASE64" ? Base64.strict_decode64(routing.fetch("body")) : routing.fetch("body")
+    route = JSON.parse(routing_body)
+    require_check(route["rp_evidence_accepted"] == false && route["target"] == "After hook" &&
+                  route["action"] == "Click deliberately missing practice button", "Disabled RP evidence did not decline cleanly")
+  else
+    logs = attachments.select { |attachment| attachment["mediaType"] == "text/x.cucumber.log+plain" }
+    pickle_steps = messages.filter_map { |entry| entry["pickle"] }.flat_map { |pickle| pickle.fetch("steps") }
+                           .to_h { |step| [step.fetch("id"), step.fetch("text")] }
+    owner = lambda do |log|
+      test_case = cases.fetch(started.fetch(log.fetch("testCaseStartedId")).fetch("testCaseId"))
+      step = test_case.fetch("testSteps").find { |item| item["id"] == log["testStepId"] }
+      pickle_steps.fetch(step.fetch("pickleStepId"))
+    end
+    expected_400 = logs.find { |log| log["body"].include?("### Request") && log["body"].include?("- Status: `400`") }
+    require_check(expected_400 && owner.call(expected_400) == "I submit an empty practice word expecting status 400", "400 evidence attached to wrong Step")
+    snapshots = logs.select { |log| log["body"].include?("API response snapshot") }
+    require_check(snapshots.length == 8, "Wrong number of actual request/response snapshots")
+    require_check(snapshots.all? { |log| owner.call(log).match?(/\A(?:the local API is healthy|I POST|I GET|I submit)/) }, "Deep JSON attached outside API action Step")
+    require_check(logs.any? { |log| log["body"].include?("API response snapshot") }, "Missing deep JSON helper log")
+    require_check(logs.any? { |log| log["body"].include?("API helper is sending") }, "Missing deep DEBUG helper log")
+    require_check(logs.any? { |log| log["body"].include?("Optional diagnostic, not a business assertion") }, "Missing nonfatal assertion evidence")
+    require_check(attachments.none? { |attachment| attachment["mediaType"] == "image/png" }, "Unexpected pass-run failure screenshot")
+  end
+  {scenarios: runs.length, failed_steps: errors.length, attachments: attachments.length,
+   screenshot_hook: failed, html_messages_match: true, html_bytes: html.bytesize,
+   rp_formatter_output_created: File.file?(File.join(directory, "reportportal.txt"))}
+end
+
+runtime = File.join(root, "runtime.json")
+require_check(execute("bin/runtime", runtime).zero?, "Installed runtime check failed; see #{runtime}")
+fixture = File.join(root, "fixture.txt")
+require_check(execute("bin/check_fixture", fixture).zero?, "Fixture contract check failed; see #{fixture}")
+configuration = File.join(root, "config.txt")
+require_check(execute("bin/check_config", configuration).zero?, "Endpoint policy checks failed; see #{configuration}")
+results = {}
+%w[offline intentional].each do |profile|
+  directory = File.join(root, profile)
+  log = File.join(root, "#{profile}-console.txt")
+  exit_status = execute("bin/run", log, {"REPORT_DIR" => directory, "NO_COLOR" => nil}, profile)
+  expected = profile == "intentional" ? 1 : 0
+  require_check(exit_status == expected, "#{profile}: exit #{exit_status}, expected #{expected}; see #{log}")
+  results[profile] = inspect_report(directory, failed: expected == 1).merge(exit_status: exit_status)
+  transcript = File.read(log)
+  console = transcript.gsub(/\e\[[\d;]*m/, "")
+  require_check(transcript.include?("\e[36m[APPLOG] [INFO]"), "Missing cyan INFO console presentation")
+  require_check(!console.match?(/```|^### (?:Request|Response)|^API response snapshot\s*$/), "Rich report body leaked to console")
+  if expected.zero?
+    require_check(console.match?(/\[APPLOG\] \[INFO\] POST .*status=400/), "Expected 400 was not INFO")
+    require_check(console.include?("[APPLOG] [DEBUG] API helper is sending"), "Missing DEBUG console presentation")
+  end
+end
+no_color = File.join(root, "no-color")
+no_color_log = File.join(root, "no-color-console.txt")
+require_check(execute("bin/run", no_color_log, {"REPORT_DIR" => no_color, "NO_COLOR" => "1"}, "offline").zero?, "NO_COLOR ordinary suite failed")
+plain = File.read(no_color_log)
+require_check(!plain.include?("\e["), "NO_COLOR console still contains ANSI escapes")
+require_check(plain.include?("[APPLOG] [DEBUG]") && plain.include?("[APPLOG] [INFO]"), "NO_COLOR lost one-line logs")
+require_check(!plain.match?(/```|^### (?:Request|Response)/), "NO_COLOR leaked rich evidence to console")
+results["no_color"] = inspect_report(no_color, failed: false).merge(exit_status: 0, ansi: false)
+require_check(spool_inventory(spool) == spool_before, "Disabled RP changed existing spool evidence")
+results["reportportal"] = "explicitly disabled; real endpoint/UI not tested by this verifier"
+File.write(File.join(root, "acceptance.json"), JSON.pretty_generate(results))
+puts JSON.pretty_generate(results)
+puts "Evidence directory: #{root}"
+puts "Acceptance passed: ordinary suite exit 0; intentional failure exit 1 with original error and Hook screenshot."

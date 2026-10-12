@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "reportportal_cucumber"
+require "playwright/version"
+require "digest"
+require "json"
+require "pathname"
+
+spec = Gem.loaded_specs.fetch("reportportal-cucumber-ruby")
+root = spec.full_gem_path
+files = Dir[File.join(root, "lib/**/*.rb")].sort.to_h do |path|
+  [Pathname(path).relative_path_from(Pathname(root)).to_s, Digest::SHA256.file(path).hexdigest]
+end
+source = ENV["SDK_SOURCE_ROOT"]
+source_files = source && Dir[File.join(source, "lib/**/*.rb")].sort.map do |path|
+  Pathname(path).relative_path_from(Pathname(source)).to_s
+end
+matches = source && files.keys == source_files && files.all? do |path, hash|
+  Digest::SHA256.file(File.join(source, path)).hexdigest == hash
+end
+abort "Installed runtime differs from SDK_SOURCE_ROOT" if source && !matches
+abort "Wrong SDK version" unless ReportportalCucumber::VERSION == "1.2.0"
+if ENV["EXPECTED_SDK_INSTALL_ROOT"] && !root.start_with?(File.expand_path(ENV.fetch("EXPECTED_SDK_INSTALL_ROOT")) + "/")
+  abort "SDK was not loaded from the expected isolated installation"
+end
+package = ENV["SDK_GEM_ARCHIVE"]
+puts JSON.pretty_generate(ruby: RUBY_DESCRIPTION, sdk_version: ReportportalCucumber::VERSION,
+                          installed_root: root, cucumber: Gem.loaded_specs.fetch("cucumber").version.to_s,
+                          cucumber_expressions: Gem.loaded_specs.fetch("cucumber-cucumber-expressions").version.to_s,
+                          cucumber_html: Gem.loaded_specs.fetch("cucumber-html-formatter").version.to_s,
+                          playwright_ruby: Gem.loaded_specs.fetch("playwright-ruby-client").version.to_s,
+                          playwright_cli_compatible: Playwright::COMPATIBLE_PLAYWRIGHT_VERSION,
+                          package_sha256: package && Digest::SHA256.file(package).hexdigest,
+                          source_matches: matches, runtime_sha256: files)

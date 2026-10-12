@@ -5,6 +5,7 @@ require "json"
 require "open3"
 require "rbconfig"
 require "uri"
+require "timeout"
 
 require "reportportal_cucumber/automation/evidence_redactor"
 
@@ -54,6 +55,13 @@ RSpec.describe Automation::EvidenceRedactor do
       expect(result.dig(0, "group", 0, 0, "MEMBER_CODE")).to eq(REDACTED)
       expect(result.dig(0, "group", 0, 0, "visible")).to eq("ok")
       expect(result.inspect).not_to include("custom-secret")
+    end
+
+    it "omits ambiguous double-escaped structured keys instead of emitting their values" do
+      input = { 'pass\u0077ord' => "PRIVACY_DOUBLE_ESCAPED_KEY" }
+      [input, JSON.generate(input)].each do |value|
+        expect(redactor.redact(value)).to eq(described_class::OMITTED)
+      end
     end
 
     it "normalizes credential keys with repeated separators at every nesting level" do
@@ -123,6 +131,56 @@ RSpec.describe Automation::EvidenceRedactor do
   end
 
   describe "#redact_text" do
+    it "fails closed on escaped keys in malformed, embedded, and opening-brace-free JSON" do
+      inputs = [
+        '{"pass\u0077ord":"PRIVACY_ESCAPED_MALFORMED"',
+        'diagnostic: {"pass\u0077ord":"PRIVACY_ESCAPED_EMBEDDED"}',
+        'diagnostic: {]"\u0070assword":"PRIVACY_ESCAPED_MISMATCH"}',
+        '"pass\u0077ord":"PRIVACY_ESCAPED_FRAGMENT"',
+        "\"pass\\u0077ord\"\r\n : \"PRIVACY_ESCAPED_MULTILINE_FRAGMENT\"",
+        '\u0070assword: "PRIVACY_ESCAPED_UNQUOTED_FRAGMENT"',
+        '{"pass\word":"PRIVACY_ESCAPED_INVALID"}',
+        JSON.generate(payload: '{"pass\u0077ord":"PRIVACY_ESCAPED_NESTED"')
+      ]
+      inputs.each do |input|
+        expect(redactor.redact_text(input)).not_to include("PRIVACY_ESCAPED_")
+        expect(redactor.redact_text(input)).to include(REDACTED)
+      end
+    end
+
+    it "decodes valid escaped and JSON-string-encoded keys including custom keys" do
+      input = '{"pass\u0077ord":"PRIVACY_DECODE_PASSWORD","member_\u0063ode":"PRIVACY_DECODE_CUSTOM","visible":"kept"}'
+      sanitizer = redactor(sensitive_keys: ["member_code"])
+      [input, JSON.generate(input), JSON.generate(payload: input)].each do |text|
+        safe = sanitizer.redact_text(text)
+        expect(safe).not_to include("PRIVACY_DECODE_")
+        expect(safe).to include("kept", REDACTED)
+      end
+    end
+
+    it "checks the complete input before clipping or oversized omission" do
+      input = 'diagnostic: {"visible":"PRIVACY_BEFORE_ESCAPE' + ("x" * 20_000) + '","pass\u0077ord":"PRIVACY_AFTER_ESCAPE"}'
+      expect(redactor.redact_text(input)).to eq(described_class::OMITTED)
+      oversized = 'password="PRIVACY_OVERSIZED' + ("x" * described_class::MAX_INPUT_BYTES) + '"'
+      expect(redactor.redact_text(oversized)).to eq(described_class::OMITTED)
+    end
+
+    it "bounds parsed depth, node count, repeated decoding, cycles, and integer conversion" do
+      cycle = []
+      cycle << cycle
+      deep = ("[" * 30) + '{"password":"PRIVACY_DEEP"}' + ("]" * 30)
+      repeated = 20.times.reduce('{"password":"PRIVACY_DECODE_DEPTH"}') { |text, _| JSON.generate(text) }
+      inputs = [cycle, deep, repeated, Array.new(described_class::MAX_STRUCTURE_NODES + 1, "safe"), 2**20_000]
+      Timeout.timeout(2) do
+        inputs.each { |input| expect(redactor.redact(input)).to eq(described_class::OMITTED) }
+      end
+    end
+
+    it "keeps safe business controls and ordinary multiline diagnostics readable" do
+      text = "safe diagnostic\ntoken_count=12 password_policy=business-only component=payments\npath=C:\\tmp\\recording"
+      expect(redactor.redact_text(text)).to eq(text)
+    end
+
     it "redacts bearer credentials in ordinary and multiline text" do
       result = redactor.redact_text("Authorization: Bearer abc.def-123\nnext line")
 
@@ -191,6 +249,13 @@ RSpec.describe Automation::EvidenceRedactor do
       expect(text.bytes).to eq(original_bytes)
       expect(text.encoding).to eq(Encoding::BINARY)
     end
+  end
+
+  it "redacts escaped JSON inside query values and malformed URL fragments" do
+    payload = 'diagnostic: {"pass\u0077ord":"PRIVACY_URL_VALUE"}'
+    query = URI.encode_www_form_component(payload)
+    urls = ["https://example.test/?payload=#{query}", "https://example.test/bad path##{query}"]
+    urls.each { |url| expect(redactor.redact_url(url)).not_to include("PRIVACY_URL_VALUE") }
   end
 
   it "can be required in a standalone process without loading ReportPortal or Cucumber" do

@@ -4,7 +4,9 @@ require "weakref"
 
 module ReportportalCucumber
   module Runtime
-    # Thread-safe execution context backed by a thread-local ReportPortal UUID stack.
+    # Instance-owned execution state; thread locals expose only compatibility snapshots.
+    # The legacy stack/state mirrors describe the most recently accessed context.
+    # Direct mutation of those detached mirrors is unsupported and cannot retarget ownership.
     class Context
       STACK_KEY = :rp_context_stack
 
@@ -46,6 +48,10 @@ module ReportportalCucumber
       # @return [void]
       def initialize
         @mutex = Mutex.new
+        @thread_state_mutex = Mutex.new
+        @thread_states = {}
+        @capture_mutex = Mutex.new
+        @capture_close_requests = Queue.new
         @capture_target_condition = ConditionVariable.new
         @feature_items = {}
         @feature_statuses = Hash.new { |hash, key| hash[key] = [] }
@@ -53,11 +59,7 @@ module ReportportalCucumber
         @test_case_items = {}
         @test_step_items = {}
         @capture_targets = {}
-        Thread.current[STACK_KEY] = []
-        thread_state[:current_feature_key] = nil
-        thread_state[:current_scenario_key] = nil
-        thread_state[:current_scenario_item] = nil
-        thread_state[:active_parent] = nil
+        mirror_thread_state(empty_thread_state)
       end
 
       # @param feature_key [String]
@@ -107,7 +109,9 @@ module ReportportalCucumber
       # @param feature_key [String]
       # @return [void]
       def set_current_feature(feature_key)
-        thread_state[:current_feature_key] = feature_key
+        state = thread_state
+        state[:current_feature_key] = feature_key
+        finish_thread_state_access(state)
       end
 
       # @return [String, nil]
@@ -132,7 +136,7 @@ module ReportportalCucumber
         return unless item
 
         pop_item(expected_uuid: item.uuid)
-        thread_state[:current_feature_key] = nil if current_feature_key == feature_key
+        set_current_feature(nil) if current_feature_key == feature_key
       end
 
       # @param scenario_key [String]
@@ -171,6 +175,7 @@ module ReportportalCucumber
         state = thread_state
         state[:current_scenario_key] = nil
         state[:current_scenario_item] = nil
+        finish_thread_state_access(state)
         popped
       end
 
@@ -209,7 +214,8 @@ module ReportportalCucumber
       # @return [CaptureTarget]
       def register_capture_target(item, launch_uuid:, owner: nil)
         target = CaptureTarget.new(owner: owner)
-        @mutex.synchronize do
+        @capture_mutex.synchronize do
+          revoke_pending_capture_targets
           @capture_targets[target] = { item: item, launch_uuid: launch_uuid, open: true, writers: 0 }
         end
         target
@@ -221,7 +227,8 @@ module ReportportalCucumber
       def acquire_capture_target(target, launch_uuid:)
         return unless target.is_a?(CaptureTarget)
 
-        @mutex.synchronize do
+        @capture_mutex.synchronize do
+          revoke_pending_capture_targets
           entry = @capture_targets[target]
           return unless entry && entry[:open] && entry[:launch_uuid] == launch_uuid
 
@@ -232,22 +239,27 @@ module ReportportalCucumber
 
       # @param target [CaptureTarget]
       # @param launch_uuid [String]
-      # @yield [item] Enqueue the complete evidence batch for the target.
+      # @yield [item, cancelled] Publish outside the lock; check cancellation before admission.
+      # @yieldparam item [ItemHandle] Original item, never a replacement target.
+      # @yieldparam cancelled [Proc] Whether close has revoked this publication.
       # @return [Boolean]
       def publish_capture_target(target, launch_uuid:)
-        @mutex.synchronize do
-          entry = @capture_targets[target]
-          return false unless entry && entry[:open] && entry[:launch_uuid] == launch_uuid
+        item = acquire_capture_target(target, launch_uuid: launch_uuid)
+        return false unless item
 
-          yield entry[:item]
-          true
-        end
+        reserved = true
+        cancelled = -> { validate_capture_target(target, launch_uuid: launch_uuid).nil? }
+        yield item, cancelled
+        !cancelled.call
+      ensure
+        release_capture_target(target) if reserved
       end
 
       # @param target [CaptureTarget]
       # @return [void]
       def release_capture_target(target)
-        @mutex.synchronize do
+        @capture_mutex.synchronize do
+          revoke_pending_capture_targets
           entry = @capture_targets[target]
           return unless entry && entry[:writers].positive?
 
@@ -262,7 +274,8 @@ module ReportportalCucumber
       def validate_capture_target(target, launch_uuid:)
         return unless target.is_a?(CaptureTarget)
 
-        @mutex.synchronize do
+        @capture_mutex.synchronize do
+          revoke_pending_capture_targets
           entry = @capture_targets[target]
           entry[:item] if entry && entry[:open] && entry[:launch_uuid] == launch_uuid
         end
@@ -272,22 +285,12 @@ module ReportportalCucumber
       # @param timeout [Numeric]
       # @return [Boolean]
       def close_capture_target(target, timeout: 5.0)
-        @mutex.synchronize do
-          entry = @capture_targets[target]
-          return true unless entry
-
-          entry[:open] = false
-          deadline = monotonic_now + [timeout.to_f, 0].max
-          while entry[:writers].positive?
-            remaining = deadline - monotonic_now
-            if remaining <= 0
-              @capture_targets.delete(target)
-              return false
-            end
-            @capture_target_condition.wait(@mutex, remaining)
+        deadline = monotonic_now + [timeout.to_f, 0].max
+        @capture_close_requests << ->(candidate, _entry) { candidate.equal?(target) }
+        with_capture_lock(deadline) do
+          close_capture_targets_matching(deadline: deadline) do |candidate, _entry|
+            candidate.equal?(target)
           end
-          @capture_targets.delete(target)
-          true
         end
       end
 
@@ -295,8 +298,10 @@ module ReportportalCucumber
       # @param timeout [Numeric]
       # @return [Boolean]
       def close_capture_target_for_item(item, timeout: 5.0)
-        @mutex.synchronize do
-          close_capture_targets_matching(timeout: timeout) do |_target, entry|
+        deadline = monotonic_now + [timeout.to_f, 0].max
+        @capture_close_requests << ->(_target, entry) { entry[:item].equal?(item) }
+        with_capture_lock(deadline) do
+          close_capture_targets_matching(deadline: deadline) do |_target, entry|
             entry[:item].equal?(item)
           end
         end
@@ -306,8 +311,10 @@ module ReportportalCucumber
       # @param timeout [Numeric]
       # @return [Boolean]
       def close_capture_targets(launch_uuid: nil, timeout: 5.0)
-        @mutex.synchronize do
-          close_capture_targets_matching(timeout: timeout) do |_target, entry|
+        deadline = monotonic_now + [timeout.to_f, 0].max
+        @capture_close_requests << ->(_target, entry) { launch_uuid.nil? || entry[:launch_uuid] == launch_uuid }
+        with_capture_lock(deadline) do
+          close_capture_targets_matching(deadline: deadline) do |_target, entry|
             launch_uuid.nil? || entry[:launch_uuid] == launch_uuid
           end
         end
@@ -317,7 +324,8 @@ module ReportportalCucumber
       # @param launch_uuid [String]
       # @return [CaptureTarget, nil]
       def capture_target_for(item, launch_uuid:)
-        @mutex.synchronize do
+        @capture_mutex.synchronize do
+          revoke_pending_capture_targets
           @capture_targets.find do |_target, entry|
             entry[:item].equal?(item) && entry[:launch_uuid] == launch_uuid && entry[:open]
           end&.first
@@ -395,12 +403,12 @@ module ReportportalCucumber
       private
 
       # @yield [target, entry]
-      # @param timeout [Numeric]
+      # @param deadline [Float] Absolute monotonic cutoff, including lock acquisition.
       # @return [Boolean]
-      def close_capture_targets_matching(timeout:)
+      def close_capture_targets_matching(deadline:)
+        revoke_pending_capture_targets
         selected = @capture_targets.select { |target, entry| yield(target, entry) }
         selected.each_value { |entry| entry[:open] = false }
-        deadline = monotonic_now + [timeout.to_f, 0].max
         selected.each do |target, entry|
           while entry[:writers].positive?
             remaining = deadline - monotonic_now
@@ -408,11 +416,41 @@ module ReportportalCucumber
               selected.each_key { |selected_target| @capture_targets.delete(selected_target) }
               return false
             end
-            @capture_target_condition.wait(@mutex, remaining)
+            @capture_target_condition.wait(@capture_mutex, remaining)
           end
           @capture_targets.delete(target)
         end
         true
+      end
+
+      # Apply revocations even when a closing caller exhausted its lock budget.
+      # @return [void]
+      def revoke_pending_capture_targets
+        loop do
+          matches = @capture_close_requests.pop(true)
+          @capture_targets.each do |target, entry|
+            entry[:open] = false if matches.call(target, entry)
+          end
+        end
+      rescue ThreadError
+        nil
+      end
+
+      # @param deadline [Float]
+      # @yield Execute capture bookkeeping within the caller's absolute budget.
+      # @return [Boolean]
+      def with_capture_lock(deadline)
+        until @capture_mutex.try_lock
+          remaining = deadline - monotonic_now
+          return false if remaining <= 0
+
+          sleep([remaining, 0.001].min)
+        end
+        begin
+          yield
+        ensure
+          @capture_mutex.unlock
+        end
       end
 
       # @return [Float]
@@ -446,17 +484,63 @@ module ReportportalCucumber
 
       # @return [Array<ItemHandle>]
       def context_stack
-        Thread.current[STACK_KEY] ||= []
+        thread_state.fetch(:stack)
       end
 
       # @return [Hash]
       def thread_state
-        Thread.current[:reportportal_cucumber_context_state] ||= {}
+        state = @thread_state_mutex.synchronize do
+          @thread_states.delete_if { |_key, entry| !execution_owner_alive?(entry) }
+          entry = @thread_states[execution_key] ||= {
+            thread: WeakRef.new(Thread.current), fiber: WeakRef.new(Fiber.current), state: empty_thread_state
+          }
+          entry.fetch(:state)
+        end
+        mirror_thread_state(state)
+        state
+      end
+
+      # @return [Array<Integer>]
+      def execution_key
+        [Thread.current.object_id, Fiber.current.object_id]
+      end
+
+      # @param entry [Hash]
+      # @return [Boolean]
+      def execution_owner_alive?(entry)
+        entry.fetch(:thread).alive? && entry.fetch(:fiber).alive?
+      rescue WeakRef::RefError
+        false
+      end
+
+      # @return [Hash]
+      def empty_thread_state
+        { stack: [], current_feature_key: nil, current_scenario_key: nil,
+          current_scenario_item: nil, active_parent: nil }
+      end
+
+      # @param state [Hash]
+      # @return [void]
+      def mirror_thread_state(state)
+        Thread.current[STACK_KEY] = state.fetch(:stack).dup
+        Thread.current[:reportportal_cucumber_context_state] = state.reject { |key, _value| key == :stack }
+      end
+
+      # @param state [Hash]
+      # @return [void]
+      def finish_thread_state_access(state)
+        mirror_thread_state(state)
+        return unless state.fetch(:stack).empty? && state.values_at(:current_feature_key, :current_scenario_key,
+                                                                   :current_scenario_item, :active_parent).all?(&:nil?)
+
+        @thread_state_mutex.synchronize { @thread_states.delete(execution_key) }
       end
 
       # @return [void]
       def sync_active_parent_from_stack!
-        thread_state[:active_parent] = context_stack.last
+        state = thread_state
+        state[:active_parent] = state.fetch(:stack).last
+        finish_thread_state_access(state)
       end
     end
   end
