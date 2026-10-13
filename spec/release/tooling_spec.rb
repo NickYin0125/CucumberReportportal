@@ -164,7 +164,10 @@ RSpec.describe ReleaseTooling do
         case args[1..2]
         when ["api", "repos/owner/repo/releases/tags/v1.3.0"]
           expect(options).to eq(allow_missing: true)
-          remote[:release] && JSON.generate(remote[:release])
+          remote[:release] && !remote[:release].fetch("draft") && JSON.generate(remote[:release])
+        when ["api", "repos/owner/repo/releases?per_page=100"]
+          expect(args[3..]).to eq(["--paginate", "--slurp"])
+          JSON.generate(remote.fetch(:pages, [remote.fetch(:list, [remote[:release]].compact)]))
         when ["release", "create"]
           remote[:release] = release
           ""
@@ -191,7 +194,7 @@ RSpec.describe ReleaseTooling do
     it "creates a draft, uploads all assets, verifies downloads, then publishes" do
       publisher.publish!
       expect(remote.fetch(:release).fetch("draft")).to be(false)
-      expect(gh_commands.first(2).map { |args| args[1] }).to eq(%w[api release])
+      expect(gh_commands.first(3).map { |args| args[1] }).to eq(%w[api api release])
       create = gh_commands.find { |args| args[2] == "create" }
       expect(create).to include("--verify-tag", "--draft", "--target", sha)
       expect(gh_commands.last[1..2]).to eq(%w[release edit])
@@ -208,6 +211,36 @@ RSpec.describe ReleaseTooling do
       uploads = gh_commands.select { |args| args[2] == "upload" }.map { |args| File.basename(args[4]) }
       expect(uploads).to match_array(source.asset_names - [name])
       expect(gh_commands.none? { |args| args[2] == "create" }).to be(true)
+    end
+
+    it "finds an existing draft hidden by the by-tag endpoint without creating a duplicate" do
+      remote[:release] = release
+      publisher.publish!
+      expect(remote.fetch(:release).fetch("draft")).to be(false)
+      expect(gh_commands).to include(["gh", "api", "repos/owner/repo/releases?per_page=100",
+                                     "--paginate", "--slurp"])
+      expect(gh_commands.none? { |args| args[2] == "create" }).to be(true)
+    end
+
+    it "refuses ambiguous drafts instead of selecting or modifying one" do
+      remote[:list] = [release, release.dup]
+      expect { publisher.publish! }.to raise_error(ReleaseTooling::Error, /Ambiguous/)
+      expect(gh_commands.none? { |args| %w[create upload edit].include?(args[2]) }).to be(true)
+    end
+
+    it "finds a matching draft on later pages and rejects malformed listing records" do
+      remote[:pages] = [[release.merge("tag_name" => "v1.2.0")], [release]]
+      expect(publisher.__send__(:read_release)).to eq(release)
+      remote[:pages] = [["malformed"]]
+      expect { publisher.__send__(:read_release) }.to raise_error(ReleaseTooling::Error, /Unexpected remote release records/)
+      expect(gh_commands.none? { |args| %w[create upload edit].include?(args[2]) }).to be(true)
+    end
+
+    it "does not turn draft-list authorization failure into a new release" do
+      allow(commands).to receive(:run).with("gh", "api", "repos/owner/repo/releases?per_page=100", any_args)
+        .and_raise(ReleaseTooling::Error, "HTTP 403")
+      expect { publisher.publish! }.to raise_error(ReleaseTooling::Error, /403/)
+      expect(gh_commands.none? { |args| %w[create upload edit].include?(args[2]) }).to be(true)
     end
 
     it "makes a published retry strictly read-only" do
