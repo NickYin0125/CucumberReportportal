@@ -2,7 +2,7 @@
 
 ## Version Contract
 
-Wrapper chart **1.2.0-rc.2** pins official chart **26.8.12**, ReportPortal **26.0.5**.
+Wrapper chart **1.3.0** pins official chart **26.8.12**, ReportPortal **26.0.5**.
 `appVersion` identifies the ReportPortal server, not the independent Ruby SDK version.
 The dependency archive and lock file are included in the packaged chart.
 The wrapper also initializes RabbitMQ's default vhost as `analyzer`, matching
@@ -23,9 +23,12 @@ verify its user/vhost permissions explicitly during migration.
 | OpenSearch | 3.8.0 |
 
 Requires Kubernetes >= 1.26, Helm 3 and a compatible Ingress controller.
-The included video Ingress uses NGINX-specific annotations; it is not a portable
-Gateway API implementation. Ingress NGINX's retirement must be considered when
-selecting a supported production controller.
+The routes now use standard `Prefix` matching, preserve the full S3 bucket path,
+and have no NGINX-specific annotations. The default class is `traefik`; the wrapper
+does not install or own your shared controller. A separately installed Traefik
+41.7.1 / Proxy 3.7.14 is the local acceptance implementation. Use Helm >=3.18.4
+for that modern controller chart; old Helm 3.7 cannot render its Go templates.
+This is an Ingress solution, not a claimed Gateway API implementation.
 
 ## Fresh Installation
 
@@ -64,19 +67,48 @@ resource limits, network policies and availability for your cluster:
 
 ```sh
 helm package ./helm/reportportal-rich-experience -d ./pkg
-helm install reportportal ./pkg/reportportal-rich-experience-1.2.0-rc.2.tgz \
+helm install reportportal ./pkg/reportportal-rich-experience-1.3.0.tgz \
   -n reportportal --create-namespace -f ./production-values.yaml \
   --wait --wait-for-jobs --timeout 20m
 ```
 
-The production example intentionally disables the legacy video bucket extension.
-The default/local `mc anonymous set public` policy also allows anonymous writes and
-deletes. It is **not read-only** and remains a known security limitation, explicitly
-outside this upgrade's repair scope. `makePublic=false` or `enabled=false` does not
-revoke an existing bucket's permissions. Before exposing video storage in production,
-apply and verify a restricted policy, retention and authorization appropriate to
-your evidence data. Same-origin routing satisfies the browser origin constraint;
-it does not disable CSP or make unsafe HTML safe.
+The production example retains anonymous **object reads only** for internal-network
+video playback. Authenticated upload/delete credentials are separate from viewer
+access. `makePublic` is the backward-compatible flag name, but it no longer means
+MinIO's unsafe `public` preset: the Job replaces the entire old bucket policy with
+one `s3:GetObject` grant. HEAD and Range requests still work; anonymous listing,
+PUT and DELETE are not granted. Anyone able to reach a known internal object URL
+can read it; this is intentionally not user-authenticated media delivery or PII
+redaction. Restrict network reachability according to your internal trust boundary.
+
+`makePublic=false` actively replaces the existing policy with no anonymous grants.
+`enabled=false` removes the video route and still runs a revocation Job by default;
+it never deletes the bucket or recordings. An absent bucket is a safe no-op, but
+authorization/network failures fail the Job. Only `revokeOnDisable=false` explicitly
+opts out of this reconciliation. Do not uninstall first and expect Helm to revoke
+an existing bucket: apply the disabled configuration, wait for the Job, verify
+denied anonymous access, then uninstall if necessary.
+
+This chart owns the complete policy and lifecycle on a **dedicated** video bucket.
+Do not point it at a shared business-data bucket. Retention imports one stable-ID
+rule (30 days by default), including noncurrent versions; it replaces existing
+lifecycle rules on that dedicated bucket. The pinned community server does not
+persist bucket-level incomplete-upload expiry; see the separate stale-upload
+checks in [OPERATIONS.md](OPERATIONS.md).
+The default hard quota is 4 GiB on an explicitly provisioned 8 GiB MinIO volume,
+reserving half the nominal capacity for RP attachments and overhead. Tune it below
+available physical storage and
+reserve space for RP database/attachments. Retention is asynchronous, not a disk-
+full guarantee. Retention or quota failures fail initialization, rather than only
+printing a warning. Setting their `enabled` flags false stops managing those
+settings; existing retention/quota remain until an operator deliberately removes
+them. See [the operations runbook](OPERATIONS.md).
+
+Same-origin routing satisfies the browser origin constraint; it does not disable
+CSP or make unsafe HTML safe. For Huawei private-cloud integration, see
+[the platform-specific checklist](HUAWEI_PRIVATE_CLOUD.md) and the intentionally
+unresolved `values-huawei.example.yaml` overlay. Public CCE documentation is not
+proof of compatibility with your specific Huawei Cloud Stack/UCS installation.
 
 ## Existing Installations: Do Not Upgrade Volumes In Place
 

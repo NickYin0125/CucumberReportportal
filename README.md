@@ -45,10 +45,10 @@ and [Reporting Experience](#reporting-experience).
 
 ## Installation
 
-Gem **1.2.0** is distributed as an installable archive in the
-[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.2.0).
+Gem **1.3.0** is distributed as an installable archive in the
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.0).
 RubyGems.org publication is separate; do not assume an unversioned registry install
-selects this release. The companion chart remains **1.2.0-rc.2**
+selects this release. The companion chart is **1.3.0**
 (`appVersion: 26.0.5`, official chart `26.8.12`), not production security/HA
 certification. See [the changelog](CHANGELOG.md) for scope and limitations.
 
@@ -60,9 +60,9 @@ Playwright is an optional dependency of your UI test project, not of this SDK.
 Download the release archive and install it:
 
 ```bash
-curl -fL -o reportportal-cucumber-ruby-1.2.0.gem \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.2.0/reportportal-cucumber-ruby-1.2.0.gem
-gem install ./reportportal-cucumber-ruby-1.2.0.gem --no-document
+curl -fL -o reportportal-cucumber-ruby-1.3.0.gem \
+  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.0/reportportal-cucumber-ruby-1.3.0.gem
+gem install ./reportportal-cucumber-ruby-1.3.0.gem --no-document
 ```
 
 Alternatively, build the same version from the tagged checkout:
@@ -70,8 +70,8 @@ Alternatively, build the same version from the tagged checkout:
 ```bash
 mkdir -p pkg
 gem build reportportal-cucumber-ruby.gemspec \
-  --output pkg/reportportal-cucumber-ruby-1.2.0.gem
-gem install ./pkg/reportportal-cucumber-ruby-1.2.0.gem --no-document
+  --output pkg/reportportal-cucumber-ruby-1.3.0.gem
+gem install ./pkg/reportportal-cucumber-ruby-1.3.0.gem --no-document
 ```
 
 Pin the installed release in your automation project's Gemfile:
@@ -79,7 +79,7 @@ Pin the installed release in your automation project's Gemfile:
 ```ruby
 source "https://rubygems.org"
 gem "cucumber", ">= 9", "< 11"
-gem "reportportal-cucumber-ruby", "= 1.2.0"
+gem "reportportal-cucumber-ruby", "= 1.3.0"
 ```
 
 ```bash
@@ -354,10 +354,12 @@ browser playback access policy.
 
 Keep `RP_VIDEO_UPLOAD_MODE=reportportal_multipart` for the default
 pilot's ordinary image/JSON/text uploads. This guide does not upload or certify
-MP4 attachments under that mode. The Helm anonymous public/write/delete and public-to-private revocation
-findings (D4/D10) are deliberately unresolved in this patch. TLS verification
-does not repair bucket permissions; external playback remains gated on a
-separate effective-policy review. No deployment or bucket policy is changed.
+MP4 attachments under that mode. The published v1.2.0 Release's companion Chart
+rc.2 retains the historical anonymous-policy risks. Chart 1.3.0
+reconciles anonymous object-read-only access and explicit revocation; see the
+[Helm guide](helm/reportportal-rich-experience/README.md). TLS verification is not
+bucket authorization. Anonymous reads are the intentional internal-network policy,
+not viewer authentication or sanitization of a recording's content.
 
 Log delivery is bounded by default: at most 1,000 reserved records and 16 MiB
 of accounted resident data (including 256 bytes of metadata allowance per
@@ -938,25 +940,76 @@ experiments. The example separates healthy smoke scenarios from deliberate failu
 
 ## Kubernetes / Helm
 
-Chart `1.2.0-rc.2` pins ReportPortal `26.0.5` independently of the Ruby SDK version.
-The chart operator guide includes isolated local deployment and an external-Secret
-production example with the legacy public video extension disabled. The following historical
-setup is a demo, **not a production-safe profile**: its public bucket policy can
-grant anonymous writes/deletes, and `makePublic=false` does not revoke a prior
-policy. Do not enable that legacy public policy in production without a separate security review.
+Chart `1.3.0` pins ReportPortal `26.0.5` independently of the Ruby
+SDK version. It uses standard Prefix routes with a configurable controller class
+(local default: Traefik), and a dedicated-bucket reconciliation Job that grants
+only anonymous `s3:GetObject`. HEAD/Range playback remains available; anonymous
+listing, writes and deletes are not granted. `makePublic=false` revokes old grants;
+`enabled=false` also runs a revocation Job unless explicitly opted out.
 
-The repository contains an umbrella chart wrapping the official ReportPortal
-chart, a MinIO initialization job, and a same-origin `/automation-videos` Ingress
-route. Its historical demo route preserves the bucket path without rewriting;
-same-origin routing satisfies the deployed browser access constraints but does
-not secure object storage. The `public` bucket policy is not read-only, and
-disabling initialization does not revoke an existing policy.
+Retention and hard-quota initialization failures fail the Job. Anonymous reads
+remain intentional for the internal network: known video URLs are not individually
+authenticated. This does not bypass CSP or automatically redact media contents.
 
-See the [Helm operator README](helm/reportportal-rich-experience/README.md) for
-version-specific deployment and migration instructions; the security restrictions above still apply.
-Do not treat a successful video demo, TLS verification, or chart package build
-as production authorization. No Helm deployment or bucket-policy changes are
-needed to run the API/PNG/JSON examples in this README.
+See the [Helm operator README](helm/reportportal-rich-experience/README.md), including
+the Huawei private-cloud checklist and operations runbook, for exact deployment
+scope. Use the v1.3.0 GitHub Release's Chart asset for these fixes; v1.2.0's older
+rc.2 archive does not contain them. No Helm deployment or bucket changes are needed
+to run the API/PNG/JSON examples in this README. Local success is not production HA
+or Huawei ELB certification.
+
+## CI And GitHub Releases
+
+Branch and pull-request CI build the locked Helm dependency, render the shipped
+deployment profiles, run the complete offline RSpec suite (including isolated
+installed-gem checks), and run the default Cucumber profile. Live RP, browser and
+15-minute duration acceptance are separate, opt-in checks; a green GitHub run
+does not claim those physical checks were repeated on the runner.
+
+Stable `vX.Y.Z` tags on commits already merged into `main` invoke the same
+validation before packaging. The tag must match both the gem and wrapper Chart
+version. The release publishes a `.gem`, a `.tgz`, SHA-256 checksums and build
+provenance; it does not publish to RubyGems.org or change a Kubernetes deployment.
+An existing published release is never silently overwritten. Release notes come
+from the version's section in [CHANGELOG.md](CHANGELOG.md).
+
+## Day-2 Validation (Source Checkout)
+
+These opt-in QA harnesses live in the repository, not the installed production
+gem. Install the root development bundle first and supply `RP_API_KEY` through
+your private secret-injection mechanism; never paste it into captured commands.
+The default Cucumber profile excludes `@duration` and does not start a mock server.
+
+```sh
+export RP_ENDPOINT=http://rp-latest.localhost
+export RP_PROJECT=superadmin_personal
+bundle exec rake rp:duration
+```
+
+`rp:duration` runs at least 900 real seconds in one serial Ruby process: endpoint
+contracts, workflow/CSV and 750 seeded ingest/margin pairs. Acceptance checks
+native outcomes, memory/thread and queue/request bounds, complete delivery receipts,
+RP counts/owners and downloaded CSV bytes/SHA. `DAY2_MODE=smoke bundle exec rake
+rp:duration` is a quick offline rehearsal, **not** endurance acceptance. Runtime
+controls and evidence details are in `examples/day2_endurance/README.md`.
+
+```sh
+bundle exec rake rp:failure_stress
+DAY2_LIVE=true DAY2_MANAGER_READY=true \
+  DAY2_RP_ENDPOINT=http://rp-latest.localhost \
+  DAY2_RP_READY_URL=http://rp-latest.localhost/api/info \
+  DAY2_EXPECTED_API_VERSION=5.15.4 \
+  bundle exec rake rp:failure_stress
+```
+
+The first fault command is isolated and credential-free. The second is explicit
+local-RP opt-in: faults apply in a loopback proxy, not by stopping backend services.
+Set the expected **API component** version from your own `/api/info` response;
+it is intentionally different from the ReportPortal release-bundle version.
+See `examples/day2_faults/README.md` for timeout, partial/hidden acknowledgements,
+SIGINT, quota failures and original-owner replay. Hidden acknowledgements can
+duplicate logs; SIGKILL cannot retain pending memory. Neither harness claims
+zero-loss/exactly-once delivery or certifies a Huawei production deployment.
 
 ## Runtime Dependencies
 
@@ -988,7 +1041,7 @@ follow the [Playwright Ruby setup guide](https://playwright-ruby-client.vercel.a
 - Queue overload can reject evidence. Receipts expose loss/ambiguity; spooling
   does not mean server delivery, and replay cannot target a finished item/Launch.
 - Inline MP4 rendering depends on the RP renderer, codec, browser, and storage
-  policy; the unresolved Helm anonymous-permission findings remain a rollout gate.
+  policy; anonymous-read media remains a deliberate internal-network access boundary.
 
 ## License
 

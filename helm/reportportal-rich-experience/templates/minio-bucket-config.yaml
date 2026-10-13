@@ -1,0 +1,21 @@
+{{- if or .Values.videoBucket.enabled .Values.videoBucket.revokeOnDisable -}}
+{{- $bucket := .Values.videoBucket.name -}}
+{{- if not (regexMatch "^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$" $bucket) -}}
+{{- fail "videoBucket.name must be a valid dedicated S3 bucket name" -}}
+{{- end -}}
+{{- if and .Values.videoBucket.retention.enabled (lt (int .Values.videoBucket.retention.expireDays) 1) -}}
+{{- fail "videoBucket.retention.expireDays must be positive" -}}
+{{- end -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ printf "%s-video-bucket-config" (include "reportportal-rich-experience.fullname" .) | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "reportportal-rich-experience.labels" . | nindent 4 }}
+data:
+  read-only.json: {{ dict "Version" "2012-10-17" "Statement" (list (dict "Sid" "AnonymousObjectReadOnly" "Effect" "Allow" "Principal" (dict "AWS" (list "*")) "Action" (list "s3:GetObject") "Resource" (list (printf "arn:aws:s3:::%s/*" $bucket)))) | toJson | quote }}
+  private.json: '{"Version":"2012-10-17","Statement":[]}'
+  lifecycle.json: {{ dict "Rules" (list (dict "ID" "rp-automation-video-retention" "Status" "Enabled" "Filter" (dict "Prefix" "") "Expiration" (dict "Days" .Values.videoBucket.retention.expireDays) "NoncurrentVersionExpiration" (dict "NoncurrentDays" .Values.videoBucket.retention.expireDays))) | toJson | quote }}
+  reconcile.sh: |
+    {{- .Files.Get "files/reconcile-video-bucket.sh" | nindent 4 }}
+{{- end }}

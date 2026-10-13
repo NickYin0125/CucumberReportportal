@@ -17,13 +17,23 @@ The extra Ingress routes {{ .Values.videoBucket.ingress.path }} to service
 {{ include "reportportal-rich-experience.minioServiceName" . }}:{{ .Values.videoBucket.ingress.servicePort }}
 without rewriting the path, so path-style MinIO URLs keep the bucket name.
 
-WARNING: the legacy 'public' bucket policy allows anonymous writes and deletes,
-not just video reads. Verify a restricted policy before production exposure.
+Anonymous video access is object-read-only (GetObject, including HEAD/Range).
+Anonymous listing, writes and deletes are not granted. This is NOT authenticated
+viewer access: anyone able to reach the internal URL can read a known object.
+Bucket policy/lifecycle are owned by this chart on this dedicated bucket.
 {{ else }}
-The automation video bucket extension is disabled. No extra video Ingress or
-bucket initialization Job is created by this release configuration.
-Disabling this extension does not revoke permissions on an existing bucket.
+The automation video route is disabled.
+{{ if .Values.videoBucket.revokeOnDisable }}
+A reconciliation Job removes old anonymous grants from an existing bucket;
+objects are retained. Use --wait --wait-for-jobs and verify Job completion.
+{{ else }}
+Policy reconciliation is explicitly disabled. Existing anonymous grants are NOT
+revoked; remove them separately before exposing or retiring this deployment.
 {{ end }}
+{{ end }}
+
+Initialization failures, including retention and quota, fail the Job rather than
+being treated as success. Inspect failed Jobs and storage usage routinely.
 
 Read this chart's README before deployment. PostgreSQL and OpenSearch major-version
 changes require the official migration procedure; never reuse old database volumes

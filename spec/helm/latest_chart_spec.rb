@@ -19,7 +19,7 @@ RSpec.describe "ReportPortal 26.0.5 chart contract" do
   end
 
   it "pins the server version independently of the Ruby SDK and locks its upstream dependency" do
-    expect(chart.fetch("version")).to eq("1.2.0-rc.2")
+    expect(chart.fetch("version")).to eq("1.3.0")
     expect(chart.fetch("appVersion")).to eq("26.0.5")
     expect(chart.fetch("dependencies")).to eq([
       { "name" => "reportportal", "version" => "26.8.12", "repository" => "https://k8s.reportportal.io/" }
@@ -74,14 +74,13 @@ RSpec.describe "ReportPortal 26.0.5 chart contract" do
       .not_to include("reportportal-uat-init-password", "reportportal-latest-video-bucket", "reportportal-latest-postgresql")
   end
 
-  it "does not create a public video bucket or plaintext administrator secret in the production example" do
+  it "uses external credentials and matching TLS for the internal read-only video route" do
     documents = render_chart(chart_dir, "values-production.example.yaml")
-    expect(documents.map { |entry| entry.dig("metadata", "name") }.grep(/video-bucket/)).to be_empty
     ingresses = documents.select { |entry| entry["kind"] == "Ingress" }
-    expect(ingresses.length).to eq(1)
-    expect(ingresses.first.dig("spec", "tls", 0, "secretName")).to eq("reportportal-tls")
+    expect(ingresses.length).to eq(2)
+    expect(ingresses.map { |entry| entry.dig("spec", "tls", 0, "secretName") }).to all(eq("reportportal-tls"))
     expect(documents.select { |entry| entry["kind"] == "Secret" }.map { |entry| entry.dig("metadata", "name") })
-      .not_to include("reportportal-uat-init-password")
+      .not_to include("reportportal-uat-init-password", "reportportal-latest-video-bucket")
   end
 
   it "bootstraps the ReportPortal vhost without dropping the required RabbitMQ 4.3 compatibility setting" do

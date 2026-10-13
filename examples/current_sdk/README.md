@@ -1,6 +1,6 @@
 # Current SDK automation lab
 
-A complete, small Cucumber project for **`reportportal-cucumber-ruby` 1.2.0**,
+A complete, small Cucumber project for **`reportportal-cucumber-ruby` 1.3.0**,
 installed from its GitHub release archive or an independently built archive.
 The default suite makes real HTTP requests and drives real Chromium
 against a deterministic loopback fixture. ReportPortal (RP) is explicitly disabled
@@ -20,12 +20,12 @@ SDK=/absolute/path/to/CucumberReportportal
 WORK=$(mktemp -d "${TMPDIR:-/tmp}/current-sdk-consumer.XXXXXX")
 cp -R "$SDK/examples/current_sdk" "$WORK/project"
 cd "$SDK"
-gem build reportportal-cucumber-ruby.gemspec --output "$WORK/reportportal-cucumber-ruby-1.2.0.gem"
+gem build reportportal-cucumber-ruby.gemspec --output "$WORK/reportportal-cucumber-ruby-1.3.0.gem"
 cd "$WORK/project"
 export GEM_HOME="$WORK/gems"
 export GEM_PATH="$GEM_HOME:$(ruby -e 'puts Gem.default_path.join(":")')"
 export PATH="$GEM_HOME/bin:$(ruby -e 'puts Gem.default_bindir'):$PATH"
-export SDK_GEM_ARCHIVE="$WORK/reportportal-cucumber-ruby-1.2.0.gem"
+export SDK_GEM_ARCHIVE="$WORK/reportportal-cucumber-ruby-1.3.0.gem"
 export EXPECTED_SDK_INSTALL_ROOT="$GEM_HOME"
 export SDK_SOURCE_ROOT="$SDK"
 export RP_ENABLED=false

@@ -1,0 +1,31 @@
+# Separate, pinned Traefik 41.7.1 installation for local acceptance only.
+# The wrapper does not install or take ownership of a shared ingress controller.
+ingressClass:
+  enabled: true
+  isDefaultClass: false
+  name: traefik
+providers:
+  kubernetesCRD:
+    enabled: false
+  kubernetesIngress:
+    enabled: true
+    ingressClass: traefik
+ports:
+  web:
+    exposedPort: 18080
+  websecure:
+    expose:
+      default: false
+service:
+  type: LoadBalancer
+resources:
+  requests: {cpu: 50m, memory: 64Mi}
+  limits: {cpu: "1", memory: 256Mi}
+additionalArguments:
+  - --entrypoints.web.http.aliasheadersstrategy=reject
+  - --entrypoints.websecure.http.aliasheadersstrategy=reject
+  - --entrypoints.traefik.http.aliasheadersstrategy=reject
+  - --entrypoints.metrics.http.aliasheadersstrategy=reject
+  - --entrypoints.web.transport.respondingtimeouts.readtimeout=120s
+  - --entrypoints.web.transport.respondingtimeouts.writetimeout=120s
+  - --entrypoints.web.transport.respondingtimeouts.idletimeout=120s
