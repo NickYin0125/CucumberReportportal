@@ -106,4 +106,6 @@ ReportPortal remains **26.0.5** with upstream dependency **26.8.12**. The origin
 duration, fault and storage evidence above retains its actual candidate versions
 and timestamps; version promotion does not retroactively change that evidence.
 Fresh 1.3.0 packaging, regression and GitHub workflow results are recorded in the
-release acceptance report. The SDK runtime changes only its version identifier.
+release acceptance report. Subsequent cloud CI also identified and fixed an
+older-JSON-parser binary Multipart compatibility issue; that follow-up is
+documented separately and does not rewrite the original physical-run evidence.

@@ -138,7 +138,8 @@ module ReportportalCucumber
           when Array
             json_part[:body]
           else
-            JSON.parse(json_part[:body].to_s)
+            # Older JSON parsers retag their input as UTF-8; keep wire bytes binary.
+            JSON.parse(json_part[:body].to_s.dup)
           end
 
         referenced_files = Array(entries).filter_map do |entry|

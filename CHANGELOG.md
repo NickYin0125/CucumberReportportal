@@ -12,10 +12,11 @@
 
 ### Regression And Distribution
 
+- Preserve binary Multipart sources during metadata validation: older JSON parsers can retag their input as UTF-8, breaking non-ASCII log plus binary attachment requests on Ruby 3.3. Add a byte/encoding regression guard.
 - Add opt-in, single-process duration and fault harnesses: an accepted 900-second run confirmed 811 logs, 750 seeded trade/margin pairs and CSV integrity; a separate real-RP proxy matrix passed 14 fault cases.
 - Keep these repository QA harnesses and their mock dependencies outside the installed production gem. Preserve original evidence and documented retry ambiguity; this is not an exactly-once or zero-loss guarantee.
 - Add validated GitHub CI and tag-driven release packaging for the gem, locked Helm chart and SHA-256 checksums. RubyGems.org/private-registry publication remains a separate operation.
-- The SDK runtime is unchanged apart from its version identifier. Video recording stays caller-owned; anonymous video reads remain an intentional internal-network policy. No historical-report migration, Huawei live deployment, production HA or M5 certification is implied.
+- Apart from the version identifier and this Multipart compatibility fix, SDK runtime behavior is unchanged. Video recording stays caller-owned; anonymous video reads remain an intentional internal-network policy. No historical-report migration, Huawei live deployment, production HA or M5 certification is implied.
 
 ## 1.2.0 - 2026-10-12
 
