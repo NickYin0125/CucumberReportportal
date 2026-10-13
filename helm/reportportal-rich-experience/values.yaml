@@ -2,13 +2,10 @@
 reportportal:
   ingress:
     enable: true
-    class: nginx
+    class: traefik
     hosts: null
     path: ""
-    annotations:
-      nginx.ingress.kubernetes.io/proxy-body-size: "128m"
-      nginx.ingress.kubernetes.io/proxy-read-timeout: "4000"
-      nginx.ingress.kubernetes.io/proxy-send-timeout: "4000"
+    annotations: {}
   storage:
     type: minio
     accesskey: rpuser
@@ -19,6 +16,9 @@ reportportal:
       type: multi
   minio:
     install: true
+    # Fresh-install capacity; do not change an existing PVC without a storage plan.
+    persistence:
+      size: 8Gi
     auth:
       rootUser: rpuser
       rootPassword: miniopassword
@@ -41,6 +41,15 @@ videoBucket:
   name: automation-videos
   objectPrefix: videos
   makePublic: true
+  # A disabled extension still reconciles an existing bucket to private access.
+  revokeOnDisable: true
+  retention:
+    enabled: true
+    expireDays: 30
+  quota:
+    enabled: true
+    # At most half of the default 8Gi volume; RP attachments share this storage.
+    size: 4GiB
   endpoint:
     scheme: http
     host: ""
@@ -53,17 +62,13 @@ videoBucket:
     secretKey: ""
   ingress:
     enabled: true
-    className: nginx
+    className: traefik
     hosts: []
-    path: /automation-videos(/|$)(.*)
-    pathType: ImplementationSpecific
+    path: /automation-videos
+    pathType: Prefix
     serviceName: ""
     servicePort: 9000
-    annotations:
-      nginx.ingress.kubernetes.io/use-regex: "true"
-      nginx.ingress.kubernetes.io/proxy-body-size: "0"
-      nginx.ingress.kubernetes.io/proxy-read-timeout: "4000"
-      nginx.ingress.kubernetes.io/proxy-send-timeout: "4000"
+    annotations: {}
     tls: []
   job:
     useHelmHooks: true

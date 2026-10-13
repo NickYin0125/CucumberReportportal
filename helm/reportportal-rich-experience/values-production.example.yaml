@@ -31,7 +31,13 @@ reportportal:
     superadminInitPasswd:
       secretName: rp-runtime-auth
       passwordKeyName: superadmin-password
-# The legacy public policy grants anonymous writes/deletes, not just reads.
-# Disabling this extension does NOT revoke permissions on previously created buckets.
+# Internal-network deployment: anonymous object reads, authenticated writes/deletes.
 videoBucket:
-  enabled: false
+  enabled: true
+  makePublic: true
+  auth:
+    existingSecret: rp-runtime-auth
+  ingress:
+    tls:
+      - secretName: reportportal-tls
+        hosts: [reportportal.example.com]

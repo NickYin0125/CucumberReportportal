@@ -32,6 +32,27 @@ RSpec.describe ReportportalCucumber::Transport::MultipartHelper do
     expect(public_estimate).to eq(expected)
   end
 
+  it "does not let JSON validation change the binary wire source encoding" do
+    entries = [{ "message" => "雪と café", "file" => { "name" => "evidence.png" } }]
+    json = JSON.generate(entries).b.freeze
+    parts = [
+      { name: "json_request_part", content_type: "application/json", body: json },
+      { name: "file", filename: "evidence.png", content_type: "image/png", body: "\x89PNG\xFF\x00".b }
+    ]
+
+    described_class.validate_alignment!(parts)
+
+    expect(json.encoding).to eq(Encoding::BINARY)
+    expect(json).to eq(JSON.generate(entries).b)
+    normalized = described_class.normalize_parts(parts)
+    described_class.validate_alignment!(normalized)
+    expect(normalized.map { |part| part.fetch(:body).encoding }).to all(eq(Encoding::BINARY))
+    source = described_class.body_source(parts: parts, boundary: "encoding-regression")
+    expect(source.body.encoding).to eq(Encoding::BINARY)
+    expect(source.body).to include(json, "\x89PNG\xFF\x00".b)
+    expect(source.body.bytesize).to eq(described_class.encoded_length(parts: parts, boundary: "encoding-regression"))
+  end
+
   it "sizes path-backed files with stat and streams file bytes instead of reading them all at once" do
     Dir.mktmpdir("m4a-multipart-") do |directory|
       path = File.join(directory, "payload.bin")

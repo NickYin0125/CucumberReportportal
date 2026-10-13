@@ -3,6 +3,7 @@
 require "json"
 require "fileutils"
 require "net/http"
+require "rbconfig"
 require "rspec/core/rake_task"
 require "time"
 require "uri"
@@ -10,6 +11,26 @@ require "uri"
 RSpec::Core::RakeTask.new(:spec)
 
 namespace :rp do
+  desc "Run the single-process clearing duration regression against ReportPortal"
+  task :duration do
+    mode = ENV.fetch("DAY2_MODE", "live")
+    arguments = ["--mode", mode, "--seconds", ENV.fetch("DAY2_SECONDS", "900"),
+                 "--iterations", ENV.fetch("DAY2_ITERATIONS", "750"),
+                 "--seed", ENV.fetch("DAY2_SEED", "20261013")]
+    arguments += ["--endpoint", ENV.fetch("RP_ENDPOINT")] unless mode == "smoke"
+    success = system(RbConfig.ruby, File.expand_path("examples/day2_endurance/run.rb", __dir__), *arguments)
+    abort "Duration regression or delivery reconciliation failed" unless success
+  end
+
+  desc "Run isolated RP upload-chain fault tests (set DAY2_LIVE=true for explicit local RP opt-in)"
+  task :failure_stress do
+    live = ENV["DAY2_LIVE"] == "true"
+    runner = live ? "run_live.rb" : "run_local.rb"
+    arguments = live ? ["--execute-local-rp"] : []
+    success = system(RbConfig.ruby, File.expand_path("examples/day2_faults/#{runner}", __dir__), *arguments)
+    abort "RP upload-chain fault validation failed" unless success
+  end
+
   desc "Run live Cucumber regression against ReportPortal with real-time logs"
   task :regression do
     endpoint = ENV.fetch("RP_ENDPOINT", "http://localhost")

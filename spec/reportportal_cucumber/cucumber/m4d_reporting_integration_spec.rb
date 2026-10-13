@@ -242,8 +242,11 @@ RSpec.describe "M4-D public Cucumber reporting outcomes" do
     expect(result.fetch("receipt").fetch("metadata_failures")).to be > 0
     expect(result.fetch("receipt").fetch("complete")).to be(false)
     expect(result.fetch("exception")).to be_nil
-    expect(result.fetch("stderr")).to include("HTTP 503 (ReportportalCucumber::Transport::HTTPClient::Error)",
-                                              "Formatter#handle_test_step_finished")
+    expect(result.fetch("stderr")).to include("HTTP 503 (ReportportalCucumber::Transport::HTTPClient::Error)")
+    # Keep the source and method in the same frame across Ruby's backtrace label formats.
+    expect(result.fetch("stderr")).to match(
+      %r{reportportal_cucumber/cucumber/formatter\.rb:\d+:in [`'](?:block in )?(?:(?:ReportportalCucumber::Cucumber::)?Formatter#)?handle_test_step_finished['`]}
+    )
     expect(result.fetch("progress")).not_to include("Deliberate M4-D business assertion failure")
   end
 

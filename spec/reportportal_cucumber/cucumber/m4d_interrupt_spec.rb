@@ -189,8 +189,11 @@ RSpec.describe "M4-D native Cucumber interruption" do
     expect(diagnostic.fetch("ack_ids")).to match([match(/\A[0-9a-f-]{36}\z/)])
     expect(diagnostic.fetch("entries").length).to eq(1)
     expect(diagnostic.fetch("entries").first).to include("itemUuid" => action_uuid, "level" => "error")
-    expect(diagnostic.fetch("entries").first.fetch("message")).to include("exit\n", "Kernel.exit",
-                                                                         "Cucumber::Cli::Main#trap_interrupt")
+    message = diagnostic.fetch("entries").first.fetch("message")
+    expect(message).to include("exit\n")
+    # Ruby 3.3 uses unqualified labels; Ruby 3.4 includes the receiver in backtrace frames.
+    expect(message).to match(%r{cucumber/cli/main\.rb:\d+:in [`'](?:Kernel\.)?exit['`]})
+    expect(message).to match(%r{cucumber/cli/main\.rb:\d+:in [`'](?:block in )?(?:Cucumber::Cli::Main#)?trap_interrupt['`]})
     expect(wire.fetch("entries").map { |entry| entry.fetch("itemUuid") }.uniq).to eq([action_uuid])
     action = result.fetch("items").find { |item| item.fetch("responseUuid") == action_uuid }
     expect(action.fetch("name")).to eq("When I emit evidence and wait for interruption")

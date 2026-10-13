@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "videoBucket": {
+      "type": "object",
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "makePublic": {"type": "boolean"},
+        "revokeOnDisable": {"type": "boolean"},
+        "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$"},
+        "retention": {
+          "type": "object",
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "expireDays": {"type": "integer", "minimum": 1}
+          }
+        },
+        "quota": {
+          "type": "object",
+          "properties": {
+            "enabled": {"type": "boolean"},
+            "size": {"type": "string", "pattern": "^[1-9][0-9]*(KiB|MiB|GiB|TiB|KB|MB|GB|TB)$"}
+          }
+        }
+      }
+    }
+  }
+}

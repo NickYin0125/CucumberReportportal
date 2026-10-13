@@ -23,11 +23,14 @@ Gem::Specification.new do |spec|
       "README.md",
       "CHANGELOG.md",
       "docs/design/*.md",
-      "helm/reportportal-rich-experience/README.md",
+      "helm/reportportal-rich-experience/*.md",
       "examples/**/*",
       "exe/**/*",
       "lib/**/*"
-    ].select { |path| File.file?(path) }.sort
+    ].select do |path|
+      # Repository QA harnesses require features/specs and development dependencies.
+      File.file?(path) && !path.match?(%r{\Aexamples/day2_(?:endurance|faults)/})
+    end.sort
   end
 
   spec.bindir = "exe"

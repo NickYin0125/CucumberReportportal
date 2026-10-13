@@ -1,5 +1,5 @@
-{{- /* Creates the public bucket used by minio_markdown video playback. */ -}}
-{{- if .Values.videoBucket.enabled -}}
+{{- /* Reconciles the dedicated video bucket's policy, retention and quota. */ -}}
+{{- if or .Values.videoBucket.enabled .Values.videoBucket.revokeOnDisable -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -51,6 +51,14 @@ spec:
               value: {{ .Values.videoBucket.objectPrefix | quote }}
             - name: MINIO_MAKE_PUBLIC
               value: {{ .Values.videoBucket.makePublic | quote }}
+            - name: MINIO_BUCKET_ENABLED
+              value: {{ .Values.videoBucket.enabled | quote }}
+            - name: MINIO_QUOTA_ENABLED
+              value: {{ .Values.videoBucket.quota.enabled | quote }}
+            - name: MINIO_QUOTA_SIZE
+              value: {{ .Values.videoBucket.quota.size | quote }}
+            - name: MINIO_RETENTION_ENABLED
+              value: {{ .Values.videoBucket.retention.enabled | quote }}
             - name: MINIO_WAIT_ATTEMPTS
               value: {{ .Values.videoBucket.job.wait.attempts | quote }}
             - name: MINIO_WAIT_SLEEP_SECONDS
@@ -65,38 +73,15 @@ spec:
                 secretKeyRef:
                   name: {{ include "reportportal-rich-experience.videoBucketSecretName" . }}
                   key: {{ .Values.videoBucket.auth.secretKeyKey }}
-          command:
-            - /bin/sh
-            - -ec
-          args:
-            - |
-              alias_name="reportportal"
-
-              i=1
-              until mc alias set "${alias_name}" "${MINIO_ENDPOINT}" "${MINIO_ACCESS_KEY}" "${MINIO_SECRET_KEY}"; do
-                if [ "${i}" -ge "${MINIO_WAIT_ATTEMPTS}" ]; then
-                  echo "MinIO did not become ready after ${MINIO_WAIT_ATTEMPTS} attempts" >&2
-                  exit 1
-                fi
-                i=$((i + 1))
-                sleep "${MINIO_WAIT_SLEEP_SECONDS}"
-              done
-
-              mc mb --ignore-existing "${alias_name}/${MINIO_BUCKET}"
-
-              if [ "${MINIO_MAKE_PUBLIC}" = "true" ]; then
-                mc anonymous set public "${alias_name}/${MINIO_BUCKET}" || mc policy set public "${alias_name}/${MINIO_BUCKET}"
-              fi
-
-              mc ilm add --expire-days 30 "${alias_name}/${MINIO_BUCKET}" || \
-                echo "Unable to configure 30-day MinIO ILM policy for ${alias_name}/${MINIO_BUCKET}" >&2
-
-              if [ -n "${MINIO_OBJECT_PREFIX}" ]; then
-                keep_file="$(mktemp)"
-                prefix="${MINIO_OBJECT_PREFIX%/}"
-                touch "${keep_file}"
-                mc cp "${keep_file}" "${alias_name}/${MINIO_BUCKET}/${prefix}/.keep"
-              fi
+          command: ["/bin/sh", "/configuration/reconcile.sh"]
+          volumeMounts:
+            - name: configuration
+              mountPath: /configuration
+              readOnly: true
           resources:
             {{- toYaml .Values.videoBucket.job.resources | nindent 12 }}
+      volumes:
+        - name: configuration
+          configMap:
+            name: {{ printf "%s-video-bucket-config" (include "reportportal-rich-experience.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end }}

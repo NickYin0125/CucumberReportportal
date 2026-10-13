@@ -1,0 +1,12 @@
+# Overlay values-production.example.yaml. This is NOT a verified Huawei private-cloud profile.
+# Confirm the actual IngressClass/controller with your platform team before installation.
+reportportal:
+  ingress:
+    class: REPLACE_WITH_PRIVATE_CLOUD_INGRESS_CLASS
+    annotations: {}
+videoBucket:
+  ingress:
+    className: REPLACE_WITH_PRIVATE_CLOUD_INGRESS_CLASS
+    path: /automation-videos
+    pathType: Prefix
+    annotations: {}

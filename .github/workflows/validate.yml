@@ -1,0 +1,89 @@
+name: Shared Validation
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        type: boolean
+        default: false
+    outputs:
+      artifact-id:
+        description: Immutable artifact from this successful validation job
+        value: ${{ jobs.test.outputs.artifact-id }}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    outputs:
+      artifact-id: ${{ steps.artifacts.outputs.artifact-id }}
+    env:
+      CUCUMBER_PUBLISH_QUIET: "true"
+      BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
+      BUNDLE_FROZEN: "true"
+      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - uses: azure/setup-helm@v5
+        with:
+          version: "v3.18.4"
+
+      - name: Select portable Helm executable
+        run: |
+          helm_bin="$(command -v helm)"
+          test -x "$helm_bin"
+          echo "HELM_BIN=$helm_bin" >> "$GITHUB_ENV"
+
+      - name: Build locked Helm dependency on a fresh runner
+        run: |
+          sha256sum helm/reportportal-rich-experience/Chart.lock > "$RUNNER_TEMP/chart-lock.sha256"
+          helm repo add reportportal https://k8s.reportportal.io/
+          helm repo update
+          helm dependency build ./helm/reportportal-rich-experience
+          sha256sum --check "$RUNNER_TEMP/chart-lock.sha256"
+
+      - name: Validate Helm deployment profiles without deploying
+        run: |
+          chart=./helm/reportportal-rich-experience
+          helm lint "$chart"
+          helm template release-validation "$chart" > /dev/null
+          for profile in values-local-latest.yaml values-production.example.yaml; do
+            helm lint "$chart" -f "$chart/$profile"
+            helm template release-validation "$chart" -f "$chart/$profile" > /dev/null
+          done
+          helm lint "$chart" -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml"
+          helm template release-validation "$chart" -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml" > /dev/null
+
+      - name: Run full RSpec including installed packaging checks
+        run: bundle exec rspec
+
+      - name: Run full offline Cucumber profile
+        run: bundle exec cucumber
+
+      - name: Build verified release bundle
+        if: inputs.release && github.event_name == 'push' && github.ref_type == 'tag'
+        run: bundle exec ruby script/release/cli.rb build "$RELEASE_TAG" "$RELEASE_SHA" "$RUNNER_TEMP/release-bundle"
+
+      - name: Preserve validated release bundle
+        id: artifacts
+        if: inputs.release && github.event_name == 'push' && github.ref_type == 'tag'
+        uses: actions/upload-artifact@v6
+        with:
+          name: release-bundle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release-bundle/
+          if-no-files-found: error
+          retention-days: 7

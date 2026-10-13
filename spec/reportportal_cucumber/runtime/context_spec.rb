@@ -136,10 +136,20 @@ RSpec.describe ReportportalCucumber::Runtime::Context do
       [WeakRef.new(owner), WeakRef.new(item), target]
     end
 
+    def isolated_context_references(factory)
+      # Clear conservative VM stack roots while preserving the context mirrors under test.
+      Thread.new(Thread.current) do |mirror_thread|
+        references = __send__(factory)
+        mirror_thread[described_class::STACK_KEY] = Thread.current[described_class::STACK_KEY]
+        mirror_thread[:reportportal_cucumber_context_state] = Thread.current[:reportportal_cucumber_context_state]
+        references
+      end.value
+    end
+
     it "does not retain completed contexts in a long-lived thread-local map" do
       described_class.new
       keys_before = Thread.current.keys.sort
-      references = finished_context_references
+      references = isolated_context_references(:finished_context_references)
       3.times { GC.start(full_mark: true, immediate_sweep: true) }
       expect(references.none?(&:weakref_alive?)).to be(true)
       expect(Thread.current.keys.sort).to eq(keys_before)
@@ -148,10 +158,11 @@ RSpec.describe ReportportalCucumber::Runtime::Context do
     end
 
     it "does not retain a dead context through metadata mirrors or its weak capture owner" do
-      owner, item, target = unfinished_context_references
+      owner, item, target = isolated_context_references(:unfinished_context_references)
       3.times { GC.start(full_mark: true, immediate_sweep: true) }
       expect(owner.weakref_alive?).to be_falsey
       expect(described_class::CaptureTarget.owner_for(target)).to be_nil
+      expect(item.weakref_alive?).to be_truthy
       replacement = described_class.new
       expect(replacement.current_item).to be_nil
       3.times { GC.start(full_mark: true, immediate_sweep: true) }

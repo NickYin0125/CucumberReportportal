@@ -18,20 +18,22 @@ RSpec.describe "Installed release packaging" do
   root = File.expand_path("../..", __dir__)
   fixtures = File.join(__dir__, "fixtures")
   chart_relative = "helm/reportportal-rich-experience"
-  protected_chart_hashes = {
-    "templates/NOTES.txt" => "5915cf19183a822dd403efa24ac9a1d0ca6854dff42aa7c8d584c0f7c2c578c6",
-    "templates/_helpers.tpl" => "8922cdb346e13c5a7f1148214289574f3a2ea0d9548ebefdd7cb4901adcaed51",
-    "templates/ingress-extension.yaml" => "8457598df3b713523f4936e26690c96814b38e21e4cbfb567194e8a1c2e2ba08",
-    "templates/minio-init-job.yaml" => "929da76a3f85440e02b41830846c2d2fb084a8ac4caa6d581a6aadf1c12fdecf",
-    "templates/minio-video-bucket-secret.yaml" => "afaaa22c48ea09f20c36acebdb10772b389661ad0c53fd5d3a56f6f0cc3d63a7",
-    "values.yaml" => "adf31be615a167bbda76e89d8f95a636a336cb3558bf1ab97f6d75b52b610191"
-  }.freeze
+  chart_payload_files = %w[
+    templates/NOTES.txt templates/_helpers.tpl templates/ingress-extension.yaml
+    templates/minio-init-job.yaml templates/minio-bucket-config.yaml
+    templates/minio-video-bucket-secret.yaml files/reconcile-video-bucket.sh values.yaml values.schema.json
+    README.md OPERATIONS.md HUAWEI_PRIVATE_CLOUD.md values-huawei.example.yaml values-traefik-controller-local.yaml
+  ].freeze
+  protected_chart_hashes = chart_payload_files.to_h do |relative|
+    [relative, Digest::SHA256.file(File.join(root, chart_relative, relative)).hexdigest]
+  end.freeze
 
   before(:context) do
     @scratch = File.realpath(Dir.mktmpdir("rp-candidate-package-"))
     @source = File.join(@scratch, "source")
     @home = File.join(@scratch, "gems")
     @consumer = File.join(@scratch, "consumer")
+    @built_artifacts = []
     FileUtils.mkdir_p([@source, @home, @consumer])
     @spec = Gem::Specification.load(File.join(root, "reportportal-cucumber-ruby.gemspec"))
     (@spec.files + ["reportportal-cucumber-ruby.gemspec"]).each do |relative|
@@ -70,11 +72,12 @@ RSpec.describe "Installed release packaging" do
 
       stdout
     end
-    @artifact = File.join(@source, "reportportal-cucumber-ruby-1.2.0.gem")
+    @artifact = File.join(@source, "#{@spec.full_name}.gem")
     @run.call(Gem.ruby, "-S", "gem", "build", "reportportal-cucumber-ruby.gemspec")
+    @built_artifacts << @artifact
     @run.call(Gem.ruby, "-S", "gem", "install", "--local", "--no-document", "--install-dir", @home,
               bundler.cache_file, @artifact)
-    @installed = File.join(@home, "gems", "reportportal-cucumber-ruby-1.2.0")
+    @installed = File.join(@home, "gems", @spec.full_name)
     FileUtils.cp_r(Dir[File.join(fixtures, "*")], @consumer)
     @bundle = File.join(@home, "gems", bundler.full_name, "exe", "bundle")
     @consumer_env = { "BUNDLE_GEMFILE" => File.join(@consumer, "Gemfile"), "BUNDLE_IGNORE_CONFIG" => "1" }
@@ -87,7 +90,7 @@ RSpec.describe "Installed release packaging" do
     evidence = ENV["RP_PACKAGING_EVIDENCE_DIR"]
     if evidence && @provenance
       FileUtils.mkdir_p(evidence)
-      artifacts = [@artifact, @chart_package].compact.select { |path| File.file?(path) }
+      artifacts = @built_artifacts.select { |path| File.file?(path) }
       artifacts.each { |path| FileUtils.cp(path, evidence) }
       manifest = {
         gem_version: @spec.version.to_s,
@@ -107,7 +110,7 @@ RSpec.describe "Installed release packaging" do
 
   it "has the release identity and verified-origin metadata without a fabricated email" do
     package = Gem::Package.new(@artifact).spec
-    expect(package.version.to_s).to eq("1.2.0")
+    expect(package.version.to_s).to eq("1.3.0")
     expect(package.version).not_to be_prerelease
     expect(package.homepage).to eq("https://github.com/NickYin0125/CucumberReportportal")
     expect(package.metadata.fetch("source_code_uri")).to eq(package.homepage)
@@ -123,10 +126,11 @@ RSpec.describe "Installed release packaging" do
     expect(@provenance.fetch("loaded_gems") & %w[puma rackup rantly sinatra rspec webmock]).to be_empty
   end
 
-  it "excludes development scaffolding and untracked duration experiments from the actual gem" do
+  it "excludes repository-only QA harnesses and development scaffolding from the actual gem" do
     files = Gem::Package.new(@artifact).spec.files
     expect(files.grep(%r{\A(?:features/|spec/|\.github/|Gemfile|Rakefile)})).to be_empty
     expect(files.grep(/duration|clearing_mock_server|\A(?:pkg|tmp)\//)).to be_empty
+    expect(files.grep(%r{\Aexamples/day2_(?:endurance|faults)/})).to be_empty
     expect(files).to include("exe/reportportal-spool", "README.md", "CHANGELOG.md", "LICENSE")
     expect(files).to all(satisfy { |relative| File.file?(File.join(@installed, relative)) })
   end
@@ -145,7 +149,7 @@ RSpec.describe "Installed release packaging" do
   end
 
   it "loads only the installed SDK and a supported Bundler-pinned native Cucumber" do
-    expect(@provenance.fetch("version")).to eq("1.2.0")
+    expect(@provenance.fetch("version")).to eq(@spec.version.to_s)
     expect(@provenance.fetch("gem_root")).to eq(@installed)
     expect(Gem::Version.new(@provenance.fetch("cucumber"))).to be >= Gem::Version.new("9.0")
     expect(Gem::Version.new(@provenance.fetch("cucumber"))).to be < Gem::Version.new("11.0")
@@ -161,9 +165,9 @@ RSpec.describe "Installed release packaging" do
     expect(stdout).to include("--transaction", "--dry-run", "--execute")
   end
 
-  it "pins the upgraded dependency and broker bootstrap while retaining the legacy video templates" do
+  it "pins the dependency and compares the approved chart payload with packaged source" do
     chart = YAML.safe_load_file(File.join(root, chart_relative, "Chart.yaml"))
-    expect(chart.fetch("version")).to eq("1.2.0-rc.2")
+    expect(chart.fetch("version")).to eq("1.3.0")
     expect(chart.fetch("appVersion")).to eq("26.0.5")
     expect(chart.fetch("dependencies")).to eq([
       { "name" => "reportportal", "version" => "26.8.12", "repository" => "https://k8s.reportportal.io/" }
@@ -180,7 +184,8 @@ RSpec.describe "Installed release packaging" do
     chart_source = File.join(@scratch, "chart")
     FileUtils.cp_r(File.join(root, chart_relative), chart_source)
     @run.call(helm, "package", chart_source, "--destination", @scratch)
-    @chart_package = File.join(@scratch, "reportportal-rich-experience-1.2.0-rc.2.tgz")
+    @chart_package = File.join(@scratch, "reportportal-rich-experience-1.3.0.tgz")
+    @built_artifacts << @chart_package
     entries = {}
     Zlib::GzipReader.open(@chart_package) do |gzip|
       Gem::Package::TarReader.new(gzip) do |tar|
@@ -188,7 +193,7 @@ RSpec.describe "Installed release packaging" do
       end
     end
     packaged_chart = YAML.safe_load(entries.fetch("reportportal-rich-experience/Chart.yaml"))
-    expect(packaged_chart.fetch("version")).to eq("1.2.0-rc.2")
+    expect(packaged_chart.fetch("version")).to eq("1.3.0")
     expect(packaged_chart.fetch("appVersion")).to eq("26.0.5")
     protected_chart_hashes.each do |relative, digest|
       expect(Digest::SHA256.hexdigest(entries.fetch("reportportal-rich-experience/#{relative}"))).to eq(digest)
