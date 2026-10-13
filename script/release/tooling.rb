@@ -249,7 +249,21 @@ module ReleaseTooling
 
     def read_release
       out = @commands.run("gh", "api", "repos/#{@repository}/releases/tags/#{@source.tag}", allow_missing: true)
-      out && JSON.parse(out)
+      return JSON.parse(out) if out
+
+      # The by-tag endpoint can hide drafts; authenticated listing exposes them.
+      listing = @commands.run("gh", "api", "repos/#{@repository}/releases?per_page=100",
+                              "--paginate", "--slurp")
+      pages = JSON.parse(listing)
+      raise Error, "Unexpected remote release listing" unless pages.is_a?(Array) && pages.all? { |page| page.is_a?(Array) }
+
+      releases = pages.flatten(1)
+      raise Error, "Unexpected remote release records" unless releases.all? { |release| release.is_a?(Hash) && release["tag_name"].is_a?(String) }
+
+      matches = releases.select { |release| release["tag_name"] == @source.tag }
+      raise Error, "Ambiguous remote release drafts for this tag" if matches.length > 1
+
+      matches.first
     end
 
     def validate_release!(release)

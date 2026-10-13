@@ -8,7 +8,8 @@ begin
     raise ReleaseTooling::Error, "Usage: ruby script/release/cli.rb build|publish TAG COMMIT OUTPUT_DIRECTORY"
   end
 
-  source = ReleaseTooling::Source.new(root: File.expand_path("../..", __dir__), tag: tag, commit: commit)
+  root = ENV.fetch("RELEASE_SOURCE_ROOT", File.expand_path("../..", __dir__))
+  source = ReleaseTooling::Source.new(root: root, tag: tag, commit: commit)
   if command == "build"
     ReleaseTooling::Bundle.new(source, directory).build!
   else

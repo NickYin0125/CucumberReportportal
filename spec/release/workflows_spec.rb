@@ -8,6 +8,7 @@ RSpec.describe "Release workflow security and validation contract" do
   let(:ci) { YAML.load_file(File.join(root, ".github/workflows/ci.yml")) }
   let(:validation) { YAML.load_file(File.join(root, ".github/workflows/validate.yml")) }
   let(:release) { YAML.load_file(File.join(root, ".github/workflows/release.yml")) }
+  let(:resume) { YAML.load_file(File.join(root, ".github/workflows/release-resume.yml")) }
 
   it "shares the same full validation for PRs, branches and tags with read-only defaults" do
     [ci, validation, release].each { |workflow| expect(workflow.fetch("permissions")).to eq("contents" => "read") }
@@ -85,5 +86,33 @@ RSpec.describe "Release workflow security and validation contract" do
     expect(download.dig("with", "artifact-ids")).to eq("${{ needs.validate.outputs.artifact-id }}")
     expect(steps.last.dig("with", "if-no-files-found")).to eq("error")
     expect(release.to_s).not_to include("gem push", "workflow_dispatch", "workflow_run")
+  end
+
+  it "allows draft recovery only from main and a completed original tag validation" do
+    expect(resume.fetch(true).keys).to eq(["workflow_dispatch"])
+    expect(resume.dig("jobs", "preflight", "if")).to eq("github.ref == 'refs/heads/main'")
+    expect(resume.fetch("permissions")).to eq("contents" => "read", "actions" => "read")
+    run = resume.dig("jobs", "preflight", "steps").last.fetch("run")
+    expect(run).to include(".status == \"completed\"", ".event == \"push\"", ".head_sha == $sha",
+                          ".head_branch == $tag", ".workflow_id == $workflow", '"validate / test"',
+                          '.conclusion == "success"', ".expired == false", "git merge-base --is-ancestor")
+    expect(run).not_to include("git tag", "--force")
+    expect(resume.dig("concurrency", "cancel-in-progress")).to be(false)
+  end
+
+  it "reuses original immutable artifacts and source rather than rebuilding an existing tag" do
+    job = resume.dig("jobs", "publish")
+    expect(job.fetch("needs")).to eq("preflight")
+    expect(job.fetch("permissions")).to eq("contents" => "write", "actions" => "read")
+    steps = job.fetch("steps")
+    source_checkout = steps.find { |step| step.dig("with", "path") == "release-source" }
+    expect(source_checkout.fetch("with")).to include("ref" => "${{ needs.preflight.outputs.source-sha }}",
+                                                     "fetch-depth" => 0, "persist-credentials" => false)
+    download = steps.find { |step| step.fetch("uses", "").start_with?("actions/download-artifact@") }
+    expect(download.fetch("with")).to include("run-id" => "${{ inputs.source_run_id }}",
+                                               "artifact-ids" => "${{ needs.preflight.outputs.artifact-id }}")
+    expect(steps.last.dig("env", "RELEASE_SOURCE_ROOT")).to eq("${{ github.workspace }}/release-source")
+    expect(steps.last.fetch("run")).to include("script/release/cli.rb publish")
+    expect(steps.filter_map { |step| step["run"] }.join).not_to include(" build ", "gem push", "--clobber")
   end
 end

@@ -1,0 +1,99 @@
+name: Resume Validated Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Stable existing release tag (never moved)
+        required: true
+        type: string
+      source_run_id:
+        description: Completed Tag Release run with successful validation and retained assets
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: tag-release-refs/tags/${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      source-sha: ${{ steps.verify.outputs.source-sha }}
+      artifact-id: ${{ steps.verify.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Require validated original tag artifacts before resuming
+        id: verify
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main
+          source_sha="$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}")"
+          git merge-base --is-ancestor "$source_sha" refs/remotes/origin/main
+          workflow_id="$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/release.yml" --jq .id)"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" > "$RUNNER_TEMP/source-run.json"
+          jq -e --arg sha "$source_sha" --arg tag "$RELEASE_TAG" --argjson workflow "$workflow_id" \
+            '.status == "completed" and .event == "push" and .head_sha == $sha and .head_branch == $tag and .workflow_id == $workflow' \
+            "$RUNNER_TEMP/source-run.json"
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/jobs?filter=latest&per_page=100" > "$RUNNER_TEMP/source-jobs.json"
+          jq -e '[.[] | .jobs[]] as $jobs | all(["preflight", "validate / test"][]; . as $name | any($jobs[]; .name == $name and .conclusion == "success"))' \
+            "$RUNNER_TEMP/source-jobs.json"
+          attempt="$(jq -r .run_attempt "$RUNNER_TEMP/source-run.json")"
+          name="release-bundle-$SOURCE_RUN_ID-$attempt"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/artifacts?per_page=100" > "$RUNNER_TEMP/source-artifacts.json"
+          artifact_id="$(jq -er --arg name "$name" '[.artifacts[] | select(.name == $name and .expired == false)] | if length == 1 then .[0].id else error("missing or ambiguous validated artifact") end' "$RUNNER_TEMP/source-artifacts.json")"
+          echo "source-sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "artifact-id=$artifact_id" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.preflight.outputs.source-sha }}
+          path: release-source
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - uses: actions/download-artifact@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ inputs.source_run_id }}
+          artifact-ids: ${{ needs.preflight.outputs.artifact-id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/release-bundle
+      - name: Resume original verified assets using repaired publication tooling
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_SOURCE_ROOT: ${{ github.workspace }}/release-source
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_SHA: ${{ needs.preflight.outputs.source-sha }}
+        run: ruby script/release/cli.rb publish "$RELEASE_TAG" "$RELEASE_SHA" "$RUNNER_TEMP/release-bundle"
