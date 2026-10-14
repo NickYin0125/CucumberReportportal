@@ -1,4 +1,9 @@
-# M4 delivery acceptance example
+# Specialized source QA: M4 delivery acceptance
+
+This live acceptance harness is retained for the original delivery/replay
+verification. It is a source-checkout QA tool with explicit runner flags, not
+a third-party setup requirement. See [CI integration](../../docs/ci.md) and
+[advanced delivery](../../docs/advanced-reporting.md) for normal consumers.
 
 This is a deliberately opt-in live example, not a health check. It creates one
 ReportPortal launch and one parent item, runs the two Cucumber scenarios below,

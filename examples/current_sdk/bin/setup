@@ -2,12 +2,13 @@
 # frozen_string_literal: true
 
 require_relative "../helpers/command_support"
+require_relative "../helpers/sdk_version"
 require "rubygems/package"
 CurrentSDK::Commands.prepare
-package = File.expand_path(ARGV.fetch(0) { abort "Usage: ruby bin/setup /absolute/path/reportportal-cucumber-ruby-1.2.0.gem" })
+package = File.expand_path(ARGV.fetch(0) { abort "Usage: ruby bin/setup /absolute/path/reportportal-cucumber-ruby-#{CurrentSDK::SDK_VERSION}.gem" })
 spec = Gem::Package.new(package).spec
-abort "Expected reportportal-cucumber-ruby 1.2.0" unless
-  spec.name == "reportportal-cucumber-ruby" && spec.version.to_s == "1.2.0"
+abort "Expected reportportal-cucumber-ruby #{CurrentSDK::SDK_VERSION}" unless
+  spec.name == "reportportal-cucumber-ruby" && spec.version.to_s == CurrentSDK::SDK_VERSION
 
 # A normal gem installation, not a Bundler path aimed at a .gem archive.
 install = [RbConfig.ruby, "-e", 'require "rubygems/gem_runner"; Gem::GemRunner.new.run(ARGV)',

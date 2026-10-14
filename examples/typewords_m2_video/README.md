@@ -1,4 +1,9 @@
-# Typewords M2 viewport video extension
+# Historical Typewords M2 video lab
+
+Retained for the 2026-10-05 recording/playback run. This source-checkout lab
+assumes a local demo application, Kubernetes/MinIO, and historical dependency
+locks. Use [current video/storage guidance](../../docs/advanced-reporting.md#video-and-external-storage)
+before adapting it; recording and credentials belong to your framework.
 
 This optional consumer harness records the real Typewords browser viewport with Ruby Playwright 1.62.0 and official Node Playwright 1.62.1. It uses the existing Docker Desktop Kubernetes ReportPortal deployment and does not manage infrastructure. Runtime packages and browser binaries stay under `tmp/`, outside the gem's packaged `examples/**/*` files.
 

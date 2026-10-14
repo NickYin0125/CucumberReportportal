@@ -1,7 +1,9 @@
 source "https://rubygems.org"
 
+require_relative "helpers/sdk_version"
+
 # Install the 1.3.0 release archive before resolving this independent consumer.
-gem "reportportal-cucumber-ruby", "= 1.3.0"
+gem "reportportal-cucumber-ruby", "= #{CurrentSDK::SDK_VERSION}"
 gem "cucumber", ENV.fetch("CUCUMBER_VERSION", "~> 10.0")
 # Cucumber <= 10's native message builder expects non-nil group children.
 gem "cucumber-cucumber-expressions", "< 19"

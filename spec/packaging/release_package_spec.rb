@@ -135,17 +135,36 @@ RSpec.describe "Installed release packaging" do
     expect(files).to all(satisfy { |relative| File.file?(File.join(@installed, relative)) })
   end
 
-  it "resolves every local Markdown link from the installed README, including design/operator docs" do
-    readme = File.read(File.join(@installed, "README.md"))
-    links = readme.scan(/\[[^\]]+\]\(([^\s)]+)(?:\s+"[^"]*")?\)/).flatten
-    local = links.reject { |link| link.match?(%r{\A(?:[a-z][a-z0-9+.-]*:|#|//)}i) }
-    expect(local.grep(%r{\Adocs/design/}).length).to be >= 6
-    local.each do |link|
-      destination = File.expand_path(link.split("#", 2).first, @installed)
-      expect(destination).to start_with("#{@installed}/")
-      expect(File.file?(destination)).to be(true), "Installed README link missing: #{link}"
+  it "ships the user guides and resolves their local links from the installed gem" do
+    guides = %w[
+      README.md docs/getting-started.md docs/best-practices.md docs/ci.md
+      docs/configuration.md docs/advanced-reporting.md examples/README.md
+    ]
+    guides.each do |guide|
+      path = File.join(@installed, guide)
+      expect(File.file?(path)).to be(true), "Installed guide missing: #{guide}"
+      links = File.read(path).scan(/\[[^\]]+\]\(([^\s)]+)(?:\s+"[^"]*")?\)/).flatten
+      local = links.reject { |link| link.match?(%r{\A(?:[a-z][a-z0-9+.-]*:|#|//)}i) }
+      local.each do |link|
+        destination = File.expand_path(link.split("#", 2).first, File.dirname(path))
+        expect(destination).to start_with("#{@installed}/")
+        expect(File.file?(destination)).to be(true), "Installed #{guide} link missing: #{link}"
+      end
     end
     expect(File.file?(File.join(@installed, chart_relative, "README.md"))).to be(true)
+  end
+
+  it "pins the independent consumer to the packaged SDK version" do
+    gemfile = File.join(@installed, "examples/current_sdk/Gemfile")
+    script = <<~RUBY
+      dsl = Bundler::Dsl.new
+      dsl.eval_gemfile(ARGV.fetch(0))
+      dependency = dsl.dependencies.find { |item| item.name == "reportportal-cucumber-ruby" }
+      puts JSON.generate(version: CurrentSDK::SDK_VERSION, requirement: dependency.requirement.to_s)
+    RUBY
+    consumer = JSON.parse(@run.call(Gem.ruby, "-rbundler", "-rjson", "-e", script, gemfile))
+    expect(consumer.fetch("version")).to eq(@spec.version.to_s)
+    expect(consumer.fetch("requirement")).to eq("= #{@spec.version}")
   end
 
   it "loads only the installed SDK and a supported Bundler-pinned native Cucumber" do
