@@ -1,6 +1,12 @@
-# Independent verification
+# Archived candidate verification — 2026-10-12
 
-Freshly executed on **2026-10-12 Asia/Shanghai** (2026-10-11 UTC), against the
+This is the recorded verification of an earlier **1.2.0.pre.1 candidate**. It is
+not a new run of the released 1.3.0 gem or the updated documentation/example
+scripts. The local evidence paths below describe the original execution host
+and are not downloadable repository artifacts. For current consumer commands,
+read [the example guide](README.md); keep these historical outcomes unchanged.
+
+Executed on **2026-10-12 Asia/Shanghai** (2026-10-11 UTC), against the
 current working-tree SDK, not historical screenshots or release promises.
 
 ## Installation And Runtime

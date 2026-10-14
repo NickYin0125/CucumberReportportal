@@ -7,6 +7,7 @@ require "playwright/version"
 require "digest"
 require "json"
 require "pathname"
+require_relative "../helpers/sdk_version"
 
 spec = Gem.loaded_specs.fetch("reportportal-cucumber-ruby")
 root = spec.full_gem_path
@@ -21,7 +22,7 @@ matches = source && files.keys == source_files && files.all? do |path, hash|
   Digest::SHA256.file(File.join(source, path)).hexdigest == hash
 end
 abort "Installed runtime differs from SDK_SOURCE_ROOT" if source && !matches
-abort "Wrong SDK version" unless ReportportalCucumber::VERSION == "1.2.0"
+abort "Wrong SDK version: expected #{CurrentSDK::SDK_VERSION}" unless ReportportalCucumber::VERSION == CurrentSDK::SDK_VERSION
 if ENV["EXPECTED_SDK_INSTALL_ROOT"] && !root.start_with?(File.expand_path(ENV.fetch("EXPECTED_SDK_INSTALL_ROOT")) + "/")
   abort "SDK was not loaded from the expected isolated installation"
 end

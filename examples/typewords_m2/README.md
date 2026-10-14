@@ -1,4 +1,9 @@
-# Typewords M2 live acceptance
+# Historical Typewords M2 lab
+
+Retained for the 2026-10-05 open-Step evidence run. This source-checkout lab
+uses a local demo application/RP deployment and historical dependency locks; it
+is not the portable installation path. Use [the current consumer example](../current_sdk/README.md)
+and [best practices](../../docs/best-practices.md) for new projects.
 
 This optional example exercises the M2 reporting API with a real Ruby Cucumber run and official Playwright Ruby/Node clients. It does not add Playwright to the ReportPortal gem's runtime dependencies. Run it from this folder with Ruby 3.1+ and Node.js installed.
 
