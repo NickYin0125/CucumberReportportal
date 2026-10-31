@@ -285,7 +285,8 @@ RSpec.describe "Native per-context log ownership" do
     result = native_ownership(duplicate: true, after_failure: true)
     verify_native_owners(result, count: 2)
     expect(result.fetch("statuses").map { |entry| entry.fetch("status") }).to eq([1, 1, 1])
-    diagnostics = result.fetch("outgoing").select { |log| log.fetch("message").include?("OWNERSHIP_ORIGINAL_AFTERALL_FAILURE") }
+    title = "## \u2717 RuntimeError: OWNERSHIP\\_ORIGINAL\\_AFTERALL\\_FAILURE"
+    diagnostics = result.fetch("outgoing").select { |log| log.fetch("message").lines.first&.chomp == title }
     expect(diagnostics.length).to eq(4)
     expect(diagnostics).to all(include("level" => "error"))
     expect(diagnostics.map { |log| log["itemUuid"] }).to all(be_nil)

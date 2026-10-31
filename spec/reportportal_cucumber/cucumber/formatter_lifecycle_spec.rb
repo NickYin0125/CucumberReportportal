@@ -386,7 +386,8 @@ RSpec.describe "production formatter lifecycle" do
     expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
     expect(result.fetch("launches")).to all(include("status" => "FAILED"))
     expect(result.fetch("receipts")).to all(include("complete" => true))
-    error_log = result.fetch("logs").find { |log| log.fetch("message").include?("ORIGINAL_AFTER_ALL") }
+    title = "## \u2717 RuntimeError: ORIGINAL\\_AFTER\\_ALL password=\\[REDACTED\\]"
+    error_log = result.fetch("logs").find { |log| log.fetch("message").lines.first&.chomp == title }
     expect(error_log).to include("level" => "error")
     expect(error_log["itemUuid"]).to be_nil
     expect(error_log.fetch("message")).not_to include("synthetic-private-value")
@@ -485,7 +486,10 @@ RSpec.describe "production formatter lifecycle" do
     expect(result.fetch("requests").select { |request| request.fetch("path").include?("/launch") }).to be_empty
     expect(result.fetch("launches")).to contain_exactly(include("uuid" => uuid, "status" => "IN_PROGRESS"))
     expect(result.fetch("receipts")).to all(include("complete" => true))
-    expect(result.fetch("logs")).to include(include("launchUuid" => uuid, "level" => "error", "message" => /ORIGINAL_AFTER_ALL/))
+    title = "## \u2717 RuntimeError: ORIGINAL\\_AFTER\\_ALL password=\\[REDACTED\\]"
+    error_log = result.fetch("logs").find { |log| log.fetch("message").lines.first&.chomp == title }
+    expect(error_log).to include("launchUuid" => uuid, "level" => "error")
+    expect(error_log["itemUuid"]).to be_nil
   end
 
   it "uses the exact CI-owned UUID for late workers after its creator exits without launch requests or Join files" do
