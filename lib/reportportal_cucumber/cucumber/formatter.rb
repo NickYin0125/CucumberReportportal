@@ -656,7 +656,7 @@ module ReportportalCucumber
         )
         runtime_context.push_step(item)
         runtime_context.register_capture_target(item, launch_uuid: @launch_uuid, owner: self)
-        emit_step_markdown_log(item_uuid: step_uuid, description: step_description, timestamp: extract_timestamp(event) || Time.now) if step_descriptor&.rich?
+        emit_step_markdown_log(item_uuid: step_uuid, descriptor: step_descriptor, timestamp: extract_timestamp(event) || Time.now) if step_descriptor&.rich?
         if (test_step_id = extract_test_step_id(event))
           runtime_context.associate_test_step(test_step_id, item)
         end
@@ -1138,10 +1138,13 @@ module ReportportalCucumber
       end
 
       # @param item_uuid [String]
-      # @param description [String, nil]
+      # @param descriptor [ReportportalCucumber::ReportPortal::Models::StepDesc]
       # @param timestamp [Time]
       # @return [void]
-      def emit_step_markdown_log(item_uuid:, description:, timestamp:)
+      def emit_step_markdown_log(item_uuid:, descriptor:, timestamp:)
+        description = Presentation::Fallback.render(fallback: -> { descriptor.baseline_markdown }) do
+          descriptor.to_markdown(mode: :log)
+        end
         return if description.to_s.strip.empty?
 
         @log_buffer.emit_log(
@@ -1515,7 +1518,12 @@ module ReportportalCucumber
       def extract_step_description(event, descriptor: nil)
         return nil if extract_hook?(event)
 
-        (descriptor || build_step_descriptor(event))&.to_markdown
+        descriptor ||= build_step_descriptor(event)
+        return nil unless descriptor&.rich?
+
+        Presentation::Fallback.render(fallback: -> { descriptor.baseline_markdown }) do
+          descriptor.to_markdown(mode: :description)
+        end
       end
 
       # @param event [Object]
@@ -1586,6 +1594,21 @@ module ReportportalCucumber
       # @param base_name [String]
       # @return [String]
       def hook_display_name(event, base_name)
+        Presentation::Fallback.render(fallback: -> { baseline_hook_display_name(event, base_name) }) do
+          label = case extract_hook_type(event)
+                  when "before", "before_method" then "Before hook"
+                  when "after", "after_method" then "After hook"
+                  when "after_step" then "AfterStep hook"
+                  when "before_all", "before_class" then "BeforeAll hook"
+                  when "after_all", "after_class" then "AfterAll hook"
+                  else "Hook"
+                  end
+          unnamed = base_name.match?(/\A\s*(before|after|after\s*step|before\s*all|after\s*all|around)?\s*hook\s*\z/i)
+          unnamed ? label : "#{label} \u00b7 #{base_name}"
+        end
+      end
+
+      def baseline_hook_display_name(event, base_name)
         case extract_hook_type(event)
         when "before", "before_method"
           "Before Hook: #{base_name}"
