@@ -577,3 +577,22 @@ Files to update on each line: `lib/reportportal_cucumber/version.rb`, `Gemfile.l
 ## 9. Upstream note for ReportPortal (not client work)
 
 In RP UI 5.15.6, the log renderer's output keeps a `<style>` element and `background-image:url(…)` in inline styles. A log message could therefore restyle the whole page or make every viewer's browser fetch an outside URL. This was observed in the render function, not with a stored log. File it upstream with a minimal reproduction made in a disposable project.
+
+
+## Decisions
+
+Owner-confirmed on 2026-10-31. The following questions and answers are reproduced
+word for word. These decisions take precedence over conflicting text above;
+the independent tester must assess against them.
+
+1. Question: 还有一处验收冲突需要确认：规范要求表格换行生成 <br>，P2.3 却禁止任何原始尖括号。是否允许唯一例外：由客户端生成的 <br>，用户输入的尖括号仍必须转义？
+
+   Owner answer: 允许客户端生成的 <br>（推荐）
+
+2. Question: Rich 样例会把 PNG 移到文件名前、把“Assertion passed”换成“PASS”，但 P10.6 要求所有原文字词顺序不变。你希望以哪项为准？
+
+   Owner answer: 按 Rich 样例呈现，调整 P10.6 允许这些差异
+
+3. Question: 现有完整回归测试会在临时目录调用 Helm 打包，与你要求“不得打包 Helm”冲突。是否允许仅运行这些现有隔离测试，不生成交付 Chart、不部署、不上传？
+
+   Owner answer: 允许测试中的临时打包（推荐）
