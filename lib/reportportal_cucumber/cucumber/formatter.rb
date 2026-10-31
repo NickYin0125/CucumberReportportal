@@ -480,8 +480,8 @@ module ReportportalCucumber
             @api.start_launch(
               name: @config.launch,
               start_time: start_time,
-              description: @config.launch_description,
-              attributes: @config.launch_attributes,
+              description: launch_metadata[:description],
+              attributes: launch_metadata[:attributes],
               mode: @config.launch_mode,
               rerun: @config.rerun?,
               rerun_of: @config.rerun_of,
@@ -499,6 +499,25 @@ module ReportportalCucumber
             creator.call
           end
         debug("Launch ready uuid=#{@launch_uuid}")
+      end
+
+      def launch_metadata
+        baseline = { attributes: @config.launch_attributes, description: @config.launch_description }
+        unless @config.run_context?
+          return baseline
+        end
+
+        # Finish must retain the exact metadata computed at start, even if CI
+        # environment variables change while scenarios are running.
+        @launch_metadata ||= Presentation::Fallback.render(fallback: -> { baseline }) do
+          Presentation::RunContext.build(
+            attributes: @config.launch_attributes,
+            description: @config.launch_description,
+            sdk_version: ReportportalCucumber::VERSION,
+            cucumber_version: Gem.loaded_specs.fetch("cucumber").version.to_s,
+            include_workers: false
+          )
+        end
       end
 
       # @param event [Object]
@@ -826,7 +845,7 @@ module ReportportalCucumber
               launch_uuid: @launch_uuid,
               end_time: monotonic_timestamp(end_time),
               status: status,
-              attributes: @config.launch_attributes
+              attributes: launch_metadata[:attributes]
             )
           end
         end
