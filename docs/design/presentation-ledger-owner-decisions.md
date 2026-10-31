@@ -98,6 +98,30 @@ publication, or a target synchronization on 1.x. It grants no code, topology,
 ownership, presentation, or other acceptance waiver. Master owns the authorized
 2.x synchronization and records the resulting feature HEAD for final validation.
 
+### Decision 7: Correct contradictory golden examples
+
+Question: 独立 QA 发现验收金样与明确规则有三处冲突：P1 标题下划线未转义；P8 金样遗漏了 F11a 要求的 4 个请求 Header；同一 Hash 报文实际输入长度为 55/51 B，而金样写成 212/148 B。是否按明确规则修正金样，继续逐字节比较，并完整保留 P1 的 62 帧原始基线栈，不放宽帧数要求？
+
+Owner answer: 按规则修正金样，保留严格逐字节验收（推荐）
+
+Golden examples follow the explicit escaping, header and input-byte rules.
+Keep byte-for-byte comparison and all 62 original baseline stack frames.
+
+### Decision 8: Six legacy NUL-preview persistence exceptions
+
+Question: 独立 QA 确认：1.x 旧基线有 6 个含 NUL 字符的文本附件未落库，新版则完整保存，且上传字节、MIME 和归属均不变。是否允许仅这 6 项改用旧版实际提交的报文作对照，并要求新版完整读回；其余 G2/G3 仍严格比较 API 基线？另有一条原生 NUL 用户日志在新旧版均未落库，将明确列为既有限制，暂不改变其语义。
+
+Owner answer: 允许这 6 项基线例外，记录既有限制（推荐）
+
+Only 1.x F08's five text attachments and F09's `nul-repro.txt` use the
+baseline's submitted per-Item log counts/levels and attachment counts, MIME
+types and SHA-256 digests as their comparison source. Preserve the baseline's
+missing-persistence evidence; the candidate must fully read back all six files
+and their logs. All other G2/G3 comparisons retain the persisted API baseline.
+The separately observed native NUL user-log loss is an unchanged 1.x limitation,
+not a newly passing case. No payload semantics or attachment bytes are changed
+by this decision.
+
 ## Historical C0 Checkpoint
 
 C0 is committed on both isolated feature branches:
