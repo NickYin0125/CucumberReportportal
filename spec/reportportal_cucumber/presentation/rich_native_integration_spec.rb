@@ -39,8 +39,12 @@ RSpec.describe "Native Cucumber Ledger channel separation" do
             Then the original business error remains
       FEATURE
       File.write(steps, <<~'RUBY')
-        Before { AppLog.bind(self, output: $ledger_terminal, color: false) }
-        After { AppLog.clear! }
+        Before(name: "Open browser") do
+          $ledger_runtime = ReportportalCucumber.current_runtime
+          AppLog.bind(self, output: $ledger_terminal, color: false)
+        end
+        After(name: "Close browser") { AppLog.clear! }
+        AfterStep(name: "Check browser") {}
         Given("a numeric table") { |_table| }
         Given("a long document") { |_doc| }
         When("I report structured cards and original caller text") do
@@ -88,7 +92,8 @@ RSpec.describe "Native Cucumber Ledger channel separation" do
         files = mock.multipart_requests.flat_map { |batch| batch[:files] }
         File.write(capture, JSON.generate(status: status, logs: mock.logs, items: mock.items.values,
           launches: mock.launches.values, files: files, stdout: stdout.string, stderr: stderr.string,
-          terminal: $ledger_terminal.string, warnings: warnings.string))
+          terminal: $ledger_terminal.string, warnings: warnings.string,
+          retained_hook_names: $ledger_runtime.instance_variable_get(:@hook_names).length))
       RUBY
       env = ENV.keys.grep(/\ARP_/).to_h { |key| [key, nil] }.merge(
         "RP_ENDPOINT" => "https://ledger-rich.example.test", "RP_PROJECT" => "demo", "RP_API_KEY" => "synthetic-only",
@@ -105,6 +110,9 @@ RSpec.describe "Native Cucumber Ledger channel separation" do
         result = JSON.parse(File.read(capture))
         result["native"] = File.readlines(messages).map { |line| JSON.parse(line) }
         expect(result["status"]).to eq(1)
+        expect(result["retained_hook_names"]).to eq(0)
+        expect(result["items"].map { |item| item["name"] }).to include(
+          "Before hook \u00b7 Open browser", "After hook \u00b7 Close browser", "AfterStep hook \u00b7 Check browser")
         expect(result["logs"].length).to eq(14)
         expect(result["logs"].to_json).not_to include("SECRET123")
         [mode, result]
