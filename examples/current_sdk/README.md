@@ -1,14 +1,15 @@
 # Current SDK API/UI example
 
-A small independent Cucumber project using **`reportportal-cucumber-ruby` 1.3.1**.
+A small independent Cucumber project using **`reportportal-cucumber-ruby` 1.3.2**.
 It makes real loopback HTTP requests and optionally drives real Chromium against
 a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-Release 1.3.1 packages corrected setup/runtime scripts with one shared SDK version
-definition and timestamped terminal assertions. Use the example and Gem from the
-same release. Older published archives are retained unchanged.
+SDK 1.3.2 is an unpublished candidate. Use this example and a matching explicitly
+selected candidate archive; no new tag, release URL or registry publication is
+implied. The shared SDK version definition keeps setup/runtime checks aligned.
+Older published archives and their dated evidence are unchanged.
 
 ## Install the consumer
 
@@ -16,27 +17,25 @@ Use Ruby `>=3.1`, Bundler `>=2.6`, and Cucumber `>=9,<11`. Node/npm and the comp
 Playwright CLI/browser are needed for UI, not for the API-only run. The sample pins
 Playwright Ruby to 1.62.0; setup derives its CLI version from the installed binding.
 
-Obtain an updated source checkout to copy **only the example**; no SDK build or
-root development bundle is needed. From **a directory where you keep projects**:
+Use the `maintenance/presentation-ledger-1.3.2` checkout for sample files.
+Obtain the candidate archive from your maintainer or build it with the
+[source-packaging workflow](#source-and-packaging-verification).
 
-```sh
-git clone --depth 1 --branch v1.3.1 https://github.com/NickYin0125/CucumberReportportal.git
-```
-
-Expected: the v1.3.1 checkout with `examples/current_sdk/helpers/sdk_version.rb`
-matching the release Gem. If you already have that checkout, skip the clone and
-set the path below.
-
-From **any working directory**, replace `sample_source` with that checkout path:
+From **any directory**, set absolute checkout and candidate paths. Install in a
+disposable gem directory instead of changing global gems or Bundler settings:
 
 ```sh
 sample_source=/absolute/path/to/CucumberReportportal
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.2.gem
 sample_work=$(mktemp -d "${TMPDIR:-/tmp}/current-sdk-consumer.XXXXXX")
 cp -R "$sample_source/examples/current_sdk" "$sample_work/project"
-curl -fL -o "$sample_work/reportportal-cucumber-ruby-1.3.1.gem" \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
 cd "$sample_work/project"
-export SDK_GEM_ARCHIVE="$sample_work/reportportal-cucumber-ruby-1.3.1.gem"
+export GEM_HOME="$sample_work/gems"
+export GEM_PATH="$GEM_HOME:$(ruby -e 'puts Gem.default_path.join(":")')"
+export PATH="$GEM_HOME/bin:$(ruby -e 'puts Gem.default_bindir'):$PATH"
+export BUNDLE_IGNORE_CONFIG=1
+unset BUNDLE_PATH BUNDLE_GEMFILE
+export EXPECTED_SDK_INSTALL_ROOT="$GEM_HOME"
 export RP_ENABLED=false
 ruby bin/setup "$SDK_GEM_ARCHIVE"
 ```
@@ -161,6 +160,26 @@ the same PNG twice. A rejected target never silently retargets to another action
 See [best practices](../../docs/best-practices.md) and the
 [CI reporting policy](../../docs/ci.md#choose-the-reporting-policy).
 
+## Presentation opt-ins
+
+The default is `RP_PRESENTATION=plain` and `RP_RUN_CONTEXT=false`. After configuring
+RP as above, run from the external consumer copy to opt in:
+
+```sh
+RP_PRESENTATION=rich RP_RUN_CONTEXT=true bundle exec ruby bin/run api --rp
+```
+
+Only client-built RP log cards gain rich accents/folds. Native HTML/messages,
+terminal output, user AppLog text, item names/descriptions and Launch metadata
+remain free of those accents. Run context separately adds allowlisted metadata;
+explicit attributes and descriptions win. No worker attribute is generated on 1.x.
+
+Invalid presentation values warn once and fall back to plain. ERROR first lines,
+evidence values, ownership and attachment bytes remain unchanged. See the
+[configuration reference](../../docs/configuration.md#presentation-and-run-context)
+and [presentation boundaries](../../docs/advanced-reporting.md#presentation).
+This command is an opt-in usage example, not a claim of live RP validation.
+
 ## What to reuse in your project
 
 | File | Responsibility |
@@ -197,8 +216,8 @@ The deterministic local practice page is not represented as Typewords.
 
 ## Source and packaging verification
 
-This optional **maintainer workflow** builds a current candidate instead of using
-the published archive. From **any directory**, set `sdk_source` to the checkout
+This optional **maintainer workflow** builds a current candidate instead of consuming
+a supplied archive. From **any directory**, set `sdk_source` to the checkout
 whose package you want to verify:
 
 ```sh
@@ -211,6 +230,8 @@ cd "$sdk_work/project"
 export GEM_HOME="$sdk_work/gems"
 export GEM_PATH="$GEM_HOME:$(ruby -e 'puts Gem.default_path.join(":")')"
 export PATH="$GEM_HOME/bin:$(ruby -e 'puts Gem.default_bindir'):$PATH"
+export BUNDLE_IGNORE_CONFIG=1
+unset BUNDLE_PATH BUNDLE_GEMFILE
 export SDK_GEM_ARCHIVE="$sdk_work/candidate.gem"
 export EXPECTED_SDK_INSTALL_ROOT="$GEM_HOME"
 export SDK_SOURCE_ROOT="$sdk_source"
@@ -222,7 +243,7 @@ bundle exec ruby bin/verify
 Expected: setup accepts a candidate with the shared consumer version, and runtime
 verification loads that normally installed gem from the isolated GEM_HOME and
 checks its source hashes. This proves the candidate packaging lane when it passes;
-it does not republish/replace v1.3.0 or prove real RP/video ingestion.
+it does not publish 1.3.2, replace older releases, or prove real RP/video ingestion.
 
 For separate Cucumber lanes, use a fresh external copy/lockfile per lane and set
 `CUCUMBER_VERSION='= 9.2.1'` or `'= 10.2.0'` on both setup and verification commands.
@@ -232,4 +253,4 @@ set `SDK_SOURCE_ROOT` to a gemspec-containing checkout. It is not packaging proo
 
 The [archived 2026-10-12 verification](verification.md) records earlier candidate
 runs, toolchain details, HTML backtrace normalization, and limitations. Its older
-candidate version/results must not be relabeled as fresh 1.3.0 acceptance.
+candidate version/results must not be relabeled as fresh 1.3.2 acceptance.

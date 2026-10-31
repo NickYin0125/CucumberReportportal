@@ -4,6 +4,17 @@ Normal stable tags invoke `Tag Release`: verify tag/main ancestry, run the compl
 offline validation, build gem/Chart/checksums/provenance and publish through a draft.
 Only the publish job has contents-write permission. No RubyGems push is performed.
 
+## Current candidate boundary
+
+SDK **1.3.2** is prepared, not published by this change. The matching candidate
+archive is `reportportal-cucumber-ruby-1.3.2.gem`; the companion Chart remains
+`reportportal-rich-experience-1.3.1.tgz` / ReportPortal `26.0.7`. Consume a supplied
+or locally built archive using the [example workflow](../../examples/current_sdk/README.md#source-and-packaging-verification),
+not an assumed release URL. Candidate packaging is not publication authorization.
+No merge, tag, release or deployment is part of C8.
+
+Released as a patch at the owner's request; the two opt-in switches are additive and off by default.
+
 ## Independent SDK and Chart versions
 
 Starting with SDK 1.3.2, the Gem version must match the release tag, but it no

@@ -58,7 +58,29 @@ Owner approval: "允许测试中的临时打包（推荐）"
 Existing isolated regression tests may create and remove temporary Chart
 archives. No deliverable Chart, deployment, upload, release or tag is authorized.
 
-## Checkpoint
+### Decision 4: Cucumber 9 compound arguments
+
+Question: 已实测 Cucumber 9 的解析器拒绝同一步同时包含 DocString 和 DataTable，而 F02/F03 要求两条发布线都跑这类语法。是否允许 1.x 将“原生复合语法”标为 N/A，并用分开的参数步骤验证同样的表格、描述和 Outline 展示；2.x 仍严格验收原生复合语法？
+
+Owner answer: 允许，保留解析失败证据（推荐）
+
+The Cucumber 9 native compound-syntax check alone is N/A. Retain the parser
+failure and verify both argument types with separate steps; this does not waive
+presentation, ownership, description or Outline checks. SDK 2.x retains native
+compound-argument validation.
+
+### Decision 5: Preserve native global-hook topology
+
+Question: 还有一处验收口径需要确认：现有原生 BeforeAll/AfterAll 并不生成独立 Hook Item（2.x 的日志归属 Launch，1.x 的 BeforeAll 甚至早于 formatter 创建）。为遵守“不改变节点拓扑”，是否保留这些行为，将全局钩子的 Item 名称检查标为 N/A，同时继续验证日志/异常与退出闭合，并用单测覆盖已有 class-hook 名称映射？
+
+Owner answer: 保留基线行为并记录 N/A（推荐）
+
+Only native global-hook Item-name checks are N/A. Do not create synthetic Hook
+Items or change Launch ownership. Continue validating logs, exceptions and
+finalization, and unit-test existing class-hook name mappings. The full Q/A for
+Decisions 4 and 5 is also retained in both authoritative design documents.
+
+## Historical C0 Checkpoint
 
 C0 is committed on both isolated feature branches:
 `codex/presentation-ledger-2.0.1` (`9ea7f1f`) and

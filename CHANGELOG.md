@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.3.2 - Unreleased
+
+### Ledger Presentation
+
+- Failure logs show the exception, feature location and project frames before the full original backtrace. Credential redaction now matches the 2.x failure-log behavior.
+- Client-built Markdown escapes user markup; attachment captions show kind, size and available dimensions, unnamed files use step-derived names, and JSON previews are compact.
+- Hook item names are simplified without changing topology. Native global hooks remain Launch-scoped where observed; their independent Item-name checks are N/A, not fabricated hook items.
+- Step-argument logs caption tables and DocStrings, align numeric columns without changing values, and omit the repeated step line. Argument-free steps have no description; Outline descriptions show Examples values on one line.
+- Assertion, failure-evidence and HTTP cards preserve diagnostic values, HTTP severity and existing sanitized bounds.
+- Opt-in `RP_RUN_CONTEXT=true` adds allowlisted SDK, Cucumber, Ruby and CI metadata plus a default Launch description; explicit attributes and descriptions win. No workers attribute is generated on 1.x.
+- Opt-in `RP_PRESENTATION=rich` adds status pills, table-header accents and collapsible evidence to ReportPortal log messages only. Native Cucumber, terminal output, caller text and item metadata remain unchanged.
+- Preserve item hierarchy, identities, statuses, timestamps, ownership, log counts and attachment bytes. Presentation faults retain the original baseline with one warning; rich output preserves ERROR first lines and adds at most 1,024 bytes.
+- Released as a patch at the owner's request; the two opt-in switches are additive and off by default.
+
+
 ## 1.3.1 - 2026-10-31
 
 ### Readable Logger And Runnable Examples
