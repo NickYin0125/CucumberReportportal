@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "../presentation/attachment_caption"
+require_relative "../presentation/ledger_json"
+
 module ReportportalCucumber
   module Service
     # Pure builders for ReportPortal request payloads and identity values.
@@ -163,6 +166,7 @@ module ReportportalCucumber
       end
 
       # @param records [Array<#to_h, Hash>]
+      # @yield [record] Optional message-local presentation failure state.
       # @return [Hash]
       def build_log_batch(records)
         used_names = {}
@@ -173,11 +177,13 @@ module ReportportalCucumber
           payload = record.respond_to?(:to_h) ? record.to_h : record
           attachment = normalize_attachment(payload[:attachment] || payload["attachment"])
           filename = attachment && unique_filename(attachment.fetch(:name), used_names)
+          fallback_state = yield(record) if block_given?
           entries << build_log_entry(
             launch_uuid: payload[:launch_uuid] || payload["launch_uuid"],
             item_uuid: payload[:item_uuid] || payload["item_uuid"],
             time: payload[:timestamp] || payload["timestamp"],
-            message: enrich_log_message(payload[:message] || payload["message"], attachment && attachment.merge(name: filename)),
+            message: enrich_log_message(payload[:message] || payload["message"], attachment && attachment.merge(name: filename),
+                                        fallback_state: fallback_state),
             level: payload[:level] || payload["level"],
             file_name: filename
           )
@@ -357,6 +363,10 @@ module ReportportalCucumber
           name: name,
           mime: mime
         }
+        style = payload[:caption_style] || payload["caption_style"]
+        result[:caption_style] = style if %w[default evidence baseline].include?(style)
+        baseline_name = payload[:baseline_name] || payload["baseline_name"]
+        result[:baseline_name] = baseline_name if baseline_name.is_a?(String)
         if path
           result[:path] = path
         else
@@ -367,10 +377,34 @@ module ReportportalCucumber
 
       # @param message [String, nil]
       # @param attachment [Hash, nil]
+      # @param fallback_state [Hash, nil] Queue-local latch; never persisted or sent.
       # @return [String]
-      def enrich_log_message(message, attachment)
+      def enrich_log_message(message, attachment, fallback_state: nil)
+        return baseline_log_message(message, attachment) unless attachment
+        return baseline_log_message(message, attachment) if attachment[:caption_style] == "baseline"
+
+        Presentation::Fallback.render(fallback: -> { baseline_log_message(message, attachment) }, state: fallback_state) do
+          preview = ledger_attachment_preview(attachment)
+          mime = attachment.fetch(:mime)
+          normalized_mime = mime.to_s.split(';', 2).first.to_s.strip.downcase
+          header = attachment_header(attachment) if %w[image/png image/jpeg].include?(normalized_mime)
+          caption = Presentation::AttachmentCaption.format(
+            name: attachment.fetch(:name), mime: mime, size: attachment_size(attachment), header: header,
+            lines: preview[:lines], evidence: attachment[:caption_style] == "evidence"
+          )
+          base = message.to_s.strip unless %w[default evidence].include?(attachment[:caption_style])
+          [base, caption, preview[:text]].compact.reject(&:empty?).join("\n\n")
+        end
+      end
+
+      # Exact pre-Ledger message, with no new presentation helper calls.
+      # @param message [String, nil]
+      # @param attachment [Hash, nil]
+      # @return [String]
+      def baseline_log_message(message, attachment)
         base = message.to_s.strip
-        preview = attachment_preview(attachment)
+        attachment = attachment.merge(name: attachment[:baseline_name]) if attachment && attachment[:baseline_name]
+        preview = baseline_attachment_preview(attachment)
         parts = []
         parts << base unless base.empty?
         parts << preview unless preview.to_s.strip.empty?
@@ -386,9 +420,18 @@ module ReportportalCucumber
       end
 
       # @param media_type [String, nil]
+      # @param owner_name [String, nil] Owning item's display name; nil preserves the legacy default.
+      # @param index [Integer] Per-owner default-name index, assigned before batching.
       # @return [String]
-      def default_attachment_name(media_type)
-        "attachment#{mime_extension(media_type)}"
+      def default_attachment_name(media_type, owner_name: nil, index: 0)
+        baseline = "attachment#{mime_extension(media_type)}"
+        return baseline if owner_name.nil?
+
+        Presentation::Fallback.render(fallback: -> { baseline }) do
+          slug = Presentation::AttachmentCaption.slug(owner_name)
+          suffix = index.zero? ? "" : "-#{index}"
+          "#{slug}#{suffix}#{mime_extension(media_type)}"
+        end
       end
 
       # @param base [String]
@@ -478,6 +521,14 @@ module ReportportalCucumber
       # @param attachment [Hash, nil]
       # @return [String, nil]
       def attachment_preview(attachment)
+        Presentation::Fallback.render(fallback: -> { baseline_attachment_preview(attachment) }) do
+          ledger_attachment_preview(attachment)[:text]
+        end
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [String, nil] Pre-Ledger preview, independent of shared helpers.
+      def baseline_attachment_preview(attachment)
         return nil unless attachment
 
         json = json_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
@@ -487,12 +538,66 @@ module ReportportalCucumber
         raw = preview_source(attachment)
         truncated = raw.bytesize > PREVIEW_MAX_BYTES
         content = safe_utf8(raw.byteslice(0, PREVIEW_MAX_BYTES))
-        content = pretty_json(content) if json && !truncated
-        content, display_truncated = bounded_preview(content)
+        content = pretty_json(content, presentation: false) if json && !truncated
+        content, display_truncated = baseline_bounded_preview(content)
         preview = fenced_preview(content.rstrip, json ? "json" : "text")
         return preview unless truncated || display_truncated
 
         "#{preview}\n\nPreview truncated. Full log is attached as `#{attachment.fetch(:name)}`."
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [Hash] Bounded preview and complete text-only line count.
+      def ledger_attachment_preview(attachment)
+        return {} unless attachment
+
+        mime = attachment.fetch(:mime).to_s.split(';', 2).first.to_s.strip.downcase
+        json = mime == "application/json" || mime.end_with?("+json")
+        text = mime.start_with?("text/")
+        return {} unless json || text
+
+        raw = preview_source(attachment)
+        byte_cut = raw.bytesize > PREVIEW_MAX_BYTES
+        content = safe_utf8(raw.byteslice(0, PREVIEW_MAX_BYTES))
+        displayed, cut, reason, consumed = bounded_preview(content)
+        reason ||= :bytes if byte_cut
+        complete = !byte_cut && !cut
+        if json && complete
+          pretty = pretty_json(content)
+          candidate, pretty_cut = bounded_preview(pretty)
+          displayed = candidate unless pretty_cut
+        end
+        block = Presentation::MarkdownText.fence(displayed.rstrip, json ? "json" : "text", limit: PREVIEW_MAX_BYTES)
+        raise ArgumentError, "No bounded preview fence" unless block
+
+        if !complete
+          note = if reason == :lines
+                   "_Preview \u00b7 first 100 lines \u00b7 full file attached_"
+                 else
+                   shown = [consumed || PREVIEW_MAX_BYTES, PREVIEW_MAX_BYTES].min
+                   "_Preview \u00b7 first #{Presentation::Units.bytes(shown)} of #{Presentation::Units.bytes(attachment_size(attachment))} \u00b7 full file attached_"
+                 end
+          block += "\n\n#{note}"
+        end
+        # P5's exact JSON golden has no line count, even for a complete preview.
+        { text: block, lines: complete && text && !json ? content.each_line.count : nil }
+      end
+
+      # @param attachment [Hash]
+      # @return [Integer] Original size, never preview or escaped-text size.
+      def attachment_size(attachment)
+        attachment[:path] ? File.size(attachment.fetch(:path)) : attachment.fetch(:bytes).bytesize
+      end
+
+      # @param attachment [Hash]
+      # @return [String] At most 64 KiB; binary evidence itself stays untouched.
+      def attachment_header(attachment)
+        limit = Presentation::ImageDimensions::HEADER_LIMIT
+        if attachment[:path]
+          File.open(attachment.fetch(:path), "rb") { |io| io.read(limit) || "" }
+        else
+          attachment.fetch(:bytes).byteslice(0, limit)
+        end
       end
 
       # @param attachment [Hash]
@@ -513,11 +618,31 @@ module ReportportalCucumber
 
       # @param content [String]
       # @return [Array(String, Boolean)]
-      def bounded_preview(content)
+      def baseline_bounded_preview(content)
         byte_truncated = content.bytesize > PREVIEW_MAX_BYTES
         snippet = safe_utf8(content.byteslice(0, PREVIEW_MAX_BYTES))
         lines = snippet.each_line.take(PREVIEW_MAX_LINES + 1)
         [lines.first(PREVIEW_MAX_LINES).join, byte_truncated || lines.length > PREVIEW_MAX_LINES]
+      end
+
+      # @param content [String]
+      # @return [Array(String, Boolean, Symbol, Integer)] Preview, clipping reason and consumed bytes.
+      def bounded_preview(content)
+        byte_truncated = content.bytesize > PREVIEW_MAX_BYTES
+        snippet = safe_utf8(content.byteslice(0, PREVIEW_MAX_BYTES))
+        preview = String.new(capacity: [snippet.bytesize, PREVIEW_MAX_BYTES].min, encoding: Encoding::UTF_8)
+        lines = 0
+        consumed = 0
+        snippet.each_char do |character|
+          rendered = character == "\0" ? '\u0000' : character
+          return [preview, true, :lines, consumed] if lines >= PREVIEW_MAX_LINES
+          return [preview, true, :bytes, consumed] if preview.bytesize + rendered.bytesize > PREVIEW_MAX_BYTES
+
+          preview << rendered
+          consumed += character.bytesize
+          lines += 1 if character == "\n"
+        end
+        [preview, byte_truncated, byte_truncated ? :bytes : nil, consumed]
       end
 
       # @param content [String]
@@ -542,10 +667,16 @@ module ReportportalCucumber
 
       # @param content [String]
       # @return [String]
-      def pretty_json(content)
-        JSON.pretty_generate(JSON.parse(content.to_s))
-      rescue JSON::ParserError
-        content.to_s
+      # @param presentation [Boolean] False is the exact baseline pretty-printer.
+      def pretty_json(content, presentation: true)
+        begin
+          parsed = JSON.parse(content.to_s)
+        rescue JSON::ParserError
+          return content.to_s
+        end
+        return JSON.pretty_generate(parsed) unless presentation
+
+        Presentation::LedgerJson.format(parsed) || JSON.pretty_generate(parsed)
       end
 
       # @param mime [String]

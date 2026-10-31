@@ -161,7 +161,7 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
 
       expect(message).to include("line-100")
       expect(message).not_to include("line-101")
-      expect(message).to include("Full log is attached as `trace.log`.")
+      expect(message).to include("_Preview · first 100 lines · full file attached_")
     end
 
     it "keeps file path backed mp4 attachments out of in-memory bytes payloads" do

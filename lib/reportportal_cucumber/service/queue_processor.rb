@@ -222,6 +222,10 @@ module ReportportalCucumber
             name: attachment[:name] || attachment["name"],
             mime: attachment[:mime] || attachment["mime"]
           }
+          style = attachment[:caption_style] || attachment["caption_style"]
+          attachment_values[:caption_style] = style if %w[default evidence baseline].include?(style)
+          baseline_name = attachment[:baseline_name] || attachment["baseline_name"]
+          attachment_values[:baseline_name] = baseline_name unless baseline_name.nil?
           values.merge!(attachment_values)
         end
         path = values[:path]
@@ -230,6 +234,7 @@ module ReportportalCucumber
         mime = values[:mime]
         return [0, :rejected_unsupported] if path && data
         return [0, :rejected_unsupported] unless valid_optional_string?(name) && valid_optional_string?(mime)
+        return [0, :rejected_unsupported] unless valid_optional_string?(values[:baseline_name])
         return [0, :rejected_unsupported] unless path.nil? || path.instance_of?(String)
         return [0, :rejected_unsupported] unless data.nil? || data.instance_of?(String)
         return [0, :rejected_unsupported] if attachment && data.nil? && path.nil?
@@ -320,6 +325,8 @@ module ReportportalCucumber
           }
           normalized_attachment[:path] = detached[:path] if values[:path]
           normalized_attachment[:bytes] = detached[:bytes] if values[:bytes]
+          normalized_attachment[:caption_style] = detached[:caption_style] if values[:caption_style]
+          normalized_attachment[:baseline_name] = detached[:baseline_name] if values[:baseline_name]
           normalized_attachment.freeze
         end
         actual = RECORD_OVERHEAD_BYTES + detached.sum do |key, value|
@@ -350,7 +357,9 @@ module ReportportalCucumber
           path: attachment[:path] || attachment["path"] || attachment[:file_path] || attachment["file_path"],
           bytes: attachment[:bytes] || attachment["bytes"],
           name: attachment[:name] || attachment["name"],
-          mime: attachment[:mime] || attachment["mime"]
+          mime: attachment[:mime] || attachment["mime"],
+          caption_style: attachment[:caption_style] || attachment["caption_style"],
+          baseline_name: attachment[:baseline_name] || attachment["baseline_name"]
         }
         captured.all? { |key, value| current[key].equal?(value) }
       end
@@ -548,6 +557,7 @@ module ReportportalCucumber
       end
 
       def flush_batch(records)
+        @presentation_failures = {}
         unsettled = records.dup
         routed = route_external_video_records(records)
         chunk = []
@@ -591,10 +601,14 @@ module ReportportalCucumber
         end
         mark_diagnostic(:delivery_failed)
         handle_error(error)
+      ensure
+        @presentation_failures = nil
       end
 
       def build_payload(records)
-        Service::PayloadBuilder.build_log_batch(records)
+        Service::PayloadBuilder.build_log_batch(records) do |record|
+          @presentation_failures && (@presentation_failures[record.sequence] ||= {})
+        end
       end
 
       def method_accepts_deadline?(method)
@@ -671,11 +685,17 @@ module ReportportalCucumber
 
           public_url = @video_uploader.upload_video(path: attachment[:path], bytes: attachment[:bytes],
                                                    name: attachment.fetch(:name), content_type: attachment.fetch(:mime))
+          caption = record.message
+          unless attachment[:caption_style] == "baseline"
+            caption = Presentation::Fallback.render(fallback: -> { record.message }) do
+              Service::PayloadBuilder.enrich_log_message(record.message, attachment)
+            end
+          end
           message = if video_upload_url?(public_url)
-                      Service::PayloadBuilder.build_video_markdown_message(message: record.message, url: public_url)
+                      Service::PayloadBuilder.build_video_markdown_message(message: caption, url: public_url)
                     else
                       mark_diagnostic(:degraded_evidence)
-                      [record.message, public_url.to_s].reject(&:empty?).join("\n\n")
+                      [caption, public_url.to_s].reject(&:empty?).join("\n\n")
                     end
           LogRecord.new(item_uuid: record.item_uuid, launch_uuid: record.launch_uuid, message: message,
                         level: :error, timestamp: record.timestamp, attachment: nil,

@@ -108,7 +108,8 @@ RSpec.describe "Public Cucumber security regression" do
       )
       expect(all_sinks).to include("security assertion", "security evidence action", "safe readable failure")
       expect(all_sinks).not_to include("SECURITY_READY5_")
-      expect(all_sinks).to include("token_count=12 password_policy=business-only component=payments")
+      expect(result.fetch("logs").map { |log| log.fetch("message") }.join("\n"))
+        .to include("token\\_count=12 password\\_policy=business-only component=payments")
       known_png = result.fetch("multipart").flat_map { |payload| payload.fetch("files") }
         .find { |file| file.fetch("filename") == "known-good.png" }
       expect(known_png.fetch("content_type")).to eq("image/png")
@@ -331,7 +332,7 @@ RSpec.describe "Public Cucumber security regression" do
           expect(missing_path_record.fetch("attachment")).not_to have_key("spooledPath")
 
           byte_record = result.fetch("spool").find do |record|
-            record.fetch("message", "").include?("Failure evidence: known-good.png")
+            record.dig("file", "name") == "known-good.png"
           end
           expect(byte_record).not_to be_nil
           expect(byte_record.fetch("itemUuid")).to match(/\A[0-9a-f-]{36}\z/i)
@@ -343,7 +344,7 @@ RSpec.describe "Public Cucumber security regression" do
         end
         request_text = result.fetch("requests").map { |body| Base64.strict_decode64(body) }.join("\n")
         all_sinks = [stdout, stderr, result.fetch("stdout"), result.fetch("stderr"), File.read(messages),
-                     request_text, result.fetch("spool").to_json].join("\n")
+                     request_text, result.fetch("spool").to_json].map(&:b).join("\n")
         expect(all_sinks).not_to include(
           "SECURITY_EDGE_", "SECURITY_ARTIFACT_MALFORMED", "SECURITY_ARTIFACT_OVERSIZED_",
           "SECURITY_NATIVE_TRANSPORT_SECRET", "SECURITY_CLI_JSON_", "SECURITY_CLI_ERROR_",
@@ -352,7 +353,8 @@ RSpec.describe "Public Cucumber security regression" do
         )
         expect(all_sinks).to include("RuntimeError", "safe offline transport diagnostic")
         expect(all_sinks).not_to include("SECURITY_READY5_")
-        expect(all_sinks).to include("password_policy=business-only token_count=12 monkey=visible component=payments; expected [one, two]")
+        expect(result.fetch("spool").map { |record| record.fetch("message", "") }.join("\n"))
+          .to include("password\\_policy=business-only token\\_count=12 monkey=visible component=payments; expected \\[one, two\\]")
         result.fetch("spool").each do |record|
           expect(record.fetch("spoolError").bytesize).to be <= 2_048
           expect(record.fetch("fallbackSpoolError").bytesize).to be <= 2_048 if record["fallbackSpoolError"]
