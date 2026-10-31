@@ -637,6 +637,27 @@ precedence. The `json:` payload becomes Markdown fenced JSON in reports, while
 AppLog's own terminal output stays a single summary line. Another STDOUT formatter
 may echo `world.log`; this is not a duplicate RP log submission.
 
+Terminal summaries use local date/time with millisecond precision and aligned
+levels, without the `[APPLOG]` prefix:
+
+```text
+2026-10-14 14:32:08.125  INFO   Order submitted
+2026-10-14 14:32:09.438  WARN   Retrying request
+2026-10-14 14:32:12.016  ERROR  Payment failed
+```
+
+Colors remain automatic on a TTY; set `NO_COLOR=1` to disable them. This is a
+terminal-only format and does not add timestamps to Cucumber or RP message bodies.
+Preview it without Cucumber or an RP connection with
+`bundle exec ruby examples/logger_terminal_preview.rb`.
+
+For nine runnable `AppLog.info` parameter combinations, use
+`bundle exec ruby examples/logger_parameters_demo.rb`. This defaults to offline
+Cucumber HTML/messages reporting. Add `--live` after setting `RP_ENDPOINT`,
+`RP_PROJECT`, and `RP_API_KEY` to create a real RP launch; only examples 02-06
+should contain report evidence. The script prints its unique launch name and
+report directory. `json:` and `file:` do not enable reporting on their own.
+
 The existing small logger scenario can be run from the repository:
 
 ```bash

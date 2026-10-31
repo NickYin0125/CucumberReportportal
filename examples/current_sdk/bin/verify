@@ -157,11 +157,11 @@ results = {}
   results[profile] = inspect_report(directory, failed: expected == 1).merge(exit_status: exit_status)
   transcript = File.read(log)
   console = transcript.gsub(/\e\[[\d;]*m/, "")
-  require_check(transcript.include?("\e[36m[APPLOG] [INFO]"), "Missing cyan INFO console presentation")
+  require_check(transcript.match?(/\e\[36m\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}  INFO   /), "Missing timestamped cyan INFO console presentation")
   require_check(!console.match?(/```|^### (?:Request|Response)|^API response snapshot\s*$/), "Rich report body leaked to console")
   if expected.zero?
-    require_check(console.match?(/\[APPLOG\] \[INFO\] POST .*status=400/), "Expected 400 was not INFO")
-    require_check(console.include?("[APPLOG] [DEBUG] API helper is sending"), "Missing DEBUG console presentation")
+    require_check(console.match?(/  INFO   POST .*status=400/), "Expected 400 was not INFO")
+    require_check(console.include?("  DEBUG  API helper is sending"), "Missing DEBUG console presentation")
   end
 end
 no_color = File.join(root, "no-color")
@@ -169,7 +169,8 @@ no_color_log = File.join(root, "no-color-console.txt")
 require_check(execute("bin/run", no_color_log, {"REPORT_DIR" => no_color, "NO_COLOR" => "1"}, "offline").zero?, "NO_COLOR ordinary suite failed")
 plain = File.read(no_color_log)
 require_check(!plain.include?("\e["), "NO_COLOR console still contains ANSI escapes")
-require_check(plain.include?("[APPLOG] [DEBUG]") && plain.include?("[APPLOG] [INFO]"), "NO_COLOR lost one-line logs")
+require_check(plain.match?(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}  DEBUG  /) &&
+              plain.match?(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}  INFO   /), "NO_COLOR lost timestamped one-line logs")
 require_check(!plain.match?(/```|^### (?:Request|Response)/), "NO_COLOR leaked rich evidence to console")
 results["no_color"] = inspect_report(no_color, failed: false).merge(exit_status: 0, ansi: false)
 require_check(spool_inventory(spool) == spool_before, "Disabled RP changed existing spool evidence")
