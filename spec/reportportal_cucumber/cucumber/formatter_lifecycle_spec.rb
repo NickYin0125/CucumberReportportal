@@ -48,7 +48,7 @@ RSpec.describe "production formatter lifecycle" do
     RUBY
     File.write(runner, <<~'RUBY')
       require "bundler/setup"
-      gem "cucumber", ">= 9", "< 11"
+      gem "cucumber", "~> 12.0", ">= 12.0.1"
       require "json"
       require "stringio"
       require "webmock"
@@ -92,6 +92,17 @@ RSpec.describe "production formatter lifecycle" do
         end
       end)
       class LifecycleRuntime < Cucumber::Runtime
+        def initialize(...)
+          super
+          configuration.on_event(:test_run_hook_finished) do |event|
+            exception = event.test_result.respond_to?(:exception) && event.test_result.exception
+            if exception && $native_original
+              $native_hook_exception_identity = exception.equal?($native_original)
+              $native_hook_diagnostic = exception.message
+            end
+          end
+        end
+
         def run!
           super
         rescue Exception => original
@@ -183,6 +194,7 @@ RSpec.describe "production formatter lifecycle" do
         resources: $native_formatters.map { |formatter| [formatter.instance_variable_get(:@api).nil?, formatter.instance_variable_get(:@log_buffer).nil?] },
         join_constructions: $native_join_constructions, teardown_receipt: $native_teardown_receipt,
         hook_exception_identity: $native_hook_exception_identity, run_exception_identity: $native_run_exception_identity,
+        hook_diagnostic: $native_hook_diagnostic,
         business_exception_identity: $native_business_exception_identity,
         threads_before: $native_threads_before, threads_business: $native_threads_business,
         elapsed: Process.clock_gettime(Process::CLOCK_MONOTONIC) - started,
@@ -205,7 +217,8 @@ RSpec.describe "production formatter lifecycle" do
                                            chdir: directory)
     expect(File.file?(capture)).to be(true), "Native capture missing: #{stdout}\n#{stderr}"
     result = JSON.parse(File.read(capture))
-    expect(Gem::Version.new(result.fetch("cucumber_version"))).to be < Gem::Version.new("11")
+    expect(Gem::Version.new(result.fetch("cucumber_version"))).to be >= Gem::Version.new("12.0.1")
+    expect(Gem::Version.new(result.fetch("cucumber_version"))).to be < Gem::Version.new("13")
     expect(result.fetch("cucumber_version")).to eq(Gem.loaded_specs.fetch("cucumber").version.to_s)
     result.merge("exit" => process.exitstatus, "console" => stdout + stderr)
   ensure
@@ -270,11 +283,11 @@ RSpec.describe "production formatter lifecycle" do
 
     it "keeps the original AfterAll exception instead of the missing #{missing.keys} configuration gate" do
       result = native_case(complete: true, strict: true, hook_failure: :after_all, env_overrides: missing)
-      expect(result).to include("exit" => 2, "hook_exception_identity" => true, "run_exception_identity" => true,
+      expect(result).to include("exit" => 1, "hook_exception_identity" => true, "run_exception_identity" => nil,
                                "marks" => %w[before_all business after_all], "requests" => [], "join_constructions" => 0)
       expect(result.fetch("resources")).to eq([[true, true]])
       expect(result.fetch("receipts")).to all(include("complete" => false, "metadata_failures" => 1))
-      expect(result.fetch("errors")).to include("ORIGINAL_AFTER_ALL")
+      expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
       expect(result.fetch("errors")).not_to include("required reporting configuration is incomplete")
     end
   end
@@ -302,8 +315,8 @@ RSpec.describe "production formatter lifecycle" do
     result = native_case(complete: true, hook_failure: :after_all, env_overrides: {
       "RP_ENABLED" => "false", "RP_ENDPOINT" => nil, "RP_PROJECT" => nil, "RP_API_KEY" => nil
     })
-    expect(result).to include("exit" => 2, "run_exception_identity" => true, "requests" => [])
-    expect(result.fetch("errors")).to include("ORIGINAL_AFTER_ALL")
+    expect(result).to include("exit" => 1, "hook_exception_identity" => true, "run_exception_identity" => nil, "requests" => [])
+    expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
     expect(result.fetch("errors")).not_to include("required reporting configuration is incomplete")
   end
 
@@ -335,13 +348,13 @@ RSpec.describe "production formatter lifecycle" do
       result = native_case(mode: "duplicate", complete: true, hook_failure: hook_failure, env_overrides: {
         "RP_ENDPOINT" => nil, "RP_PROJECT" => nil, "RP_API_KEY" => nil
       })
-      expect(result).to include("exit" => 2, "marks" => %w[before_all business after_all], "completions" => [1, 1],
+      expect(result).to include("exit" => hook_failure ? 1 : 2, "marks" => %w[before_all business after_all], "completions" => [1, 1],
                                "native_attached" => [true, true], "requests" => [], "join_constructions" => 0)
       expect(result.fetch("resources")).to eq([[true, true], [true, true]])
       expect(result.fetch("receipts")).to all(include("complete" => false, "metadata_failures" => 1))
       if hook_failure
-        expect(result).to include("run_exception_identity" => true, "hook_exception_identity" => true)
-        expect(result.fetch("errors")).to include("ORIGINAL_AFTER_ALL")
+        expect(result).to include("run_exception_identity" => nil, "hook_exception_identity" => true)
+        expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
         expect(result.fetch("errors")).not_to include("required reporting configuration is incomplete")
       else
         expect(result.fetch("errors")).to include("required reporting configuration is incomplete")
@@ -369,22 +382,24 @@ RSpec.describe "production formatter lifecycle" do
 
   it "reports failed native AfterAll truthfully and preserves the very same original exception" do
     result = native_case(hook_failure: :after_all, complete: true, strict: true)
-    expect(result).to include("exit" => 2, "hook_exception_identity" => true, "run_exception_identity" => true)
-    expect(result.fetch("errors")).to include("ORIGINAL_AFTER_ALL")
+    expect(result).to include("exit" => 1, "hook_exception_identity" => true, "run_exception_identity" => nil)
+    expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
     expect(result.fetch("launches")).to all(include("status" => "FAILED"))
     expect(result.fetch("receipts")).to all(include("complete" => true))
-    error_log = result.fetch("logs").find { |log| log.fetch("message").include?("Native AfterAll failed") }
+    error_log = result.fetch("logs").find { |log| log.fetch("message").include?("ORIGINAL_AFTER_ALL") }
     expect(error_log).to include("level" => "error")
     expect(error_log["itemUuid"]).to be_nil
     expect(error_log.fetch("message")).not_to include("synthetic-private-value")
     expect(result.fetch("items").map { |item| item.fetch("type") }).not_to include("BEFORE_CLASS", "AFTER_CLASS")
   end
 
-  it "leaves no misleading passed launch when native BeforeAll aborts before formatter construction" do
+  it "leaves a failed launch and runs teardown when native BeforeAll aborts before scenarios" do
     result = native_case(hook_failure: :before_all, complete: true, strict: true)
-    expect(result).to include("exit" => 2, "marks" => ["before_all"], "requests" => [], "receipts" => [], "run_exception_identity" => true)
-    expect(result.fetch("errors")).to include("ORIGINAL_BEFORE_ALL")
-    expect(result.fetch("launches")).to be_empty
+    expect(result).to include("exit" => 1, "marks" => %w[before_all after_all], "hook_exception_identity" => true,
+                             "run_exception_identity" => nil, "items" => [])
+    expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_BEFORE_ALL")
+    expect(result.fetch("launches")).to contain_exactly(include("status" => "FAILED"))
+    expect(result.fetch("receipts")).to all(include("complete" => true))
   end
 
   it "keeps sequential native runtimes bound to their own event buses and completion observers" do
@@ -437,8 +452,8 @@ RSpec.describe "production formatter lifecycle" do
 
     it "preserves original run-hook failure instead of strict completeness #{fault}" do
       result = native_case(fault: fault, complete: true, hook_failure: :after_all)
-      expect(result).to include("exit" => 2, "hook_exception_identity" => true, "run_exception_identity" => true)
-      expect(result.fetch("errors")).to include("ORIGINAL_AFTER_ALL")
+      expect(result).to include("exit" => 1, "hook_exception_identity" => true, "run_exception_identity" => nil)
+      expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
       expect(result.fetch("errors")).not_to include("final reporting receipt is incomplete")
       expect(result.fetch("receipts")).to all(include("complete" => false))
     end
@@ -446,8 +461,8 @@ RSpec.describe "production formatter lifecycle" do
 
   it "retains the original AfterAll exception and a bounded final deadline on launch finish failure" do
     result = native_case(fault: "deadline", complete: true, strict: true, hook_failure: :after_all)
-    expect(result).to include("exit" => 2, "run_exception_identity" => true, "hook_exception_identity" => true)
-    expect(result.fetch("errors")).to include("ORIGINAL_AFTER_ALL")
+    expect(result).to include("exit" => 1, "run_exception_identity" => nil, "hook_exception_identity" => true)
+    expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
     expect(result.fetch("elapsed")).to be < 2
     expect(result.fetch("receipts")).to all(include("complete" => false, "metadata_failures" => 1))
   end
@@ -455,9 +470,9 @@ RSpec.describe "production formatter lifecycle" do
   it "shares one final deadline across teardown diagnostic, final metadata and shutdown without replacing AfterAll" do
     result = native_case(fault: "slow_finish", complete: true, strict: true, hook_failure: :after_all,
                          env_overrides: { "RP_EXIT_FLUSH_TIMEOUT_MS" => "50" })
-    expect(result).to include("exit" => 2, "run_exception_identity" => true, "hook_exception_identity" => true)
+    expect(result).to include("exit" => 1, "run_exception_identity" => nil, "hook_exception_identity" => true)
     expect(result.fetch("elapsed")).to be < 0.5
-    expect(result.fetch("errors")).to include("ORIGINAL_AFTER_ALL")
+    expect(result.fetch("hook_diagnostic")).to include("ORIGINAL_AFTER_ALL")
     expect(result.fetch("receipts")).to all(include("complete" => false))
     expect(result.fetch("receipts").first.fetch("metadata_failures")).to be >= 1
   end
@@ -466,11 +481,11 @@ RSpec.describe "production formatter lifecycle" do
     uuid = "01234567-89ab-4cde-8123-456789abcdef"
     result = native_case(hook_failure: :after_all, complete: true, strict: true,
                          env_overrides: { "RP_LAUNCH_UUID" => uuid, "RP_CLIENT_JOIN" => "true" })
-    expect(result).to include("exit" => 2, "run_exception_identity" => true, "join_constructions" => 0)
+    expect(result).to include("exit" => 1, "run_exception_identity" => nil, "hook_exception_identity" => true, "join_constructions" => 0)
     expect(result.fetch("requests").select { |request| request.fetch("path").include?("/launch") }).to be_empty
     expect(result.fetch("launches")).to contain_exactly(include("uuid" => uuid, "status" => "IN_PROGRESS"))
     expect(result.fetch("receipts")).to all(include("complete" => true))
-    expect(result.fetch("logs")).to include(include("launchUuid" => uuid, "level" => "error", "message" => /Native AfterAll failed/))
+    expect(result.fetch("logs")).to include(include("launchUuid" => uuid, "level" => "error", "message" => /ORIGINAL_AFTER_ALL/))
   end
 
   it "uses the exact CI-owned UUID for late workers after its creator exits without launch requests or Join files" do

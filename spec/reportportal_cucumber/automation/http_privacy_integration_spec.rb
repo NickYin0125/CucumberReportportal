@@ -110,7 +110,8 @@ RSpec.describe "Native AppLog HTTP privacy" do
       expect(status.exitstatus).to eq(1), "Unexpected native exit: #{stdout}\n#{stderr}"
       result = JSON.parse(File.read(capture))
       expect(result.fetch("status")).to eq(1)
-      expect(Gem::Version.new(result.fetch("cucumber_version"))).to be < Gem::Version.new("11")
+      expect(Gem::Version.new(result.fetch("cucumber_version"))).to be >= Gem::Version.new("12.0.1")
+      expect(Gem::Version.new(result.fetch("cucumber_version"))).to be < Gem::Version.new("13")
       expect(result.fetch("wire").length).to be >= 12
       raw_native = File.read(messages)
       envelopes = raw_native.lines.map { |line| JSON.parse(line) }

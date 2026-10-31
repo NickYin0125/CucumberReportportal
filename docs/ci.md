@@ -4,6 +4,11 @@ Keep the same World/logger setup and formatter command used locally. Start with
 one Launch per CI job; add shared parallel reporting only when the coordinator
 can own its complete lifecycle.
 
+The serial installation example below intentionally retains published SDK 1.3.1
+and its Ruby >=3.1 / Cucumber 9/10 contract. For unpublished SDK 2.0.0 source
+validation, first use Ruby >=3.3 / Cucumber >=12.0.1, ~>12.0 and the
+[migration guide](migrating-to-2.0.md); do not download a nonexistent 2.0.0 release.
+
 ## A serial job
 
 Prepare a runner with Ruby `>=3.1`, Bundler, curl, and a supported project lockfile.
@@ -127,6 +132,12 @@ than fabricating success. See the [receipt schema](advanced-reporting.md#deliver
 
 ## Parallel workers and a shared Launch
 
+For SDK 2.x, enabled `ReportPortal::Cucumber::ParallelFormatter` workers **must**
+receive `RP_LAUNCH_UUID`. The parent starts and finishes the shared Launch; this
+formatter does not create a coordinator or distributed completion state. The
+worker command below uses `Formatter`, which also respects a supplied UUID;
+select `ParallelFormatter` for the explicitly enforced 2.x worker contract.
+
 Use separate Launches if you do not yet have a coordinator: the default
 `RP_CLIENT_JOIN=false` lets each process create/finish its own Launch. Do not use
 legacy file join as a distributed completion barrier.
@@ -172,11 +183,29 @@ The repository's [GitHub CI workflow](https://github.com/NickYin0125/CucumberRep
 and [shared validation workflow](https://github.com/NickYin0125/CucumberReportportal/blob/main/.github/workflows/validate.yml)
 are **source-checkout developer workflows**. They render/lint the companion Helm
 profiles, run the offline RSpec suite (including installed-gem packaging checks),
-and execute the default Cucumber suite. Browser/live RP/duration checks are
+and execute the default Cucumber suite on current-source Ruby 3.3/3.4. Separate
+Ruby 3.1/3.3 x Cucumber 9/10 jobs check out actual immutable released v1.3.1
+source, not a forced legacy dependency in the SDK 2.x bundle. These jobs
+retains all behavioral cases; its explicit SHA-guarded test-only driver replaces
+four historical `10.2.0` literals with assertions against the selected actual
+Cucumber version, without changing baseline production/spec files. See the
+[normalization and production hash audit](cucumber-12-release-readiness.md#explicit-legacy-test-only-normalization).
+The full matrix must pass before the release bundle is built. Browser/live RP/duration checks are
 separate opt-ins; a green offline run does not claim those were performed.
 
-Stable `vX.Y.Z` release tags validate already-merged source, require matching gem
-and wrapper Chart versions, and package a gem, chart, checksums, and provenance.
+Stable 1.x tags require maintenance ancestry and matching gem/Chart versions;
+2.x tags require main or the explicitly named Cucumber-12 release branch and
+verify the independent chart version from `Chart.yaml`. The exact immutable
+published v1.3.1 commit is the only historical 1.x main exception. Tags still
+package a verified gem, chart, checksums and provenance. SDK 2.0.0 leaves Helm
+1.3.1 / ReportPortal 26.0.7 unchanged and is not currently published.
 They do not publish to RubyGems.org or deploy a Kubernetes stack. See the
 [source-checkout release operator guide](https://github.com/NickYin0125/CucumberReportportal/blob/main/script/release/README.md) and
-[changelog](../CHANGELOG.md) for maintainers.
+[changelog](../CHANGELOG.md) for maintainers. Planned versus actually observed
+checks are recorded separately in [release readiness](cucumber-12-release-readiness.md).
+
+The frozen maintenance branch still has its historical main-only publisher.
+Before any new 1.x publication, separately approve/backport the updated release
+workflow/tooling and required test harness, then validate the actual maintenance
+head. Testing immutable v1.3.1 from this 2.x workflow does not complete that step.
+See the [maintenance publication boundary](cucumber-12-release-readiness.md#frozen-maintenance-publication-boundary).

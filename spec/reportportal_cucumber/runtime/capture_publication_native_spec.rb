@@ -150,7 +150,8 @@ RSpec.describe "Native capture publication under saturation" do
 
   it "bounds close/finalization and cancels every pending artifact without retargeting or accounting loss" do
     result = run_native("saturated")
-    expect(Gem::Version.new(result.fetch("cucumber_version"))).to be < Gem::Version.new("11")
+    expect(Gem::Version.new(result.fetch("cucumber_version"))).to be >= Gem::Version.new("12.0.1")
+    expect(Gem::Version.new(result.fetch("cucumber_version"))).to be < Gem::Version.new("13")
     expect(result.fetch("business_executed")).to be(true)
     expect(result.fetch("helper_alive")).to be(false)
     expect(result.fetch("helper_result")).to be(false)

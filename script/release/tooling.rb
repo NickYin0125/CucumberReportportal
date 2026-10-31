@@ -30,6 +30,13 @@ module ReleaseTooling
   class Source
     CHART = "helm/reportportal-rich-experience"
     APP_VERSION = "26.0.7"
+    IMMUTABLE_LEGACY_TAGS = {
+      "v1.3.1" => "4ca2f770e0a84e83688f165ba04b4db8ef855cf9"
+    }.freeze
+    RELEASE_REFS = {
+      "1" => %w[refs/remotes/origin/maintenance/1.x].freeze,
+      "2" => %w[refs/remotes/origin/main refs/remotes/origin/codex/cucumber-12].freeze
+    }.freeze
     attr_reader :root, :tag, :commit, :version, :commands
 
     def initialize(root:, tag:, commit:, commands: Commands.new)
@@ -38,18 +45,41 @@ module ReleaseTooling
 
       @root, @tag, @commit, @commands = File.expand_path(root), tag, commit, commands
       @version = tag.delete_prefix("v")
+      raise Error, "Only SDK release lines 1.x and 2.x are supported" unless RELEASE_REFS.key?(version.split(".").first)
     end
 
     def identity
       gem = Gem::Specification.load(File.join(root, "reportportal-cucumber-ruby.gemspec"))
       raise Error, "Cannot load gem specification" unless gem
 
-      chart = YAML.safe_load_file(File.join(root, CHART, "Chart.yaml"))
-      raise Error, "Tag, gem and chart versions must match exactly" unless gem.version.to_s == version && chart.fetch("version") == version
+      chart = chart_metadata
+      raise Error, "Tag and gem versions must match exactly" unless gem.version.to_s == version
+      raise Error, "Legacy tag, gem and chart versions must match exactly" if legacy? && chart.fetch("version") != version
       raise Error, "ReportPortal appVersion must remain #{APP_VERSION}" unless chart.fetch("appVersion") == APP_VERSION
       raise Error, "Unexpected package names" unless gem.name == "reportportal-cucumber-ruby" && chart.fetch("name") == "reportportal-rich-experience"
 
-      { "tag" => tag, "commit" => commit, "version" => version, "appVersion" => APP_VERSION }
+      identity = { "tag" => tag, "commit" => commit, "version" => version, "appVersion" => APP_VERSION }
+      # Keep original 1.x manifests byte-compatible with retained release artifacts.
+      identity["chartVersion"] = chart_version unless legacy?
+      identity
+    end
+
+    def legacy?
+      version.start_with?("1.")
+    end
+
+    def chart_version
+      chart_metadata.fetch("version")
+    end
+
+    def release_title
+      legacy? ? "SDK and Helm #{version}" : "SDK #{version} / Helm #{chart_version}"
+    end
+
+    def ancestry_refs
+      refs = RELEASE_REFS.fetch(version.split(".").first).dup
+      refs << "refs/remotes/origin/main" if IMMUTABLE_LEGACY_TAGS[tag] == commit
+      refs
     end
 
     def verify_commit!
@@ -58,7 +88,18 @@ module ReleaseTooling
       resolved = commands.run("git", "rev-parse", "--verify", "refs/tags/#{tag}^{commit}", chdir: root).strip
       raise Error, "Release tag moved or does not match checkout" unless resolved == commit
 
-      commands.run("git", "merge-base", "--is-ancestor", commit, "refs/remotes/origin/main", chdir: root)
+      approved = ancestry_refs.any? do |ref|
+        begin
+          commands.run("git", "merge-base", "--is-ancestor", commit, ref, chdir: root)
+          true
+        rescue Error
+          false
+        end
+      end
+      raise Error, "Release commit is outside approved release ancestry: #{ancestry_refs.join(', ')}" unless approved
+
+      changes = commands.run("git", "status", "--porcelain", "--untracked-files=normal", chdir: root)
+      raise Error, "Release source must be clean, including untracked files" unless changes.strip.empty?
     end
 
     def notes
@@ -70,15 +111,25 @@ module ReleaseTooling
       body = matches.first.lines.drop(1).join.strip
       raise Error, "Release notes are empty" if body.empty?
 
-      "# SDK and Helm #{version}\n\n#{body}\n"
+      "# #{release_title}\n\n#{body}\n"
     end
 
     def package_names
-      ["reportportal-cucumber-ruby-#{version}.gem", "reportportal-rich-experience-#{version}.tgz"]
+      ["reportportal-cucumber-ruby-#{version}.gem", "reportportal-rich-experience-#{chart_version}.tgz"]
     end
 
     def asset_names
       package_names + %w[release-manifest.json SHA256SUMS]
+    end
+
+    private
+
+    def chart_metadata
+      chart = YAML.safe_load_file(File.join(root, CHART, "Chart.yaml"))
+      unless chart.is_a?(Hash) && chart["version"].is_a?(String) && chart["version"].match?(/\A(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\z/)
+        raise Error, "Chart version must be a stable MAJOR.MINOR.PATCH string"
+      end
+      chart
     end
   end
 
@@ -141,7 +192,7 @@ module ReleaseTooling
 
       chart = chart_entries(File.join(directory, source.package_names.last))
       metadata = YAML.safe_load(chart.fetch("reportportal-rich-experience/Chart.yaml").fetch(:content))
-      unless metadata.fetch("version") == source.version && metadata.fetch("appVersion") == Source::APP_VERSION && metadata.fetch("name") == "reportportal-rich-experience"
+      unless metadata.fetch("version") == source.chart_version && metadata.fetch("appVersion") == Source::APP_VERSION && metadata.fetch("name") == "reportportal-rich-experience"
         raise Error, "Built chart identity mismatch"
       end
       unless chart.key?("reportportal-rich-experience/charts/reportportal/Chart.yaml")
@@ -210,7 +261,7 @@ module ReleaseTooling
       release = read_release
       unless release
         gh("release", "create", @source.tag, "--verify-tag", "--draft", "--target", @source.commit,
-           "--title", "SDK and Helm #{@source.version}", "--notes-file", notes_path)
+           "--title", @source.release_title, "--notes-file", notes_path)
         release = read_release
       end
       validate_release!(release)
@@ -233,7 +284,7 @@ module ReleaseTooling
       raise Error, "Draft asset set mismatch" unless completed.fetch("draft") && uploaded.sort == @source.asset_names.sort
 
       verify_remote!(uploaded)
-      gh("release", "edit", @source.tag, "--draft=false", "--title", "SDK and Helm #{@source.version}", "--notes-file", notes_path)
+      gh("release", "edit", @source.tag, "--draft=false", "--title", @source.release_title, "--notes-file", notes_path)
       puts "Published verified GitHub release #{@source.tag}. RubyGems was not modified."
     end
 

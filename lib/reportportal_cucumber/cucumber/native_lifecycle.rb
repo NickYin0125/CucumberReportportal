@@ -2,59 +2,42 @@
 
 module ReportportalCucumber
   module Cucumber
-    # Observes actual AfterAll execution on one native Cucumber 9/10 registry.
-    # Depends on those versions' private DSL registry/configuration association;
-    # attachment is refused unless the event bus matches this formatter's run.
-    # BeforeAll runs before formatter construction; an abort there creates no RP launch.
-    # Run hooks are not test-step events and are not represented as class-hook items.
+    # Cucumber 12 emits run-hook results before test_run_finished, including
+    # caught AfterAll failures. These hooks have no feature/scenario association.
     class NativeLifecycle
       # @param cucumber_config [Object]
       # @param formatter [ReportportalCucumber::Cucumber::Formatter]
-      # @return [Boolean] Whether native teardown completion can be observed.
+      # @return [Boolean] Whether native run-hook events can be observed.
       def self.attach(cucumber_config:, formatter:)
-        return false unless cucumber_config.respond_to?(:event_bus) && cucumber_config.respond_to?(:dry_run?)
-        return false if cucumber_config.dry_run?
+        return false unless cucumber_config.respond_to?(:on_event) && cucumber_config.respond_to?(:event_bus)
+        return false if cucumber_config.respond_to?(:dry_run?) && cucumber_config.dry_run?
 
-        registry = ::Cucumber::Glue::Dsl.instance_variable_get(:@rb_language)
-        return false unless registry && registry.respond_to?(:after_all)
-
-        registry_config = registry.instance_variable_get(:@configuration)
-        return false unless registry_config&.event_bus.equal?(cucumber_config.event_bus)
-
-        attached = registry.instance_variable_get(:@reportportal_native_lifecycle_formatters)
+        attached = cucumber_config.event_bus.instance_variable_get(:@reportportal_native_lifecycle_formatters)
         if attached
           attached << formatter unless attached.any? { |existing| existing.equal?(formatter) }
           return true
         end
         attached = [formatter]
+        cucumber_config.event_bus.instance_variable_set(:@reportportal_native_lifecycle_formatters, attached)
 
-        observer = Module.new do
-          # @return [Object] Native hook return value; original exceptions are re-raised unchanged.
-          define_method(:after_all) do
-            original = nil
-            begin
-              result = super()
-            rescue Exception => error # Run hooks may also abort with SystemExit/Interrupt.
-              original = error
-            end
-
-            reporting_error = nil
-            attached.each do |observer_formatter|
-              begin
-                observer_formatter.complete_native_run(error: original)
-              rescue Exception => error
-                # A sibling formatter's reporting error is not a native hook failure.
-                reporting_error ||= error
-              end
-            end
-            raise original if original
-            raise reporting_error if reporting_error
-
-            result
-          end
+        cucumber_config.on_event(:test_run_hook_started) do |event|
+          attached.each { |observer| observer.start_native_run_hook(hook: event.hook) }
         end
-        registry.singleton_class.prepend(observer)
-        registry.instance_variable_set(:@reportportal_native_lifecycle_formatters, attached)
+        cucumber_config.on_event(:test_run_hook_finished) do |event|
+          attached.each { |observer| observer.finish_native_run_hook(result: event.test_result) }
+        end
+        cucumber_config.on_event(:test_run_finished) do |event|
+          reporting_error = nil
+          attached.each do |observer|
+            begin
+              observer.__send__(:handle_test_run_finished, event)
+            rescue Exception => error
+              # Settle every sibling before propagating a reporting policy error.
+              reporting_error ||= error
+            end
+          end
+          raise reporting_error if reporting_error
+        end
         true
       end
     end

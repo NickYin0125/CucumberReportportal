@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Require an explicitly selected bundle so native children cannot choose ambient Cucumber 11.
+# Require an explicitly selected bundle so native children cannot choose an ambient legacy Cucumber.
 raise "Set BUNDLE_GEMFILE to a private staging Gemfile before running packaging specs" if ENV["BUNDLE_GEMFILE"].to_s.empty?
 
 require "bundler/setup"
@@ -34,6 +34,7 @@ RSpec.describe "Installed release packaging" do
     @home = File.join(@scratch, "gems")
     @consumer = File.join(@scratch, "consumer")
     @built_artifacts = []
+    @rejected_resolutions = []
     FileUtils.mkdir_p([@source, @home, @consumer])
     @spec = Gem::Specification.load(File.join(root, "reportportal-cucumber-ruby.gemspec"))
     (@spec.files + ["reportportal-cucumber-ruby.gemspec"]).each do |relative|
@@ -42,7 +43,7 @@ RSpec.describe "Installed release packaging" do
       FileUtils.cp(File.join(root, relative), destination)
     end
 
-    # Export only the locked runtime dependency closure, never ambient Cucumber 11.
+    # Export only the locked runtime dependency closure, never an ambient legacy Cucumber.
     locked = Bundler.load.specs.to_a
     dependencies = @spec.runtime_dependencies.dup
     exported = {}
@@ -98,6 +99,7 @@ RSpec.describe "Installed release packaging" do
         ruby_version: RUBY_VERSION,
         bundler_version: Gem.loaded_specs.fetch("bundler").version.to_s,
         consumer: @provenance,
+        rejected_resolutions: @rejected_resolutions,
         source_sha256: (@spec.files + ["reportportal-cucumber-ruby.gemspec"]).to_h do |relative|
           [relative, Digest::SHA256.file(File.join(@source, relative)).hexdigest]
         end,
@@ -110,7 +112,7 @@ RSpec.describe "Installed release packaging" do
 
   it "has the release identity and verified-origin metadata without a fabricated email" do
     package = Gem::Package.new(@artifact).spec
-    expect(package.version.to_s).to eq("1.3.1")
+    expect(package.version.to_s).to eq("2.0.0")
     expect(package.version).not_to be_prerelease
     expect(package.homepage).to eq("https://github.com/NickYin0125/CucumberReportportal")
     expect(package.metadata.fetch("source_code_uri")).to eq(package.homepage)
@@ -118,11 +120,40 @@ RSpec.describe "Installed release packaging" do
     expect(Array(package.email)).to be_empty
   end
 
+  it "enforces the Ruby minimum and rejects legacy or future-major Cucumber resolutions in the built artifact" do
+    package = Gem::Package.new(@artifact).spec
+    expect(package.required_ruby_version.satisfied_by?(Gem::Version.new("3.2.9"))).to be(false)
+    %w[3.3.0 3.4.2].each do |version|
+      expect(package.required_ruby_version.satisfied_by?(Gem::Version.new(version))).to be(true)
+    end
+    cucumber = package.runtime_dependencies.find { |dependency| dependency.name == "cucumber" }
+    %w[9.2.1 10.2.0 11.0.0 12.0.0 13.0.0].each do |version|
+      expect(cucumber.requirement.satisfied_by?(Gem::Version.new(version))).to be(false), version
+    end
+    %w[12.0.1 12.0.2 12.9.9].each do |version|
+      expect(cucumber.requirement.satisfied_by?(Gem::Version.new(version))).to be(true), version
+    end
+    ["= 11.0.0", "= 13.0.0"].each_with_index do |requirement, index|
+      rejected = File.join(@scratch, "rejected-#{index}")
+      FileUtils.mkdir_p(rejected)
+      File.write(File.join(rejected, "Gemfile"), "source 'https://rubygems.org'\ngem 'reportportal-cucumber-ruby', '= 2.0.0'\ngem 'cucumber', '#{requirement}'\n")
+      stdout, stderr, status = Open3.capture3(@clean_env.merge("BUNDLE_GEMFILE" => File.join(rejected, "Gemfile"),
+                                                              "BUNDLE_IGNORE_CONFIG" => "1"),
+                                            Gem.ruby, @bundle, "lock", "--local", chdir: rejected)
+      expect(status.success?).to be(false)
+      expect(stdout + stderr).to match(/cucumber/i)
+      expect(File.exist?(File.join(rejected, "Gemfile.lock"))).to be(false)
+      (@rejected_resolutions ||= []) << { cucumber: requirement, exit: status.exitstatus, stdout: stdout, stderr: stderr }
+    end
+  end
+
   it "preserves the four protected development dependencies without making them runtime dependencies" do
     package = Gem::Package.new(@artifact).spec
     expect(package.development_dependencies.map(&:name)).to include("puma", "rackup", "rantly", "sinatra")
-    expect(@provenance.fetch("dependencies")).to eq(%w[aws-sdk-s3 cucumber cucumber-cucumber-expressions mime-types])
-    expect(Gem::Version.new(@provenance.fetch("cucumber_expressions"))).to be < Gem::Version.new("19.0")
+    expect(@provenance.fetch("dependencies")).to eq(%w[aws-sdk-s3 base64 cgi cucumber logger mime-types])
+    expect(package.runtime_dependencies.map(&:name)).not_to include("cucumber-cucumber-expressions")
+    expect(Gem::Version.new(@provenance.fetch("cucumber_expressions"))).to be >= Gem::Version.new("18.0")
+    expect(Gem::Version.new(@provenance.fetch("cucumber_expressions"))).to be < Gem::Version.new("21.0")
     expect(@provenance.fetch("loaded_gems") & %w[puma rackup rantly sinatra rspec webmock]).to be_empty
   end
 
@@ -182,8 +213,8 @@ RSpec.describe "Installed release packaging" do
   it "loads only the installed SDK and a supported Bundler-pinned native Cucumber" do
     expect(@provenance.fetch("version")).to eq(@spec.version.to_s)
     expect(@provenance.fetch("gem_root")).to eq(@installed)
-    expect(Gem::Version.new(@provenance.fetch("cucumber"))).to be >= Gem::Version.new("9.0")
-    expect(Gem::Version.new(@provenance.fetch("cucumber"))).to be < Gem::Version.new("11.0")
+    expect(Gem::Version.new(@provenance.fetch("cucumber"))).to be >= Gem::Version.new("12.0.1")
+    expect(Gem::Version.new(@provenance.fetch("cucumber"))).to be < Gem::Version.new("13.0")
     expect(@provenance.fetch("sdk_files")).not_to be_empty
     expect(@provenance.fetch("sdk_files")).to all(start_with("#{@installed}/lib/"))
     stdout = @run.call(Gem.ruby, @bundle, "exec", "cucumber", "--no-profile", "--require", "support",

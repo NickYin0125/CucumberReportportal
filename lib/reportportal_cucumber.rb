@@ -42,6 +42,7 @@ require_relative "reportportal_cucumber/automation/cucumber_logger"
 require_relative "reportportal_cucumber/automation/app_log"
 require_relative "reportportal_cucumber/cucumber/world"
 require_relative "reportportal_cucumber/cucumber/formatter"
+require_relative "reportportal_cucumber/cucumber/parallel_formatter"
 
 module ReportportalCucumber
   class << self
@@ -71,6 +72,7 @@ end
 module ReportPortal
   module Cucumber
     Formatter = ::ReportportalCucumber::Cucumber::Formatter
+    ParallelFormatter = ::ReportportalCucumber::Cucumber::ParallelFormatter
     World = ::ReportportalCucumber::Cucumber::World
   end
 end

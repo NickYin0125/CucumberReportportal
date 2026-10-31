@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.0.0 - Unreleased
+
+### Breaking Changes And Migration
+
+- Start an independent SDK 2.x release line requiring Ruby >=3.3 and Cucumber >=12.0.1, ~>12.0. Preserve released SDK 1.3.1 and its Cucumber >=9,<11 constraints on the frozen maintenance/1.x line; Cucumber 11 remains unsupported.
+- Adopt Cucumber 12's event/query lifecycle for hierarchy, hooks, retries, native log messages and attachments. Remove reliance on Cucumber's removed strict mode; undefined, pending and ambiguous results are failures without a strict option.
+- Declare directly used base64, cgi and logger gems. Remove the legacy cucumber-expressions <19 compatibility pin; let Cucumber 12 select its compatible dependency family.
+- Require a CI-owned RP_LAUNCH_UUID for enabled ParallelFormatter workers. The parent creates and finishes the shared Launch after every worker settles; workers own only their items and evidence. No shared Launch coordinator or distributed completion state is introduced.
+- Keep existing AppLog, RP-only helpers, evidence ownership, reporting-completeness policies and caller-owned browser/video lifecycles. See the English migration guide in docs/migrating-to-2.0.md before updating a consumer lockfile.
+
+### CI And Release Preparation
+
+- Add locked current-source Ruby 3.3/3.4 validation and separate Ruby 3.1/3.3 x Cucumber 9/10 jobs checked out at immutable released SDK 1.3.1. Legacy resolution never uses the 2.x gemspec.
+- Keep Helm 1.3.1 and ReportPortal appVersion 26.0.7 unchanged. For 2.x, record and verify the independent chartVersion from Chart.yaml; retain the original coupled 1.x bundle and manifest contract.
+- Constrain stable 1.x release ancestry to maintenance/1.x, with a main exception only for the exact immutable published v1.3.1 commit. Constrain 2.x to main or codex/cucumber-12; reject dirty source, moved tags, unsupported release lines, mismatched identities and changed remote assets.
+- These policies are prepared on the updated 2.x source only. Frozen maintenance/1.x still carries its historical main-only publisher; future 1.x publication needs a separately approved workflow/tooling backport and actual maintenance-head validation. No legacy branch changes are made here.
+- Prepare packaging and recovery checks only. No 2.0.0 tag, GitHub release, RubyGems publication, server upgrade or deployment is implied. Planned matrix checks and observed local results are recorded separately in docs/cucumber-12-release-readiness.md; final acceptance belongs to the independently maintained review.
+
 ## 1.3.1 - 2026-10-31
 
 ### Readable Logger And Runnable Examples

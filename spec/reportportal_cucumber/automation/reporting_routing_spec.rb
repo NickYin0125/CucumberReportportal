@@ -25,7 +25,8 @@ RSpec.describe "AppLog ReportPortal routing" do
     def log(message)
       @native_logs << message
       @before_attach&.call
-      @formatter.attach(message, "text/x.cucumber.log+plain")
+      @formatter.ingest_event("type" => "attach_called", "src" => message,
+                             "media_type" => "text/x.cucumber.log+plain")
     end
   end
 

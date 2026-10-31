@@ -110,8 +110,8 @@ RSpec.describe "M4-D native formatter strict business precedence" do
     formatter_path = File.join(File.realpath(root), "lib/reportportal_cucumber/cucumber/formatter.rb")
     expect(result.fetch("loaded_sdk").fetch(formatter_path)).to eq(Digest::SHA256.file(formatter_path).hexdigest)
     parent_version = Gem.loaded_specs.fetch("cucumber").version
-    expect(parent_version).to be >= Gem::Version.new("9.0")
-    expect(parent_version).to be < Gem::Version.new("11.0")
+    expect(parent_version).to be >= Gem::Version.new("12.0.1")
+    expect(parent_version).to be < Gem::Version.new("13.0")
     expect(result.fetch("cucumber_version")).to eq(parent_version.to_s)
     result.merge("process_status" => process.exitstatus, "console" => stdout + stderr,
                  "progress" => File.file?(progress) ? File.read(progress) : "")

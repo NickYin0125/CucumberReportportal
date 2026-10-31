@@ -43,7 +43,9 @@ RSpec.describe LoggerParametersDemo do
     file = attachments.find { |entry| entry["fileName"] == "evidence.txt" }
     expect(file).to include("mediaType" => "text/plain", "testStepId" => logs.last.fetch("testStepId"))
     expect(attachments.length).to eq(6)
-    expect(File.read(File.join(directory, "report.html"))).to include("Order: ORD-123")
+    file_bytes = file.fetch("contentEncoding") == "BASE64" ? Base64.strict_decode64(file.fetch("body")) : file.fetch("body")
+    expect(file_bytes).to include("Order: ORD-123")
+    expect(File.read(File.join(directory, "report.html"))).to include(JSON.generate("attachment" => file))
     expect(messages.any? { |entry| entry.dig("testRunFinished", "success") == true }).to eq(true)
     expect(JSON.parse(File.read(File.join(directory, "run.json")))).to include("mode" => "offline", "launch_name" => nil)
     expect(File.exist?(File.join(directory, "spool"))).to eq(false)

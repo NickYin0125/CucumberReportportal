@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.description = "Streams Ruby Cucumber execution events to ReportPortal launches, items, and logs in real time."
   spec.homepage = "https://github.com/NickYin0125/CucumberReportportal"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.1"
+  spec.required_ruby_version = ">= 3.3"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
@@ -40,9 +40,11 @@ Gem::Specification.new do |spec|
   spec.executables = Dir["exe/*"].map { |path| File.basename(path) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "cucumber", ">= 9.0", "< 11.0"
-  # Cucumber 9/10 native HTML/messages require the compatible parameter-group model.
-  spec.add_dependency "cucumber-cucumber-expressions", ">= 17.0", "< 19.0"
+  spec.add_dependency "cucumber", "~> 12.0", ">= 12.0.1"
+  # Declare directly used standard gems instead of relying on another gem's dependencies.
+  spec.add_dependency "base64", "~> 0.2"
+  spec.add_dependency "cgi", "~> 0.4"
+  spec.add_dependency "logger", "~> 1.6"
   spec.add_dependency "aws-sdk-s3", ">= 1.180"
   spec.add_dependency "mime-types", ">= 3.5"
 

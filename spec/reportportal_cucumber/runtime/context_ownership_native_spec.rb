@@ -92,7 +92,7 @@ RSpec.describe "Native per-context log ownership" do
         $owner_native_messages = Hash.new { |hash, run| hash[run] = [] }
         Cucumber::Formatter::Message.prepend(Module.new do
           def output_envelope(envelope)
-            $owner_native_messages[$owner_run] << envelope.to_json
+            $owner_native_messages[$owner_run] << envelope.envelope.to_json
             super
           end
         end)
@@ -168,7 +168,7 @@ RSpec.describe "Native per-context log ownership" do
           statuses << { run: run, status: status, errors: errors.string }
           runtimes << { runtime: runtime.object_id, event_bus: runtime.configuration.event_bus.object_id,
                         registry: runtime.support_code.registry.object_id,
-                        observers: Array(runtime.support_code.registry.instance_variable_get(:@reportportal_native_lifecycle_formatters)).length }
+                        observers: Array(runtime.configuration.event_bus.instance_variable_get(:@reportportal_native_lifecycle_formatters)).length }
           unformatted_native = $owner_native_messages.fetch(run).join("\n") if run == 2
         end
         helpers = []
@@ -210,7 +210,8 @@ RSpec.describe "Native per-context log ownership" do
   # @return [void]
   def verify_native_owners(result, count:)
     expect(result.fetch("cucumber")).to eq(Gem.loaded_specs.fetch("cucumber").version.to_s)
-    expect(Gem::Version.new(result.fetch("cucumber"))).to be < Gem::Version.new("11")
+    expect(Gem::Version.new(result.fetch("cucumber"))).to be >= Gem::Version.new("12.0.1")
+    expect(Gem::Version.new(result.fetch("cucumber"))).to be < Gem::Version.new("13")
     expect(result.fetch("business")).to eq([0, 1, 2])
     expect(result.fetch("hooks")).to eq(3.times.flat_map { |run| [{ "run" => run, "hook" => "before" }, { "run" => run, "hook" => "after" }] })
     expect(result.fetch("runtimes").map { |runtime| runtime.fetch("event_bus") }.uniq.length).to eq(3)
@@ -283,7 +284,7 @@ RSpec.describe "Native per-context log ownership" do
   it "retains each duplicate owner's evidence when native AfterAll genuinely fails" do
     result = native_ownership(duplicate: true, after_failure: true)
     verify_native_owners(result, count: 2)
-    expect(result.fetch("statuses").map { |entry| entry.fetch("status") }).to eq([2, 2, 2])
+    expect(result.fetch("statuses").map { |entry| entry.fetch("status") }).to eq([1, 1, 1])
     diagnostics = result.fetch("outgoing").select { |log| log.fetch("message").include?("OWNERSHIP_ORIGINAL_AFTERALL_FAILURE") }
     expect(diagnostics.length).to eq(4)
     expect(diagnostics).to all(include("level" => "error"))

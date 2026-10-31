@@ -302,10 +302,12 @@ module ReportportalCucumber
         case status.to_s.downcase
         when "passed", "pass", "success"
           "passed"
-        when "failed", "failure"
+        when "failed", "failure", "pending", "undefined", "ambiguous"
           "failed"
-        when "skipped", "pending", "undefined", "ambiguous"
+        when "skipped"
           "skipped"
+        when "interrupted", "aborted"
+          "interrupted"
         else
           status.to_s.downcase
         end

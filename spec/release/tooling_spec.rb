@@ -38,7 +38,8 @@ RSpec.describe ReleaseTooling do
     allow(commands).to receive(:run).and_call_original
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "HEAD", chdir: @root).and_return("#{sha}\n")
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/v1.3.0^{commit}", chdir: @root).and_return("#{sha}\n")
-    allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/main", chdir: @root).and_return("")
+    allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/maintenance/1.x", chdir: @root).and_return("")
+    allow(commands).to receive(:run).with("git", "status", "--porcelain", "--untracked-files=normal", chdir: @root).and_return("")
     allow(commands).to receive(:run).with("git", "show", "-s", "--format=%ct", sha, chdir: @root).and_return("1791849600\n")
   end
 
@@ -80,7 +81,7 @@ RSpec.describe ReleaseTooling do
   end
 
   it "requires stable tags and complete commit identities" do
-    ["v1.3", "v01.3.0", "v1.3.0-rc.1", "v1.3.0;echo unsafe"].each do |tag|
+    ["v1.3", "v01.3.0", "v1.3.0-rc.1", "v1.3.0;echo unsafe", "v0.1.0", "v3.0.0"].each do |tag|
       expect { ReleaseTooling::Source.new(root: @root, tag: tag, commit: sha) }.to raise_error(ReleaseTooling::Error)
     end
     expect { ReleaseTooling::Source.new(root: @root, tag: "v1.3.0", commit: "abc") }.to raise_error(ReleaseTooling::Error)
@@ -95,12 +96,105 @@ RSpec.describe ReleaseTooling do
     expect { source.identity }.to raise_error(ReleaseTooling::Error, /appVersion/)
   end
 
-  it "rejects moved tags and commits outside main" do
+  it "rejects moved tags and commits outside the approved maintenance ancestry" do
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/v1.3.0^{commit}", chdir: @root).and_return("b" * 40)
     expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /tag moved/)
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/v1.3.0^{commit}", chdir: @root).and_return(sha)
-    allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/main", chdir: @root).and_raise(ReleaseTooling::Error, "outside main")
-    expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /outside main/)
+    allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/maintenance/1.x", chdir: @root).and_raise(ReleaseTooling::Error, "outside maintenance")
+    expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /outside approved release ancestry/)
+  end
+
+  it "rejects tracked or untracked dirty release sources without invoking build or publication" do
+    [" M lib/client.rb\n", "?? credentials.txt\n"].each do |dirty|
+      allow(commands).to receive(:run).with("git", "status", "--porcelain", "--untracked-files=normal", chdir: @root).and_return(dirty)
+      expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /clean/)
+      expect { bundle.build! }.to raise_error(ReleaseTooling::Error, /clean/)
+    end
+    expect(commands).not_to have_received(:run).with("gh", any_args)
+  end
+
+  it "retains the exact historical legacy manifest/title and limits main fallback to the immutable tag and SHA" do
+    expect(source.identity).to eq("tag" => "v1.3.0", "commit" => sha, "version" => "1.3.0", "appVersion" => "26.0.7")
+    expect(source.release_title).to eq("SDK and Helm 1.3.0")
+    expect(source.ancestry_refs).to eq(["refs/remotes/origin/maintenance/1.x"])
+    historical = ReleaseTooling::Source.new(root: @root, tag: "v1.3.1", commit: "4ca2f770e0a84e83688f165ba04b4db8ef855cf9")
+    expect(historical.ancestry_refs).to eq(["refs/remotes/origin/maintenance/1.x", "refs/remotes/origin/main"])
+    moved = ReleaseTooling::Source.new(root: @root, tag: "v1.3.1", commit: sha)
+    expect(moved.ancestry_refs).not_to include("refs/remotes/origin/main")
+  end
+
+  context "with independently versioned SDK 2 and Helm 1 artifacts" do
+    let(:source) { ReleaseTooling::Source.new(root: @root, tag: "v2.0.0", commit: sha, commands: commands) }
+
+    before do
+      gemspec = File.join(@root, "reportportal-cucumber-ruby.gemspec")
+      File.write(gemspec, File.read(gemspec).sub('s.version = "1.3.0"', 's.version = "2.0.0"'))
+      chart = File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml")
+      File.write(chart, File.read(chart).sub("version: 1.3.0", "version: 1.3.1"))
+      changelog = File.join(@root, "CHANGELOG.md")
+      File.write(changelog, File.read(changelog).sub("## 1.3.0 -", "## 2.0.0 -"))
+      allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/v2.0.0^{commit}", chdir: @root).and_return(sha)
+      allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/main", chdir: @root).and_return("")
+    end
+
+    it "builds and verifies SDK2.0.0/chart1.3.1 while keeping ReportPortal26.0.7" do
+      expect(source.identity).to include("version" => "2.0.0", "chartVersion" => "1.3.1", "appVersion" => "26.0.7")
+      expect(source.release_title).to eq("SDK 2.0.0 / Helm 1.3.1")
+      expect(source.package_names).to eq(%w[reportportal-cucumber-ruby-2.0.0.gem reportportal-rich-experience-1.3.1.tgz])
+      build_fixture
+      expect(bundle.verify!).to be(true)
+      expect(source.notes).to start_with("# SDK 2.0.0 / Helm 1.3.1\n")
+    end
+
+    it "rejects chart manifest identity tampering even when the SDK version matches" do
+      build_fixture
+      path = File.join(bundle.directory, "release-manifest.json")
+      manifest = JSON.parse(File.read(path))
+      manifest["chartVersion"] = "2.0.0"
+      File.write(path, JSON.generate(manifest))
+      expect { bundle.verify! }.to raise_error(ReleaseTooling::Error, /identity mismatch/)
+    end
+
+    it "rejects unstable or incorrect source chart metadata for the independent SDK line" do
+      path = File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml")
+      original = File.read(path)
+      [original.sub("version: 1.3.1", "version: 1.3.1-rc.1"),
+       original.sub("name: reportportal-rich-experience", "name: impostor"),
+       original.sub("26.0.7", "26.0.5")].each do |invalid|
+        File.write(path, invalid)
+        expect { source.identity }.to raise_error(ReleaseTooling::Error)
+      end
+    end
+
+    it "rejects altered packaged chart identity even after every checksum is recomputed" do
+      build_fixture
+      chart_path = File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml")
+      original = File.read(chart_path)
+      archive_path = File.join(bundle.directory, source.package_names.last)
+      [original.sub("version: 1.3.1", "version: 2.0.0"),
+       original.sub("name: reportportal-rich-experience", "name: impostor"),
+       original.sub("26.0.7", "26.0.5")].each do |invalid|
+        File.write(chart_path, invalid)
+        write_chart_archive(archive_path)
+        File.write(chart_path, original)
+        manifest_path = File.join(bundle.directory, "release-manifest.json")
+        manifest = JSON.parse(File.read(manifest_path))
+        manifest["sha256"] = source.package_names.to_h { |name| [name, bundle.digest(name)] }
+        File.write(manifest_path, JSON.pretty_generate(manifest) + "\n")
+        sums = (source.package_names + ["release-manifest.json"]).sort.map { |name| "#{bundle.digest(name)}  #{name}\n" }.join
+        File.write(File.join(bundle.directory, "SHA256SUMS"), sums)
+        expect { bundle.verify! }.to raise_error(ReleaseTooling::Error, /Built chart identity mismatch/)
+      end
+    end
+
+    it "allows only fixed main or cucumber-12 ancestry, never arbitrary environment refs" do
+      expect(source.ancestry_refs).to eq(%w[refs/remotes/origin/main refs/remotes/origin/codex/cucumber-12])
+      allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/main", chdir: @root).and_raise(ReleaseTooling::Error, "foreign main")
+      allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/codex/cucumber-12", chdir: @root).and_return("")
+      expect { source.verify_commit! }.not_to raise_error
+      allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/codex/cucumber-12", chdir: @root).and_raise(ReleaseTooling::Error, "foreign release")
+      expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /outside approved release ancestry/)
+    end
   end
 
   it "takes only the exact versioned changelog section" do

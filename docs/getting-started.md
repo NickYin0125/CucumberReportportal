@@ -1,5 +1,11 @@
 # Getting started
 
+**Version scope:** the install commands in this guide intentionally use the
+published SDK **1.3.1** with Cucumber 9/10. This checkout also prepares unpublished
+SDK 2.0.0 for Ruby >=3.3 / Cucumber >=12.0.1, ~>12.0. Use the
+[2.0 migration guide](migrating-to-2.0.md) for that source candidate; the reporting,
+logger, browser-ownership and secret-management advice below still applies.
+
 This guide follows **install the release → run one local Scenario → integrate an
 existing project → add API/UI evidence → run in CI**. Steps 1–2 need only Ruby,
 Bundler, and the gems. No browser, Node, ReportPortal, or source checkout is needed.
@@ -234,6 +240,9 @@ reporting layer.
 | Screenshot appears under After | That is the expected owner for After-hook capture. For Step ownership, capture/publish inside the still-open Step. |
 | Required reporting exits `2` | Inspect missing configuration or the incomplete reporting summary; a failing report is distinct from a failed business Scenario. |
 | Cucumber 11 / parameter message-builder failure | Keep Cucumber `>=9,<11` and the SDK's expressions `<19` constraint; run through the project's Bundler environment. |
+
+For SDK 2.x, use Cucumber `>=12.0.1, ~>12.0` instead and remove that legacy
+expressions pin. Do not force a Cucumber 9/10 dependency into the 2.x bundle.
 
 For spool/replay, receipts, video, and history settings, continue to
 [advanced reporting](advanced-reporting.md).

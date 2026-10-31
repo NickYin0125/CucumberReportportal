@@ -180,7 +180,8 @@ module M4InstalledGemConsumer
     verify_loaded_sdk!(gem_root, manifest)
     verify_executable!(spec, gem_root, manifest, gem_bin)
     cucumber_version = Gem.loaded_specs.fetch("cucumber").version.to_s
-    assert(cucumber_version.start_with?("10."), "installed consumer did not use the final native Cucumber 10 lane")
+    assert(Gem::Requirement.new("~> 12.0", ">= 12.0.1").satisfied_by?(Gem::Version.new(cucumber_version)),
+           "installed consumer did not use the Cucumber 12 release lane")
     cli = File.join(gem_bin, "reportportal-spool")
     assert(File.executable?(cli), "installed reportportal-spool executable is missing")
 

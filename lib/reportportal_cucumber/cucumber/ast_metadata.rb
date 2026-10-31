@@ -54,6 +54,8 @@ module ReportportalCucumber
           identity_ambiguous: entry.fetch(:identity_ambiguous),
           description: clean_description(read(scenario_node, :description)),
           rule_name: read(entry[:rule], :name),
+          rule_line: read(read(entry[:rule], :location), :line),
+          rule_keyword: read(entry[:rule], :keyword),
           rule_description: clean_description(read(entry[:rule], :description)),
           examples_name: read(examples, :name),
           example_row_line: read(read(row, :location), :line),

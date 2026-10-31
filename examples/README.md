@@ -9,7 +9,7 @@ not all form a single installation path.
 
 | Example | Purpose | Requirements / expected outcome |
 | --- | --- | --- |
-| [current SDK](current_sdk/README.md) | Independent released-gem consumer with real HTTP + optional Chromium | Ruby/Bundler; Node/browser for UI. Passing suite is 5 Scenarios; intentional failure is separate. Use the updated checkout's sample files, not the stale sample inside the original v1.3.0 archive. |
+| [current SDK](current_sdk/README.md) | Independent SDK 2.0.0 candidate consumer with real HTTP + optional Chromium | Ruby >= 3.3, Cucumber >= 12.0.1 / < 13; Node/browser for UI. Passing suite is 5 Scenarios; intentional failure is separate. Candidate installation is not release publication. |
 | [Scenario attributes](m3c_attributes/README.md) | Add allowlisted business tags/defaults | Existing Cucumber project; RP enabled to inspect metadata |
 | [Scenario links](m3c_links/README.md) | Source, CI, and TMS description links | Existing Cucumber project; explicit templates/run URL |
 

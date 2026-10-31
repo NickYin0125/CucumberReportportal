@@ -27,6 +27,7 @@ module ReportportalCucumber
       def initialize(cucumber_config)
         @cucumber_config = cucumber_config
         @config = Config.load
+        validate_configuration!
         @runtime_context = Runtime::Context.new
         if @config.enabled?
           @api = ReportPortal::API.new(config: @config)
@@ -36,10 +37,13 @@ module ReportportalCucumber
         @ast_lookup = build_ast_lookup
         @ast_metadata = AstMetadata.new(ast_lookup: @ast_lookup)
         @feature_states = {}
+        @rule_states = {}
         @scenario_states = {}
         @identity_warnings = Set.new
         @evidence_admission_warning_mutex = Mutex.new
         @evidence_admission_warning_emitted = false
+        @attachment_ownership_warning_mutex = Mutex.new
+        @attachment_ownership_warning_emitted = false
         @missing_reporting_options = @config.reporting_requested? ? @config.missing_reporting_options : [].freeze
         @configuration_failed = !@missing_reporting_options.empty?
         @reporting_failures = @configuration_failed ? 1 : 0
@@ -47,9 +51,12 @@ module ReportportalCucumber
         @finalization_deadline = nil
         @finalization_finished = false
         @business_failed = false
+        @native_hook_failed = false
+        @native_run_hook = nil
+        @native_run_hook_thread = nil
         @strict_reporting_error = nil
         @incomplete_summary_emitted = false
-        @stable_scenario_outcomes = Hash.new { |hash, key| hash[key] = {} }
+        @scenario_outcomes = Hash.new { |hash, key| hash[key] = {} }
         @launch_uuid = nil
         @finalized = false
         @last_timestamp_ms = nil
@@ -79,6 +86,10 @@ module ReportportalCucumber
           handle_test_step_started(payload)
         when "attachment"
           handle_attachment(payload)
+        when "attach_called"
+          handle_attach_called(payload)
+        when "envelope"
+          handle_envelope(payload, replay_attachments: true)
         when "test_step_finished"
           handle_test_step_finished(payload)
         when "test_case_finished"
@@ -98,7 +109,7 @@ module ReportportalCucumber
       def emit_world_log(message:, level:, timestamp:, attachment: nil)
         return unless reporting_enabled?
 
-        target_item_uuid = runtime_context.current_item_uuid || runtime_context.active_parent_uuid
+        target_item_uuid = runtime_context.current_item_uuid || runtime_context.active_parent_uuid unless @native_run_hook
         @log_buffer.emit_log(
           item_uuid: target_item_uuid,
           launch_uuid: @launch_uuid,
@@ -117,7 +128,7 @@ module ReportportalCucumber
       def emit_world_attachment(message:, level:, timestamp:, attachment:)
         return unless reporting_enabled?
 
-        target_item_uuid = runtime_context.active_parent_uuid || runtime_context.current_item_uuid
+        target_item_uuid = runtime_context.active_parent_uuid || runtime_context.current_item_uuid unless @native_run_hook
         @log_buffer.emit_log(
           item_uuid: target_item_uuid,
           launch_uuid: @launch_uuid,
@@ -131,7 +142,7 @@ module ReportportalCucumber
       # @return [Runtime::Context::CaptureTarget, nil]
       def capture_target
         item = runtime_context.current_step_item
-        return unless reporting_enabled? && !@finalized && item
+        return unless reporting_enabled? && !@finalized && !@native_run_hook && item
 
         runtime_context.capture_target_for(item, launch_uuid: @launch_uuid)
       end
@@ -180,8 +191,36 @@ module ReportportalCucumber
                                  deadline: @finalization_deadline)
           end
         end
-        status = error ? "failed" : (@native_run_status || "failed")
-        finalize_reporting(status: status, end_time: Time.now)
+        status = if error
+                   interrupted_error?(error) ? "interrupted" : "failed"
+                 elsif @native_hook_failed
+                   "failed"
+                 else
+                   @native_run_status || "failed"
+                 end
+        finalize_reporting(status: status, end_time: @native_run_end_time || Time.now)
+      end
+
+      # Native global hooks are launch-scoped, never children of the last feature.
+      # @param hook [Cucumber::Glue::Hook]
+      def start_native_run_hook(hook:)
+        @native_run_hook = hook
+        @native_run_hook_thread = Thread.current
+      end
+
+      # @param result [Cucumber::Core::Test::Result]
+      def finish_native_run_hook(result:)
+        status = extract_status(result: result)
+        if %w[failed interrupted].include?(status)
+          error = extract_error(result: result)
+          genuine_failure = error.nil? || !error.equal?(@strict_reporting_error)
+          @native_hook_failed ||= genuine_failure
+          @business_failed ||= genuine_failure
+          emit_error_log(item_uuid: nil, error: error, timestamp: Time.now) if reporting_enabled?
+        end
+      ensure
+        @native_run_hook = nil
+        @native_run_hook_thread = nil
       end
 
       # @param action [Object]
@@ -328,31 +367,10 @@ module ReportportalCucumber
         end
       end
 
-      # @param src [String]
-      # @param media_type [String]
-      # @param filename [String, nil]
-      # @return [void]
-      def attach(src, media_type, filename = nil)
-        return unless reporting_enabled?
-
-        normalized_type = media_type.to_s.sub(/;base64\z/i, "")
-        level = Automation::ReportContext.current.fetch(:level, :info)
-        if normalized_type == "text/x.cucumber.log+plain"
-          emit_world_log(message: src.to_s, level: level, timestamp: Time.now)
-          return
-        end
-
-        body = media_type.to_s.match?(/;base64\z/i) ? Base64.decode64(src.to_s) : src.to_s
-        handle_attachment({
-          file_name: filename || default_attachment_name(normalized_type),
-          media_type: normalized_type.empty? ? "application/octet-stream" : normalized_type,
-          body: body,
-          content_encoding: "identity",
-          message: filename ? "Attachment: #{filename}" : "Attachment"
-        }, level: level)
-      end
-
       private
+
+      # Subclasses validate launch ownership before transport workers are created.
+      def validate_configuration!; end
 
       # @param artifact [Hash]
       # @return [Hash]
@@ -411,6 +429,7 @@ module ReportportalCucumber
           test_suite_started: method(:handle_test_suite_started),
           test_case_started: method(:handle_test_case_started),
           test_step_started: method(:handle_test_step_started),
+          attach_called: method(:handle_attach_called),
           envelope: method(:handle_envelope),
           test_step_finished: method(:handle_test_step_finished),
           test_case_finished: method(:handle_test_case_finished),
@@ -444,9 +463,10 @@ module ReportportalCucumber
         at_exit do
           next if @finalized
 
-          # If native teardown never returned, do not infer success from scenario events.
+          # An interrupted/incomplete native run must never be inferred successful.
           @business_failed = true
-          finalize_reporting(status: "failed", end_time: Time.now)
+          status = interrupted_error?($!) ? "interrupted" : "failed"
+          finalize_reporting(status: status, end_time: Time.now)
         end
       end
 
@@ -503,13 +523,14 @@ module ReportportalCucumber
         feature_uri = extract_feature_uri(event)
         runtime_context.set_current_feature(feature_uri)
         suite_item = ensure_feature_item(feature_uri, start_time: event_time)
-        feature_parent_uuid = runtime_context.current_feature_uuid || suite_item.uuid
-        start_time = monotonic_timestamp(event_time)
 
         scenario_name = extract_scenario_name(event)
         scenario_line = extract_scenario_line(event)
         parameters = extract_parameters(event)
         source_metadata = @ast_metadata.scenario(uri: feature_uri, location_line: event_location_line(event))
+        rule_key, rule_item = ensure_rule_item(feature_uri, source_metadata, start_time: event_time, parent: suite_item)
+        feature_parent_uuid = rule_item&.uuid || runtime_context.current_feature_uuid || suite_item.uuid
+        start_time = monotonic_timestamp(event_time)
         scenario_description = extract_scenario_description(
           feature_uri: feature_uri,
           scenario_line: scenario_line,
@@ -596,8 +617,12 @@ module ReportportalCucumber
         @scenario_states[scenario_key] = {
           item: item,
           feature_key: feature_uri,
-          stable_retry_key: identity && identity.strategy.to_s == "stable_v1" ? attempt_key : nil,
+          outcome_key: attempt_key,
+          rule_key: rule_key,
           statuses: [],
+          business_failed: false,
+          reported_errors: Set.new,
+          will_be_retried: false,
           test_case_started_id: test_case_started_id
         }
       end
@@ -668,16 +693,40 @@ module ReportportalCucumber
       def handle_attachment(event, level: :info)
         return unless reporting_enabled?
 
-        target_item = runtime_context.item_for_test_step(extract_test_step_id(event))
-        target_item ||= runtime_context.item_for_test_case_started(extract_test_case_started_id(event))
-        target_item ||= runtime_context.active_parent
-        target_item ||= runtime_context.current_item
-        return unless target_item
+        test_step_id = extract_test_step_id(event)
+        test_case_id = extract_test_case_started_id(event)
+        run_hook_scope = @native_run_hook && @native_run_hook_thread.equal?(Thread.current)
+        if test_step_id
+          target_item = runtime_context.item_for_test_step(test_step_id)
+          return reject_attachment_ownership unless target_item
+          if test_case_id
+            scenario_item = runtime_context.item_for_test_case_started(test_case_id)
+            return reject_attachment_ownership unless scenario_item && target_item.parent_uuid == scenario_item.uuid
+          end
+        elsif test_case_id
+          target_item = runtime_context.item_for_test_case_started(test_case_id)
+          return reject_attachment_ownership unless target_item
+        elsif !run_hook_scope
+          target_item ||= runtime_context.active_parent
+          target_item ||= runtime_context.current_item
+        end
+        return reject_attachment_ownership unless target_item || (run_hook_scope && @launch_uuid)
 
         attachment = build_attachment(event)
-        debug("Queueing attachment name=#{attachment[:name].inspect} mime=#{attachment[:mime]} item=#{target_item.uuid}")
+        if attachment[:mime].to_s.casecmp?("text/x.cucumber.log+plain")
+          @log_buffer.emit_log(
+            item_uuid: target_item&.uuid,
+            launch_uuid: @launch_uuid,
+            message: attachment[:bytes],
+            level: level,
+            timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now)
+          )
+          return
+        end
+
+        debug("Queueing attachment name=#{attachment[:name].inspect} mime=#{attachment[:mime]} item=#{target_item&.uuid}")
         @log_buffer.emit_log(
-          item_uuid: target_item.uuid,
+          item_uuid: target_item&.uuid,
           launch_uuid: @launch_uuid,
           message: extract_attachment_message(event, attachment[:name]),
           level: level,
@@ -686,13 +735,73 @@ module ReportportalCucumber
         )
       end
 
+      # Refuse unresolved ownership before decoding media or retaining any body.
+      def reject_attachment_ownership
+        @log_buffer.reject_logs(count: 1)
+        warn_attachment_ownership_once
+        false
+      end
+
+      def warn_attachment_ownership_once
+        emit = @attachment_ownership_warning_mutex.synchronize do
+          next false if @attachment_ownership_warning_emitted
+
+          @attachment_ownership_warning_emitted = true
+        end
+        if emit
+          ReportportalCucumber.logger.warn("ReportPortal log/attachment rejected: ownership is unresolved; no fallback item or launch was selected")
+        end
+      rescue StandardError
+        nil
+      end
+
+      # Cucumber's synchronous event preserves AppLog's thread-local level context.
+      # MessageBuilder also emits an attachment envelope for this call; it is not
+      # consumed here, so native/AppLog evidence reaches the bounded queue once.
+      def handle_attach_called(event)
+        return unless reporting_enabled?
+
+        media_type = fetch_value(event, :media_type).to_s
+        normalized_type = media_type.sub(/;base64\z/i, "")
+        src = fetch_value(event, :src)
+        body = src.is_a?(Hash) ? JSON.generate(src) : src.to_s
+        level = Automation::ReportContext.current.fetch(:level, :info)
+        filename = fetch_value(event, :filename)
+        handle_attachment({
+          file_name: filename || default_attachment_name(normalized_type),
+          media_type: normalized_type.empty? ? "application/octet-stream" : normalized_type,
+          body: body,
+          content_encoding: media_type.match?(/;base64\z/i) ? "base64" : "identity",
+          message: filename ? "Attachment: #{filename}" : "Attachment"
+        }, level: level)
+      end
+
       # @param event [Object]
       # @return [void]
-      def handle_envelope(event)
-        attachment = fetch_value(event, :attachment, [:envelope, :attachment])
-        return unless attachment
+      def handle_envelope(event, replay_attachments: false)
+        return unless reporting_enabled?
 
-        handle_attachment(to_hash_like(attachment))
+        # Retain only scalar attempt metadata, never envelopes or media bodies.
+        envelope = fetch_value(event, :envelope) || event
+        if replay_attachments && (attachment = fetch_value(envelope, :attachment))
+          handle_attachment(to_hash_like(attachment))
+          return
+        end
+        state = @scenario_states[runtime_context.current_scenario_key]
+        return unless state
+
+        if (started = fetch_value(envelope, :test_case_started))
+          id = fetch_value(started, :id)&.to_s
+          if id
+            runtime_context.release_test_case_started(state[:test_case_started_id]) if state[:test_case_started_id]
+            state[:test_case_started_id] = id
+            runtime_context.associate_test_case_started(id, state[:item])
+          end
+        elsif (finished = fetch_value(envelope, :test_case_finished))
+          return unless fetch_value(finished, :test_case_started_id).to_s == state[:test_case_started_id].to_s
+
+          state[:will_be_retried] = fetch_value(finished, :will_be_retried) == true
+        end
       end
 
       # @param event [Object]
@@ -701,14 +810,19 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         test_step_id = extract_test_step_id(event)
-        item = runtime_context.item_for_test_step(test_step_id) || runtime_context.current_step_item
+        item = test_step_id ? runtime_context.item_for_test_step(test_step_id) : runtime_context.current_step_item
         return unless item
 
         status = extract_status(event)
-        if status == "failed"
+        if %w[failed interrupted].include?(status)
           error = extract_error(event)
-          # Native Cucumber can report a strict formatter exception as another failed-step event.
-          @business_failed ||= !error.equal?(@strict_reporting_error)
+          state = @scenario_states[runtime_context.current_scenario_key]
+          if state
+            state[:business_failed] ||= error.nil? || !error.equal?(@strict_reporting_error)
+            state[:reported_errors] << error.object_id
+          else
+            @business_failed ||= error.nil? || !error.equal?(@strict_reporting_error)
+          end
           emit_error_log(item_uuid: item.uuid, error: error, timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now))
         end
 
@@ -735,14 +849,26 @@ module ReportportalCucumber
       def handle_test_case_finished(event)
         return unless reporting_enabled?
 
-        @business_failed ||= extract_status(event).to_s.downcase == "failed"
-
         scenario_key = runtime_context.current_scenario_key
-        return unless @scenario_states[scenario_key]
+        state = @scenario_states[scenario_key]
+        return unless state
+
+        status = extract_status(event)
+        will_be_retried = fetch_value(event, :will_be_retried, :willBeRetried)
+        will_be_retried = state[:will_be_retried] if will_be_retried.nil?
+        state[:will_be_retried] = will_be_retried == true
+        if %w[failed interrupted].include?(status)
+          error = extract_error(event)
+          state[:business_failed] ||= error.nil? || !error.equal?(@strict_reporting_error)
+          unless state[:reported_errors].include?(error.object_id)
+            emit_error_log(item_uuid: state[:item].uuid, error: error, timestamp: extract_timestamp(event) || Time.now)
+          end
+        end
+        @business_failed ||= state[:business_failed] unless state[:will_be_retried]
 
         finish_scenario_state(
           scenario_key: scenario_key,
-          status: extract_status(event),
+          status: status,
           end_time: monotonic_timestamp(extract_timestamp(event) || Time.now),
           close_steps: true
         )
@@ -751,15 +877,13 @@ module ReportportalCucumber
       # @param event [Object]
       # @return [void]
       def handle_test_run_finished(event)
-        return unless reporting_lifecycle_active?
+        return if @finalized || !reporting_lifecycle_active?
 
-        if @native_lifecycle
-          @native_run_status = extract_run_status(event)
-          @business_failed ||= @native_run_status == "failed"
-          return
-        end
-
-        finalize_reporting(status: extract_run_status(event), end_time: monotonic_timestamp(extract_timestamp(event) || Time.now))
+        # In Cucumber 12 this event is emitted only after every AfterAll result.
+        @native_run_status = extract_run_status(event)
+        @native_run_end_time = extract_timestamp(event) || Time.now
+        @business_failed ||= @native_run_status == "failed"
+        complete_native_run
       end
 
       # @param event [Object]
@@ -867,6 +991,28 @@ module ReportportalCucumber
         runtime_context.activate_feature(feature_uri, runtime_context.register_feature(feature_uri, item))
       end
 
+      # Rule grouping is opt-in; source lines distinguish duplicate Rule names.
+      def ensure_rule_item(feature_uri, metadata, start_time:, parent:)
+        return unless @config.rule_suites && metadata && metadata[:rule_line]
+
+        key = [feature_uri, metadata[:rule_line]]
+        existing = @rule_states[key]
+        return [key, existing[:item]] if existing
+
+        name = "#{metadata[:rule_keyword] || 'Rule'}: #{metadata[:rule_name]}"
+        local_uuid = SecureRandom.uuid
+        uuid = safe_reporting_call(fallback: local_uuid) do
+          @api.start_item(name: name, start_time: monotonic_timestamp(start_time), type: "SUITE",
+                          launch_uuid: @launch_uuid, parent_uuid: parent.uuid,
+                          description: metadata[:rule_description], has_stats: true, retry: false, uuid: local_uuid)
+        end
+        item = Runtime::Context::ItemHandle.new(uuid: uuid, name: name, kind: :rule,
+                                                parent_uuid: parent.uuid, type: "SUITE", has_stats: true,
+                                                metadata: { feature_uri: feature_uri, rule_line: metadata[:rule_line] })
+        @rule_states[key] = { item: item, outcomes: {} }
+        [key, item]
+      end
+
       # @param end_time [Time]
       # @return [void]
       def finish_feature_items(end_time:)
@@ -887,6 +1033,13 @@ module ReportportalCucumber
         resolved_status = ReportPortal::Models.normalize_status(status) || aggregate_status(feature_statuses_for_reporting(feature_key))
         debug("Finishing feature feature=#{feature_key} uuid=#{item.uuid} status=#{resolved_status}")
         flush_before_finish
+        @rule_states.keys.select { |key| key.first == feature_key }.each do |key|
+          state = @rule_states.delete(key)
+          safe_reporting_call do
+            finish_item_request(item_uuid: state[:item].uuid, launch_uuid: @launch_uuid,
+                                end_time: monotonic_timestamp(end_time), status: aggregate_status(state[:outcomes].values))
+          end
+        end
         safe_reporting_call do
           finish_item_request(
             item_uuid: item.uuid,
@@ -934,10 +1087,10 @@ module ReportportalCucumber
             status: resolved_status
           )
         end
-        if scenario_state[:stable_retry_key]
-          @stable_scenario_outcomes[scenario_state[:feature_key]][scenario_state[:stable_retry_key]] = resolved_status
-        else
-          runtime_context.record_feature_status(scenario_state[:feature_key], resolved_status)
+        outcome_key = scenario_state[:outcome_key]
+        @scenario_outcomes[scenario_state[:feature_key]][outcome_key] = resolved_status
+        if (rule_state = @rule_states[scenario_state[:rule_key]])
+          rule_state[:outcomes][outcome_key] = resolved_status
         end
         scenario_state[:statuses] << resolved_status
         runtime_context.release_test_case_started(scenario_state[:test_case_started_id]) if scenario_state[:test_case_started_id]
@@ -994,12 +1147,18 @@ module ReportportalCucumber
       rescue StandardError => error
         @reporting_failures += 1
         handle_reporting_error(error)
-        if @config.fail_on_reporting_error? && !@business_failed && !preserve_business_exception
+        if @config.fail_on_reporting_error? && !business_failure_active? && !preserve_business_exception
           @strict_reporting_error = error
           raise
         end
 
         fallback
+      end
+
+      # Failed retry attempts suppress reporting exceptions until they close,
+      # without latching that failure over a later successful final attempt.
+      def business_failure_active?
+        @business_failed || @native_hook_failed || @scenario_states[runtime_context.current_scenario_key]&.fetch(:business_failed, false)
       end
 
       # @return [Boolean]
@@ -1123,6 +1282,7 @@ module ReportportalCucumber
             fetch_value(error, :backtrace).to_s
           end
         message = [details, backtrace].reject(&:empty?).join("\n")
+        message = Automation::EvidenceRedactor.new.redact_text(message)
         @log_buffer.emit_log(
           item_uuid: item_uuid,
           launch_uuid: @launch_uuid,
@@ -1177,14 +1337,15 @@ module ReportportalCucumber
 
       # @return [String]
       def overall_status
-        aggregate_status(runtime_context.feature_items.keys.flat_map { |key| feature_statuses_for_reporting(key) })
+        keys = (runtime_context.feature_items.keys + @scenario_outcomes.keys).uniq
+        aggregate_status(keys.flat_map { |key| feature_statuses_for_reporting(key) })
       end
 
       # @param feature_key [String]
       # @return [Array<String>]
       def feature_statuses_for_reporting(feature_key)
-        stable_outcomes = @stable_scenario_outcomes && @stable_scenario_outcomes[feature_key]
-        runtime_context.feature_statuses(feature_key) + Array(stable_outcomes&.values)
+        outcomes = @scenario_outcomes && @scenario_outcomes[feature_key]
+        runtime_context.feature_statuses(feature_key) + Array(outcomes&.values)
       end
 
       # @param event [Object]
@@ -1194,7 +1355,7 @@ module ReportportalCucumber
         return explicit if explicit
 
         success = fetch_value(event, :success)
-        return success ? "passed" : "failed" unless success.nil?
+        return success ? overall_status : "failed" unless success.nil?
 
         overall_status
       end
@@ -1204,6 +1365,7 @@ module ReportportalCucumber
       def aggregate_status(statuses)
         normalized = Array(statuses).compact.map { |status| ReportPortal::Models.normalize_status(status) }
         return "passed" if normalized.empty?
+        return "interrupted" if normalized.include?("interrupted")
         return "failed" if normalized.include?("failed")
         return "skipped" if normalized.any? { |status| status == "skipped" }
 
@@ -1641,6 +1803,8 @@ module ReportportalCucumber
       def extract_status(event)
         status = fetch_value(event, :status, [:result, :status], [:test_step_result, :status])
         normalized = ReportPortal::Models.normalize_status(status)
+        error = fetch_value(event, :exception, [:result, :exception], :error, [:result, :error])
+        return "interrupted" if interrupted_error?(error)
         return normalized if normalized
 
         result = fetch_value(event, :result)
@@ -1649,10 +1813,15 @@ module ReportportalCucumber
         nil
       end
 
+      def interrupted_error?(error)
+        error.is_a?(::SignalException) || error.is_a?(::SystemExit)
+      end
+
       # @param event [Object]
       # @return [Object]
       def extract_error(event)
         fetch_value(event, :exception, [:result, :exception], :error, [:result, :error]) ||
+          fetch_value(event, :result).then { |result| result if result.is_a?(Exception) } ||
           Struct.new(:message, :backtrace, keyword_init: true).new(
             message: fetch_value(event, :message, [:result, :message]) || "Step failed",
             backtrace: Array(fetch_value(event, :backtrace, [:result, :backtrace]))
@@ -1673,7 +1842,11 @@ module ReportportalCucumber
         when Float
           Time.at(value)
         else
-          Time.parse(value.to_s)
+          if value.respond_to?(:seconds) && value.respond_to?(:nanos)
+            Time.at(value.seconds, value.nanos, :nanosecond)
+          else
+            Time.parse(value.to_s)
+          end
         end
       rescue ArgumentError
         nil

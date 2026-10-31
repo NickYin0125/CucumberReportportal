@@ -9,7 +9,7 @@ module CurrentSDK
     ROOT = File.expand_path("..", __dir__)
 
     def self.prepare
-      abort "Use Ruby >= 3.1; current interpreter is #{RUBY_VERSION}" if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.1")
+      abort "Use Ruby >= 3.3; current interpreter is #{RUBY_VERSION}" if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.3")
       Dir.chdir(ROOT)
       if File.file?(File.expand_path("../../reportportal-cucumber-ruby.gemspec", ROOT))
         abort "Copy examples/current_sdk outside the SDK checkout before running setup or examples."

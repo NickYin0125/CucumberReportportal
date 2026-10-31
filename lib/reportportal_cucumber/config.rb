@@ -49,6 +49,7 @@ module ReportportalCucumber
       debug_curl_mode: false,
       debug_curl_dir: ".reportportal-curl",
       console_mirror: false,
+      rule_suites: false,
       video_upload_mode: "reportportal_multipart",
       identity_strategy: "legacy",
       identity_root: nil,
@@ -96,6 +97,7 @@ module ReportportalCucumber
       "RP_FAIL_ON_REPORTING_ERROR" => :fail_on_reporting_error,
       "RP_REQUIRE_COMPLETE_REPORTING" => :require_complete_reporting,
       "RP_CLIENT_JOIN" => :join,
+      "RP_RULE_SUITES" => :rule_suites,
       "RP_CLIENT_JOIN_LOCK_FILE_NAME" => :join_lock_file_name,
       "RP_CLIENT_JOIN_SYNC_FILE_NAME" => :join_sync_file_name,
       "RP_CLIENT_JOIN_FILE_WAIT_TIMEOUT_MS" => :join_wait_timeout_ms,
@@ -255,6 +257,7 @@ module ReportportalCucumber
       @fail_on_reporting_error = truthy?(config[:fail_on_reporting_error])
       @require_complete_reporting = self.class.strict_boolean(config[:require_complete_reporting], option: "RP_REQUIRE_COMPLETE_REPORTING")
       @join = truthy?(config[:join])
+      @rule_suites = truthy?(config[:rule_suites])
       @join_lock_file_name = strip(config[:join_lock_file_name]) || DEFAULTS[:join_lock_file_name]
       @join_sync_file_name = strip(config[:join_sync_file_name]) || DEFAULTS[:join_sync_file_name]
       @join_wait_timeout_ms = integer(config[:join_wait_timeout_ms], minimum: 1)
@@ -412,7 +415,7 @@ module ReportportalCucumber
       def cast_value(config_key, raw)
         case config_key
         when :enabled, :rerun, :reporting_async, :fail_on_reporting_error, :join, :debug_curl_mode,
-             :console_mirror, :scenario_attributes_enabled, :scenario_links_enabled
+             :console_mirror, :rule_suites, :scenario_attributes_enabled, :scenario_links_enabled
           !%w[0 false no off].include?(raw.to_s.strip.downcase)
         when :require_complete_reporting
           strict_boolean(raw, option: "RP_REQUIRE_COMPLETE_REPORTING")

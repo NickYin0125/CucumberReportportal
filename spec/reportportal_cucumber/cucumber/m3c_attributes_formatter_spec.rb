@@ -57,7 +57,9 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
 
   it "keeps legacy config doubles without the new readers disabled" do
     formatter, api, = formatter_fixture(enabled: false)
-    formatter.instance_variable_set(:@config, Object.new)
+    legacy = Object.new
+    legacy.define_singleton_method(:rule_suites) { false }
+    formatter.instance_variable_set(:@config, legacy)
     expect(api).to receive(:start_item) do |**arguments|
       expect(arguments).not_to have_key(:attributes)
       "scenario-uuid"
@@ -173,8 +175,8 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
 
   def formatter_fixture(enabled:, source_metadata: source, strict: false)
     config = Struct.new(:scenario_attributes_enabled, :scenario_attributes, :scenario_attribute_keys,
-                        :identity_strategy, :fail_on_reporting_error?).new(
-      enabled, [{ "key" => "team", "value" => "default" }], %w[team owner tms], "legacy", strict
+                        :identity_strategy, :fail_on_reporting_error?, :rule_suites).new(
+      enabled, [{ "key" => "team", "value" => "default" }], %w[team owner tms], "legacy", strict, false
     )
     formatter = described_class.allocate
     api = double("API")

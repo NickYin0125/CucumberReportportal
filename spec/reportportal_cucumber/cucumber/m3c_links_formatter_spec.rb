@@ -147,7 +147,9 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
 
   it "keeps legacy config doubles disabled without invoking the builder" do
     formatter, api, = formatter_fixture(enabled: false, description: "Original text")
-    formatter.instance_variable_set(:@config, Object.new)
+    legacy = Object.new
+    legacy.define_singleton_method(:rule_suites) { false }
+    formatter.instance_variable_set(:@config, legacy)
     builder = Module.new do
       define_singleton_method(:build) { |**| raise "unexpected link builder call" }
     end
@@ -166,11 +168,11 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
                         feature_uri: "feature.feature")
     config_class = Struct.new(
       :scenario_links_enabled, :source_url_template, :source_commit, :source_root,
-      :ci_run_url, :tms_url_template, :fail_on_reporting_error?
+      :ci_run_url, :tms_url_template, :fail_on_reporting_error?, :rule_suites
     )
     config = config_class.new(
       enabled, "https://code.example/{path}#L{line}", "a" * 40, Dir.pwd,
-      nil, nil, strict
+      nil, nil, strict, false
     )
     config.define_singleton_method(:scenario_links_enabled?) { scenario_links_enabled }
     formatter = described_class.allocate

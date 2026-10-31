@@ -4,8 +4,8 @@ require "spec_helper"
 require "tmpdir"
 require "cucumber/hooks"
 require "cucumber/core/test/hook_step"
-# Core 13 keeps events together; Core 16 splits them behind this common registry.
-require "cucumber/core/events"
+require "cucumber/events"
+require "cucumber/core/event_bus"
 
 RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   FakeConfig = Struct.new(:handlers) do
@@ -267,7 +267,7 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
         expect(step.hook?).to eq(true)
         expect(step.respond_to?(:hook_type)).to eq(false)
 
-        event = ::Cucumber::Core::Events.registry.fetch(:test_step_started).new(step)
+        event = ::Cucumber::Events.registry.fetch(:test_step_started).new(step)
         expect(event.test_step).to equal(step)
         stub_config.handlers.fetch(:test_step_started).call(event)
 
@@ -281,7 +281,7 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
       step = ::Cucumber::Core::Test::Step.new("gherkin-after", "After a normal operation", location)
       expect(step.hook?).to eq(false)
 
-      event = ::Cucumber::Core::Events.registry.fetch(:test_step_started).new(step)
+      event = ::Cucumber::Events.registry.fetch(:test_step_started).new(step)
       expect(event.test_step).to equal(step)
       stub_config.handlers.fetch(:test_step_started).call(event)
 
@@ -544,9 +544,10 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
 
     formatter.runtime_context.start_scenario("features/a.feature:1:uniq", scenario)
     formatter.runtime_context.push_step(step)
-    formatter.attach("hello", "text/plain", "native.txt")
+    event = ::Cucumber::Events::AttachCalled.new("hello", "text/plain", "native.txt")
+    expect(event).to be_a(::Cucumber::Core::Event::Base)
+    stub_config.handlers.fetch(:attach_called).call(event)
 
-    expect(formatter).to respond_to(:attach)
     expect(log_buffer).to have_received(:emit_log).with(
       hash_including(
         item_uuid: "step-1",
@@ -555,6 +556,74 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
       )
     )
     formatter.instance_variable_set(:@finalized, true)
+  end
+
+  context "with external replay attachments independent of native generated envelopes" do
+    let(:buffer) { instance_double(ReportportalCucumber::Runtime::LogBuffer, emit_log: true, shutdown: true, reject_logs: false) }
+    let(:formatter) { described_class.new(stub_config) }
+
+    before do
+      allow(ReportportalCucumber::Runtime::LogBuffer).to receive(:new).and_return(buffer)
+      scenario = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "scenario-replay", kind: :scenario, type: "STEP", has_stats: true)
+      step = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "step-replay", kind: :step, parent_uuid: "scenario-replay", type: "STEP", has_stats: false)
+      formatter.runtime_context.start_scenario("replay:1", scenario)
+      formatter.runtime_context.associate_test_case_started("attempt-replay", scenario)
+      formatter.runtime_context.push_step(step)
+      formatter.runtime_context.associate_test_step("native-step-replay", step)
+    end
+
+    after { formatter.instance_variable_set(:@finalized, true) }
+
+    def replay_attachment
+      { "test_step_id" => "native-step-replay", "test_case_started_id" => "attempt-replay",
+        "file_name" => "replay.txt", "media_type" => "text/plain", "content_encoding" => "BASE64",
+        "body" => Base64.strict_encode64("replay\x00\r\n") }
+    end
+
+    it "retains the public direct attachment replay path and exact original bytes" do
+      formatter.ingest_event(replay_attachment.merge("type" => "attachment"))
+      expect(buffer).to have_received(:emit_log).once.with(hash_including(
+        item_uuid: "step-replay", attachment: hash_including(name: "replay.txt", mime: "text/plain", bytes: "replay\x00\r\n")
+      ))
+    end
+
+    it "retains explicit public envelope replay while ignoring the identical native generated envelope" do
+      payload = { "attachment" => replay_attachment }
+      stub_config.handlers.fetch(:envelope).call(payload)
+      expect(buffer).not_to have_received(:emit_log)
+      formatter.ingest_event("type" => "envelope", "envelope" => payload)
+      expect(buffer).to have_received(:emit_log).once.with(hash_including(
+        item_uuid: "step-replay", attachment: hash_including(bytes: "replay\x00\r\n")
+      ))
+    end
+
+    it "rejects unknown explicit step/attempt IDs rather than retargeting to the current action" do
+      formatter.ingest_event(replay_attachment.merge("type" => "attachment", "test_step_id" => "stale-step"))
+      formatter.ingest_event(replay_attachment.merge("type" => "attachment", "test_case_started_id" => "stale-attempt"))
+      expect(buffer).not_to have_received(:emit_log)
+      expect(buffer).to have_received(:reject_logs).with(count: 1).twice
+    end
+
+    it "accepts a resolvable explicit Step owner from a joined thread without guessing its context" do
+      subject = formatter
+      payload = replay_attachment.merge("type" => "attachment")
+      Thread.new { subject.ingest_event(payload) }.value
+      expect(buffer).to have_received(:emit_log).once.with(hash_including(item_uuid: "step-replay"))
+      expect(buffer).not_to have_received(:reject_logs)
+    end
+
+    it "preserves explicit replay Step/Scenario log targets while a different manual group is active" do
+      manual = ReportportalCucumber::Runtime::Context::ItemHandle.new(uuid: "manual-replay", kind: :manual_step,
+                                                                    parent_uuid: "step-replay", type: "STEP", has_stats: false)
+      formatter.runtime_context.push_step(manual)
+      payload = replay_attachment.merge("type" => "attachment", "media_type" => "text/x.cucumber.log+plain",
+                                        "content_encoding" => "IDENTITY", "body" => "requested step log")
+      formatter.ingest_event(payload)
+      formatter.ingest_event(payload.reject { |key, _| key == "test_step_id" }.merge("body" => "requested scenario log"))
+      expect(buffer).to have_received(:emit_log).with(hash_including(item_uuid: "step-replay", message: "requested step log"))
+      expect(buffer).to have_received(:emit_log).with(hash_including(item_uuid: "scenario-replay", message: "requested scenario log"))
+      expect(buffer).not_to have_received(:emit_log).with(hash_including(item_uuid: "manual-replay"))
+    end
   end
 
   it "flushes manual step logs before finishing the manual step item" do

@@ -41,7 +41,7 @@ RSpec.describe "Day2 native process fault isolation" do
         expect(result.fetch("stdout") + result.fetch("stderr")).to include("DAY2_ORIGINAL_BUSINESS_FAILURE")
         expect(result.fetch("receipt")).to include("complete" => false, "confirmed" => 0, "ambiguous" => 0)
         expect(result.dig("receipt", "failed")).to be > 0
-        expect(result.fetch("cucumber")).to eq("10.2.0")
+        expect(Gem::Requirement.new("~> 12.0", ">= 12.0.1").satisfied_by?(Gem::Version.new(result.fetch("cucumber")))).to be(true)
         requests = @proxy.events.select { |event| event[:path].end_with?("/log") }
         expect(requests.map { |event| event[:request_sha256] }.uniq.length).to eq(requests.length)
       end

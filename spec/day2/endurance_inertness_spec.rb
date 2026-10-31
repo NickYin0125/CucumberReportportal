@@ -36,7 +36,7 @@ RSpec.describe "Default Cucumber duration isolation" do
     expect(status.exitstatus).to eq(0), stderr
     result = JSON.parse(stdout.lines.last)
     expect(result).to include("native_exit" => 0, "unchanged_environment" => true, "server_threads" => 0)
-    expect(result.fetch("progress")).to include("1 scenario (1 passed)")
+    expect(result.fetch("progress")).to include("7 scenarios (7 passed)", "21 steps (21 passed)")
     expect(stderr).not_to include("unexpected default")
   end
 end

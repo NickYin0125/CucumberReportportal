@@ -77,7 +77,7 @@ RSpec.describe "M3B stable identity and retry integration" do
         expect_attempt_logs_are_isolated(result, retry_attempts)
       end
 
-      expect(legacy.fetch("suite_finish_status")).to eq("failed")
+      expect(legacy.fetch("suite_finish_status")).to eq("passed")
       expect(stable_a.fetch("suite_finish_status")).to eq("passed")
       expect(stable_b.fetch("suite_finish_status")).to eq("passed")
 

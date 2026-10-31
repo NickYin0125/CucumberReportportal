@@ -5,6 +5,31 @@ structure, API request/response diagnostics, and screenshots owned by your tests
 Use the same `AppLog` calls for the terminal, native Cucumber HTML/messages, and
 ReportPortal.
 
+## Release Line Compatibility
+
+This source branch prepares **SDK 2.0.0** for Cucumber 12. It is not a published
+release, and no new tag or package has been pushed. Existing installations can
+stay on the independently maintained 1.x line.
+
+| SDK line | Ruby | Cucumber | Source and status |
+| --- | --- | --- | --- |
+| 1.x | `>= 3.1` | `>= 9, < 11` | Released **1.3.1**; `maintenance/1.x` frozen at the released commit |
+| 2.x | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | **2.0.0 candidate** on `codex/cucumber-12`; not published |
+
+Cucumber 11 is not supported by either line. CI selects the real released 1.3.1
+source for legacy checks, never the 2.x gemspec. The planned matrix and observed
+local checks are distinguished in [release readiness](docs/cucumber-12-release-readiness.md).
+Helm **1.3.1** and ReportPortal **26.0.7** are unchanged and versioned separately
+from SDK 2.0.0; this SDK migration requires no infrastructure upgrade.
+The frozen maintenance branch still has its historical publisher; future 1.x
+publication requires a separately approved workflow/tooling backport and actual
+maintenance-head validation, not only this 2.x compatibility matrix.
+
+For Cucumber 12, follow the [English 2.0 migration guide](docs/migrating-to-2.0.md)
+for dependencies, native `log`/`attach`, strict-mode removal, and parallel Launch
+ownership. The five-step quick start below deliberately remains the **published
+1.3.1 / Cucumber 9 or 10** path; it does not install the unpublished candidate.
+
 **New here?** Follow the five steps below. The
 [complete getting-started guide](docs/getting-started.md) runs one Scenario without
 a browser or a ReportPortal server before connecting your real project.
@@ -178,7 +203,7 @@ documents the real Helm/Compose, attachment and Playwright playback checks.
 
 ## Developing the SDK
 
-From **an SDK source checkout**, with Ruby/Bundler installed:
+From **this SDK 2.x source checkout**, with Ruby `>=3.3` and Bundler installed:
 
 ```sh
 bundle install
@@ -191,10 +216,11 @@ checkout. These are developer checks; consumers do not need the root development
 bundle. Browser/live RP/duration checks are separate opt-ins in the
 [examples index](examples/README.md).
 
-The gem uses Cucumber, `cucumber-cucumber-expressions` (`>=17,<19`), `mime-types`,
-and `aws-sdk-s3` for optional S3 video delivery. Cucumber 11 is unsupported.
-Declared Ruby `>=3.1` compatibility is not a claim that every Ruby version was
-tested. The historical [v1.3.0 release acceptance](https://github.com/NickYin0125/CucumberReportportal/blob/main/docs/reviews/2026-10-13-v1.3.0-release-acceptance.md)
+SDK 2.x uses Cucumber `>=12.0.1, ~>12.0` and its compatible dependency family,
+explicit `base64`/`cgi`/`logger` gems, `mime-types`, and `aws-sdk-s3` for optional
+S3 video delivery. Do not carry the 1.x expressions `>=17,<19` pin into a 2.x
+bundle. Cucumber 11 is unsupported. Declared version ranges are not a claim that
+every Ruby/Cucumber combination was tested. The historical [v1.3.0 release acceptance](https://github.com/NickYin0125/CucumberReportportal/blob/main/docs/reviews/2026-10-13-v1.3.0-release-acceptance.md)
 records the environment and checks for that release.
 
 ## License

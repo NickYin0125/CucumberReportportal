@@ -211,8 +211,8 @@ RSpec.describe "M4-D native Cucumber interruption" do
         "sha256" => Digest::SHA256.hexdigest(png), "actual_sha256" => Digest::SHA256.hexdigest(png) }
     ])
     parent_version = Gem.loaded_specs.fetch("cucumber").version
-    expect(parent_version).to be >= Gem::Version.new("9.0")
-    expect(parent_version).to be < Gem::Version.new("11.0")
+    expect(parent_version).to be >= Gem::Version.new("12.0.1")
+    expect(parent_version).to be < Gem::Version.new("13.0")
     expect(result.fetch("cucumber_version")).to eq(parent_version.to_s)
     expect(result.fetch("loaded_sdk").keys).to all(start_with(File.realpath(root) + "/lib/"))
   end

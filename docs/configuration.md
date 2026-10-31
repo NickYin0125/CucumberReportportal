@@ -1,5 +1,11 @@
 # Configuration reference
 
+SDK 2.x requires Ruby >=3.3 and Cucumber >=12.0.1, ~>12.0; configuration defaults
+below otherwise retain their established meanings. Cucumber's removed `strict`
+mode is not a reporting option and is unrelated to the completeness policy.
+Enabled `ParallelFormatter` workers require `RP_LAUNCH_UUID` supplied by CI; see
+the [migration guide](migrating-to-2.0.md#parallel-launch-ownership).
+
 Most projects start with only an endpoint, project, API key, and Launch name.
 Keep defaults for batching, retry, identity, and video until a concrete need
 appears. See [getting started](getting-started.md) for the first working run and
@@ -143,6 +149,7 @@ receipt records `possible_duplicates`.
 | `RP_IDENTITY_STRATEGY` | `identity_strategy` | `legacy` | `legacy` or explicit `stable_v1` migration |
 | `RP_IDENTITY_ROOT` | `identity_root` | Working directory | Root for source-derived identity |
 | `RP_IDENTITY_NAMESPACE` | `identity_namespace` | Unset | Keep fixed across workers sharing history |
+| `RP_RULE_SUITES` | `rule_suites` | `false` | Opt-in Feature -> Rule -> Scenario hierarchy; duplicate Rule names are distinct by source line |
 | `RP_SCENARIO_ATTRIBUTES_ENABLED` | `scenario_attributes_enabled` | `false` | Boolean; allowlisted Scenario attributes |
 | `RP_SCENARIO_ATTRIBUTE_KEYS` | `scenario_attribute_keys` | `component,team,owner,layer,priority,browser,tms` | Comma-separated allowlist, or YAML list |
 | `RP_SCENARIO_ATTRIBUTES` | `scenario_attributes` | `[]` | Environment: JSON object/list; YAML: defaults for business attributes |
