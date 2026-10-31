@@ -634,3 +634,7 @@ the independent tester must assess against them.
 
    Owner answer: 按规则修正金样，保留严格逐字节验收（推荐）
 
+8. Question: 独立 QA 确认：1.x 旧基线有 6 个含 NUL 字符的文本附件未落库，新版则完整保存，且上传字节、MIME 和归属均不变。是否允许仅这 6 项改用旧版实际提交的报文作对照，并要求新版完整读回；其余 G2/G3 仍严格比较 API 基线？另有一条原生 NUL 用户日志在新旧版均未落库，将明确列为既有限制，暂不改变其语义。
+
+   Owner answer: 允许这 6 项基线例外，记录既有限制（推荐）
+
