@@ -146,6 +146,10 @@ module ReportportalCucumber
         end
 
         def table_alignment(rows, columns)
+          # Alignment is optional; never inspect beyond the existing preview
+          # window merely to prove a column numeric, including hidden rows.
+          return Array.new(columns, '---') if rows.length > CONTENT_LINE_LIMIT
+
           numeric = Array.new(columns, true)
           populated = Array.new(columns, false)
           rows.each_with_index do |row, index|
@@ -156,7 +160,12 @@ module ReportportalCucumber
             columns.times do |column|
               next unless numeric[column]
 
-              value = cell_value(cells[column]).strip
+              value = cell_value(cells[column])
+              if value.bytesize > CELL_BYTE_LIMIT
+                numeric[column] = false
+                next
+              end
+              value = value.strip
               next if value.empty?
 
               populated[column] = true

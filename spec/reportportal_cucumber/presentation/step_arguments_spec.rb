@@ -53,6 +53,26 @@ RSpec.describe "Ledger step arguments" do
     expect(output).not_to include("n/a")
   end
 
+  it "does not strip or regex-match multi-megabyte cells to determine numeric alignment" do
+    huge = "1" * (4 * 1024 * 1024)
+    expect(huge).not_to receive(:strip)
+    expect(huge).not_to receive(:match?)
+    output = descriptor(rows: [["value"], [huge]]).to_markdown(mode: :log)
+    expect(output).to include("| --- |", "#{'1' * 512}[truncated]")
+    expect(output.bytesize).to be <= step_class::CONTENT_BYTE_LIMIT
+  end
+
+  it "does not visit hidden rows solely to establish alignment and conservatively left-aligns long tables" do
+    hidden = Struct.new(:cells).new(["unvisited"])
+    expect(hidden).not_to receive(:cells)
+    rows = [["value"]] + Array.new(99) { ["1"] } + [hidden] + Array.new(100_000) { ["1"] }
+    output = descriptor(rows: rows).to_markdown(mode: :log)
+    expect(output).to include("| --- |", "[table omitted: preview limit exceeded]")
+    expect(output.bytesize).to be <= step_class::CONTENT_BYTE_LIMIT
+    expect(descriptor(rows: [["value"], ["1" * 512]]).to_markdown).to include("| --: |")
+    expect(descriptor(rows: [["value"], ["1" * 513]]).to_markdown).to include("| --- |")
+  end
+
   it "uses declared or detected JSON captions and compact JSON, but respects other media types" do
     ["", "json", "application/json", "application/problem+json; charset=utf-8"].each do |type|
       expect(descriptor(content: '{"values":[1,true,null]}', type: type).to_markdown(mode: :log))
