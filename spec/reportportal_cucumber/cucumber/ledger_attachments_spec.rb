@@ -16,6 +16,8 @@ RSpec.describe "Ledger attachment ownership and batching" do
     formatter.instance_variable_set(:@launch_uuid, "launch")
     formatter.instance_variable_set(:@attachment_name_mutex, Mutex.new)
     formatter.instance_variable_set(:@attachment_name_counts, Hash.new(0))
+    formatter.instance_variable_set(:@hook_names_mutex, Mutex.new)
+    formatter.instance_variable_set(:@hook_names, {})
     allow(formatter).to receive(:reporting_enabled?).and_return(true)
     scenario = context_class::ItemHandle.new(uuid: "scenario", name: "Scenario", kind: :scenario, type: "STEP")
     formatter.runtime_context.start_scenario("case", scenario)
@@ -105,6 +107,7 @@ RSpec.describe "Ledger attachment ownership and batching" do
 
   it "clears remaining name counters during finalization even when completeness enforcement raises" do
     formatter = setup_formatter(nil)
+    formatter.instance_variable_get(:@hook_names)["native-hook"] = "Open browser".freeze
     item = owner(formatter, "step", "Given values")
     formatter.send(:attachment_for_owner, { mime: "image/png", bytes: "AAAA" }, item)
     formatter.instance_variable_set(:@combined_step_tables_mutex, Mutex.new)
@@ -115,6 +118,7 @@ RSpec.describe "Ledger attachment ownership and batching" do
     allow(formatter).to receive(:enforce_complete_reporting).and_raise(failure)
     expect { formatter.send(:finalize_reporting, status: "passed", end_time: time) }.to raise_error { |error| expect(error).to equal(failure) }
     expect(formatter.instance_variable_get(:@attachment_name_counts)).to be_empty
+    expect(formatter.instance_variable_get(:@hook_names)).to be_empty
   end
 
   it "keeps explicitly named input immutable and chooses ASCII fallback slugs" do
