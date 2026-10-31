@@ -211,7 +211,7 @@ RSpec.describe "ReportPortal backend chaos sandbox" do
         expect(entries).to all(include("itemUuid" => "step-uuid", "launchUuid" => "launch-uuid",
                                        "time" => ((Time.utc(2026, 5, 30).to_r * 1000).to_i.to_s)))
         expect(entries.find { |entry| entry.dig("file", "name") == "config.json" }.fetch("message"))
-          .to include(JSON.pretty_generate("enabled" => true))
+          .to include('```json' + "\n" + '{ "enabled": true }' + "\n```")
       end
     end
 

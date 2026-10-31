@@ -35,6 +35,8 @@ module ReportportalCucumber
         return unless runtime
 
         attachment = build_attachment_payload(io_or_bytes, name: name, mime: mime_type || mime)
+        attachment[:auto_name] = true unless name.instance_of?(String)
+        attachment[:caption_style] = "default" if message.nil?
 
         runtime.emit_world_attachment(
           message: message || "Attachment: #{attachment.fetch(:name)}",

@@ -101,7 +101,9 @@ RSpec.describe "M4 Store binary encoding with Cucumber's UTF-8 internal encoding
 
         id = store.transactions.fetch(0)
         transaction = store.load_transaction(id: id)
-        record = wire.merge("file" => { "name" => name })
+        kind = { "application/octet-stream" => "File", "image/png" => "PNG", "video/mp4" => "MP4" }.fetch(mime)
+        record = wire.merge("file" => { "name" => name },
+                            "message" => "#{wire.fetch('message')}\n\n`#{name}` \u00b7 #{kind} \u00b7 #{bytes.bytesize} B")
         expect(transaction.fetch(:entries)).to eq([record])
         file = transaction.fetch(:files).first
         expect(File.binread(file.fetch(:path))).to eq(bytes.b)

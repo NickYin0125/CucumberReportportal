@@ -11,9 +11,12 @@ module ReportportalCucumber
       # Nested calls let the outermost message renderer handle the failure once.
       # The baseline callable runs outside the rescue and must not use new helpers.
       # @param fallback [#call] Exact pre-Ledger renderer for this message.
+      # @param state [Hash, nil] Optional message-local failure latch for repeated
+      #   queue size probes. A failed message uses baseline without retrying helpers.
       # @yieldreturn [Object] Newly rendered message or helper value.
       # @return [Object] Rendered value, or the baseline on StandardError.
-      def self.render(fallback:)
+      def self.render(fallback:, state: nil)
+        return fallback.call if state && state[:failed]
         return yield if Thread.current[ACTIVE_KEY]
 
         failed = false
@@ -22,6 +25,7 @@ module ReportportalCucumber
           result = yield
         rescue StandardError
           failed = true
+          state[:failed] = true if state
           warn_once
         ensure
           Thread.current[ACTIVE_KEY] = nil

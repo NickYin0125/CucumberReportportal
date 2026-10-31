@@ -38,6 +38,8 @@ module ReportportalCucumber
         @ast_metadata = AstMetadata.new(ast_lookup: @ast_lookup)
         @combined_step_tables = {}
         @combined_step_tables_mutex = Mutex.new
+        @attachment_name_mutex = Mutex.new
+        @attachment_name_counts = Hash.new(0)
         @feature_states = {}
         @rule_states = {}
         @scenario_states = {}
@@ -112,6 +114,8 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         target_item_uuid = runtime_context.current_item_uuid || runtime_context.active_parent_uuid unless @native_run_hook
+        owner = runtime_context.current_item || runtime_context.active_parent unless @native_run_hook
+        attachment = attachment_for_owner(attachment, owner) if attachment
         @log_buffer.emit_log(
           item_uuid: target_item_uuid,
           launch_uuid: @launch_uuid,
@@ -131,6 +135,8 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         target_item_uuid = runtime_context.active_parent_uuid || runtime_context.current_item_uuid unless @native_run_hook
+        owner = runtime_context.active_parent || runtime_context.current_item unless @native_run_hook
+        attachment = attachment_for_owner(attachment, owner)
         @log_buffer.emit_log(
           item_uuid: target_item_uuid,
           launch_uuid: @launch_uuid,
@@ -250,7 +256,10 @@ module ReportportalCucumber
           ReportportalCucumber.logger.warn("ReportPortal evidence rejected: batch exceeds #{EVIDENCE_MAX_ARTIFACTS} artifacts")
           return false
         end
-        payloads = artifacts.map { |artifact| build_evidence_payload(artifact) }
+        payloads = artifacts.map do |artifact|
+          payload = build_evidence_payload(artifact)
+          attachment_for_owner(payload.merge(caption_style: "evidence"), item).merge(baseline_name: payload[:name])
+        end
         names = payloads.map { |artifact| artifact[:name] }
         rendered = Service::EvidencePresenter.failure(
           action: action,
@@ -276,8 +285,10 @@ module ReportportalCucumber
                            bytes = payload.fetch(:bytes)
                            { name: name, mime: payload.fetch(:mime), bytes: bytes }
                          end
+            attachment[:caption_style] = payload[:caption_style]
+            attachment[:baseline_name] = payload[:baseline_name] if payload[:auto_name]
             admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid,
-                                                message: "Failure evidence: #{name}", level: :error,
+                                                message: "Failure evidence: #{payload.fetch(:baseline_name)}", level: :error,
                                                 timestamp: monotonic_timestamp(Time.now), attachment: attachment,
                                                 deadline: deadline, cancelled: cancelled)
           end
@@ -355,7 +366,9 @@ module ReportportalCucumber
         raise
       ensure
         if item_uuid || local_uuid
-          close_capture_target(capture_target) if capture_target
+          if capture_target && close_capture_target(capture_target)
+            @attachment_name_mutex.synchronize { @attachment_name_counts.delete(item_uuid || local_uuid) }
+          end
           flush_before_finish
           safe_reporting_call(preserve_business_exception: !active_original.nil? || !failure.nil?) do
             finish_item_request(
@@ -383,6 +396,7 @@ module ReportportalCucumber
         raise ArgumentError, "artifact must include path or bytes" if path.nil? && bytes.nil?
 
         filename = options[:name].is_a?(String) ? options[:name] : ""
+        automatic = filename.empty?
         if path
           raise ArgumentError, "evidence path must be a string" unless path.is_a?(String)
 
@@ -397,7 +411,7 @@ module ReportportalCucumber
           mime = Transport::MultipartHelper.content_type_for(
             filename: mime_filename, declared_type: options[:mime]
           )
-          return { name: filename, mime: mime, path: path }
+          return { name: filename, mime: mime, path: path, auto_name: automatic }
         end
 
         bytes = bytes.read(1_048_577) if bytes.respond_to?(:read)
@@ -409,7 +423,7 @@ module ReportportalCucumber
           filename, limit: EVIDENCE_FILENAME_LIMIT
         )
         mime = Transport::MultipartHelper.content_type_for(filename: filename, declared_type: options[:mime])
-        { name: filename, mime: mime, bytes: bytes }
+        { name: filename, mime: mime, bytes: bytes, auto_name: automatic }
       end
 
       # @return [Boolean]
@@ -746,11 +760,13 @@ module ReportportalCucumber
           return
         end
 
+        message = extract_attachment_message(event, attachment[:name])
+        attachment = attachment_for_owner(attachment, target_item)
         debug("Queueing attachment name=#{attachment[:name].inspect} mime=#{attachment[:mime]} item=#{target_item&.uuid}")
         @log_buffer.emit_log(
           item_uuid: target_item&.uuid,
           launch_uuid: @launch_uuid,
-          message: extract_attachment_message(event, attachment[:name]),
+          message: message,
           level: level,
           timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now),
           attachment: attachment
@@ -790,11 +806,12 @@ module ReportportalCucumber
         level = Automation::ReportContext.current.fetch(:level, :info)
         filename = fetch_value(event, :filename)
         handle_attachment({
-          file_name: filename || default_attachment_name(normalized_type),
+          file_name: filename,
           media_type: normalized_type.empty? ? "application/octet-stream" : normalized_type,
           body: body,
           content_encoding: media_type.match?(/;base64\z/i) ? "base64" : "identity",
-          message: filename ? "Attachment: #{filename}" : "Attachment"
+          message: filename ? "Attachment: #{filename}" : "Attachment",
+          caption_style: "default"
         }, level: level)
       end
 
@@ -962,6 +979,7 @@ module ReportportalCucumber
         enforce_complete_reporting
       ensure
         @combined_step_tables_mutex.synchronize { @combined_step_tables.clear } if @finalized
+        @attachment_name_mutex.synchronize { @attachment_name_counts.clear } if @finalized
         emit_incomplete_reporting_summary(status) if @finalized
         if @finalized && ReportportalCucumber.current_runtime.equal?(self)
           ReportportalCucumber.current_runtime = nil
@@ -1062,6 +1080,7 @@ module ReportportalCucumber
             finish_item_request(item_uuid: state[:item].uuid, launch_uuid: @launch_uuid,
                                 end_time: monotonic_timestamp(end_time), status: aggregate_status(state[:outcomes].values))
           end
+          @attachment_name_mutex.synchronize { @attachment_name_counts.delete(state[:item].uuid) }
         end
         safe_reporting_call do
           finish_item_request(
@@ -1072,6 +1091,7 @@ module ReportportalCucumber
           )
         end
         runtime_context.finish_feature(feature_key)
+        @attachment_name_mutex.synchronize { @attachment_name_counts.delete(item.uuid) }
       end
 
       # @param status [String, nil]
@@ -1119,6 +1139,7 @@ module ReportportalCucumber
         runtime_context.release_test_case_started(scenario_state[:test_case_started_id]) if scenario_state[:test_case_started_id]
         runtime_context.finish_scenario(expected_uuid: scenario_state[:item].uuid) if runtime_context.current_scenario_key == scenario_key
         @scenario_states.delete(scenario_key)
+        @attachment_name_mutex.synchronize { @attachment_name_counts.delete(scenario_state[:item].uuid) }
       end
 
       # @param status [String, nil]
@@ -1213,6 +1234,7 @@ module ReportportalCucumber
           timeout: remaining_finalization_budget
         )
         warn_capture_close_timeout unless closed
+        @attachment_name_mutex.synchronize { @attachment_name_counts.delete(item.uuid) } if closed
         closed
       end
 
@@ -1345,11 +1367,38 @@ module ReportportalCucumber
         body = fetch_value(event, :body).to_s
         bytes = encoding == "base64" ? Base64.decode64(body) : body
         media_type = fetch_value(event, :media_type) || "application/octet-stream"
+        filename = fetch_value(event, :file_name)
         {
-          name: fetch_value(event, :file_name) || default_attachment_name(media_type),
+          name: filename || default_attachment_name(media_type),
           mime: media_type,
-          bytes: bytes
+          bytes: bytes,
+          auto_name: filename.nil? || filename == "",
+          caption_style: fetch_value(event, :caption_style) || (fetch_value(event, :message).nil? ? "default" : nil)
         }
+      end
+
+      # Assign default filenames once, at the owner, before queue batching.
+      # Never consume or copy attachment bytes while deriving display metadata.
+      def attachment_for_owner(attachment, owner)
+        return attachment unless attachment.is_a?(Hash)
+
+        name = attachment[:name] || attachment["name"]
+        automatic = attachment[:auto_name] == true || name.nil? || name == ""
+        return attachment unless automatic
+
+        Presentation::Fallback.render(fallback: -> { attachment.merge(caption_style: "baseline") }) do
+          @attachment_name_mutex.synchronize do
+            key = owner&.uuid || @launch_uuid
+            index = @attachment_name_counts[key]
+            generated = Service::PayloadBuilder.default_attachment_name(
+              attachment[:mime] || attachment["mime"], owner_name: owner&.name.to_s, index: index
+            )
+            @attachment_name_counts[key] = index + 1
+            result = attachment.merge(name: generated)
+            result[:baseline_name] = name if name.is_a?(String)
+            result
+          end
+        end
       end
 
       # @param event [Object]
