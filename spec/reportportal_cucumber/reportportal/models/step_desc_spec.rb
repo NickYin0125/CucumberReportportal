@@ -127,7 +127,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     huge_cell = Cell.new(("x" * 1_000_000).freeze).freeze
     table = SourceDataTable.new(Array.new(120) { Row.new([huge_cell]) })
     markdown = described_class.new(step: source, pickle_table: table).to_markdown
-    expect(markdown).to include("x" * described_class::CELL_BYTE_LIMIT + "[truncated]", "DOCUMENT")
+    expect(markdown).to include("x" * described_class::CELL_BYTE_LIMIT + "\\[truncated\\]", "DOCUMENT")
     expect(markdown).not_to include("x" * (described_class::CELL_BYTE_LIMIT + 1))
     expect(markdown.bytesize).to be <= described_class::CONTENT_BYTE_LIMIT
 
