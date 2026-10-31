@@ -304,10 +304,11 @@ RSpec.describe Automation::HttpExchange do
       abort "unexpected severity" unless exchange.level == :info
       abort "missing evidence" unless exchange.to_markdown.include?("ok") && exchange.summary.include?("200")
       abort "missing Ledger card" unless exchange.to_markdown.start_with?("\u2713 GET / \u2192 200")
+      abort "missing standalone accent" unless exchange.to_markdown(presentation: "rich").include?("<span style=")
       ReportportalCucumber::Presentation::MarkdownText.define_singleton_method(:inline) { |*| raise "helper fault" }
       abort "missing standalone fallback" unless exchange.to_markdown.start_with?("### Request")
       newly_loaded = $LOADED_FEATURES - loaded_before
-      presentation_helpers = %w[markdown_text ledger_json units fallback].map { |name| "/presentation/\#{name}.rb" }
+      presentation_helpers = %w[markdown_text ledger_json units fallback accent].map { |name| "/presentation/\#{name}.rb" }
       core_reportportal = newly_loaded.any? do |path|
         path.include?("reportportal_cucumber") && !path.include?("/automation/") &&
           presentation_helpers.none? { |suffix| path.end_with?(suffix) }

@@ -266,7 +266,8 @@ module ReportportalCucumber
           error: error,
           url: url,
           details: details,
-          artifact_names: names
+          artifact_names: names,
+          presentation: @config.presentation
         )
         redactor = Automation::EvidenceRedactor.new
         summary = redactor.redact_text(rendered.fetch(:summary, rendered.fetch("summary", "Failure evidence")))
@@ -768,10 +769,15 @@ module ReportportalCucumber
 
         attachment = build_attachment(event)
         if attachment[:mime].to_s.casecmp?("text/x.cucumber.log+plain")
+          message = attachment[:bytes]
+          card = Automation::ReportContext.current[:rp_log_card]
+          if @config.presentation == "rich" && card.is_a?(Automation::ReportContext::LogCard) && card.plain.b == message.b
+            message = card.rich
+          end
           @log_buffer.emit_log(
             item_uuid: target_item&.uuid,
             launch_uuid: @launch_uuid,
-            message: attachment[:bytes],
+            message: message,
             level: level,
             timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now)
           )
@@ -1348,7 +1354,7 @@ module ReportportalCucumber
         message = Automation::EvidenceRedactor.new.redact_text(message)
         baseline = message.empty? ? "Step failed" : message
         message = Presentation::Fallback.render(fallback: -> { baseline }) do
-          Presentation::FailureCard.format(error: error, message: details, backtrace: backtrace)
+          Presentation::FailureCard.format(error: error, message: details, backtrace: backtrace, presentation: @config.presentation)
         end
         @log_buffer.emit_log(
           item_uuid: item_uuid,
@@ -1365,7 +1371,7 @@ module ReportportalCucumber
       # @return [void]
       def emit_step_markdown_log(item_uuid:, descriptor:, timestamp:)
         description = Presentation::Fallback.render(fallback: -> { descriptor.baseline_markdown }) do
-          descriptor.to_markdown(mode: :log)
+          descriptor.to_markdown(mode: :log, presentation: @config.presentation)
         end
         return if description.to_s.strip.empty?
 
@@ -1798,7 +1804,7 @@ module ReportportalCucumber
         return nil unless descriptor&.rich?
 
         Presentation::Fallback.render(fallback: -> { descriptor.baseline_markdown }) do
-          descriptor.to_markdown(mode: :description)
+          descriptor.to_markdown(mode: :description, presentation: "plain")
         end
       end
 

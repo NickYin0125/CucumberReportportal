@@ -12,6 +12,7 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   end
 
   before do
+    formatter.instance_variable_set(:@config, ReportportalCucumber::Config.new)
     formatter.instance_variable_set(:@launch_uuid, "launch-1")
     formatter.instance_variable_set(:@log_buffer, buffer)
     allow(formatter).to receive(:monotonic_timestamp).with(timestamp).and_return(timestamp)

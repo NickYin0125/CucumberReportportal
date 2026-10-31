@@ -3,6 +3,7 @@
 require "rbconfig"
 require_relative "markdown_text"
 require_relative "units"
+require_relative "accent"
 require_relative "../automation/evidence_redactor"
 
 module ReportportalCucumber
@@ -22,8 +23,9 @@ module ReportportalCucumber
         # @param message [String] Original extracted exception message.
         # @param backtrace [String] Original joined backtrace, without normalization.
         # @param cwd [String] Project root used only for displayed locations.
+        # @param presentation [String] "plain" or RP-only "rich".
         # @return [String] Bounded card, or the exact redacted baseline on failure.
-        def format(error:, message:, backtrace:, cwd: Dir.pwd)
+        def format(error:, message:, backtrace:, cwd: Dir.pwd, presentation: "plain")
           redactor = Automation::EvidenceRedactor.new
           raw = [message, backtrace].reject(&:empty?).join("\n")
           baseline = redactor.redact_text(raw)
@@ -39,13 +41,17 @@ module ReportportalCucumber
             next baseline unless joined == (raw.empty? ? "" : baseline)
 
             card = render(error, safe_message, safe_backtrace, cwd)
-            card.bytesize <= BYTE_LIMIT ? card : baseline
+            next baseline if card.bytesize > BYTE_LIMIT
+            next card unless presentation == "rich"
+
+            rich = render(error, safe_message, safe_backtrace, cwd, accent: true)
+            Accent.guard(plain: card, rich: rich, level: :error)
           end
         end
 
         private
 
-        def render(error, message, backtrace, cwd)
+        def render(error, message, backtrace, cwd, accent: false)
           message_lines = message.lines(chomp: true)
           first = message_lines.index { |line| !line.strip.empty? }
           headline = first ? message_lines[first] : ""
@@ -73,8 +79,13 @@ module ReportportalCucumber
             sections << fenced(aligned)
           end
           unless backtrace.empty?
-            sections << tail_caption(frames, shown)
-            sections << fenced(backtrace)
+            caption = tail_caption(frames, shown)
+            if accent
+              sections << Accent.details(summary: caption, body: backtrace, limit: BYTE_LIMIT)
+            else
+              sections << "_#{caption}_"
+              sections << fenced(backtrace)
+            end
           end
           sections.join("\n\n")
         end
@@ -128,7 +139,7 @@ module ReportportalCucumber
             noun = hidden.length == 1 ? "frame" : "frames"
             caption += " \u00b7 #{counts.join(' and ')} #{noun} not shown above"
           end
-          "_#{caption}_"
+          caption
         end
 
         def fenced(content)

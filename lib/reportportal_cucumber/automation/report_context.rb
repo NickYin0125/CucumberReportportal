@@ -6,6 +6,29 @@ module Automation
   module ReportContext
     THREAD_KEY = :reportportal_cucumber_report_context
 
+    # A trusted, message-local alternate, created only by structured SDK logs.
+    # Rendering is lazy so plain formatters never invoke accent helpers; it is
+    # memoized so synchronous rich subscribers share one result and warning.
+    class LogCard
+      attr_reader :plain
+
+      # @param plain [String] Exact native message, not a selector or pattern.
+      # @yieldreturn [String] RP-only rendering with its original-baseline fallback.
+      def initialize(plain, &render)
+        @plain = plain.dup.freeze
+        @render = render
+      end
+
+      # @return [String] Memoized RP body; never the native/caller message.
+      def rich
+        return @rich if defined?(@rich)
+
+        @rich = @render.call.freeze
+        @render = nil
+        @rich
+      end
+    end
+
     class << self
       # @return [Hash]
       def current

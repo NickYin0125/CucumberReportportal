@@ -40,13 +40,13 @@ RSpec.describe "M4 raw Queue retention after attachment disappearance" do
       end
     end
     @builder_faults = 0
-    allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records|
+    allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records, **options, &state|
       if transport_failed
         @builder_faults += 1
         raise RuntimeError, %({"\\u0070assword":"#{builder_secret}","detail":"safe builder failure"})
       end
 
-      original.call(records)
+      original.call(records, **options, &state)
     end
   end
 

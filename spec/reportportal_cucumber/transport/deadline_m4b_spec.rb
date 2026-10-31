@@ -254,10 +254,10 @@ RSpec.describe "M4-B queue and transport deadlines" do
     processor = ReportportalCucumber::Service::QueueProcessor.new(api: api, config: config, video_uploader: nil)
     expect(emit(processor, "first-#{'a' * 220}")).to be(true)
     expect(emit(processor, "second-#{'b' * 220}")).to be(true)
-    allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records|
+    allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records, **options, &state|
       raise "injected later chunk builder fault" if records.length == 1 && records.first.message.start_with?("second-")
 
-      original.call(records)
+      original.call(records, **options, &state)
     end
 
     receipt = processor.flush_receipt(timeout: 1)

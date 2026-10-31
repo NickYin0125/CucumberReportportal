@@ -239,7 +239,7 @@ RSpec.describe "Public Cucumber security regression" do
           transport_cases = []
           builder_faults = 0
           original_build = ReportportalCucumber::Service::PayloadBuilder.method(:build_log_batch)
-          ReportportalCucumber::Service::PayloadBuilder.define_singleton_method(:build_log_batch) do |records|
+          ReportportalCucumber::Service::PayloadBuilder.define_singleton_method(:build_log_batch) do |records, **options, &state|
             missing_after_transport = ENV.fetch("SECURITY_SPOOL_MODE") == "fallback" && !requests.empty? &&
               records.any? do |record|
                 payload = record.respond_to?(:to_h) ? record.to_h : record
@@ -253,7 +253,7 @@ RSpec.describe "Public Cucumber security regression" do
               builder_faults += 1
               raise RuntimeError, "Injected missing-artifact payload-builder failure after transport"
             end
-            original_build.call(records)
+            original_build.call(records, **options, &state)
           end
           finite_transport_errors = {
             original: '{"\\\\u0070assword":"SECURITY_NATIVE_TRANSPORT_SECRET","detail":"safe offline transport diagnostic"}',
