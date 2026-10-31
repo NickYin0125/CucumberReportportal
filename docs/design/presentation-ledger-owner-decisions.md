@@ -80,6 +80,24 @@ Items or change Launch ownership. Continue validating logs, exceptions and
 finalization, and unit-test existing class-hook name mappings. The full Q/A for
 Decisions 4 and 5 is also retained in both authoritative design documents.
 
+### Decision 6: Forward target synchronization on the 2.x feature branch
+
+Question: 为消除 2.x 文档冲突，是否允许仅将 PR 目标分支 codex/cucumber-12 同步合并进功能分支，并保留目标分支已发布的 2.0.0 CHANGELOG 内容？不合并 PR、不推受保护分支、不强推、不发布。
+
+Owner answer: 允许仅同步目标分支，并保留正式发布历史（推荐）
+
+This is an operational authorization only. Master may merge the PR target
+`codex/cucumber-12` forward into the 2.x feature branch after C8 handoff, retaining
+the target's officially published 2.0.0 CHANGELOG history. C8 itself preserves the
+frozen historical body; the separately audited synchronization may retain the
+legitimate target release prose and date. RSpec checks candidate versions and
+contracts rather than pinning a historical-body digest in synthetic PR checkouts.
+
+This does not authorize merging the PR, pushing protected branches, force-pushing,
+publication, or a target synchronization on 1.x. It grants no code, topology,
+ownership, presentation, or other acceptance waiver. Master owns the authorized
+2.x synchronization and records the resulting feature HEAD for final validation.
+
 ## Historical C0 Checkpoint
 
 C0 is committed on both isolated feature branches:

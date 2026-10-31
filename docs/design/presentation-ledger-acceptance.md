@@ -409,3 +409,7 @@ the independent tester must assess against them.
 
    Owner answer: 保留基线行为并记录 N/A（推荐）
 
+6. Question: 为消除 2.x 文档冲突，是否允许仅将 PR 目标分支 codex/cucumber-12 同步合并进功能分支，并保留目标分支已发布的 2.0.0 CHANGELOG 内容？不合并 PR、不推受保护分支、不强推、不发布。
+
+   Owner answer: 允许仅同步目标分支，并保留正式发布历史（推荐）
+
