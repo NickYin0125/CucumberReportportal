@@ -88,6 +88,16 @@ RSpec.describe "Opt-in Launch run context" do
     expect(calls.last.last.fetch("attributes")).to eq(calls.first.last.fetch("attributes"))
   end
 
+  it "uses the cached baseline and one sanitized warning if the RunContext entry point itself raises" do
+    expect(ReportportalCucumber::Presentation::RunContext).to receive(:build).once.and_raise("SECRET renderer fault")
+    expect(ReportportalCucumber.logger).to receive(:warn)
+      .with(ReportportalCucumber::Presentation::Fallback::WARNING).once
+    run_launch(run_context: true)
+    expect(calls.map(&:first)).to eq(%i[start finish])
+    expect(calls.first.last).to include("description" => "", "attributes" => [])
+    expect(calls.last.last.fetch("attributes")).to eq([])
+  end
+
   it "uses baseline metadata at both boundaries and warns once if rendering fails" do
     allow(ReportportalCucumber::Presentation::MarkdownText).to receive(:inline).and_raise("SECRET renderer fault")
     expect(ReportportalCucumber.logger).to receive(:warn)

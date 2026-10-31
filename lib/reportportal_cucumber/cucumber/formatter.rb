@@ -525,19 +525,22 @@ module ReportportalCucumber
       end
 
       def launch_metadata
+        baseline = { attributes: @config.launch_attributes, description: @config.launch_description }
         unless @config.run_context?
-          return { attributes: @config.launch_attributes, description: @config.launch_description }
+          return baseline
         end
 
         # Finish must retain the exact metadata computed at start, even if CI
         # environment variables change while scenarios are running.
-        @launch_metadata ||= Presentation::RunContext.build(
-          attributes: @config.launch_attributes,
-          description: @config.launch_description,
-          sdk_version: ReportportalCucumber::VERSION,
-          cucumber_version: Gem.loaded_specs.fetch("cucumber").version.to_s,
-          include_workers: true
-        )
+        @launch_metadata ||= Presentation::Fallback.render(fallback: -> { baseline }) do
+          Presentation::RunContext.build(
+            attributes: @config.launch_attributes,
+            description: @config.launch_description,
+            sdk_version: ReportportalCucumber::VERSION,
+            cucumber_version: Gem.loaded_specs.fetch("cucumber").version.to_s,
+            include_workers: true
+          )
+        end
       end
 
       # @param event [Object]
