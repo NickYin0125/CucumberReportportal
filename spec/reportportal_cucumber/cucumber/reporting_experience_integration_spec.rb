@@ -173,7 +173,36 @@ RSpec.describe "ReportPortal reporting experience integration" do
         matching.first
       end
       expect(native_records).not_to include(nil)
-      expect(native_records.last.fetch(:text)).to eq(http_message)
+      expect(native_records.last.fetch(:text)).to eq(<<~MARKDOWN.chomp)
+        ### Request
+        - `POST` `https://service.example.test/orders`
+        - Headers:
+        ```text
+        Authorization: [REDACTED]
+        Content-Type: application/json
+        ```
+        - Body:
+        ```json
+        {
+          "order_id": 73
+        }
+        ```
+
+        ### Response
+        - Status: `201`
+        - Headers:
+        ```text
+        Content-Type: application/json
+        ```
+        - Body:
+        ```json
+        {
+          "accepted": true
+        }
+        ```
+
+        - Duration: `14` ms
+      MARKDOWN
       expect(native_records.last.fetch(:text)).not_to include("secret-value")
       expect(native_records.map { |record| record[:test_step_id] }.uniq.length).to eq(1)
       step_started = envelopes.find do |envelope|
