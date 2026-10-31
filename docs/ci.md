@@ -186,7 +186,7 @@ profiles, run the offline RSpec suite (including installed-gem packaging checks)
 and execute the default Cucumber suite on current-source Ruby 3.3/3.4. Separate
 Ruby 3.1/3.3 x Cucumber 9/10 jobs check out actual immutable released v1.3.1
 source, not a forced legacy dependency in the SDK 2.x bundle. These jobs
-retain all behavioral cases; its explicit SHA-guarded test-only driver replaces
+retain all behavioral cases; their explicit SHA-guarded test-only driver replaces
 four historical `10.2.0` literals with assertions against the selected actual
 Cucumber version, without changing baseline production/spec files. See the
 [normalization and production hash audit](cucumber-12-release-readiness.md#explicit-legacy-test-only-normalization).

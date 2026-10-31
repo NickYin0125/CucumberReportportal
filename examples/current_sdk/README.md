@@ -26,7 +26,7 @@ below. There is intentionally no 2.0.1 release-download URL before approval.
 No root development bundle is required to consume a supplied archive.
 
 From **any working directory**, set the two absolute paths to your checkout and
-candidate. Install into a disposable gem directory rather than replacing global
+archive. Install into a disposable gem directory rather than replacing global
 gems or changing your Bundler configuration:
 
 ```sh

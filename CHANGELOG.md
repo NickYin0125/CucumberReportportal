@@ -15,23 +15,30 @@
 - Released as a patch at the owner's request; the two opt-in switches are additive and off by default.
 
 
-## 2.0.0 - Unreleased
+## 2.0.0 - 2026-10-31
 
 ### Breaking Changes And Migration
 
 - Start an independent SDK 2.x release line requiring Ruby >=3.3 and Cucumber >=12.0.1, ~>12.0. Preserve released SDK 1.3.1 and its Cucumber >=9,<11 constraints on the frozen maintenance/1.x line; Cucumber 11 remains unsupported.
 - Adopt Cucumber 12's event/query lifecycle for hierarchy, hooks, retries, native log messages and attachments. Remove reliance on Cucumber's removed strict mode; undefined, pending and ambiguous results are failures without a strict option.
 - Declare directly used base64, cgi and logger gems. Remove the legacy cucumber-expressions <19 compatibility pin; let Cucumber 12 select its compatible dependency family.
-- Require a CI-owned RP_LAUNCH_UUID for enabled ParallelFormatter workers. The parent creates and finishes the shared Launch after every worker settles; workers own only their items and evidence. No shared Launch coordinator or distributed completion state is introduced.
+- Require an externally owned RP_LAUNCH_UUID for enabled ParallelFormatter workers. CI or a local parent creates and finishes the shared Launch after every worker settles; workers own only their items and evidence. Ordinary single-process runs finish their self-created Launch after reporting settles, with bounded at_exit fallback. No shared Launch coordinator or distributed completion state is introduced.
 - Keep existing AppLog, RP-only helpers, evidence ownership, reporting-completeness policies and caller-owned browser/video lifecycles. See the English migration guide in docs/migrating-to-2.0.md before updating a consumer lockfile.
 
-### CI And Release Preparation
+### Evidence Integrity And Independent Acceptance
+
+- Escape literal NUL in log text and bounded previews so ReportPortal can persist them; preserve original attachment bytes, filenames and downloaded hashes.
+- Render Scenario Outline tables from native compiled Cucumber data when a Step includes both a DocString and DataTable. Preserve Gherkin interpolation semantics without expanding values twice; clear the bounded-renderer metadata references on finalization.
+- Independently validate the corrected runtime with 958 passing RSpec examples, 7 offline Cucumber scenarios / 21 steps, installed-package CLI checks, and fresh Ruby 3.3/3.4 installations. A real Bundler candidate index checks independent 1.x/2.x resolution; it does not imply RubyGems publication.
+- Reconcile 14 corrected real-RP Launches, 237 closed items, 208 persisted logs and 65 byte-verified attachment downloads. Retain deliberate failures and explicit applicability limits in docs/reviews/2026-10-31-cucumber-12-independent-acceptance.md; HTTP acknowledgement alone is not a database-persistence guarantee.
+
+### CI And Distribution
 
 - Add locked current-source Ruby 3.3/3.4 validation and separate Ruby 3.1/3.3 x Cucumber 9/10 jobs checked out at immutable released SDK 1.3.1. Legacy resolution never uses the 2.x gemspec.
 - Keep Helm 1.3.1 and ReportPortal appVersion 26.0.7 unchanged. For 2.x, record and verify the independent chartVersion from Chart.yaml; retain the original coupled 1.x bundle and manifest contract.
 - Constrain stable 1.x release ancestry to maintenance/1.x, with a main exception only for the exact immutable published v1.3.1 commit. Constrain 2.x to main or codex/cucumber-12; reject dirty source, moved tags, unsupported release lines, mismatched identities and changed remote assets.
 - These policies are prepared on the updated 2.x source only. Frozen maintenance/1.x still carries its historical main-only publisher; future 1.x publication needs a separately approved workflow/tooling backport and actual maintenance-head validation. No legacy branch changes are made here.
-- Prepare packaging and recovery checks only. No 2.0.0 tag, GitHub release, RubyGems publication, server upgrade or deployment is implied. Planned matrix checks and observed local results are recorded separately in docs/cucumber-12-release-readiness.md; final acceptance belongs to the independently maintained review.
+- Distribute the installable 2.0.0 Gem, unchanged companion Helm 1.3.1, SHA-256 checksums and release provenance through GitHub v2.0.0. The tag workflow requires both complete current and legacy CI matrices before publication. RubyGems/private-registry publication, deployment upgrades and maintenance-line backports remain separate operations.
 
 ## 1.3.1 - 2026-10-31
 

@@ -9,6 +9,10 @@ Only the publish job has contents-write permission. No RubyGems push is performe
 the publisher before local acceptance and independent review. This change does
 not publish any release, move v1.3.1, or change the server/deployment.
 
+The previously published SDK 2.0.0 has its own
+[independent acceptance](../../docs/reviews/2026-10-31-cucumber-12-independent-acceptance.md).
+That historical approval does not authorize a Ledger candidate release.
+
 ## Fixed release lines
 
 | Stable tag | Approved remote ancestry | Version contract |
@@ -82,7 +86,7 @@ ruby script/release/cli.rb build|publish TAG FULL_COMMIT_SHA OUTPUT_DIRECTORY
 
 `build` requires an already-existing unchanged tag, approved remote ancestry and
 a clean checkout; it cannot certify the shared uncommitted development tree.
-Use QA's isolated real-gem/synthetic-chart fixtures to test preparation now. Do
+Use QA's isolated real-gem/synthetic-chart fixtures to test release preparation. Do
 not delete/stage unrelated user files or disable cleanliness to make a build pass.
 After gates and an approved commit, use a clean isolated source checkout for real
 tagged packaging, with output outside the source checkout. `publish` additionally requires GitHub credentials and is not a
