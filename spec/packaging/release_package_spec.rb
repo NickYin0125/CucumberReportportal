@@ -110,7 +110,7 @@ RSpec.describe "Installed release packaging" do
 
   it "has the release identity and verified-origin metadata without a fabricated email" do
     package = Gem::Package.new(@artifact).spec
-    expect(package.version.to_s).to eq("1.3.0")
+    expect(package.version.to_s).to eq("1.3.1")
     expect(package.version).not_to be_prerelease
     expect(package.homepage).to eq("https://github.com/NickYin0125/CucumberReportportal")
     expect(package.metadata.fetch("source_code_uri")).to eq(package.homepage)
@@ -165,6 +165,18 @@ RSpec.describe "Installed release packaging" do
     consumer = JSON.parse(@run.call(Gem.ruby, "-rbundler", "-rjson", "-e", script, gemfile))
     expect(consumer.fetch("version")).to eq(@spec.version.to_s)
     expect(consumer.fetch("requirement")).to eq("= #{@spec.version}")
+  end
+
+  it "runs the packaged logger demo without writing inside the installed gem" do
+    demo = File.join(@installed, "examples/logger_parameters_demo.rb")
+    transcript = @run.call(Gem.ruby, @bundle, "exec", Gem.ruby, demo, directory: @consumer,
+                           environment: @consumer_env.merge("NO_COLOR" => "1"))
+    expect(transcript).to include("Mode: offline", "Cucumber exit: 0")
+    expect(transcript.lines.grep(/\A\d{4}-\d{2}-\d{2} .*  INFO   /).length).to eq(9)
+    directory = transcript.match(/^Reports: (.+)$/).captures.first
+    expect(directory).to start_with(File.join(@consumer, "tmp", "logger-parameters-"))
+    expect(File.file?(File.join(directory, "report.html"))).to be(true)
+    expect(File.exist?(File.join(@installed, "tmp"))).to be(false)
   end
 
   it "loads only the installed SDK and a supported Bundler-pinned native Cucumber" do

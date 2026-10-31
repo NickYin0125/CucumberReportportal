@@ -334,9 +334,9 @@ in configuration are unsuitable for production. An uploaded object, a browser
 link, and a playable/safely accessible recording are separate checks.
 
 The **separate companion Chart 1.3.1** in this checkout pins ReportPortal `26.0.7`
-and official chart `26.10.26`, requiring Kubernetes `>=1.35`. The SDK remains
-1.3.0; the existing v1.3.0 Release's Chart asset still pins the older server.
-Build the new chart from source. Its version is independent of browser playback behavior. It uses
+and official chart `26.10.26`, requiring Kubernetes `>=1.35`. SDK and Chart 1.3.1
+are distributed together in the GitHub release; the server version is independent.
+Its version is independent of browser playback behavior. It uses
 Prefix routes with a configurable controller class and dedicated-bucket
 reconciliation. Its intentional internal-network public mode grants only
 anonymous `s3:GetObject`, retaining GET/HEAD/Range playback without anonymous

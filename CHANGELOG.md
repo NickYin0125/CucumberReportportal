@@ -1,15 +1,22 @@
 # Changelog
 
-## Unreleased
+## 1.3.1 - 2026-10-31
+
+### Readable Logger And Runnable Examples
+
+- Add local date/time with milliseconds and aligned severity to AppLog terminal summaries, retaining TTY colors and NO_COLOR behavior while removing the redundant APPLOG prefix.
+- Keep native Cucumber and ReportPortal message bodies unchanged: report routing, JSON formatting and step ownership are unaffected by the terminal timestamp.
+- Add terminal preview and nine-parameter Cucumber demos, including opt-in live RP delivery; retain compact summaries, explicit report:false precedence and secret-safe output.
+- Align the independent installed-gem API/Playwright consumer with SDK 1.3.1 and the updated terminal assertions. Demo artifacts belong to the caller's working directory, not the installed gem directory.
 
 ### ReportPortal 26.0.7 Deployment
 
-- Upgrade the companion Chart to 1.3.1 with ReportPortal 26.0.7 and locked official chart 26.10.26. Retain the upstream Kubernetes >=1.35 requirement; Ruby SDK version remains 1.3.0.
+- Upgrade the companion Chart to 1.3.1 with ReportPortal 26.0.7 and locked official chart 26.10.26. Retain the upstream Kubernetes >=1.35 requirement; SDK and Chart release versions are 1.3.1.
 - Add an isolated Docker Compose stack with the matching released service versions, successful migration/bucket initialization barriers, loopback-only routing, read-only video access and retention.
 - Preserve anonymous GET/HEAD/Range video playback while checking denial of list/upload/delete and explicit read revocation. Document the pinned archived MinIO images and production mirror/scan requirement.
 - Validate actual Helm and Compose backends, synchronous/asynchronous reporting semantics, native attachment bytes, UI statistics navigation and real Playwright recording playback.
 - Fix the source live-regression task to bypass the default offline profile, and wait for the Typewords onboarding overlay without forcing UI clicks.
-- Preserve the latest consumer guides. No new GitHub/RubyGems release, in-place historical-data migration or production HA certification is implied.
+- Preserve the latest consumer guides. Distribute Gem and Chart archives, checksums and build provenance through GitHub v1.3.1; RubyGems publication, in-place historical-data migration and production HA certification remain separate operations.
 
 ## 1.3.0 - 2026-10-13
 

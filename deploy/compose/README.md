@@ -2,7 +2,7 @@
 
 The repository root `docker-compose.yml` pins the official 26.0.7 service versions
 and adds the same read-only video bucket policy and 30-day retention used by our
-Helm extension. The Ruby SDK version is unchanged. This is a **single-machine local
+Helm extension. This is a **single-machine local
 validation profile**, not a TLS/HA/backup configuration for production.
 Run it from a source checkout, not from the installed gem's directory.
 MinIO and mc use available, pinned `bitnamilegacy` images because the original

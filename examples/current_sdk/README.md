@@ -1,17 +1,14 @@
 # Current SDK API/UI example
 
-A small independent Cucumber project using **`reportportal-cucumber-ruby` 1.3.0**.
+A small independent Cucumber project using **`reportportal-cucumber-ruby` 1.3.1**.
 It makes real loopback HTTP requests and optionally drives real Chromium against
 a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-**Release caveat:** the original published v1.3.0 gem contains sample setup/runtime
-scripts that still check for 1.2.0. The updated source example fixes those checks
-with one shared version definition. Use **this updated checkout's example files**
-with the published 1.3.0 gem; do not copy the stale sample from that original
-archive. This documentation change does not replace an already-published release
-asset. A subsequent release must package the corrected example.
+Release 1.3.1 packages corrected setup/runtime scripts with one shared SDK version
+definition and timestamped terminal assertions. Use the example and Gem from the
+same release. Older published archives are retained unchanged.
 
 ## Install the consumer
 
@@ -23,13 +20,12 @@ Obtain an updated source checkout to copy **only the example**; no SDK build or
 root development bundle is needed. From **a directory where you keep projects**:
 
 ```sh
-git clone --depth 1 https://github.com/NickYin0125/CucumberReportportal.git
+git clone --depth 1 --branch v1.3.1 https://github.com/NickYin0125/CucumberReportportal.git
 ```
 
-Expected: a checkout with the corrected `examples/current_sdk/helpers/sdk_version.rb`
-version source. If using the change before it is merged, select the branch/commit
-containing it; the v1.3.0 tag retains the old sample. If you already have that
-checkout, skip the clone and set the path below.
+Expected: the v1.3.1 checkout with `examples/current_sdk/helpers/sdk_version.rb`
+matching the release Gem. If you already have that checkout, skip the clone and
+set the path below.
 
 From **any working directory**, replace `sample_source` with that checkout path:
 
@@ -37,10 +33,10 @@ From **any working directory**, replace `sample_source` with that checkout path:
 sample_source=/absolute/path/to/CucumberReportportal
 sample_work=$(mktemp -d "${TMPDIR:-/tmp}/current-sdk-consumer.XXXXXX")
 cp -R "$sample_source/examples/current_sdk" "$sample_work/project"
-curl -fL -o "$sample_work/reportportal-cucumber-ruby-1.3.0.gem" \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.0/reportportal-cucumber-ruby-1.3.0.gem
+curl -fL -o "$sample_work/reportportal-cucumber-ruby-1.3.1.gem" \
+  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
 cd "$sample_work/project"
-export SDK_GEM_ARCHIVE="$sample_work/reportportal-cucumber-ruby-1.3.0.gem"
+export SDK_GEM_ARCHIVE="$sample_work/reportportal-cucumber-ruby-1.3.1.gem"
 export RP_ENABLED=false
 ruby bin/setup "$SDK_GEM_ARCHIVE"
 ```

@@ -105,7 +105,7 @@ module Automation
     def log(level, message, attach: false, file: nil, json: nil, report: nil)
       normalized_level = normalize_level(level)
       report_enabled = report.nil? ? attach : report
-      write_terminal(terminal_line(level: normalized_level, message: message, attach: report_enabled, file: file, json: json),
+      write_terminal(terminal_line(message: message, attach: report_enabled, file: file, json: json),
                      normalized_level)
       return unless report_enabled
 
@@ -137,7 +137,7 @@ module Automation
       )
       level = normalize_level(exchange.level)
       summary = exchange.summary
-      write_terminal(terminal_line(level: level, message: summary, attach: report, file: nil, json: nil), level)
+      write_terminal(terminal_line(message: summary, attach: report, file: nil, json: nil), level)
       return unless report
 
       report_message = exchange.to_markdown
@@ -158,7 +158,7 @@ module Automation
         name: name, expected: expected, actual: actual, passed: passed, details: details
       )
       level = passed ? :info : :error
-      write_terminal(terminal_line(level: level, message: presentation.fetch(:summary), attach: report,
+      write_terminal(terminal_line(message: presentation.fetch(:summary), attach: report,
                                   file: nil, json: nil), level)
       return unless report
 
@@ -183,19 +183,20 @@ module Automation
       LEVELS.include?(key) ? key : :info
     end
 
-    def terminal_line(level:, message:, attach:, file:, json:)
+    def terminal_line(message:, attach:, file:, json:)
       suffixes = []
       suffixes << ATTACHED_MARKER if attach
       suffixes << "(file: #{File.basename(file.to_s)})" if file
       suffixes << "(json payload)" unless json.nil?
-      ["[APPLOG] [#{level.to_s.upcase}]", one_line(message), *suffixes].join(" ")
+      [one_line(message), *suffixes].join(" ")
     end
 
     def one_line(message)
       message.to_s.gsub(/\s+/, " ").strip
     end
 
-    def write_terminal(output, level)
+    def write_terminal(message, level)
+      output = "#{Time.now.strftime('%Y-%m-%d %H:%M:%S.%L')}  #{level.to_s.upcase.ljust(5)}  #{message}"
       line = colorize?(level) ? "\e[#{LEVEL_COLORS.fetch(level)}m#{output}\e[0m" : output
       terminal_output.puts(line)
     end
@@ -284,7 +285,7 @@ module Automation
       yield
     rescue StandardError => e
       safe_message = EvidenceRedactor.new.redact_text(e.message)
-      write_terminal("[APPLOG] [WARN] #{route} routing failed: #{e.class}: #{safe_message}", :warn)
+      write_terminal("#{route} routing failed: #{e.class}: #{safe_message}", :warn)
     end
 
     def cucumber_event_bus_backed_by_reportportal?

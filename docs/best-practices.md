@@ -91,6 +91,35 @@ formatter name alone does not suppress rich evidence. `NO_COLOR=1` disables
 automatically selected colors. RP DEBUG/TRACE logs may be hidden by the UI filter
 even when they were uploaded.
 
+### Preview terminal and report routing
+
+AppLog 1.3.1 prints local date/time, milliseconds and aligned levels, without a
+source prefix. TTY colors remain automatic; `NO_COLOR=1` disables auto-color.
+
+```text
+2026-10-31 14:32:08.125  INFO   Order submitted
+2026-10-31 14:32:09.438  WARN   Retrying request
+2026-10-31 14:32:12.016  ERROR  Payment failed
+```
+
+The timestamp is terminal-only. Full JSON stays in report evidence and does not
+flood the summary. This presentation change does not modify RP log timestamps,
+levels, event ownership or native message bodies.
+
+From an **SDK source checkout** with its bundle installed:
+
+```sh
+bundle exec ruby examples/logger_terminal_preview.rb
+bundle exec ruby examples/logger_parameters_demo.rb
+```
+
+The parameter demo runs nine inputs through real Cucumber and writes native HTML
+and messages beneath the current working directory's `tmp/`. Only cases 02-06
+request report delivery; `json:`/`file:` alone do not enable it. Explicit
+`report: false` overrides legacy `attach: true`. After securely setting
+`RP_ENDPOINT`, `RP_PROJECT` and `RP_API_KEY`, add `--live` to create a uniquely
+named RP launch. The terminal prints its name and report paths, never the API key.
+
 ## API tests: observe real calls, then assert
 
 Instrument the client at the request boundary. Record the actual method, URL,

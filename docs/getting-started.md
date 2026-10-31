@@ -7,7 +7,7 @@ Bundler, and the gems. No browser, Node, ReportPortal, or source checkout is nee
 ## 1. Install the release
 
 Requirements: Ruby `>=3.1`, Bundler, Cucumber `>=9,<11`. The current release archive
-is **1.3.0**. The SDK constrains `cucumber-cucumber-expressions` to `>=17,<19` for
+is **1.3.1**. The SDK constrains `cucumber-cucumber-expressions` to `>=17,<19` for
 Cucumber 9/10 native HTML/message compatibility; keep that constraint.
 
 From **a directory where you keep projects**, create a fresh consumer project:
@@ -15,14 +15,14 @@ From **a directory where you keep projects**, create a fresh consumer project:
 ```sh
 mkdir -p rp-smoke/vendor/cache rp-smoke/features/support rp-smoke/features/step_definitions
 cd rp-smoke
-curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.0.gem \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.0/reportportal-cucumber-ruby-1.3.0.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.0.gem --no-document
+curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.1.gem \
+  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.1.gem --no-document
 ```
 
 Expected: the release archive is in `rp-smoke/vendor/cache`, and RubyGems installs
-`reportportal-cucumber-ruby-1.3.0` plus any missing dependencies. The archive is
-also available through the [release page](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.0)
+`reportportal-cucumber-ruby-1.3.1` plus any missing dependencies. The archive is
+also available through the [release page](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.1)
 for manual download; place it at the same path if curl is unavailable.
 
 Create **`rp-smoke/Gemfile`**:
@@ -31,7 +31,7 @@ Create **`rp-smoke/Gemfile`**:
 source "https://rubygems.org"
 
 gem "cucumber", "~> 10.0"
-gem "reportportal-cucumber-ruby", "= 1.3.0"
+gem "reportportal-cucumber-ruby", "= 1.3.1"
 ```
 
 From **`rp-smoke/`**:
@@ -42,7 +42,7 @@ bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber:
 ```
 
 Expected: Bundler resolves a supported Cucumber 10 version and the installed or
-cached release; the version check prints `1.3.0`. Commit `Gemfile.lock` in your
+cached release; the version check prints `1.3.1`. Commit `Gemfile.lock` in your
 real test project to keep that resolution consistent. RubyGems.org publication
 is separate; do not replace the archive workflow with an unpinned registry install.
 
@@ -103,7 +103,7 @@ RP_ENABLED=false bundle exec cucumber --no-profile --publish-quiet \
 ```
 
 Expected: **1 Scenario / 2 steps passed**, exit `0`. The terminal prints a compact
-`[APPLOG] [INFO] Sum result` line. Open `artifacts/cucumber.html`, expand the Then
+`2026-10-31 14:32:08.125  INFO   Sum result` line. Open `artifacts/cucumber.html`, expand the Then
 step, and find the fenced JSON with expected/actual `5`; `messages.ndjson` contains
 the same native evidence. `RP_ENABLED=false` deliberately disables RP transport
 while leaving native reporting operational.

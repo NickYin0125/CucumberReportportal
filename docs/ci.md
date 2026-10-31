@@ -30,9 +30,9 @@ cucumber:
   before_script:
     - mkdir -p vendor/cache artifacts
     - >-
-      curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.0.gem
-      https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.0/reportportal-cucumber-ruby-1.3.0.gem
-    - gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.0.gem --no-document
+      curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.1.gem
+      https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
+    - gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.1.gem --no-document
     - bundle install
   script:
     - >-
