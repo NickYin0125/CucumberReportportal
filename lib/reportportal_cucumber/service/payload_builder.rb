@@ -155,7 +155,7 @@ module ReportportalCucumber
           "launchUuid" => launch_uuid,
           "itemUuid" => item_uuid,
           "time" => unix_ms(time),
-          "message" => message.to_s,
+          "message" => safe_log_text(message),
           "level" => normalize_log_level(level)
         }.compact
         entry["file"] = { "name" => file_name } if file_name
@@ -220,7 +220,7 @@ module ReportportalCucumber
           raise ArgumentError, "Video URL must be an absolute HTTP(S) URL"
         end
 
-        base = message.to_s.strip
+        base = safe_log_text(message).strip
         video = "UI Failure Playback:\n\n" \
                 "<video width=\"#{Integer(width)}\" controls preload=\"metadata\">" \
                 "<source src=\"#{CGI.escapeHTML(uri.to_s)}\" type=\"video/mp4\"></video>\n\n" \
@@ -371,7 +371,7 @@ module ReportportalCucumber
       # @param attachment [Hash, nil]
       # @return [String]
       def enrich_log_message(message, attachment)
-        base = message.to_s.strip
+        base = safe_log_text(message).strip
         preview = attachment_preview(attachment)
         parts = []
         parts << base unless base.empty?
@@ -518,8 +518,16 @@ module ReportportalCucumber
       def bounded_preview(content)
         byte_truncated = content.bytesize > PREVIEW_MAX_BYTES
         snippet = safe_utf8(content.byteslice(0, PREVIEW_MAX_BYTES))
-        lines = snippet.each_line.take(PREVIEW_MAX_LINES + 1)
-        [lines.first(PREVIEW_MAX_LINES).join, byte_truncated || lines.length > PREVIEW_MAX_LINES]
+        preview = String.new(capacity: [snippet.bytesize, PREVIEW_MAX_BYTES].min, encoding: Encoding::UTF_8)
+        lines = 0
+        snippet.each_char do |character|
+          rendered = character == "\0" ? '\u0000' : character
+          return [preview, true] if lines >= PREVIEW_MAX_LINES || preview.bytesize + rendered.bytesize > PREVIEW_MAX_BYTES
+
+          preview << rendered
+          lines += 1 if character == "\n"
+        end
+        [preview, byte_truncated]
       end
 
       # @param content [String]
@@ -540,6 +548,14 @@ module ReportportalCucumber
         text = value.to_s.dup
         text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY
         text.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?").scrub("?")
+      end
+
+      # PostgreSQL cannot persist literal NUL in a log message. Escape only
+      # display text; the multipart attachment remains byte-for-byte original.
+      # @param value [Object]
+      # @return [String]
+      def safe_log_text(value)
+        safe_utf8(value).gsub("\0") { '\u0000' }
       end
 
       # @param content [String]

@@ -12,6 +12,56 @@ RSpec.describe "Bounded attachment presentation" do
     ])
   end
 
+  it "escapes NUL in byte and path previews while preserving exact original attachment hashes" do
+    bytes = "before\0after\nvisible\\u0000\ninvalid\xFF".b.freeze
+    original_sha = Digest::SHA256.hexdigest(bytes)
+    Dir.mktmpdir do |dir|
+      path = File.join(dir, "nul.txt")
+      File.binwrite(path, bytes)
+      memory = batch(name: "nul.txt", mime: "text/plain", bytes: bytes)
+      streamed = batch(path: path, mime: "text/plain")
+
+      expect(memory[:entries].first["message"]).to eq(streamed[:entries].first["message"])
+      [memory, streamed].each do |payload|
+        message = payload[:entries].first["message"]
+        expect(message).to include('before\\u0000after', 'visible\\u0000', "invalid?")
+        expect(message).not_to include("\0")
+        expect(message).to be_valid_encoding
+      end
+      expect(Digest::SHA256.hexdigest(memory[:files].first.fetch(:bytes))).to eq(original_sha)
+      expect(streamed[:files].first).to include(path: path)
+      expect(streamed[:files].first).not_to have_key(:bytes)
+      expect(Digest::SHA256.file(path).hexdigest).to eq(original_sha)
+      expect(Digest::SHA256.hexdigest(bytes)).to eq(original_sha)
+    end
+  end
+
+  it "counts visible NUL expansion in the byte and line preview budgets" do
+    ["\0" * builder::PREVIEW_MAX_BYTES, ("\0\n" * 120), ("\u754c\0" * 4000)].each do |bytes|
+      message = batch(name: "nul.txt", mime: "text/plain", bytes: bytes)[:entries].first["message"]
+      content = message.split("```text\n", 2).last.split("\n```", 2).first
+      expect(content).not_to include("\0")
+      expect(content).to include('\\u0000')
+      expect(content.bytesize).to be <= builder::PREVIEW_MAX_BYTES
+      expect(content.lines.length).to be <= builder::PREVIEW_MAX_LINES
+      expect(content).to be_valid_encoding
+      expect(message).to include("Preview truncated")
+    end
+  end
+
+  it "does not modify binary attachments or unescape valid JSON NUL sequences" do
+    binary = "\0\xFF\0".b.freeze
+    payload = batch(name: "data.bin", mime: "application/octet-stream", bytes: binary)
+    expect(payload[:entries].first["message"]).to eq("Evidence")
+    expect(payload[:files].first[:bytes]).to eq(binary)
+
+    json = '{"text":"before\\u0000after"}'.freeze
+    payload = batch(name: "data.json", mime: "application/json", bytes: json)
+    expect(payload[:entries].first["message"]).to include('before\\u0000after')
+    expect(payload[:entries].first["message"]).not_to include("\0")
+    expect(payload[:files].first[:bytes]).to eq(json)
+  end
+
   it "renders matching small JSON previews for paths and bytes without materializing the file" do
     Dir.mktmpdir do |dir|
       path = File.join(dir, "evidence.json")

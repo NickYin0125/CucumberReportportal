@@ -6,6 +6,7 @@ require "cucumber/hooks"
 require "cucumber/core/test/hook_step"
 require "cucumber/events"
 require "cucumber/core/event_bus"
+require "cucumber/core"
 
 RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   FakeConfig = Struct.new(:handlers) do
@@ -35,6 +36,93 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
 
   before do
     allow(ReportportalCucumber::Config).to receive(:load).and_return(config)
+  end
+
+  context "with native compiled combined-argument tables" do
+    let(:bus) { Cucumber::Events.make_event_bus }
+    let(:native_config) do
+      double("native event configuration", event_bus: bus).tap do |value|
+        allow(value).to receive(:on_event) { |id, &handler| bus.on(id, &handler) }
+      end
+    end
+
+    def compile_combined_arguments
+      events = []
+      bus.on(:test_step_created) { |event| events << event }
+      feature = <<~FEATURE
+        Feature: Compiled arguments
+          Scenario Outline: Display
+            Given combined display
+              """text
+              COMBINED_DOCUMENT
+              """
+              | combined | <value> |
+            And ordinary document
+              """text
+              DOCUMENT_ONLY
+              """
+            And ordinary table
+              | table | <value> |
+            Examples:
+              | other | value |
+              | must not expand twice | <other> |
+              | unused | TABLE_ONLY_BIRCH |
+      FEATURE
+      receiver = double("compiler receiver", test_case: nil, done: nil)
+      Object.new.extend(Cucumber::Core).compile(
+        [Cucumber::Core::Gherkin::Document.new("combined.feature", feature)], receiver, [], bus
+      )
+      events
+    end
+
+    %i[before after].each do |subscription|
+      it "retains only needed table references with subscription #{subscription} compilation, including retry clones" do
+        formatter = described_class.new(native_config) if subscription == :before
+        events = compile_combined_arguments
+        formatter ||= described_class.new(native_config)
+        tables = formatter.instance_variable_get(:@combined_step_tables)
+        combined = events.select { |event| event.pickle_step.argument.doc_string && event.pickle_step.argument.data_table }
+
+        expect(tables.keys).to match_array(combined.map { |event| event.test_step.id })
+        combined.zip(["<other>", "TABLE_ONLY_BIRCH"]).each do |event, expected|
+          expect(tables.fetch(event.test_step.id)).to equal(event.pickle_step.argument.data_table)
+          2.times do
+            retried = event.test_step.with_action {}
+            result = formatter.send(:build_step_descriptor, test_step: retried)
+            expect(result.to_markdown).to include("| combined | #{expected} |", "COMBINED_DOCUMENT")
+            expect(result.to_markdown).not_to include("must not expand twice")
+          end
+        end
+        expect(tables.size).to eq(2)
+        bus.test_run_finished(true)
+        expect(tables).to be_empty
+        Thread.new { combined.each { |event| bus.test_step_created(event.test_step, event.pickle_step) } }.value
+        expect(tables).to be_empty
+      ensure
+        formatter&.ingest_event(type: "test_run_finished", success: true)
+      end
+    end
+
+    it "keeps disabled formatters from retaining compiled tables" do
+      allow(config).to receive(:enabled?).and_return(false)
+      formatter = described_class.new(native_config)
+      compile_combined_arguments
+
+      expect(formatter.instance_variable_get(:@combined_step_tables)).to be_empty
+      bus.test_run_finished(true)
+      expect(formatter.instance_variable_get(:@combined_step_tables)).to be_empty
+    end
+
+    it "clears table references even when final reporting enforcement raises" do
+      formatter = described_class.new(native_config)
+      compile_combined_arguments
+      allow(formatter).to receive(:enforce_complete_reporting).and_raise(ReportportalCucumber::ReportingError, "test refusal")
+
+      expect { bus.test_run_finished(true) }.to raise_error(ReportportalCucumber::ReportingError, "test refusal")
+      expect(formatter.instance_variable_get(:@combined_step_tables)).to be_empty
+    ensure
+      formatter&.ingest_event(type: "test_run_finished", success: true)
+    end
   end
 
   it "maps NDJSON fixture events to the expected ReportPortal call sequence" do

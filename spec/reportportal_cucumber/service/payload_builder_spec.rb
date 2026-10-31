@@ -28,6 +28,25 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
   end
 
   describe ".build_log_batch" do
+    it "escapes literal NUL only in outbound text, without recursively escaping visible sequences" do
+      message = "\0actual\0 literal\\u0000 invalid\xFF\0".b.freeze
+      expected = '\\u0000actual\\u0000 literal\\u0000 invalid?\\u0000'
+      entry = described_class.build_log_entry(
+        launch_uuid: "launch-1", item_uuid: "item-1", time: Time.utc(2026), message: message, level: :info
+      )
+      expect(entry.fetch("message")).to eq(expected)
+      expect(JSON.parse(JSON.generate(entry)).fetch("message")).not_to include("\0")
+      again = described_class.build_log_entry(
+        launch_uuid: "launch-1", item_uuid: "item-1", time: Time.utc(2026), message: entry["message"], level: :info
+      )
+      expect(again["message"]).to eq(expected)
+      batch = described_class.build_log_batch([
+        { launch_uuid: "launch-1", item_uuid: "item-1", timestamp: Time.utc(2026), message: message, level: :info }
+      ])
+      expect(batch[:entries].first["message"]).to eq(expected)
+      expect(message).to eq("\0actual\0 literal\\u0000 invalid\xFF\0".b)
+    end
+
     it "keeps globally unique wire names and original bytes/owners in every collision permutation" do
       names = ["evidence.txt", "evidence.txt", "evidence-1.txt", "bad\r\nname.txt", "bad name.txt", "bad name-1.txt"]
       records = names.each_with_index.map do |name, index|

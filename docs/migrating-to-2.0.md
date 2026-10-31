@@ -77,6 +77,28 @@ callbacks or patch Cucumber's runtime internals. Native log messages report at
 INFO unless an SDK helper explicitly supplies another level. Binary attachments
 must preserve their bytes and MIME type.
 
+Use Ruby's positional native signature `attach(data, mime, filename)`, not an
+options Hash copied from another Cucumber implementation. Plain `puts` remains
+terminal output; it does not produce a native Cucumber attachment event. Use
+`log` or `AppLog` for reportable diagnostics rather than globally intercepting
+STDOUT.
+
+For encoded input, decode it explicitly before calling native `attach`:
+
+```ruby
+require "base64"
+
+attach(Base64.strict_decode64(encoded_png).b, "image/png", "screenshot.png")
+attach(File.binread("artifacts/response.json"), "application/json", "response.json")
+```
+
+A Base64 String with plain `image/png` is still text, not PNG bytes. Do not rely
+on content guessing to repair it. A real filesystem-backed File is also not
+equivalent to every Ruby IO: Cucumber 12.0.1's native message builder can reject
+StringIO or pipe inputs because it expects String encoding information. Keep
+native evidence bounded and provide bytes explicitly; this SDK does not patch
+Cucumber's message builder to hide upstream errors.
+
 Use `AppLog.info(..., report: true)` when you want the existing terminal/native/RP
 routing and structured diagnostics. Keep its per-Scenario logger binding from
 the [quick start](getting-started.md#3-connect-reportportal-and-integrate-an-existing-project).
@@ -177,7 +199,34 @@ names remain distinct by their source line. Each Scenario/Examples row is still
 the statistical test: its wire type remains `STEP` with `hasStats=true`; adding a
 Rule suite does not add another statistical test or change Step/Hook ownership.
 
+Source directories are not additional RP suites. A deep feature path is retained
+for source identity/navigation, not converted into directory containers.
+
+Business-attribute inheritance is a separate opt-in:
+`RP_SCENARIO_ATTRIBUTES_ENABLED=true`. Use approved tags such as
+`@team:clearing`, `@component:margin`, or `@browser:chromium` on Feature, Rule,
+Scenario and Examples scopes. The more specific scope can override an inherited
+value according to the existing attribute rules. Ordinary execution tags such
+as `@smoke` are not automatically copied into RP, and reserved/secret keys remain
+blocked. Enabling Rule suites does not enable attribute export. See the
+[attribute examples](../examples/m3c_attributes/README.md) for configuration.
+
 ## Parallel Launch ownership
+
+Completion depends on **who owns the Launch**, not simply whether the command
+runs in CI:
+
+| Execution | Completion owner |
+| --- | --- |
+| One ordinary Formatter creates a Launch | That process finishes it after AfterAll and test_run_finished, with bounded exit-flush fallback |
+| Several processes create separate Launches | Each process finishes its own Launch |
+| Workers receive one externally created shared UUID | The CI or local parent orchestrator waits for every worker and finishes once |
+| Only one worker receives an externally created UUID | The external owner still finishes it; the worker does not assume ownership |
+
+Normal completion settles reporting before closing the owned Launch. `at_exit`
+is a fallback, not a replacement for normal lifecycle events, and cannot execute
+after SIGKILL or machine failure. Do not close a self-owned Launch from your own
+AfterAll hook before the formatter has delivered remaining evidence.
 
 For SDK 2.x, an enabled `ReportPortal::Cucumber::ParallelFormatter` requires a
 CI-owned `RP_LAUNCH_UUID`. It does not elect a primary process, start a shared
@@ -208,6 +257,39 @@ finished the Launch. See the [CI ownership sequence](ci.md#parallel-workers-and-
 For independent per-process Launches, use `ReportPortal::Cucumber::Formatter`
 with `RP_CLIENT_JOIN=false` and no supplied UUID instead. This intentionally
 creates separate reports, not a coordinated shared Launch.
+
+## Delivery mode terminology
+
+`RP_REPORTING_ASYNC=false` selects RP API v1 and `true` selects RP API v2. Both
+use the SDK's background log queue; `use_same_thread_for_reporting` is not a
+supported setting. API v2 acceptance is not a durable-delivery receipt. A locally
+settled v2 queue can still report `accepted_awaiting_persistence` and
+`complete=false`; independently query the backend when persistence confirmation
+is required. Do not equate an HTTP success or an empty queue with complete
+server-side reporting.
+
+Even API v1 `confirmed` counts are service acknowledgements, not an independent
+database audit. The live acceptance campaign observed HTTP 201 responses before
+a downstream persistence failure. A `complete` delivery receipt must therefore
+not be advertised as proof that every record is already queryable or retained
+by the backend; use API readback and attachment-digest reconciliation for that
+stronger assurance.
+
+## Compound multiline arguments
+
+The tested Gherkin 42.0.1 parser accepts a DocString and DataTable on the same
+Step, in either order. However, Cucumber Core 20.0.0 supplies only one multiline
+argument to the Ruby step definition. A block expecting two arguments can fail
+with an arity mismatch even when this SDK is disabled. Parser support and Ruby
+invocation support are different contracts; the formatter does not monkeypatch
+the compiler to change this behavior.
+
+If business code needs both values as separate Ruby arguments, use separate
+Steps until the upstream runtime supports that invocation. A compatible
+single-argument definition can still run; reporting is independently checked
+against both parsed contents, including the current Examples row's values in
+Scenario Outlines. Do not treat an upstream arity failure as successful execution
+just because report nodes close correctly.
 
 ## Verify before adoption
 

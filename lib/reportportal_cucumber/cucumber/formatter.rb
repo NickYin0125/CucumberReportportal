@@ -36,6 +36,8 @@ module ReportportalCucumber
         end
         @ast_lookup = build_ast_lookup
         @ast_metadata = AstMetadata.new(ast_lookup: @ast_lookup)
+        @combined_step_tables = {}
+        @combined_step_tables_mutex = Mutex.new
         @feature_states = {}
         @rule_states = {}
         @scenario_states = {}
@@ -428,6 +430,7 @@ module ReportportalCucumber
           test_run_started: method(:handle_test_run_started),
           test_suite_started: method(:handle_test_suite_started),
           test_case_started: method(:handle_test_case_started),
+          test_step_created: method(:handle_test_step_created),
           test_step_started: method(:handle_test_step_started),
           attach_called: method(:handle_attach_called),
           envelope: method(:handle_envelope),
@@ -625,6 +628,25 @@ module ReportportalCucumber
           will_be_retried: false,
           test_case_started_id: test_case_started_id
         }
+      end
+
+      # Keep only the missing combined-argument table, by reference, not a second
+      # pickle/envelope collection. The same step ID is reused by native retries.
+      # @param event [Cucumber::Events::TestStepCreated]
+      # @return [void]
+      def handle_test_step_created(event)
+        return unless reporting_enabled?
+
+        argument = fetch_value(event, [:pickle_step, :argument])
+        return unless fetch_value(argument, :doc_string)
+
+        table = fetch_value(argument, :data_table)
+        step_id = extract_test_step_id(event)
+        return unless table && step_id
+
+        @combined_step_tables_mutex.synchronize do
+          @combined_step_tables[step_id] = table unless @finalized
+        end
       end
 
       # @param event [Object]
@@ -939,6 +961,7 @@ module ReportportalCucumber
         @finalization_finished = true
         enforce_complete_reporting
       ensure
+        @combined_step_tables_mutex.synchronize { @combined_step_tables.clear } if @finalized
         emit_incomplete_reporting_summary(status) if @finalized
         if @finalized && ReportportalCucumber.current_runtime.equal?(self)
           ReportportalCucumber.current_runtime = nil
@@ -1972,7 +1995,8 @@ module ReportportalCucumber
         test_step = fetch_value(event, :test_step)
         return nil unless test_step && @ast_lookup
 
-        ReportPortal::Models::StepDesc.from_test_step(test_step, ast_lookup: @ast_lookup)
+        table = @combined_step_tables_mutex.synchronize { @combined_step_tables[extract_test_step_id(event)] }
+        ReportPortal::Models::StepDesc.from_test_step(test_step, ast_lookup: @ast_lookup, pickle_table: table)
       end
 
       # @return [Object, nil]

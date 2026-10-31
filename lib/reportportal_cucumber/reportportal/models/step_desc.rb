@@ -23,25 +23,29 @@ module ReportportalCucumber
         # @param multiline_content [String, nil] Legacy executed DocString content.
         # @param executed_text [String, nil] Framework-provided executed step text.
         # @param multiline_arg [Object, nil] Framework-provided executed multiline argument.
+        # @param pickle_table [Object, nil] Native compiled table omitted from the executed argument.
         # @return [StepDesc]
-        def initialize(step:, multiline_content: nil, executed_text: nil, multiline_arg: nil)
+        def initialize(step:, multiline_content: nil, executed_text: nil, multiline_arg: nil, pickle_table: nil)
           @step = step
           @multiline_content = multiline_content
           @executed_text = executed_text
           @multiline_arg = multiline_arg
+          @pickle_table = pickle_table
         end
 
         # @param test_step [Object] The executed Cucumber Core test step.
         # @param ast_lookup [Object] Lookup that maps runtime steps to localized Gherkin steps.
+        # @param pickle_table [Object, nil] Native compiled table for a combined-argument step.
         # @return [ReportportalCucumber::ReportPortal::Models::StepDesc, nil]
-        def self.from_test_step(test_step, ast_lookup:)
+        def self.from_test_step(test_step, ast_lookup:, pickle_table: nil)
           source = ast_lookup&.step_source(test_step)
           return nil unless source&.respond_to?(:step) && source.step
 
           executed_text = test_step.text if test_step.respond_to?(:text)
           multiline_arg = test_step.multiline_arg if test_step.respond_to?(:multiline_arg)
 
-          new(step: source.step, executed_text: executed_text, multiline_arg: multiline_arg)
+          new(step: source.step, executed_text: executed_text, multiline_arg: multiline_arg,
+              pickle_table: pickle_table)
         rescue StandardError
           nil
         end
@@ -86,10 +90,10 @@ module ReportportalCucumber
         def multiline_sections
           sections = []
           remaining = CONTENT_BYTE_LIMIT - header_line.bytesize
-          table_rows = runtime_table_rows || source_table_rows
+          rows = table_rows
           doc_string = runtime_doc_string || source_doc_string
 
-          if table_rows && !table_rows.empty?
+          if rows && !rows.empty?
             reserve = 2 + (doc_string ? DOC_OMITTED_MARKER.bytesize + 2 : 0)
             table = data_table_markdown(byte_limit: remaining - reserve)
           end
@@ -133,7 +137,7 @@ module ReportportalCucumber
         # @param byte_limit [Integer]
         # @return [String, nil]
         def data_table_markdown(byte_limit:)
-          rows = runtime_table_rows || source_table_rows
+          rows = table_rows
           return nil unless rows && !rows.empty?
           return TABLE_OMITTED_MARKER if byte_limit <= TABLE_OMITTED_MARKER.bytesize
 
@@ -182,6 +186,13 @@ module ReportportalCucumber
           return nil unless @multiline_arg.respond_to?(:raw)
 
           @multiline_arg.raw
+        end
+
+        # Executed arguments remain authoritative. Gherkin's compiled table
+        # supplies resolved Outline cells when Core executes only the DocString.
+        # @return [Array<Object>, nil]
+        def table_rows
+          runtime_table_rows || @pickle_table&.rows || source_table_rows
         end
 
         # @return [Array<Object>, nil]

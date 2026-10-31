@@ -31,6 +31,117 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     described_class.from_test_step(test_step, ast_lookup: ast_lookup_class.new(StepSource.new(source_step)))
   end
 
+  def compiled_descriptors(feature)
+    bus = Cucumber::Core::EventBus.new
+    config = double("native event configuration")
+    allow(config).to receive(:on_event) { |id, &handler| bus.on(id, &handler) }
+    lookup = Cucumber::Formatter::AstLookup.new(config)
+    steps = []
+    bus.on(:test_step_created) { |event| steps << event }
+    receiver = double("compiler receiver", test_case: nil, done: nil)
+    Object.new.extend(Cucumber::Core).compile(
+      [Cucumber::Core::Gherkin::Document.new("combined.feature", feature)], receiver, [], bus
+    )
+    steps.map do |event|
+      described_class.from_test_step(event.test_step, ast_lookup: lookup, pickle_table: event.pickle_step.argument&.data_table)
+    end
+  end
+
+  %w[doc-first table-first].each do |order|
+    it "expands table-only Outline values with the native #{order} combined argument" do
+      doc = "      \"\"\"text\n      COMBINED_DOCUMENT\n      \"\"\"\n"
+      table = "      | kind | cell |\n      | combined | <value> |\n"
+      arguments = order == "doc-first" ? doc + table : table + doc
+      feature = "Feature: Combined arguments\n  Scenario Outline: Display\n    Given combined display\n" + arguments +
+                "    Examples:\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n"
+
+      results = compiled_descriptors(feature)
+
+      expect(results.length).to eq(2)
+      results.zip(%w[TABLE_ONLY_AMBER TABLE_ONLY_BIRCH]).each do |result, value|
+        expect(result.to_markdown).to include("| combined | #{value} |", "COMBINED_DOCUMENT")
+        expect(result.to_markdown).not_to include("<value>")
+        expect(result).to be_rich
+      end
+    end
+  end
+
+  it "does not expand literal placeholders in a plain combined-argument scenario" do
+    results = compiled_descriptors(<<~FEATURE)
+      Feature: Plain arguments
+        Scenario: Display
+          Given combined display
+            """text
+            PLAIN_DOCUMENT
+            """
+            | literal | <value> |
+    FEATURE
+
+    expect(results.first.to_markdown).to include("| literal | <value> |", "PLAIN_DOCUMENT")
+  end
+
+  it "preserves native header-order expansion without expanding the compiled table a second time" do
+    {
+      "| cell | other |\n      | <other> | EXPANDED |" => "EXPANDED",
+      "| other | cell |\n      | EXPANDED | <other> |" => "<other>"
+    }.each do |examples, expected|
+      results = compiled_descriptors(<<~FEATURE)
+        Feature: Native interpolation
+          Scenario Outline: Display
+            Given combined display
+              """text
+              DOCUMENT
+              """
+              | combined | <cell> |
+            Examples:
+              #{examples}
+      FEATURE
+      expect(results.first.to_markdown).to include("| combined | #{expected} |")
+    end
+  end
+
+  it "does not mutate compiled table cells, including empty and literal placeholder values" do
+    rows = [Row.new([Cell.new("<other>").freeze, Cell.new("").freeze].freeze).freeze].freeze
+    table = SourceDataTable.new(rows).freeze
+    source = SourceStep.new("Given ", "combined", nil, nil).freeze
+    result = described_class.new(step: source, pickle_table: table)
+
+    expect(result.to_markdown).to include("| <other> |  |")
+    expect(result.to_markdown).to eq(result.to_markdown)
+    expect(table.rows).to equal(rows)
+    expect(rows.first.cells.map(&:value)).to eq(["<other>", ""])
+  end
+
+  it "keeps executed table cells authoritative even when they look like Examples placeholders" do
+    source = SourceStep.new("Given ", "combined", SourceDataTable.new([Row.new([Cell.new("<cell>")])]), nil)
+    table = Cucumber::Core::Test::DataTable.new([["<other>", ""]].freeze)
+    compiled = SourceDataTable.new([Row.new([Cell.new("wrong")])])
+    result = described_class.new(step: source, multiline_arg: table, pickle_table: compiled)
+
+    expect(result.to_markdown).to include("| <other> |  |")
+    expect(result.to_markdown).not_to include("source", "wrong")
+  end
+
+  it "bounds compiled cells, table rows, columns, and aggregate bytes without copying the whole table" do
+    source = SourceStep.new("Given ", "combined", nil, SourceDocString.new("text", "DOCUMENT"))
+    huge_cell = Cell.new(("x" * 1_000_000).freeze).freeze
+    table = SourceDataTable.new(Array.new(120) { Row.new([huge_cell]) })
+    markdown = described_class.new(step: source, pickle_table: table).to_markdown
+    expect(markdown).to include("x" * described_class::CELL_BYTE_LIMIT + "[truncated]", "DOCUMENT")
+    expect(markdown).not_to include("x" * (described_class::CELL_BYTE_LIMIT + 1))
+    expect(markdown.bytesize).to be <= described_class::CONTENT_BYTE_LIMIT
+
+    table = SourceDataTable.new(Array.new(120) { Row.new([Cell.new("short")]) })
+    short = described_class.new(step: source, pickle_table: table).to_markdown
+    expect(short.scan("| short |").length).to eq(described_class::CONTENT_LINE_LIMIT)
+    expect(short).to include(described_class::TABLE_OMITTED_MARKER)
+
+    table = SourceDataTable.new([Row.new(Array.new(33, huge_cell))])
+    wide = described_class.new(step: source, pickle_table: table).to_markdown
+    expect(wide).to include(described_class::TABLE_OMITTED_MARKER)
+    expect(wide).not_to include("xxx")
+  end
+
   it "renders localized keyword with executed Outline text and table values" do
     source = SourceStep.new(
       "Когда ",
