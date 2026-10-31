@@ -601,3 +601,7 @@ the independent tester must assess against them.
 
    Owner answer: 允许，保留解析失败证据（推荐）
 
+5. Question: 还有一处验收口径需要确认：现有原生 BeforeAll/AfterAll 并不生成独立 Hook Item（2.x 的日志归属 Launch，1.x 的 BeforeAll 甚至早于 formatter 创建）。为遵守“不改变节点拓扑”，是否保留这些行为，将全局钩子的 Item 名称检查标为 N/A，同时继续验证日志/异常与退出闭合，并用单测覆盖已有 class-hook 名称映射？
+
+   Owner answer: 保留基线行为并记录 N/A（推荐）
+
