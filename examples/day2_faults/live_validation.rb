@@ -210,7 +210,7 @@ module Day2Faults
       end
       if label == "partial-ack"
         check(logs.count { |log| log["message"] == "day2 known-confirmed sibling" } == 1, "known-confirmed sibling resent")
-        result[:observed_duplicate_logs] = logs.count { |log| log["message"] == "day2 uncertain sibling" } - 1
+        result[:observed_duplicate_logs] = logs.count { |log| log["message"].to_s.lines.first.to_s.chomp == "day2 uncertain sibling" } - 1
       end
       if %w[transient partial-ack durable-replay].include?(label)
         check(!reconciliation[:artifacts].empty? && reconciliation[:artifacts].all? do |artifact|

@@ -21,7 +21,7 @@ RSpec.describe "Ledger client Markdown escaping" do
     metadata = { description: "User **Markdown** <tag>", examples_name: "<other>", example_row_line: 12,
                  parameters: { "<key>" => "<value>\nnext" } }
     expect(formatter.send(:extract_scenario_description, feature_uri: "a.feature", scenario_line: 1, metadata: metadata))
-      .to eq("User **Markdown** <tag>\n\nExamples: &lt;other&gt;\n\nExample row: 12\n\n| &lt;key&gt; |\n| --- |\n| &lt;value&gt;<br>next |")
+      .to eq("User **Markdown** <tag>\n\nExamples: &lt;other&gt; \u00b7 line 12\n\n| &lt;key&gt; |\n| --- |\n| &lt;value&gt;<br>next |")
     expect(metadata[:parameters]).to eq("<key>" => "<value>\nnext")
   end
 
@@ -46,8 +46,8 @@ RSpec.describe "Ledger client Markdown escaping" do
     args = { name: "<name>", expected: "<expected>\nnext", actual: "<actual>", passed: false }
     presenter = ReportportalCucumber::Service::EvidencePresenter
     result = presenter.assertion(**args)
-    expect(result[:markdown]).to include("## Assertion: &lt;name&gt;", "| &lt;expected&gt;<br>next | &lt;actual&gt; |")
-    allow(markdown).to receive(:cell).and_raise("SECRET123")
+    expect(result[:markdown]).to include("## \u2717 Assertion failed \u00b7 &lt;name&gt;", "expected  <expected>\n          next\nactual    <actual>")
+    allow(markdown).to receive(:fence).and_raise("SECRET123")
     failed = presenter.assertion(**args)
     expect(failed).to eq(summary: "FAIL: <name>", markdown: "## Assertion: <name>\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| <expected> next | <actual> |")
     expect(failed[:summary]).to eq(result[:summary])

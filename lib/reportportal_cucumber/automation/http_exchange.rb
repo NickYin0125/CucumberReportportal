@@ -2,6 +2,9 @@
 
 require "json"
 require_relative "evidence_redactor"
+require_relative "../presentation/markdown_text"
+require_relative "../presentation/ledger_json"
+require_relative "../presentation/units"
 
 module Automation
   # A redacted snapshot and Markdown rendering of one observed HTTP call.
@@ -30,7 +33,8 @@ module Automation
       @url = @redactor.redact_url(url.to_s).freeze
       @request = safe_section(request)
       @response = safe_section(response)
-      @duration_ms = duration_ms.nil? ? nil : @redactor.redact(duration_ms).to_s.freeze
+      @duration_value = duration_ms.nil? ? nil : immutable_copy(@redactor.redact(duration_ms))
+      @duration_ms = @duration_value.nil? ? nil : @duration_value.to_s.freeze
       @expected_status = immutable_copy(@redactor.redact(expected_status))
       @error = error.nil? ? nil : error_snapshot(error)
       status = fetch(@response, :status)
@@ -48,8 +52,6 @@ module Automation
 
     # @return [String] Structured, bounded Markdown evidence for the exchange.
     def to_markdown
-      return render_markdown(presentation: false) unless defined?(ReportportalCucumber::Presentation::MarkdownText)
-
       ReportportalCucumber::Presentation::Fallback.render(fallback: -> { render_markdown(presentation: false) }) do
         render_markdown(presentation: true)
       end
@@ -70,6 +72,8 @@ module Automation
     private
 
     def render_markdown(presentation:)
+      return render_card if presentation
+
       preview_budget = { bytes: MAX_PREVIEW_BYTES, lines: MAX_PREVIEW_LINES }
       lines = ["### Request", "- #{inline_code(@method, presentation: presentation)} #{inline_code(@url, presentation: presentation)}"]
       append_section(lines, @request, preview_budget)
@@ -82,6 +86,82 @@ module Automation
       lines << "- Duration: #{inline_code(@duration_ms, presentation: presentation)} ms" unless @duration_ms.nil?
       lines << "- Error: #{inline_code(@error, presentation: presentation)}" unless @error.nil?
       lines.compact.join("\n")
+    end
+
+    def render_card
+      prefix = { info: "\u2713", warn: "## \u26a0", error: "## \u2717" }.fetch(level)
+      title = "#{prefix} #{card_inline(@method)} #{card_inline(title_path)} \u2192 #{card_inline(@status_text)}"
+      unless @duration_ms.nil?
+        duration = if @duration_value.is_a?(Integer) || @duration_value.is_a?(Float)
+                     ReportportalCucumber::Presentation::Units.duration(@duration_value)
+                   else
+                     "#{card_inline(@duration_ms)} ms"
+                   end
+        title += " \u00b7 #{duration}"
+      end
+      meta = [inline_code(@url)]
+      meta << "expected #{inline_code(@expected_status)}" unless @expected_status.nil?
+      meta << "error #{inline_code(@error)}" unless @error.nil?
+      parts = [title, meta.join(" \u00b7 ")]
+      budget = { bytes: MAX_PREVIEW_BYTES, lines: MAX_PREVIEW_LINES }
+      append_card_section(parts, "Request", @request, budget)
+      append_card_section(parts, "Response", @response, budget)
+      parts.join("\n\n")
+    end
+
+    def title_path
+      uri = URI.parse(@url)
+      path = uri.path.to_s.empty? ? "/" : uri.path
+      uri.query ? "#{path}?#{uri.query}" : path
+    rescue URI::Error
+      @url
+    end
+
+    def card_inline(value)
+      text = bounded_text(plain_line(value), MAX_METADATA_BYTES)
+      ReportportalCucumber::Presentation::MarkdownText.inline(text, limit: MAX_METADATA_BYTES)
+    end
+
+    def append_card_section(parts, label, section, budget)
+      headers = fetch(section, :headers)
+      if headers.is_a?(Hash) && !headers.empty?
+        content = headers.map { |key, value| "#{key}: #{value}" }.join("\n")
+        parts << "_#{label} headers \u00b7 #{headers.length}_"
+        parts << card_fence(content, "text", budget)
+      end
+      body = fetch(section, :body)
+      return if body.nil?
+
+      json = ledger_json(body)
+      content = json || body.to_s
+      metadata = ["_#{label}_"]
+      if headers.is_a?(Hash)
+        type = headers.find { |key, _value| key.to_s.downcase == "content-type" }
+        metadata << inline_code(type.last) if type
+      end
+      bytes = body.is_a?(String) ? body.bytesize : JSON.generate(body).bytesize
+      metadata << ReportportalCucumber::Presentation::Units.bytes(bytes)
+      parts << metadata.join(" \u00b7 ")
+      parts << card_fence(content, json ? "json" : "text", budget)
+    end
+
+    def ledger_json(body)
+      value = body
+      if body.is_a?(String)
+        begin
+          value = JSON.parse(body)
+        rescue JSON::ParserError
+          return nil
+        end
+      end
+      ReportportalCucumber::Presentation::LedgerJson.format(value) || raise(StandardError, "JSON presentation unavailable")
+    end
+
+    def card_fence(content, language, budget)
+      displayed = preview_lines(content, budget).join("\n")
+      ReportportalCucumber::Presentation::MarkdownText.fence(
+        displayed, language, limit: MAX_PREVIEW_BYTES + TRUNCATION_MARKER.bytesize + 1
+      ) || raise(StandardError, "Safe HTTP fence unavailable")
     end
 
     def safe_section(section)

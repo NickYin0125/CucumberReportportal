@@ -202,7 +202,8 @@ RSpec.describe Day2Faults::FaultProxy do
     expect(run.flush.to_h).to include(confirmed: 1, ambiguous: 1, spooled: 1, pending: 0, complete: false)
     expect(@sandbox.snapshot.fetch("logs").length).to eq(2)
     transaction = run.spool_evidence.first
-    expect(transaction.fetch(:entries).map { |entry| entry.fetch("message") }).to eq(["accepted-but-hidden"])
+    expect(transaction.fetch(:entries).map { |entry| entry.fetch("message") })
+      .to eq(["accepted-but-hidden\n\n`evidence.png` \u00b7 PNG \u00b7 1 \u00d7 1 \u00b7 68 B"])
     expect(transaction.fetch(:artifacts).first).to include(bytes: Day2Faults::Session::PNG.bytesize,
                                                          sha256: Digest::SHA256.hexdigest(Day2Faults::Session::PNG))
     expect(run.replay(execute: true).first).to include(ambiguous: 1, confirmed: 0)

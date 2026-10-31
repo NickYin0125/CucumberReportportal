@@ -272,6 +272,8 @@ module ReportportalCucumber
         summary = redactor.redact_text(rendered.fetch(:summary, rendered.fetch("summary", "Failure evidence")))
         diagnostic = rendered[:details] || rendered["details"]
         message = [summary, diagnostic && redactor.redact_text(diagnostic)].compact.reject(&:empty?).join("\n\n")
+        # The card is redacted before Markdown is added; retain legacy presenter fallbacks.
+        message = rendered[:card] || message
         admissions = []
         published = runtime_context.publish_capture_target(selected, launch_uuid: @launch_uuid) do |open_item, cancelled|
           admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid, message: message,
@@ -1722,13 +1724,38 @@ module ReportportalCucumber
           parts << metadata[:rule_description]
         end
         if metadata[:examples_name] || metadata[:example_row_line]
-          name = metadata[:examples_name]
-          parts << "Examples: #{presentation ? Presentation::MarkdownText.inline(name) : name}" if name
-          parts << "Example row: #{metadata[:example_row_line]}" if metadata[:example_row_line]
-          parameters = metadata[:parameters]
-          parts << parameter_description_table(parameters, presentation: presentation) if parameters
+          if presentation
+            parts << outline_row_description(metadata)
+          else
+            name = metadata[:examples_name]
+            parts << "Examples: #{name}" if name
+            parts << "Example row: #{metadata[:example_row_line]}" if metadata[:example_row_line]
+            parameters = metadata[:parameters]
+            parts << parameter_description_table(parameters, presentation: false) if parameters
+          end
         end
         parts.compact.reject { |part| part.to_s.empty? }.join("\n\n").then { |value| value.empty? ? nil : value }
+      end
+
+      # Display-only; source parameter order and identity values remain untouched.
+      def outline_row_description(metadata)
+        name = metadata[:examples_name]
+        label = name.to_s.empty? ? "Examples" : "Examples: #{Presentation::MarkdownText.inline(name)}"
+        line = metadata[:example_row_line]
+        label += " \u00b7 line #{Presentation::MarkdownText.inline(line)}" if line
+        parameters = metadata[:parameters] || {}
+        short = parameters.length <= 4 && parameters.values.all? do |value|
+          text = value.to_s
+          text.bytesize <= 160 && text.length <= 40 && !text.match?(/[\r\n]/)
+        end
+        if short
+          pairs = parameters.map do |key, value|
+            "#{Presentation::MarkdownText.code(key)} = #{Presentation::MarkdownText.code(value)}"
+          end
+          (pairs + ["_#{label}_"]).join(" \u00b7 ")
+        else
+          [label, parameter_description_table(parameters)].join("\n\n")
+        end
       end
 
       # @param event [Object]
