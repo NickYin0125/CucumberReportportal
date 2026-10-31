@@ -7,6 +7,8 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   let(:source) { Struct.new(:keyword, :text, :data_table, :doc_string).new("Given ", "step <x>", nil, nil) }
   let(:descriptor) { ReportportalCucumber::ReportPortal::Models::StepDesc.new(step: source) }
 
+  before { formatter.instance_variable_set(:@config, ReportportalCucumber::Config.new) }
+
   it "omits descriptions for all fifty argument-free steps" do
     50.times do
       expect(formatter.send(:extract_step_description, { hook: false }, descriptor: descriptor)).to be_nil

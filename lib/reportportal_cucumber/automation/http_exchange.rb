@@ -5,6 +5,7 @@ require_relative "evidence_redactor"
 require_relative "../presentation/markdown_text"
 require_relative "../presentation/ledger_json"
 require_relative "../presentation/units"
+require_relative "../presentation/accent"
 
 module Automation
   # A redacted snapshot and Markdown rendering of one observed HTTP call.
@@ -50,10 +51,17 @@ module Automation
       bounded_text(parts.join(" "), MAX_SUMMARY_BYTES)
     end
 
+    # @param presentation [String] "plain" (native-safe) or "rich" (RP only).
+    # @param fallback_state [Hash, nil] Shared latch across native/RP subscribers.
     # @return [String] Structured, bounded Markdown evidence for the exchange.
-    def to_markdown
-      ReportportalCucumber::Presentation::Fallback.render(fallback: -> { render_markdown(presentation: false) }) do
-        render_markdown(presentation: true)
+    def to_markdown(presentation: "plain", fallback_state: nil)
+      ReportportalCucumber::Presentation::Fallback.render(
+        fallback: -> { render_markdown(presentation: false) }, state: fallback_state
+      ) do
+        plain = render_card
+        next plain unless presentation == "rich"
+
+        ReportportalCucumber::Presentation::Accent.guard(plain: plain, rich: render_card(accent: true), level: level)
       end
     end
 
@@ -88,9 +96,13 @@ module Automation
       lines.compact.join("\n")
     end
 
-    def render_card
+    def render_card(accent: false)
       prefix = { info: "\u2713", warn: "## \u26a0", error: "## \u2717" }.fetch(level)
       title = "#{prefix} #{card_inline(@method)} #{card_inline(title_path)} \u2192 #{card_inline(@status_text)}"
+      if accent && level == :info
+        label = [@method, title_path].map { |value| bounded_text(plain_line(value), MAX_METADATA_BYTES) }.join(" ")
+        title = "#{status_pill} #{ReportportalCucumber::Presentation::Accent.title(label, limit: MAX_METADATA_BYTES * 2 + 1)}"
+      end
       unless @duration_ms.nil?
         duration = if @duration_value.is_a?(Integer) || @duration_value.is_a?(Float)
                      ReportportalCucumber::Presentation::Units.duration(@duration_value)
@@ -100,12 +112,13 @@ module Automation
         title += " \u00b7 #{duration}"
       end
       meta = [inline_code(@url)]
+      meta.unshift(status_pill) if accent && level != :info
       meta << "expected #{inline_code(@expected_status)}" unless @expected_status.nil?
       meta << "error #{inline_code(@error)}" unless @error.nil?
       parts = [title, meta.join(" \u00b7 ")]
       budget = { bytes: MAX_PREVIEW_BYTES, lines: MAX_PREVIEW_LINES }
-      append_card_section(parts, "Request", @request, budget)
-      append_card_section(parts, "Response", @response, budget)
+      append_card_section(parts, "Request", @request, budget, accent: accent)
+      append_card_section(parts, "Response", @response, budget, accent: accent)
       parts.join("\n\n")
     end
 
@@ -122,12 +135,23 @@ module Automation
       ReportportalCucumber::Presentation::MarkdownText.inline(text, limit: MAX_METADATA_BYTES)
     end
 
-    def append_card_section(parts, label, section, budget)
+    def status_pill
+      tone = case status_number
+             when 200..299 then :pass
+             when 400..499 then :warn
+             when 500..599 then :fail
+             else :info
+             end
+      ReportportalCucumber::Presentation::Accent.pill(@status_text, tone: tone)
+    end
+
+    def append_card_section(parts, label, section, budget, accent: false)
       headers = fetch(section, :headers)
       if headers.is_a?(Hash) && !headers.empty?
         content = headers.map { |key, value| "#{key}: #{value}" }.join("\n")
-        parts << "_#{label} headers \u00b7 #{headers.length}_"
-        parts << card_fence(content, "text", budget)
+        caption = "#{label} headers \u00b7 #{headers.length}"
+        parts << "_#{caption}_" unless accent
+        parts << card_fence(content, "text", budget, fold: accent ? caption : nil)
       end
       body = fetch(section, :body)
       return if body.nil?
@@ -142,7 +166,7 @@ module Automation
       bytes = body.is_a?(String) ? body.bytesize : JSON.generate(body).bytesize
       metadata << ReportportalCucumber::Presentation::Units.bytes(bytes)
       parts << metadata.join(" \u00b7 ")
-      parts << card_fence(content, json ? "json" : "text", budget)
+      parts << card_fence(content, json ? "json" : "text", budget, body_caption: accent ? "#{label} body" : nil)
     end
 
     def ledger_json(body)
@@ -157,8 +181,15 @@ module Automation
       ReportportalCucumber::Presentation::LedgerJson.format(value) || raise(StandardError, "JSON presentation unavailable")
     end
 
-    def card_fence(content, language, budget)
+    def card_fence(content, language, budget, fold: nil, body_caption: nil)
       displayed = preview_lines(content, budget).join("\n")
+      fold ||= "#{body_caption} \u00b7 #{displayed.lines.count} lines" if body_caption && displayed.lines.count > 12
+      if fold
+        return ReportportalCucumber::Presentation::Accent.details(
+          summary: fold, body: displayed, language: language,
+          limit: MAX_PREVIEW_BYTES + TRUNCATION_MARKER.bytesize + 1
+        )
+      end
       ReportportalCucumber::Presentation::MarkdownText.fence(
         displayed, language, limit: MAX_PREVIEW_BYTES + TRUNCATION_MARKER.bytesize + 1
       ) || raise(StandardError, "Safe HTTP fence unavailable")

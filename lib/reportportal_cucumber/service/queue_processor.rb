@@ -606,7 +606,7 @@ module ReportportalCucumber
       end
 
       def build_payload(records)
-        Service::PayloadBuilder.build_log_batch(records) do |record|
+        Service::PayloadBuilder.build_log_batch(records, presentation: @config.presentation) do |record|
           @presentation_failures && (@presentation_failures[record.sequence] ||= {})
         end
       end
@@ -688,7 +688,7 @@ module ReportportalCucumber
           caption = record.message
           unless attachment[:caption_style] == "baseline"
             caption = Presentation::Fallback.render(fallback: -> { record.message }) do
-              Service::PayloadBuilder.enrich_log_message(record.message, attachment)
+              Service::PayloadBuilder.enrich_log_message(record.message, attachment, presentation: @config.presentation, level: :error)
             end
           end
           message = if video_upload_url?(public_url)

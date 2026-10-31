@@ -166,9 +166,10 @@ module ReportportalCucumber
       end
 
       # @param records [Array<#to_h, Hash>]
+      # @param presentation [String] Explicit queue configuration; defaults to "plain".
       # @yield [record] Optional message-local presentation failure state.
       # @return [Hash]
-      def build_log_batch(records)
+      def build_log_batch(records, presentation: "plain")
         used_names = {}
         entries = []
         files = []
@@ -183,7 +184,8 @@ module ReportportalCucumber
             item_uuid: payload[:item_uuid] || payload["item_uuid"],
             time: payload[:timestamp] || payload["timestamp"],
             message: enrich_log_message(payload[:message] || payload["message"], attachment && attachment.merge(name: filename),
-                                        fallback_state: fallback_state),
+                                        fallback_state: fallback_state, presentation: presentation,
+                                        level: normalize_log_level(payload[:level] || payload["level"])),
             level: payload[:level] || payload["level"],
             file_name: filename
           )
@@ -378,22 +380,37 @@ module ReportportalCucumber
       # @param message [String, nil]
       # @param attachment [Hash, nil]
       # @param fallback_state [Hash, nil] Queue-local latch; never persisted or sent.
+      # @param presentation [String] "plain" or RP-only "rich".
+      # @param level [Symbol, String, Integer] Unchanged wire severity.
       # @return [String]
-      def enrich_log_message(message, attachment, fallback_state: nil)
+      def enrich_log_message(message, attachment, fallback_state: nil, presentation: "plain", level: :info)
         return baseline_log_message(message, attachment) unless attachment
         return baseline_log_message(message, attachment) if attachment[:caption_style] == "baseline"
 
         Presentation::Fallback.render(fallback: -> { baseline_log_message(message, attachment) }, state: fallback_state) do
-          preview = ledger_attachment_preview(attachment)
+          preview = ledger_attachment_preview(attachment, presentation: presentation)
           mime = attachment.fetch(:mime)
           normalized_mime = mime.to_s.split(';', 2).first.to_s.strip.downcase
           header = attachment_header(attachment) if %w[image/png image/jpeg].include?(normalized_mime)
-          caption = Presentation::AttachmentCaption.format(
+          caption_data = {
             name: attachment.fetch(:name), mime: mime, size: attachment_size(attachment), header: header,
             lines: preview[:lines], evidence: attachment[:caption_style] == "evidence"
-          )
+          }
+          caption = Presentation::AttachmentCaption.format(**caption_data)
           base = message.to_s.strip unless %w[default evidence].include?(attachment[:caption_style])
-          [base, caption, preview[:text]].compact.reject(&:empty?).join("\n\n")
+          plain = [base, caption, preview[:text]].compact.reject(&:empty?).join("\n\n")
+          next plain unless presentation == "rich"
+
+          # Numeric/custom wire levels remain untouched; conservatively protect
+          # their first line too, rather than guessing their severity.
+          guard_level = normalize_log_level(level)
+          guard_level = :error unless %w[trace debug info warn error fatal].include?(guard_level)
+          # An ERROR caption on the first line must remain byte-identical. When
+          # caller text comes first, only the generated caption is accented.
+          caption_level = base.to_s.empty? ? guard_level : :info
+          rich_caption = Presentation::AttachmentCaption.format(**caption_data, presentation: "rich", level: caption_level)
+          rich = [base, rich_caption, preview[:rich_text] || preview[:text]].compact.reject(&:empty?).join("\n\n")
+          Presentation::Accent.guard(plain: plain, rich: rich, level: guard_level)
         end
       end
 
@@ -548,7 +565,7 @@ module ReportportalCucumber
 
       # @param attachment [Hash, nil]
       # @return [Hash] Bounded preview and complete text-only line count.
-      def ledger_attachment_preview(attachment)
+      def ledger_attachment_preview(attachment, presentation: "plain")
         return {} unless attachment
 
         mime = attachment.fetch(:mime).to_s.split(';', 2).first.to_s.strip.downcase
@@ -570,6 +587,12 @@ module ReportportalCucumber
         block = Presentation::MarkdownText.fence(displayed.rstrip, json ? "json" : "text", limit: PREVIEW_MAX_BYTES)
         raise ArgumentError, "No bounded preview fence" unless block
 
+        rich = if presentation == "rich" && displayed.rstrip.lines.count > 20
+                 Presentation::Accent.details(
+                   summary: "Preview \u00b7 #{displayed.rstrip.lines.count} lines", body: displayed.rstrip,
+                   language: json ? "json" : "text", limit: PREVIEW_MAX_BYTES
+                 )
+               end
         if !complete
           note = if reason == :lines
                    "_Preview \u00b7 first 100 lines \u00b7 full file attached_"
@@ -578,9 +601,10 @@ module ReportportalCucumber
                    "_Preview \u00b7 first #{Presentation::Units.bytes(shown)} of #{Presentation::Units.bytes(attachment_size(attachment))} \u00b7 full file attached_"
                  end
           block += "\n\n#{note}"
+          rich += "\n\n#{note}" if rich
         end
         # P5's exact JSON golden has no line count, even for a complete preview.
-        { text: block, lines: complete && text && !json ? content.each_line.count : nil }
+        { text: block, rich_text: rich, lines: complete && text && !json ? content.each_line.count : nil }
       end
 
       # @param attachment [Hash]

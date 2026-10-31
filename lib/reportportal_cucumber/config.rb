@@ -7,6 +7,7 @@ require_relative "service/scenario_attributes"
 module ReportportalCucumber
   # Loads configuration from defaults, YAML profiles, and environment variables.
   class Config
+    PRESENTATION_WARNING = "Invalid RP_PRESENTATION; using plain presentation".freeze
     REQUIRED_REPORTING_OPTIONS = {
       endpoint: "RP_ENDPOINT", project: "RP_PROJECT", api_key: "RP_API_KEY"
     }.freeze
@@ -22,6 +23,7 @@ module ReportportalCucumber
       launch_mode: "DEFAULT",
       launch_attributes: [],
       run_context: false,
+      presentation: "plain",
       rerun: false,
       rerun_of: nil,
       reporting_async: false,
@@ -85,6 +87,7 @@ module ReportportalCucumber
       "RP_LAUNCH_MODE" => :launch_mode,
       "RP_ATTRIBUTES" => :launch_attributes,
       "RP_RUN_CONTEXT" => :run_context,
+      "RP_PRESENTATION" => :presentation,
       "RP_RERUN" => :rerun,
       "RP_RERUN_OF" => :rerun_of,
       "RP_REPORTING_ASYNC" => :reporting_async,
@@ -239,6 +242,12 @@ module ReportportalCucumber
       @launch_mode = strip(config[:launch_mode]) || DEFAULTS[:launch_mode]
       @launch_attributes = self.class.normalize_attributes(config[:launch_attributes])
       @run_context = self.class.strict_boolean(config[:run_context], option: "RP_RUN_CONTEXT")
+      @presentation = config[:presentation]
+      unless %w[plain rich].include?(@presentation)
+        ReportportalCucumber.logger.warn(PRESENTATION_WARNING)
+        @presentation = "plain"
+      end
+      @presentation = @presentation.dup.freeze
       @rerun = truthy?(config[:rerun])
       @rerun_of = strip(config[:rerun_of])
       if @launch_uuid && (@rerun || @rerun_of)

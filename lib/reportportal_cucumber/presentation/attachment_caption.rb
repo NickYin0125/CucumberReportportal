@@ -3,6 +3,7 @@
 require_relative "markdown_text"
 require_relative "units"
 require_relative "image_dimensions"
+require_relative "accent"
 
 module ReportportalCucumber
   module Presentation
@@ -31,8 +32,10 @@ module ReportportalCucumber
       # @param header [String, nil] Optional first 64 KiB for PNG/JPEG dimensions.
       # @param lines [Integer, nil] Caller-verified complete text line count.
       # @param evidence [Boolean] Whether this artifact is failure evidence.
+      # @param presentation [String] "plain" or RP-only "rich".
+      # @param level [Symbol, String] Effective log level for first-line protection.
       # @return [String] A one-line Markdown caption with literal filename chip.
-      def self.format(name:, mime:, size:, header: nil, lines: nil, evidence: false)
+      def self.format(name:, mime:, size:, header: nil, lines: nil, evidence: false, presentation: "plain", level: :info)
         Fallback.render(fallback: -> { "Attachment: #{name}" }) do
           parts = [MarkdownText.code(name), kind(mime)]
           dimensions = ImageDimensions.read(header, mime: mime)
@@ -40,7 +43,11 @@ module ReportportalCucumber
           parts << Units.count(lines, "line") if lines
           parts << Units.bytes(size)
           parts << "failure evidence" if evidence
-          parts.join(" · ")
+          plain = parts.join(" · ")
+          next plain unless presentation == "rich"
+
+          rich = ["#{Accent.pill(parts[1], tone: :info)} #{parts[0]}", *parts.drop(2)].join(" · ")
+          Accent.guard(plain: plain, rich: rich, level: level)
         end
       end
 

@@ -5,6 +5,7 @@ require "uri"
 require_relative "../automation/evidence_redactor"
 require_relative "../presentation/markdown_text"
 require_relative "../presentation/ledger_json"
+require_relative "../presentation/accent"
 
 module ReportportalCucumber
   module Service
@@ -22,14 +23,15 @@ module ReportportalCucumber
       URL_PATTERN = %r{(?:https?:)?//[^\s"'<>]+}i.freeze
 
       class << self
-        # @return [Hash{Symbol => String}] Unchanged summary/diagnostics and a plain card.
+        # @return [Hash{Symbol => String}] Unchanged summary/diagnostics and a card.
         # @param action [Object] Action being reported.
         # @param error [Exception] Original error to summarize.
         # @param url [String, nil] Optional URL associated with the failure.
         # @param details [Object, nil] Optional bounded diagnostic details.
         # @param artifact_names [Array<String>] Names of available evidence artifacts.
         # @param artifacts [Array<Hash>, nil] Optional artifact descriptors with names.
-        def failure(action:, error:, url: nil, details: nil, artifact_names: [], artifacts: nil)
+        # @param presentation [String] "plain" or RP-only "rich".
+        def failure(action:, error:, url: nil, details: nil, artifact_names: [], artifacts: nil, presentation: "plain")
           summary = [safe_string(action, 128), "#{error.class.name}: #{safe_string(error.message, 256)}"]
           summary << "URL: #{safe_url(url, 512)}" unless url.nil?
           names = []
@@ -45,28 +47,38 @@ module ReportportalCucumber
           summary << "Evidence: #{names.join(', ')}" unless names.empty?
           result = { summary: bounded(summary.join(" | "), SUMMARY_LIMIT),
                      details: details.nil? ? "" : render(details, DETAILS_LIMIT) }
-          result[:card] = Presentation::Fallback.render(fallback: -> { result.values.reject(&:empty?).join("\n\n") }) do
-            failure_card(action, error, url, names, details, result[:details])
+          baseline = result.values.reject(&:empty?).join("\n\n").freeze
+          result[:card] = Presentation::Fallback.render(fallback: -> { baseline }) do
+            failure_card(action, error, url, names, details, result[:details], accent: presentation == "rich")
           end
           result
         rescue StandardError
+          raise if Thread.current[Presentation::Fallback::ACTIVE_KEY]
+
           { summary: OMITTED, details: OMITTED, card: OMITTED }
         end
 
-        # @return [Hash{Symbol => String}] A concise status and Markdown comparison.
+        # @return [Hash{Symbol => String, Proc}] Status, comparison, optional lazy RP card.
         # @param name [Object] Assertion or check name.
         # @param expected [Object] Expected value.
         # @param actual [Object] Observed value.
         # @param passed [Boolean] Diagnostic outcome; does not assert or raise.
         # @param details [Object, nil] Optional supplementary diagnostic details.
-        def assertion(name:, expected:, actual:, passed:, details: nil)
-          status = passed ? "PASS" : "FAIL"
-          markdown = Presentation::Fallback.render(fallback: -> { assertion_markdown(status, name, expected, actual, details, presentation: false) }) do
-            assertion_markdown(status, name, expected, actual, details, presentation: true)
-          end
-          { summary: bounded("#{status}: #{safe_string(name, VALUE_LIMIT)}", SUMMARY_LIMIT),
-            markdown: bounded(markdown, DETAILS_LIMIT) }
+        # @param presentation [String] "plain" or RP-only "rich".
+        # @param fallback_state [Hash, nil] Message-local presentation failure latch.
+        # @param alternate [Boolean] Also return a lazy :rich_markdown Proc for
+        #   synchronous RP subscribers. It captures only bounded sanitized data.
+        def assertion(name:, expected:, actual:, passed:, details: nil, presentation: "plain", fallback_state: nil, alternate: false)
+          snapshot = assertion_snapshot(passed ? "PASS" : "FAIL", name, expected, actual, details)
+          baseline = bounded(assertion_baseline(snapshot), DETAILS_LIMIT).freeze
+          state = fallback_state || {}
+          result = { summary: bounded("#{snapshot[:status]}: #{safe_string(name, VALUE_LIMIT)}", SUMMARY_LIMIT),
+                     markdown: assertion_renderer(snapshot, baseline, state, accent: presentation == "rich").call }
+          result[:rich_markdown] = assertion_renderer(snapshot, baseline, state, accent: true) if alternate
+          result
         rescue StandardError
+          raise if Thread.current[Presentation::Fallback::ACTIVE_KEY]
+
           { summary: OMITTED, markdown: OMITTED }
         end
 
@@ -86,27 +98,42 @@ module ReportportalCucumber
 
         private
 
-        def assertion_markdown(status, name, expected, actual, details, presentation:)
-          return assertion_card(status, name, expected, actual, details) if presentation
+        # A separate binding keeps lazy subscribers from retaining caller graphs.
+        def assertion_renderer(snapshot, baseline, state, accent:)
+          lambda do
+            Presentation::Fallback.render(fallback: -> { baseline }, state: state) do
+              assertion_card(snapshot, accent: accent)
+            end
+          end
+        end
 
-          title = render(name, VALUE_LIMIT)
-          rows = ["## Assertion: #{title}", "", "**Outcome:** #{status}", "",
+        def assertion_markdown(status, name, expected, actual, details, presentation:)
+          snapshot = assertion_snapshot(status, name, expected, actual, details)
+          presentation ? assertion_card(snapshot) : assertion_baseline(snapshot)
+        end
+
+        def assertion_snapshot(status, name, expected, actual, details)
+          { status: status, name: render(name, VALUE_LIMIT), expected: render(expected, VALUE_LIMIT),
+            actual: render(actual, VALUE_LIMIT), details: details.nil? ? nil : render(details, DETAILS_LIMIT),
+            expected_string: expected.is_a?(String), actual_string: actual.is_a?(String), details_string: details.is_a?(String)
+          }.transform_values { |value| value.is_a?(String) ? value.dup.freeze : value }.freeze
+        end
+
+        def assertion_baseline(snapshot)
+          cells = snapshot.values_at(:expected, :actual).map { |text| text.gsub("|", "\\|").gsub(/[\r\n]+/, " ") }
+          rows = ["## Assertion: #{snapshot[:name]}", "", "**Outcome:** #{snapshot[:status]}", "",
                   "| Expected | Actual |", "| --- | --- |",
-                  "| #{table_cell(expected)} | #{table_cell(actual)} |"]
-          unless details.nil?
-            text = render(details, DETAILS_LIMIT)
-            rows.concat(["", "### Details", "", text])
+                  "| #{cells.first} | #{cells.last} |"]
+          unless snapshot[:details].nil?
+            rows.concat(["", "### Details", "", snapshot[:details]])
           end
           rows.join("\n")
         end
 
-        def table_cell(value)
-          render(value, VALUE_LIMIT).gsub("|", "\\|").gsub(/[\r\n]+/, " ")
-        end
-
-        def assertion_card(status, name, expected, actual, details)
-          title = card_title(render(name, VALUE_LIMIT))
-          expected_text = ledger_value(expected, VALUE_LIMIT)
+        def assertion_card(snapshot, accent: false)
+          status, name_text, details = snapshot.values_at(:status, :name, :details)
+          title = card_title(name_text)
+          expected_text = assertion_value(snapshot[:expected], string: snapshot[:expected_string])
           if status == "PASS"
             title = "\u2713 Assertion passed \u00b7 #{title}"
             if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
@@ -115,16 +142,26 @@ module ReportportalCucumber
             parts = [title]
           else
             parts = ["## \u2717 Assertion failed \u00b7 #{title}"]
-            actual_text = ledger_value(actual, VALUE_LIMIT)
+            actual_text = assertion_value(snapshot[:actual], string: snapshot[:actual_string])
             limit = DETAILS_LIMIT - parts.first.bytesize - 72 - (details.nil? ? 0 : 256)
             comparison = comparison_block(expected_text, actual_text, limit)
             append_card_fence(parts, comparison, "text")
           end
-          append_card_details(parts, details, render(details, DETAILS_LIMIT)) unless details.nil?
-          parts.join("\n\n")
+          append_card_details(parts, nil, details, string: snapshot[:details_string]) unless details.nil?
+          plain = parts.join("\n\n")
+          return plain unless accent
+
+          if status == "PASS"
+            heading = "#{Presentation::Accent.pill('PASS', tone: :pass)} #{card_title(name_text, accent: true)}"
+            heading += " \u00b7 expected #{card_code(expected_text)}" if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
+            parts[0] = heading
+          else
+            parts.insert(1, Presentation::Accent.pill('FAIL', tone: :fail))
+          end
+          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: status == "PASS" ? :info : :error)
         end
 
-        def failure_card(action, error, url, names, details, diagnostic)
+        def failure_card(action, error, url, names, details, diagnostic, accent: false)
           title = safe_string(action, 128)
           title = "Failure evidence" if title.strip.empty?
           parts = ["## \u2717 #{card_title(title)}"]
@@ -138,14 +175,22 @@ module ReportportalCucumber
           message = safe_string(error.message, VALUE_LIMIT)
           append_card_fence(parts, message, "text") unless message.empty?
           append_card_details(parts, details, diagnostic) unless details.nil?
-          parts.join("\n\n")
+          plain = parts.join("\n\n")
+          return plain unless accent
+
+          pill = Presentation::Accent.pill('FAIL', tone: :fail)
+          if meta.empty?
+            parts.insert(1, pill)
+          else
+            parts[1] = "#{pill} #{parts[1]}"
+          end
+          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: :error)
         end
 
-        def ledger_value(value, limit)
-          text = render(value, limit)
-          return text if value.is_a?(String)
+        def assertion_value(text, string:)
+          return text if string
 
-          bounded(ledger_json(parsed_diagnostic(text)), limit)
+          bounded(ledger_json(parsed_diagnostic(text)), VALUE_LIMIT)
         end
 
         def parsed_diagnostic(text)
@@ -158,8 +203,8 @@ module ReportportalCucumber
           Presentation::LedgerJson.format(value) || raise(StandardError, "JSON presentation unavailable")
         end
 
-        def append_card_details(parts, original, diagnostic)
-          value = original.is_a?(String) ? diagnostic : parsed_diagnostic(diagnostic)
+        def append_card_details(parts, original, diagnostic, string: original.is_a?(String))
+          value = string ? diagnostic : parsed_diagnostic(diagnostic)
           if inline_details?(value)
             pairs = value.map { |key, item| "#{card_code(key)} = #{card_code(scalar_text(item))}" }
             section = "_Details_ #{pairs.join(" \u00b7 ")}".rstrip
@@ -195,10 +240,12 @@ module ReportportalCucumber
           Presentation::MarkdownText.code(text, limit: VALUE_LIMIT)
         end
 
-        def card_title(text)
+        def card_title(text, accent: false)
           loop do
             escaped = Presentation::MarkdownText.inline(text, limit: VALUE_LIMIT)
-            return escaped if escaped.bytesize <= VALUE_LIMIT
+            if escaped.bytesize <= VALUE_LIMIT
+              return accent ? Presentation::Accent.title(text, limit: VALUE_LIMIT) : escaped
+            end
 
             text = bounded(text, [text.bytesize - (escaped.bytesize - VALUE_LIMIT), 3].max)
           end

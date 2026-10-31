@@ -4,6 +4,7 @@ require "json"
 require_relative "../../presentation/markdown_text"
 require_relative "../../presentation/ledger_json"
 require_relative "../../presentation/units"
+require_relative "../../presentation/accent"
 
 module ReportportalCucumber
   module ReportPortal
@@ -62,12 +63,17 @@ module ReportportalCucumber
         end
 
         # @param mode [Symbol] :description keeps the header; :log uses argument captions.
+        # @param presentation [String] "rich" accents RP logs only; descriptions stay plain.
         # @return [String] Bounded Markdown, or the complete pre-Ledger description on failure.
-        def to_markdown(mode: :description)
+        def to_markdown(mode: :description, presentation: "plain")
           Presentation::Fallback.render(fallback: -> { baseline_markdown }) do
             raise ArgumentError, "Unknown step presentation mode" unless %i[log description].include?(mode)
 
-            render_markdown(presentation: true, mode: mode)
+            accents = [] if presentation == "rich" && mode == :log
+            plain = render_markdown(presentation: true, mode: mode, accents: accents)
+            next plain unless accents
+
+            Presentation::Accent.guard(plain: plain, rich: accents.join("\n\n"), level: :info)
           end
         end
 
@@ -84,9 +90,9 @@ module ReportportalCucumber
 
         private
 
-        def render_markdown(presentation:, mode: :description)
+        def render_markdown(presentation:, mode: :description, accents: nil)
           sections = mode == :log ? [] : [header_line(presentation: presentation)]
-          multiline_sections(presentation: presentation, mode: mode).each do |section|
+          multiline_sections(presentation: presentation, mode: mode, accents: accents).each do |section|
             sections << section unless section.to_s.strip.empty?
           end
           sections.join("\n\n")
@@ -108,7 +114,7 @@ module ReportportalCucumber
         end
 
         # @return [Array<String>]
-        def multiline_sections(presentation: true, mode: :description)
+        def multiline_sections(presentation: true, mode: :description, accents: nil)
           sections = []
           remaining = CONTENT_BYTE_LIMIT - (mode == :log ? 0 : header_line(presentation: presentation).bytesize)
           rows = table_rows
@@ -119,16 +125,28 @@ module ReportportalCucumber
             caption = table_caption(rows) if presentation && mode == :log
             reserve += caption.bytesize + 2 if caption
             reserve += doc_caption_reserve(doc_string) if presentation && mode == :log && doc_string
-            table = data_table_markdown(byte_limit: remaining - reserve, presentation: presentation)
+            header = {} if accents
+            table = data_table_markdown(byte_limit: remaining - reserve, presentation: presentation, accent_header: header)
+            # Only the generated, admitted header row is replaced. Caller text
+            # is never searched for HTML or rewritten as an assembled message.
+            rich_table = if header && header[:plain] && table.start_with?(header[:plain])
+                           header[:rich] + table.delete_prefix(header[:plain])
+                         else
+                           table
+                         end
             table = "#{caption}\n\n#{table}" if caption && table
+            rich_table = "#{caption}\n\n#{rich_table}" if caption && rich_table
           end
           if table
             sections << table
             remaining -= table.bytesize + 2
+            accents << rich_table if accents
           end
 
-          doc = doc_string_markdown(byte_limit: remaining - 2, presentation: presentation, mode: mode) if doc_string
+          doc_accent = {} if accents
+          doc = doc_string_markdown(byte_limit: remaining - 2, presentation: presentation, mode: mode, accent: doc_accent) if doc_string
           sections << doc if doc
+          accents << (doc_accent[:rich] || doc) if accents && doc
           sections
         end
 
@@ -200,7 +218,7 @@ module ReportportalCucumber
 
         # @param byte_limit [Integer]
         # @return [String, nil]
-        def data_table_markdown(byte_limit:, presentation: true)
+        def data_table_markdown(byte_limit:, presentation: true, accent_header: nil)
           rows = table_rows
           return nil unless rows && !rows.empty?
           return TABLE_OMITTED_MARKER if byte_limit <= TABLE_OMITTED_MARKER.bytesize
@@ -233,6 +251,13 @@ module ReportportalCucumber
 
             lines.concat(candidate)
             used_bytes += candidate_bytes
+            if index.zero? && accent_header && cells.length.between?(1, 6)
+              accent_header[:plain] = row_line
+              accented = cells.map do |cell|
+                Presentation::Accent.table_header(cell_value(cell), columns: cells.length, limit: CELL_BYTE_LIMIT)
+              end
+              accent_header[:rich] = "| #{accented.join(' | ')} |"
+            end
           end
           lines.join("\n")
         end
@@ -275,7 +300,7 @@ module ReportportalCucumber
 
         # @param byte_limit [Integer]
         # @return [String, nil]
-        def doc_string_markdown(byte_limit:, presentation: true, mode: :description)
+        def doc_string_markdown(byte_limit:, presentation: true, mode: :description, accent: nil)
           body = doc_string_body(byte_limit: byte_limit, presentation: presentation)
           return body unless body && presentation && mode == :log
 
@@ -283,7 +308,14 @@ module ReportportalCucumber
           type = normalized_media_type(doc_string_media_type(doc_string))
           label = json_media_type?(type) || body.match?(/\A(?:`{3,}|~{3,})json\n/) ? "JSON" : type
           caption = doc_caption(label)
-          body = doc_string_body(byte_limit: byte_limit - caption.bytesize - 2, presentation: presentation)
+          snapshot = {} if accent
+          body = doc_string_body(byte_limit: byte_limit - caption.bytesize - 2, presentation: presentation, snapshot: snapshot)
+          if snapshot && snapshot[:body] && snapshot[:body].lines.count > 20
+            summary = ["Doc string", label, "#{snapshot[:body].lines.count} lines"].reject(&:empty?).join(" \u00b7 ")
+            accent[:rich] = Presentation::Accent.details(
+              summary: summary, body: snapshot[:body], language: snapshot[:language], limit: CONTENT_BYTE_LIMIT
+            )
+          end
           body ? "#{caption}\n\n#{body}" : nil
         end
 
@@ -297,7 +329,7 @@ module ReportportalCucumber
           doc_caption(label).bytesize + 2
         end
 
-        def doc_string_body(byte_limit:, presentation:)
+        def doc_string_body(byte_limit:, presentation:, snapshot: nil)
           doc_string = runtime_doc_string || source_doc_string
           return nil unless doc_string
           return DOC_OMITTED_MARKER if byte_limit <= DOC_OMITTED_MARKER.bytesize
@@ -333,7 +365,10 @@ module ReportportalCucumber
                 bounded_pretty, pretty_truncated = bounded_doc_string_content(pretty, byte_limit: content_limit)
                 unless pretty_truncated
                   block = fenced_block(bounded_pretty, "json", presentation: presentation)
-                  return block if block && block.bytesize <= byte_limit
+                  if block && block.bytesize <= byte_limit
+                    snapshot&.merge!(body: bounded_pretty, language: "json")
+                    return block
+                  end
                 end
                 fallback_marker = "[JSON pretty-print skipped; showing text]"
               end
@@ -341,8 +376,12 @@ module ReportportalCucumber
           end
 
           content = append_truncation_marker(content, fallback_marker) if truncated || fallback_marker != TRUNCATION_MARKER
-          block = fenced_block(content, json ? "json" : doc_string_language(normalized_type), presentation: presentation)
-          return block if block && block.bytesize <= byte_limit
+          language = json ? "json" : doc_string_language(normalized_type)
+          block = fenced_block(content, language, presentation: presentation)
+          if block && block.bytesize <= byte_limit
+            snapshot&.merge!(body: content, language: language)
+            return block
+          end
 
           DOC_OMITTED_MARKER
         end

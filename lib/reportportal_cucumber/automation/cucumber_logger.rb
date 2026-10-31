@@ -140,9 +140,13 @@ module Automation
       write_terminal(terminal_line(message: summary, attach: report, file: nil, json: nil), level)
       return unless report
 
-      report_message = exchange.to_markdown
-      emit_cucumber_log(report_message, level)
-      emit_reportportal_log(report_message, level)
+      fallback_state = {}
+      report_message = exchange.to_markdown(fallback_state: fallback_state)
+      card = ReportContext::LogCard.new(report_message) do
+        exchange.to_markdown(presentation: "rich", fallback_state: fallback_state)
+      end
+      emit_cucumber_log(report_message, level, rp_card: card)
+      emit_reportportal_log(report_message, level, rp_card: card)
     end
 
     # Records a structured diagnostic without changing the test result.
@@ -155,7 +159,7 @@ module Automation
     # @return [void]
     def assertion(name:, expected:, actual:, passed:, details: nil, report: true)
       presentation = ReportportalCucumber::Service::EvidencePresenter.assertion(
-        name: name, expected: expected, actual: actual, passed: passed, details: details
+        name: name, expected: expected, actual: actual, passed: passed, details: details, alternate: report
       )
       level = passed ? :info : :error
       write_terminal(terminal_line(message: presentation.fetch(:summary), attach: report,
@@ -163,8 +167,10 @@ module Automation
       return unless report
 
       markdown = presentation.fetch(:markdown)
-      emit_cucumber_log(markdown, level)
-      emit_reportportal_log(markdown, level)
+      render_rich = presentation[:rich_markdown] || -> { markdown }
+      card = ReportContext::LogCard.new(markdown, &render_rich)
+      emit_cucumber_log(markdown, level, rp_card: card)
+      emit_reportportal_log(markdown, level, rp_card: card)
     end
 
     # @return [Boolean]
@@ -224,9 +230,9 @@ module Automation
       value.to_s
     end
 
-    def emit_cucumber_log(message, level)
+    def emit_cucumber_log(message, level, rp_card: nil)
       safe_call(:world_log) do
-        ReportContext.with(level: level) { @world.log(message) } if @world&.respond_to?(:log)
+        ReportContext.with(level: level, rp_log_card: rp_card) { @world.log(message) } if @world&.respond_to?(:log)
       end
     end
 
@@ -241,7 +247,7 @@ module Automation
       end
     end
 
-    def emit_reportportal_log(message, level)
+    def emit_reportportal_log(message, level, rp_card: nil)
       return unless rp_active?
       return if cucumber_event_bus_backed_by_reportportal?
 
@@ -254,6 +260,11 @@ module Automation
         end
         keywords = { level: level }
         keywords[:mirror] = false if accepts_mirror
+        if rp_card
+          runtime = ::ReportportalCucumber.current_runtime if defined?(::ReportportalCucumber) && ::ReportportalCucumber.respond_to?(:current_runtime)
+          config = runtime.config if runtime&.respond_to?(:config)
+          message = rp_card.rich if config&.respond_to?(:presentation) && config.presentation == "rich"
+        end
         rp_log.call(message, **keywords)
       end
     end
