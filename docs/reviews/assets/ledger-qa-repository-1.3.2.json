@@ -1,0 +1,121 @@
+{
+  "schema": "independent-repository-audit/1",
+  "captured_at_utc": "2026-10-31T18:26:55Z",
+  "head": "c27510547ace0d4baaf964a0575e5bec4344e11a",
+  "baseline": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+  "records": [
+    {
+      "criterion": "V2",
+      "command": [
+        "git",
+        "diff",
+        "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+        "HEAD",
+        "--",
+        "Gemfile.lock"
+      ],
+      "exit": 0,
+      "stdout": "diff --git a/Gemfile.lock b/Gemfile.lock\nindex 68ebb9e..975ca3a 100644\n--- a/Gemfile.lock\n+++ b/Gemfile.lock\n@@ -1,7 +1,7 @@\n PATH\n   remote: .\n   specs:\n-    reportportal-cucumber-ruby (1.3.1)\n+    reportportal-cucumber-ruby (1.3.2)\n       aws-sdk-s3 (>= 1.180)\n       cucumber (>= 9.0, < 11.0)\n       cucumber-cucumber-expressions (>= 17.0, < 19.0)\n",
+      "stderr": ""
+    },
+    {
+      "criterion": "V6",
+      "command": [
+        "git",
+        "diff",
+        "--stat",
+        "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+        "HEAD",
+        "--",
+        "helm/",
+        ".github/workflows/"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "criterion": "V8",
+      "command": [
+        "git",
+        "log",
+        "--reverse",
+        "--format=%H %s",
+        "4ca2f770e0a84e83688f165ba04b4db8ef855cf9..HEAD"
+      ],
+      "exit": 0,
+      "stdout": "eb17e54255ae85a740cc24507b16c82d0fd28aff docs(design): add Ledger presentation proposal and acceptance criteria\n98447677795cce6c2c43fda670fbda2e9de22c78 chore(release): allow independent Helm chart version from SDK 1.3.2\n3513ade6b1cba86fa9146c3467dea7a507f3e5f2 docs(design): record owner-approved Ledger acceptance decisions\nfdcad6163fd0d9f9bfafdc59c43c6947b666f94d docs(design): record legacy compound grammar acceptance decision\n13c6c429460024670a2f8f697308a087dfb45a16 feat(presentation): MarkdownText, Ledger JSON and unit formatting; escape client Markdown\na49e760b0a4edbb37210087bc83cbbc5b31989e9 feat(presentation): failure card with project frames first\n19f12b8a2374485ff3ddb6fd74bdd89c059c6385 feat(presentation): hook names and step-argument logs\n15a49f08629f13a266f4b167af088bab7956ad47 feat(presentation): attachment captions, default names and compact previews\n614a283a5d55ea091639e3ca3799b458f3e9b3f1 feat(presentation): Outline one-liners and assertion/evidence/HTTP cards\n2db6cc0ee3e07434cc507920f13d9d1c94ca2429 feat(launch): opt-in run context attributes and description\n0ac76e89b17f191b30c4991ce6b3bca58f66c70c feat(presentation): opt-in Ledger Tier 2 accent layer (RP_PRESENTATION=rich)\nad7bdddac7e8239cb4d17fb526744d7739b4e535 docs(design): record native global hook naming decision\n24c61e95e95c7c00d01e42d9fc0fe754b9f5ec56 chore(release): prepare Ledger SDK 1.3.2 candidate\n7ecac86531ff92fbcf82b9a70d71091c1e5f4e93 docs(ledger): record target-sync approval and current candidate\nc2e5c9fb3a8c4fa5b1cb14d09941e794130ff36d fix(developer): activate selected SDK dependency contract\nca7d83fe71ed1f6a3e60abf97c6598a0d7f0c104 fix(presentation): preserve literal Markdown in table cells\nf8872fa76c75024da01cc32c9746eb0a243f8389 docs(presentation): reconcile approved goldens with explicit rules\n8daf1b93d05b2e1bf93b7fa9175d388e011d397c docs(qa): record six approved legacy persistence exceptions\n37d289d8ae492fed7f1fffe3fd34dbd7e396d70e fix(presentation): preserve baseline native HTTP and assertion logs\n64be0d50517504784d2ec10752a2244c961e260e test(presentation): pin native HTTP integration baseline\nbf3aa32197adc887dc08edcd89c964a022ea4e48 fix(presentation): preserve native hook names across retries\nc27510547ace0d4baaf964a0575e5bec4344e11a test(presentation): cover hook cache cleanup on reporting failure\n",
+      "stderr": ""
+    },
+    {
+      "criterion": "V4",
+      "command": [
+        "git",
+        "diff",
+        "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+        "HEAD",
+        "--",
+        "CHANGELOG.md"
+      ],
+      "exit": 0,
+      "stdout": "diff --git a/CHANGELOG.md b/CHANGELOG.md\nindex c072489..65de838 100644\n--- a/CHANGELOG.md\n+++ b/CHANGELOG.md\n@@ -1,5 +1,22 @@\n # Changelog\n \n+## 1.3.2 - Unreleased\n+\n+### Ledger Presentation\n+\n+- Failure logs show the exception, feature location and project frames before the full original backtrace. Credential redaction now matches the 2.x failure-log behavior.\n+- Client-built Markdown escapes user markup; attachment captions show kind, size and available dimensions, unnamed files use step-derived names, and JSON previews are compact.\n+- Hook item names are simplified without changing topology. Native global hooks remain Launch-scoped where observed; their independent Item-name checks are N/A, not fabricated hook items.\n+- Preserve explicit native Before/After/AfterStep names through Cucumber's hook-created event, retaining retry labels and clearing scalar metadata on finalization.\n+- Step-argument logs caption tables and DocStrings, align numeric columns without changing values, and omit the repeated step line. Argument-free steps have no description; Outline descriptions show Examples values on one line.\n+- Assertion, failure-evidence and HTTP cards preserve diagnostic values, HTTP severity and existing sanitized bounds.\n+- Keep structured HTTP and assertion bodies in their baseline format for native Cucumber and terminal formatters; apply Ledger cards only to the RP route.\n+- Opt-in `RP_RUN_CONTEXT=true` adds allowlisted SDK, Cucumber, Ruby and CI metadata plus a default Launch description; explicit attributes and descriptions win. No workers attribute is generated on 1.x.\n+- Opt-in `RP_PRESENTATION=rich` adds status pills, table-header accents and collapsible evidence to ReportPortal log messages only. Native Cucumber, terminal output, caller text and item metadata remain unchanged.\n+- Preserve item hierarchy, identities, statuses, timestamps, ownership, log counts and attachment bytes. Presentation faults retain the original baseline with one warning; rich output preserves ERROR first lines and adds at most 1,024 bytes.\n+- Released as a patch at the owner's request; the two opt-in switches are additive and off by default.\n+\n+\n ## 1.3.1 - 2026-10-31\n \n ### Readable Logger And Runnable Examples\n",
+      "stderr": ""
+    },
+    {
+      "criterion": "V5",
+      "command": [
+        "git",
+        "diff",
+        "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+        "HEAD",
+        "--",
+        "docs/configuration.md",
+        "docs/advanced-reporting.md"
+      ],
+      "exit": 0,
+      "stdout": "diff --git a/docs/advanced-reporting.md b/docs/advanced-reporting.md\nindex 475361e..1b7fe5d 100644\n--- a/docs/advanced-reporting.md\n+++ b/docs/advanced-reporting.md\n@@ -5,6 +5,54 @@ Use this reference after [getting started](getting-started.md),\n contracts and optional capabilities; none of these settings is required for the\n minimal Scenario or ordinary PNG/JSON/text reporting.\n \n+## Presentation\n+\n+SDK 1.3.2 uses Ledger plain cards by default: project-first failures with\n+complete backtraces, attachment metadata, compact JSON, argument captions,\n+numeric table alignment, one-line Outline values, and assertion/HTTP/evidence\n+cards. Numeric values, status levels, log counts, ownership, IDs and original\n+attachment bytes are unchanged. Argument-free steps do not send descriptions.\n+\n+Enable the two independent options from your test project:\n+\n+```sh\n+RP_PRESENTATION=rich RP_RUN_CONTEXT=true bundle exec cucumber --profile rp\n+```\n+\n+`RP_PRESENTATION` defaults to `plain`; invalid values warn once and use plain.\n+`rich` accents **ReportPortal log messages only**, not native Cucumber\n+HTML/messages, terminal summaries, caller AppLog text, names, descriptions or\n+Launch metadata. It folds full backtraces, attachment previews over 20 lines,\n+DocStrings over 20 lines, HTTP headers and HTTP bodies over 12 lines. Table\n+headers are accented only for tables with at most six columns. Existing preview\n+bounds still apply, with full original attachment bytes retained separately.\n+Client-generated `<br>` is allowed in table cells; user markup is escaped.\n+\n+Every ERROR first line stays byte-identical. Added markup is limited to 1,024\n+bytes per message; exceeding that budget or changing an ERROR first line keeps\n+the plain card. Helper exceptions retain the original baseline with one warning,\n+not a partially formatted card. Rendering does not change Scenario outcomes.\n+\n+`RP_RUN_CONTEXT` defaults to `false`. When enabled it adds only the documented\n+SDK/runtime/CI attributes and a one-line description if none was supplied;\n+explicit values win. No `workers` attribute is generated on 1.x.\n+See the [configuration allowlist](configuration.md#presentation-and-run-context).\n+\n+The owner-approved compatibility exceptions preserve baseline behavior:\n+- Cucumber 9 rejects a single native step containing both a DocString and a\n+  DataTable. Its compound-syntax check is N/A with parser-failure evidence;\n+  separate argument steps still verify both presentations. Cucumber 12 retains\n+  native compound-argument coverage.\n+- Native `BeforeAll` / `AfterAll` do not gain independent Hook Items. Existing\n+  Launch-scoped logs, exceptions and shutdown behavior remain unchanged; only\n+  their independent Item-name check is N/A. In 1.x, `BeforeAll` can run before\n+  formatter construction. Existing class-hook name mappings remain unit-tested.\n+\n+These are Decisions 4 and 5 in the\n+[owner requirements](design/presentation-ledger-proposal.md#decisions), not waivers\n+for ownership, failure propagation, or delivery checks. The opt-ins do not\n+change ReportPortal viewer settings or introduce a new deployment requirement.\n+\n ## Report structure\n \n | RP node | Wire type | `hasStats` | Purpose |\n@@ -19,8 +67,8 @@ Scenario is deliberately a statistical `STEP`, not `TEST`. The previously\n verified RP UI statistics drilldown selected statistical leaves with\n `type=STEP&hasStats=true&hasChildren=false`; nonstatistical children carry evidence\n without becoming additional tests. Background actions retain their `[Background]`\n-prefix. Gherkin DataTables/DocStrings become Markdown descriptions and rich Step\n-logs; every executed Examples row gets its own UUID. See the\n+prefix. Gherkin DataTables/DocStrings become Markdown descriptions and plain Step-argument\n+logs (RP log accents are opt-in); every executed Examples row gets its own UUID. See the\n [metadata contract](design/reporting-experience-m3a-implementation.md).\n \n ## Launch ownership and native run hooks\n@@ -334,8 +382,9 @@ in configuration are unsuitable for production. An uploaded object, a browser\n link, and a playable/safely accessible recording are separate checks.\n \n The **separate companion Chart 1.3.1** in this checkout pins ReportPortal `26.0.7`\n-and official chart `26.10.26`, requiring Kubernetes `>=1.35`. SDK and Chart 1.3.1\n-are distributed together in the GitHub release; the server version is independent.\n+and official chart `26.10.26`, requiring Kubernetes `>=1.35`. The historical SDK\n+1.3.1 release included that chart; SDK 1.3.2 leaves it unchanged and does not\n+imply a new published bundle. The SDK, chart and server versions are independent.\n Its version is independent of browser playback behavior. It uses\n Prefix routes with a configurable controller class and dedicated-bucket\n reconciliation. Its intentional internal-network public mode grants only\ndiff --git a/docs/configuration.md b/docs/configuration.md\nindex 9f50518..1eadd55 100644\n--- a/docs/configuration.md\n+++ b/docs/configuration.md\n@@ -82,6 +82,52 @@ is created. Set `RP_ENABLED=false` for local-only runs rather than relying on\n missing credentials. A CI-owned UUID cannot be combined with `rerun`/`rerun_of`;\n the conflict is rejected. See [shared Launches](ci.md#parallel-workers-and-a-shared-launch).\n \n+## Presentation and run context\n+\n+Available in SDK 1.3.2; both additions are opt-in and off by default.\n+\n+| Environment variable | YAML key | Default | Type / use |\n+| --- | --- | --- | --- |\n+| `RP_PRESENTATION` | `presentation` | `plain` | Exact `plain` or `rich`; rich decorates client-built RP log cards only |\n+| `RP_RUN_CONTEXT` | `run_context` | `false` | Strict Boolean; add allowlisted Launch metadata and a default description |\n+\n+An invalid `RP_PRESENTATION` value, including `fancy`, logs one constant warning\n+without echoing the value and falls back to plain. Invalid `RP_RUN_CONTEXT`\n+Boolean values are rejected; prefer explicit `true` / `false`.\n+\n+```yaml\n+default:\n+  presentation: plain\n+  run_context: false\n+profiles:\n+  ledger:\n+    presentation: rich\n+    run_context: true\n+```\n+\n+Rich mode never changes native Cucumber messages/HTML, terminal summaries,\n+arbitrary AppLog text, item names/descriptions, or Launch metadata. It preserves\n+every ERROR log's first line and adds at most 1,024 bytes per message; a budget\n+or first-line guard retains the plain card. A presentation exception instead\n+restores the original pre-Ledger baseline with one nonreflective warning.\n+\n+Run context adds missing `sdk`, `cucumber`, `ruby`, `git.branch`, `git.sha` and\n+`ci.build` attributes. It reads only these environment sources, first non-empty\n+value from left to right:\n+\n+| Attribute | Environment sources |\n+| --- | --- |\n+| `git.branch` | `GITHUB_REF_NAME`, `CI_COMMIT_REF_NAME`, `BRANCH_NAME` |\n+| `git.sha` | `RP_SOURCE_COMMIT`, `GITHUB_SHA`, `CI_COMMIT_SHA`; first 7 characters |\n+| `ci.build` | `GITHUB_RUN_ID`, `CI_PIPELINE_ID`, `BUILD_NUMBER` |\n+\n+Values are trimmed, capped at 128 characters, and omitted when empty. Explicit\n+attribute keys win; a non-empty explicit Launch description is retained.\n+Otherwise a one-line Cucumber/Ruby/branch description is generated.\n+The 1.x formatter never generates a `workers` attribute, even when `PARALLEL_TEST_GROUPS` is set.\n+No environment dump or implicit CI API lookup occurs. See\n+[Presentation](advanced-reporting.md#presentation) for the card and channel contract.\n+\n ## Logger and reporting policy\n \n | Environment variable | YAML key | Default | Type / use |\n",
+      "stderr": ""
+    },
+    {
+      "criterion": "V7",
+      "command": [
+        "git",
+        "ls-remote",
+        "https://github.com/NickYin0125/CucumberReportportal.git",
+        "refs/heads/main",
+        "refs/heads/maintenance/1.x",
+        "refs/heads/codex/cucumber-12",
+        "refs/tags/*"
+      ],
+      "exit": 0,
+      "stdout": "f2e68f112ad28604f4395710f10f595246f6dc00\trefs/heads/codex/cucumber-12\n75cb090a7852c56285010af17cde9ad55df1284b\trefs/heads/main\n4ca2f770e0a84e83688f165ba04b4db8ef855cf9\trefs/heads/maintenance/1.x\n0c2e5c66139688d8dcf60da6a8fac9440108044e\trefs/tags/m3\nc9eacad5f1320e84f9660a413ef307d39f48d2de\trefs/tags/m3^{}\n10882646c776d79879b9159b269f447c4f5c7a3b\trefs/tags/milestone1\ndd00b81b1041d48269d1c7daff3c49edcc354fa3\trefs/tags/milestone1^{}\n371636c511fc145688c7db434dbe2117c68492db\trefs/tags/v1.0.0\na28bf7afd49e3a50138da5ef8f8c0cab291d7018\trefs/tags/v1.0.0^{}\neb42ec31ad78893367b86c07bd619a7e25fc9e41\trefs/tags/v1.1.0\na2c1e909c5255abf03ce1b956d1bba5ae7464f9d\trefs/tags/v1.2.0\nbb3805dbc497e2627252d1097c74281f26375fbb\trefs/tags/v1.2.0^{}\nacf7cfe34d8bbc3720f1fa7e09f77ab95c840b9c\trefs/tags/v1.3.0\n71b63023fbf9318147a175c3e637fdd87195b82e\trefs/tags/v1.3.0^{}\na3381656c17986f509e8a97cb537bea76adc3225\trefs/tags/v1.3.1\n4ca2f770e0a84e83688f165ba04b4db8ef855cf9\trefs/tags/v1.3.1^{}\na04160efce8a9e92e86bbc5f7f27d00314e5e069\trefs/tags/v2.0.0\nf2e68f112ad28604f4395710f10f595246f6dc00\trefs/tags/v2.0.0^{}\n",
+      "stderr": ""
+    },
+    {
+      "criterion": "V3",
+      "command": [
+        "/opt/homebrew/opt/ruby/bin/gem",
+        "build",
+        "reportportal-cucumber-ruby.gemspec",
+        "--output",
+        "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-packaging/reportportal-cucumber-ruby-1.3.2.gem"
+      ],
+      "exit": 0,
+      "stdout": "  Successfully built RubyGem\n  Name: reportportal-cucumber-ruby\n  Version: 1.3.2\n  File: reportportal-cucumber-ruby-1.3.2.gem\n",
+      "stderr": "WARNING:  open-ended dependency on aws-sdk-s3 (>= 1.180) is not recommended\n  if aws-sdk-s3 is semantically versioned, use:\n    add_runtime_dependency \"aws-sdk-s3\", \"~> 1.180\"\nWARNING:  open-ended dependency on mime-types (>= 3.5) is not recommended\n  if mime-types is semantically versioned, use:\n    add_runtime_dependency \"mime-types\", \"~> 3.5\"\nWARNING:  open-ended dependency on bundler (>= 2.6, development) is not recommended\n  if bundler is semantically versioned, use:\n    add_development_dependency \"bundler\", \"~> 2.6\"\nWARNING:  open-ended dependency on rake (>= 13.0, development) is not recommended\n  if rake is semantically versioned, use:\n    add_development_dependency \"rake\", \"~> 13.0\"\nWARNING:  open-ended dependency on parallel_tests (>= 4.0, development) is not recommended\n  if parallel_tests is semantically versioned, use:\n    add_development_dependency \"parallel_tests\", \"~> 4.0\"\nWARNING:  open-ended dependency on puma (>= 6.0, development) is not recommended\n  if puma is semantically versioned, use:\n    add_development_dependency \"puma\", \"~> 6.0\"\nWARNING:  open-ended dependency on rackup (>= 2.2, development) is not recommended\n  if rackup is semantically versioned, use:\n    add_development_dependency \"rackup\", \"~> 2.2\"\nWARNING:  open-ended dependency on rantly (>= 2.0, development) is not recommended\n  if rantly is semantically versioned, use:\n    add_development_dependency \"rantly\", \"~> 2.0\"\nWARNING:  open-ended dependency on sinatra (>= 4.1, development) is not recommended\n  if sinatra is semantically versioned, use:\n    add_development_dependency \"sinatra\", \"~> 4.1\"\nWARNING:  open-ended dependency on rspec (>= 3.13, development) is not recommended\n  if rspec is semantically versioned, use:\n    add_development_dependency \"rspec\", \"~> 3.13\"\nWARNING:  open-ended dependency on webmock (>= 3.23, development) is not recommended\n  if webmock is semantically versioned, use:\n    add_development_dependency \"webmock\", \"~> 3.23\"\nWARNING:  You have specified the uri:\n  https://github.com/NickYin0125/CucumberReportportal\nfor all of the following keys:\n  homepage_uri\n  source_code_uri\nOnly the first one will be shown on rubygems.org\nWARNING:  See https://guides.rubygems.org/specification-reference/ for help\n"
+    }
+  ],
+  "package": {
+    "filename": "reportportal-cucumber-ruby-1.3.2.gem",
+    "bytes": 695808,
+    "sha256": "7092822ed8e706408007bb6967518b1aded3c841e013192ed78dbea5ded8eace",
+    "note": "Local build only. Temporary gem is not staged, published or uploaded."
+  },
+  "protected_heads_observed_at_task_start": {
+    "refs/heads/main": "75cb090a7852c56285010af17cde9ad55df1284b",
+    "refs/heads/maintenance/1.x": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+    "refs/heads/codex/cucumber-12": "f2e68f112ad28604f4395710f10f595246f6dc00"
+  },
+  "initial_remote_tags_artifact": null,
+  "initial_remote_tags_note": "The initial remote tag listing was observed in tool output but no complete machine-readable before artifact is retained here. Do not infer whole-task V7 PASS from the exit snapshot alone."
+}
