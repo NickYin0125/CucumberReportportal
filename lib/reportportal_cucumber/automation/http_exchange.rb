@@ -65,6 +65,11 @@ module Automation
       end
     end
 
+    # @return [String] Baseline rendering for native Cucumber and terminal output.
+    def native_markdown
+      render_markdown(presentation: false)
+    end
+
     # @return [Symbol] Severity based on the observed and expected status.
     def level
       return :error unless @error.nil?

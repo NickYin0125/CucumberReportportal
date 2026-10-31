@@ -293,8 +293,14 @@ RSpec.describe ReportportalCucumber::Service::EvidencePresenter do
     bound.assertion(name: "Limits", expected: 1, actual: 1, passed: true)
     expect(output.string).to eq("2026-10-31 10:20:30.000  ERROR  FAIL: Limits (Attached to Report)\n" \
                                "2026-10-31 10:20:30.000  INFO   PASS: Limits (Attached to Report)\n")
-    expect(rp).to eq([[native[0], { level: :error, mirror: false }], [native[1], { level: :info, mirror: false }]])
-    expect(native.length).to eq(2)
+    expect(rp).to eq([
+      ["## \u2717 Assertion failed \u00b7 Limits\n\n```text\nexpected  1\nactual    2\n```", { level: :error, mirror: false }],
+      ["\u2713 Assertion passed \u00b7 Limits \u00b7 expected `1`", { level: :info, mirror: false }]
+    ])
+    expect(native).to eq([
+      "## Assertion: Limits\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| 1 | 2 |",
+      "## Assertion: Limits\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| 1 | 1 |"
+    ])
     expect(native.join).not_to include("<details", "<span", "<summary")
   end
 end

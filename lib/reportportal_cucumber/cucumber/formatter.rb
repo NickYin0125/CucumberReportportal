@@ -774,8 +774,8 @@ module ReportportalCucumber
         if attachment[:mime].to_s.casecmp?("text/x.cucumber.log+plain")
           message = attachment[:bytes]
           card = Automation::ReportContext.current[:rp_log_card]
-          if @config.presentation == "rich" && card.is_a?(Automation::ReportContext::LogCard) && card.plain.b == message.b
-            message = card.rich
+          if card.is_a?(Automation::ReportContext::LogCard) && card.native.b == message.b
+            message = @config.presentation == "rich" ? card.rich : card.plain
           end
           @log_buffer.emit_log(
             item_uuid: target_item&.uuid,

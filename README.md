@@ -79,6 +79,9 @@ accents and folded evidence; the default is `plain`, and an invalid value warns
 once and uses plain. Native Cucumber HTML/messages, terminal output, user AppLog
 text, names and descriptions do not acquire rich markup.
 
+Structured AppLog HTTP and assertion logs retain their existing native Cucumber
+and terminal bodies; only the RP subscriber selects the new plain or rich cards.
+
 `RP_RUN_CONTEXT=true` separately enables allowlisted Launch metadata; it defaults
 to `false` and never overwrites explicit attributes or a non-empty description.
 On 2.x, `workers` is included only when `PARALLEL_TEST_GROUPS` is present.

@@ -66,15 +66,19 @@ module ReportportalCucumber
         # @param details [Object, nil] Optional supplementary diagnostic details.
         # @param presentation [String] "plain" or RP-only "rich".
         # @param fallback_state [Hash, nil] Message-local presentation failure latch.
-        # @param alternate [Boolean] Also return a lazy :rich_markdown Proc for
-        #   synchronous RP subscribers. It captures only bounded sanitized data.
+        # @param alternate [Boolean] Also return baseline :native_markdown and a
+        #   lazy :rich_markdown Proc for synchronous RP subscribers. It captures
+        #   only bounded sanitized data.
         def assertion(name:, expected:, actual:, passed:, details: nil, presentation: "plain", fallback_state: nil, alternate: false)
           snapshot = assertion_snapshot(passed ? "PASS" : "FAIL", name, expected, actual, details)
           baseline = bounded(assertion_baseline(snapshot), DETAILS_LIMIT).freeze
           state = fallback_state || {}
           result = { summary: bounded("#{snapshot[:status]}: #{safe_string(name, VALUE_LIMIT)}", SUMMARY_LIMIT),
                      markdown: assertion_renderer(snapshot, baseline, state, accent: presentation == "rich").call }
-          result[:rich_markdown] = assertion_renderer(snapshot, baseline, state, accent: true) if alternate
+          if alternate
+            result[:native_markdown] = baseline
+            result[:rich_markdown] = assertion_renderer(snapshot, baseline, state, accent: true)
+          end
           result
         rescue StandardError
           raise if Thread.current[Presentation::Fallback::ACTIVE_KEY]
