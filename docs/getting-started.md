@@ -1,10 +1,9 @@
 # Getting started
 
-**Version scope:** the install commands in this guide intentionally use the
-published SDK **1.3.1** with Cucumber 9/10. This checkout also prepares unpublished
-SDK 2.0.0 for Ruby >=3.3 / Cucumber >=12.0.1, ~>12.0. Use the
-[2.0 migration guide](migrating-to-2.0.md) for that source candidate; the reporting,
-logger, browser-ownership and secret-management advice below still applies.
+**Version scope:** this guide installs SDK **2.0.0** with Ruby >=3.3 and
+Cucumber >=12.0.1, ~>12.0. Read the [2.0 migration guide](migrating-to-2.0.md)
+before upgrading an existing project. Cucumber 9/10 consumers should retain
+SDK 1.3.1 and its versioned instructions on `maintenance/1.x`.
 
 This guide follows **install the release → run one local Scenario → integrate an
 existing project → add API/UI evidence → run in CI**. Steps 1–2 need only Ruby,
@@ -12,23 +11,23 @@ Bundler, and the gems. No browser, Node, ReportPortal, or source checkout is nee
 
 ## 1. Install the release
 
-Requirements: Ruby `>=3.1`, Bundler, Cucumber `>=9,<11`. The current release archive
-is **1.3.1**. The SDK constrains `cucumber-cucumber-expressions` to `>=17,<19` for
-Cucumber 9/10 native HTML/message compatibility; keep that constraint.
+Requirements: Ruby `>=3.3`, Bundler, Cucumber `>=12.0.1, ~>12.0`. The release
+archive is **2.0.0**. Let Cucumber choose its compatible dependency family;
+do not carry the legacy Cucumber Expressions `<19` constraint into this bundle.
 
 From **a directory where you keep projects**, create a fresh consumer project:
 
 ```sh
 mkdir -p rp-smoke/vendor/cache rp-smoke/features/support rp-smoke/features/step_definitions
 cd rp-smoke
-curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.1.gem \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.1.gem --no-document
+curl -fL -o vendor/cache/reportportal-cucumber-ruby-2.0.0.gem \
+  https://github.com/NickYin0125/CucumberReportportal/releases/download/v2.0.0/reportportal-cucumber-ruby-2.0.0.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.0.gem --no-document
 ```
 
 Expected: the release archive is in `rp-smoke/vendor/cache`, and RubyGems installs
-`reportportal-cucumber-ruby-1.3.1` plus any missing dependencies. The archive is
-also available through the [release page](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.1)
+`reportportal-cucumber-ruby-2.0.0` plus any missing dependencies. The archive is
+also available through the [release page](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0)
 for manual download; place it at the same path if curl is unavailable.
 
 Create **`rp-smoke/Gemfile`**:
@@ -36,8 +35,8 @@ Create **`rp-smoke/Gemfile`**:
 ```ruby
 source "https://rubygems.org"
 
-gem "cucumber", "~> 10.0"
-gem "reportportal-cucumber-ruby", "= 1.3.1"
+gem "cucumber", "~> 12.0", ">= 12.0.1"
+gem "reportportal-cucumber-ruby", "= 2.0.0"
 ```
 
 From **`rp-smoke/`**:
@@ -47,8 +46,8 @@ bundle install
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected: Bundler resolves a supported Cucumber 10 version and the installed or
-cached release; the version check prints `1.3.1`. Commit `Gemfile.lock` in your
+Expected: Bundler resolves a supported Cucumber 12 version and the installed or
+cached release; the version check prints `2.0.0`. Commit `Gemfile.lock` in your
 real test project to keep that resolution consistent. RubyGems.org publication
 is separate; do not replace the archive workflow with an unpinned registry install.
 

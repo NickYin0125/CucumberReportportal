@@ -7,14 +7,13 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-This source branch prepares **SDK 2.0.0** for Cucumber 12. It is not a published
-release, and no new tag or package has been pushed. Existing installations can
-stay on the independently maintained 1.x line.
+**SDK 2.0.0** targets Cucumber 12. Existing Cucumber 9/10 installations stay on
+the independently maintained 1.x line; 2.0.0 does not support both generations.
 
 | SDK line | Ruby | Cucumber | Source and status |
 | --- | --- | --- | --- |
 | 1.x | `>= 3.1` | `>= 9, < 11` | Released **1.3.1**; `maintenance/1.x` frozen at the released commit |
-| 2.x | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | **2.0.0 candidate** on `codex/cucumber-12`; not published |
+| 2.x | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | **2.0.0**, distributed through the GitHub release |
 
 Cucumber 11 is not supported by either line. CI selects the real released 1.3.1
 source for legacy checks, never the 2.x gemspec. The planned matrix and observed
@@ -27,8 +26,8 @@ maintenance-head validation, not only this 2.x compatibility matrix.
 
 For Cucumber 12, follow the [English 2.0 migration guide](docs/migrating-to-2.0.md)
 for dependencies, native `log`/`attach`, strict-mode removal, and parallel Launch
-ownership. The five-step quick start below deliberately remains the **published
-1.3.1 / Cucumber 9 or 10** path; it does not install the unpublished candidate.
+ownership. The five-step quick start below uses **2.0.0 / Cucumber 12**. For an
+older project, retain the [v1.3.1 instructions](https://github.com/NickYin0125/CucumberReportportal/tree/v1.3.1).
 
 **New here?** Follow the five steps below. The
 [complete getting-started guide](docs/getting-started.md) runs one Scenario without
@@ -36,9 +35,9 @@ a browser or a ReportPortal server before connecting your real project.
 
 | What you need | Requirement |
 | --- | --- |
-| Ruby | `>= 3.1` |
-| Cucumber | `>= 9, < 11` |
-| Package | `reportportal-cucumber-ruby` **1.3.1**, from the GitHub release |
+| Ruby | `>= 3.3` |
+| Cucumber | `>= 12.0.1`, `~> 12.0` |
+| Package | `reportportal-cucumber-ruby` **2.0.0**, from the GitHub release |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -48,7 +47,7 @@ not fail a Scenario.
 
 ## 1. Install the released gem
 
-Download the `.gem` asset from [v1.3.1](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.1).
+Download the `.gem` asset from [v2.0.0](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0).
 RubyGems.org publication is separate; use the release archive and an exact version
 pin rather than assuming a registry install selects this release.
 
@@ -56,9 +55,9 @@ From **your automation project root**:
 
 ```sh
 mkdir -p vendor/cache
-curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.1.gem \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.1.gem --no-document
+curl -fL -o vendor/cache/reportportal-cucumber-ruby-2.0.0.gem \
+  https://github.com/NickYin0125/CucumberReportportal/releases/download/v2.0.0/reportportal-cucumber-ruby-2.0.0.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.0.gem --no-document
 ```
 
 Add these entries to that project's `Gemfile`, then run `bundle install` from the
@@ -66,8 +65,8 @@ same directory:
 
 ```ruby
 source "https://rubygems.org"
-gem "cucumber", ">= 9", "< 11"
-gem "reportportal-cucumber-ruby", "= 1.3.1"
+gem "cucumber", "~> 12.0", ">= 12.0.1"
+gem "reportportal-cucumber-ruby", "= 2.0.0"
 ```
 
 Verify, still from **your project root**:
@@ -76,7 +75,7 @@ Verify, still from **your project root**:
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected output: `1.3.1`. Installation may download dependencies; offline setup
+Expected output: `2.0.0`. Installation may download dependencies; offline setup
 requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-release).
 
 ## 2. Run one minimal Scenario
@@ -192,8 +191,8 @@ outcome and receipt, and completes it. Workers do not start or finish that Launc
 ## ReportPortal deployment from source
 
 The companion Chart **1.3.1** pins ReportPortal **26.0.7** and official chart
-**26.10.26**, requiring **Kubernetes >=1.35**. Download SDK and Chart **1.3.1**
-from the [v1.3.1 Release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.1),
+**26.10.26**, requiring **Kubernetes >=1.35**. Download SDK **2.0.0** and Chart **1.3.1**
+from the [v2.0.0 Release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0),
 or build the chart from this checkout. The root `docker-compose.yml` provides an isolated
 local alternative with the same read-only video policy and retention.
 See the deployment guides above for credentials, storage, migration constraints

@@ -4,14 +4,13 @@ Keep the same World/logger setup and formatter command used locally. Start with
 one Launch per CI job; add shared parallel reporting only when the coordinator
 can own its complete lifecycle.
 
-The serial installation example below intentionally retains published SDK 1.3.1
-and its Ruby >=3.1 / Cucumber 9/10 contract. For unpublished SDK 2.0.0 source
-validation, first use Ruby >=3.3 / Cucumber >=12.0.1, ~>12.0 and the
-[migration guide](migrating-to-2.0.md); do not download a nonexistent 2.0.0 release.
+The serial installation example uses SDK 2.0.0 with Ruby >=3.3 and Cucumber
+>=12.0.1, ~>12.0. Follow the [migration guide](migrating-to-2.0.md) before
+upgrading. Cucumber 9/10 projects should keep the versioned 1.x instructions.
 
 ## A serial job
 
-Prepare a runner with Ruby `>=3.1`, Bundler, curl, and a supported project lockfile.
+Prepare a runner with Ruby `>=3.3`, Bundler, curl, and a supported project lockfile.
 Use your project's normal browser image/setup only for UI jobs. The example
 below is **consumer GitLab CI configuration**, not the SDK's own release workflow.
 It runs from the checked-out **automation project root**. Inject `RP_API_KEY` as a
@@ -35,9 +34,9 @@ cucumber:
   before_script:
     - mkdir -p vendor/cache artifacts
     - >-
-      curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.1.gem
-      https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
-    - gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.1.gem --no-document
+      curl -fL -o vendor/cache/reportportal-cucumber-ruby-2.0.0.gem
+      https://github.com/NickYin0125/CucumberReportportal/releases/download/v2.0.0/reportportal-cucumber-ruby-2.0.0.gem
+    - gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.0.gem --no-document
     - bundle install
   script:
     - >-
@@ -186,7 +185,7 @@ profiles, run the offline RSpec suite (including installed-gem packaging checks)
 and execute the default Cucumber suite on current-source Ruby 3.3/3.4. Separate
 Ruby 3.1/3.3 x Cucumber 9/10 jobs check out actual immutable released v1.3.1
 source, not a forced legacy dependency in the SDK 2.x bundle. These jobs
-retains all behavioral cases; its explicit SHA-guarded test-only driver replaces
+retain all behavioral cases; their explicit SHA-guarded test-only driver replaces
 four historical `10.2.0` literals with assertions against the selected actual
 Cucumber version, without changing baseline production/spec files. See the
 [normalization and production hash audit](cucumber-12-release-readiness.md#explicit-legacy-test-only-normalization).
@@ -198,7 +197,7 @@ Stable 1.x tags require maintenance ancestry and matching gem/Chart versions;
 verify the independent chart version from `Chart.yaml`. The exact immutable
 published v1.3.1 commit is the only historical 1.x main exception. Tags still
 package a verified gem, chart, checksums and provenance. SDK 2.0.0 leaves Helm
-1.3.1 / ReportPortal 26.0.7 unchanged and is not currently published.
+1.3.1 / ReportPortal 26.0.7 unchanged.
 They do not publish to RubyGems.org or deploy a Kubernetes stack. See the
 [source-checkout release operator guide](https://github.com/NickYin0125/CucumberReportportal/blob/main/script/release/README.md) and
 [changelog](../CHANGELOG.md) for maintainers. Planned versus actually observed

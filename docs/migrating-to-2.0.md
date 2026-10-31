@@ -1,15 +1,16 @@
 # Migrating to SDK 2.0 and Cucumber 12
 
-**Status:** SDK 2.0.0 is a source candidate, not a published release. No new tag,
-GitHub release or RubyGems publication is authorized by these instructions.
-Keep the released 1.3.1 archive/lockfile if you need Cucumber 9 or 10 today.
+**Release distribution:** use the Gem asset from
+[GitHub v2.0.0](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0).
+RubyGems.org publication is separate. Keep the released 1.3.1 archive/lockfile
+if you need Cucumber 9 or 10.
 
 ## Compatibility and release lines
 
 | Line | Ruby requirement | Cucumber requirement | Dependency family | CI source |
 | --- | --- | --- | --- | --- |
 | SDK 1.x, released 1.3.1 | `>=3.1` | `>=9,<11` | Legacy expressions `>=17,<19` | Immutable v1.3.1 commit; local `maintenance/1.x` is frozen there |
-| SDK 2.x, candidate 2.0.0 | `>=3.3` | `>=12.0.1, ~>12.0` | Core 20 / Query 16 and compatible Cucumber dependencies | Current `codex/cucumber-12` checkout, eventually approved `main` |
+| SDK 2.x, 2.0.0 | `>=3.3` | `>=12.0.1, ~>12.0` | Core 20 / Query 16 and compatible Cucumber dependencies | Current 2.x source; release pinned by `v2.0.0` |
 
 Cucumber 11 is intentionally outside both contracts. The declared dependency
 range does not certify every future release. The current lockfile pins Cucumber
@@ -32,31 +33,29 @@ incidental availability as Ruby standard gems or another gem's dependencies.
 Let Cucumber 12 resolve its compatible Core, Query, Expressions and Messages
 family. In particular, do not retain the 1.x expressions `<19` workaround.
 
-Until an approved 2.0.0 archive is actually released, a **local source-validation
-Gemfile**, in a separate consumer project, can contain:
+Download the archive to `vendor/cache` and install it as described in the
+[getting-started guide](getting-started.md). In your consumer project's Gemfile:
 
 ```ruby
 source "https://rubygems.org"
 
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.0", path: ENV.fetch("SDK_SOURCE")
+gem "reportportal-cucumber-ruby", "= 2.0.0"
 ```
 
-Set `SDK_SOURCE` to the absolute candidate checkout containing the gemspec, not
-to a `.gem` file. From that consumer project's root:
+From that consumer project's root:
 
 ```sh
 bundle update cucumber reportportal-cucumber-ruby
 bundle exec ruby -e 'require "reportportal_cucumber"; puts "Ruby=#{RUBY_VERSION} SDK=#{ReportportalCucumber::VERSION} Cucumber=#{Gem.loaded_specs.fetch("cucumber").version}"'
 ```
 
-Expected for the current candidate: SDK `2.0.0`, Cucumber `12.0.1`, Ruby `>=3.3`.
+Expected with the validated resolution: SDK `2.0.0`, Cucumber `12.0.1`, Ruby `>=3.3`.
 Inspect and commit the resulting consumer lockfile only after its own tests pass.
-Source validation is not an installed-gem packaging check. After an approved
-release exists, replace `path:` with its exact version and use the verified
-archive installation workflow from the [getting-started guide](getting-started.md),
-substituting only an actually published version. Do not assume a registry install
-can fetch the candidate.
+For local source development only, `path:` must point to the checkout directory
+containing the gemspec, never to a `.gem` file. Source validation is not an
+installed-gem packaging check. Do not assume a registry install can fetch the
+GitHub release without first providing its archive.
 
 ## Native log and attach
 

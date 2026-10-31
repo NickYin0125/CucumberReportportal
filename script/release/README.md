@@ -5,9 +5,11 @@ both complete offline validation matrices, build gem/Chart/checksums/provenance
 and publish through a draft.
 Only the publish job has contents-write permission. No RubyGems push is performed.
 
-**Preparation only:** SDK 2.0.0 is not released. Do not create/push its tag or run
-the publisher before local acceptance and independent review. This change does
-not publish any release, move v1.3.1, or change the server/deployment.
+**Release gate:** create/push a stable tag only after explicit publication
+approval, local acceptance, independent review and the required remote CI checks.
+SDK 2.0.0's independent acceptance is recorded in
+[the final review](../../docs/reviews/2026-10-31-cucumber-12-independent-acceptance.md).
+Publishing 2.x does not move v1.3.1 or change the server/deployment.
 
 ## Fixed release lines
 
@@ -32,7 +34,7 @@ legacy gemspec/lock/dependency contract, coupled 1.x package format, historic ta
 and server/chart contents; do not backport SDK 2.x runtime/dependency changes.
 Publishing that maintenance ref/tag remains a separate authorized operation.
 
-No backport, maintenance-branch edit, commit or push is performed in this task.
+No maintenance backport or maintenance-branch edit is part of SDK 2.0.0.
 The policy below describes the updated tooling's capabilities **once present on
 the relevant release source**, not a claim that the frozen branch already has it.
 
@@ -74,7 +76,7 @@ ruby script/release/cli.rb build|publish TAG FULL_COMMIT_SHA OUTPUT_DIRECTORY
 
 `build` requires an already-existing unchanged tag, approved remote ancestry and
 a clean checkout; it cannot certify the shared uncommitted development tree.
-Use QA's isolated real-gem/synthetic-chart fixtures to test preparation now. Do
+Use QA's isolated real-gem/synthetic-chart fixtures to test release preparation. Do
 not delete/stage unrelated user files or disable cleanliness to make a build pass.
 After gates and an approved commit, use a clean isolated source checkout for real
 tagged packaging, with output outside the source checkout. `publish` additionally requires GitHub credentials and is not a

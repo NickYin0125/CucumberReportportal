@@ -1,11 +1,32 @@
 # Cucumber 12 CI and release preparation
 
-This is the release/CI maintainer's working record, not acceptance sign-off.
-SDK **2.0.0** is unpublished. Helm remains **1.3.1**, ReportPortal remains
-**26.0.7**, and no infrastructure changes are part of this SDK migration.
+This is the release/CI maintainer's historical preparation record, not acceptance
+sign-off. Helm remains **1.3.1**, ReportPortal remains **26.0.7**, and no
+infrastructure changes are part of SDK **2.0.0**.
 The parent-owned architecture and QA-owned acceptance review remain authoritative
 for their respective decisions and test evidence. Existing review files are not
 rewritten or re-labelled as Cucumber 12 evidence.
+
+## Publication handoff - 2026-10-31
+
+The earlier pending statuses below are historical. The third preparation CI run,
+[41162160232](https://github.com/NickYin0125/CucumberReportportal/actions/runs/41162160232),
+passed both 936-example target jobs and all four 889-example legacy jobs.
+Subsequent independent acceptance found and corrected NUL persistence and
+compiled Outline display defects. Its frozen corrected runtime passed **958
+RSpec examples**, 7 offline scenarios / 21 steps, independent installed-package
+and clean-room checks, and real ReportPortal readback/download checks. See the
+[final independent review](reviews/2026-10-31-cucumber-12-independent-acceptance.md)
+for exact hashes, evidence and applicability limits.
+
+Publication is now explicitly authorized by the repository owner. Release
+documentation is updated for archive installation; those documentation changes
+mean the final release archive has its own checksum, while the accepted runtime
+and dependency sources remain unchanged. The release commit still must pass
+fresh remote CI and the tag workflow's full matrices. Consult the
+[v2.0.0 Release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0)
+and its manifest for final publication identity and assets, not a preparation-run
+checksum. No RubyGems publication or 1.x backport is included.
 
 ## Source and release boundaries
 
@@ -24,9 +45,9 @@ rewritten or re-labelled as Cucumber 12 evidence.
 - Release source must match the tag/commit and be clean, including untracked
   files. The user's unrelated untracked research file is preserved. Test release
   preparation in an isolated clean source fixture, never by disabling the guard.
-- No new tag is authorized; required remote gates and separate approval remain
-  mandatory before any stable tag operation.
-  No tag push, GitHub publication, RubyGems push or deployment is performed here.
+- Stable tags require explicit owner approval and all remote gates. The owner has
+  authorized v2.0.0 publication; the preparation runs recorded below did not
+  themselves publish it. RubyGems pushes and deployment are outside this task.
 
 ### Frozen maintenance publication boundary
 
@@ -268,7 +289,7 @@ QA owns `spec/**`. The release tooling fixtures need these specific checks:
   release refs and the single immutable historical exception. Recovery keeps
   trusted `main` tooling, original source SHA, run identity and retention checks.
 
-## Remaining release gates
+## Historical release gates before independent retesting
 
 Local release-specific tooling/workflow and normalized Cucumber 9 checks above are
 green. **The local acceptance gate is accepted.** The authoritative

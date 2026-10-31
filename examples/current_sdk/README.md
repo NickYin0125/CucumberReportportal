@@ -7,8 +7,7 @@ a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-SDK 2.0.0 is in preparation, not published or approved by this guide. Use this
-example and an explicitly selected 2.0.0 candidate archive from the same source.
+Use this example with the explicitly selected SDK 2.0.0 release archive.
 The shared SDK version definition keeps setup/runtime checks aligned. Older
 published archives and their dated verification evidence are retained unchanged;
 use the `maintenance/1.x` / `v1.3.1` example for Cucumber 9/10.
@@ -19,13 +18,13 @@ Use Ruby `>=3.3`, Bundler `>=2.6`, and Cucumber `>=12.0.1,<13`. Node/npm and the
 Playwright CLI/browser are needed for UI, not for the API-only run. The sample pins
 Playwright Ruby to 1.62.0; setup derives its CLI version from the installed binding.
 
-Use the `codex/cucumber-12` checkout for the sample files. Obtain a matching
-candidate archive from your maintainer, or build one with the maintainer workflow
-below. There is intentionally no 2.0.0 release-download URL before approval.
+Use the `v2.0.0` checkout for the sample files and download
+[reportportal-cucumber-ruby-2.0.0.gem](https://github.com/NickYin0125/CucumberReportportal/releases/download/v2.0.0/reportportal-cucumber-ruby-2.0.0.gem).
+The maintainer workflow below can instead build an explicitly identified candidate.
 No root development bundle is required to consume a supplied archive.
 
 From **any working directory**, set the two absolute paths to your checkout and
-candidate. Install into a disposable gem directory rather than replacing global
+archive. Install into a disposable gem directory rather than replacing global
 gems or changing your Bundler configuration:
 
 ```sh
