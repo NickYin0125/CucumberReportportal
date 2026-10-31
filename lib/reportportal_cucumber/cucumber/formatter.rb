@@ -1123,6 +1123,11 @@ module ReportportalCucumber
             fetch_value(error, :backtrace).to_s
           end
         message = [details, backtrace].reject(&:empty?).join("\n")
+        message = Automation::EvidenceRedactor.new.redact_text(message)
+        baseline = message.empty? ? "Step failed" : message
+        message = Presentation::Fallback.render(fallback: -> { baseline }) do
+          Presentation::FailureCard.format(error: error, message: details, backtrace: backtrace)
+        end
         @log_buffer.emit_log(
           item_uuid: item_uuid,
           launch_uuid: @launch_uuid,

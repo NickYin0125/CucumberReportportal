@@ -337,6 +337,36 @@ RSpec.describe Automation::HttpExchange do
     expect(preview.valid_encoding?).to be(true)
   end
 
+  it "runs standalone AppLog.http with both header sections without loading the main SDK" do
+    script = <<~RUBY
+      require "stringio"
+      require "reportportal_cucumber/automation/app_log"
+      logs = []
+      world = Object.new
+      world.define_singleton_method(:log) { |message| logs << message }
+      AppLog.bind(world, output: StringIO.new, color: false)
+      AppLog.http(method: "GET", url: "https://example.test",
+                  request: { headers: { "X-Test" => "request" } },
+                  response: { status: 200, headers: { "X-Test" => "response" } })
+      abort "missing headers" unless logs.join.include?("X-Test: request") && logs.join.include?("X-Test: response")
+      abort "loaded main SDK" if $LOADED_FEATURES.any? { |path| path.end_with?("/reportportal_cucumber.rb") }
+    RUBY
+    stdout, stderr, status = Open3.capture3(RbConfig.ruby, "-I#{File.expand_path('../../../lib', __dir__)}", "-e", script)
+    expect(status.success?).to(be(true), "stdout: #{stdout}\nstderr: #{stderr}")
+  end
+
+  it "makes no further helper calls while restoring the exact HTTP baseline after a helper failure" do
+    exchange = build_exchange(error: "original error", expected_status: 200)
+    baseline = exchange.send(:render_markdown, presentation: false)
+    logger = double("logger", warn: nil)
+    allow(ReportportalCucumber).to receive(:logger).and_return(logger)
+    helper = ReportportalCucumber::Presentation::MarkdownText
+    expect(helper).to receive(:code).once.and_raise("SECRET123")
+    %i[html inline cell fence].each { |entry| expect(helper).not_to receive(entry) }
+    expect(exchange.to_markdown).to eq(baseline)
+    expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
+  end
+
   it "applies the byte and line budgets across all request and response fields" do
     max_bytes = described_class::MAX_PREVIEW_BYTES
     max_lines = described_class::MAX_PREVIEW_LINES
