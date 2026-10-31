@@ -4,6 +4,7 @@ require "json"
 require "uri"
 require_relative "../automation/evidence_redactor"
 require_relative "../presentation/markdown_text"
+require_relative "../presentation/ledger_json"
 
 module ReportportalCucumber
   module Service
@@ -21,7 +22,7 @@ module ReportportalCucumber
       URL_PATTERN = %r{(?:https?:)?//[^\s"'<>]+}i.freeze
 
       class << self
-        # @return [Hash{Symbol => String}] A concise failure summary and diagnostics.
+        # @return [Hash{Symbol => String}] Unchanged summary/diagnostics and a plain card.
         # @param action [Object] Action being reported.
         # @param error [Exception] Original error to summarize.
         # @param url [String, nil] Optional URL associated with the failure.
@@ -42,10 +43,14 @@ module ReportportalCucumber
             names << safe_string(name, 128)
           end
           summary << "Evidence: #{names.join(', ')}" unless names.empty?
-          { summary: bounded(summary.join(" | "), SUMMARY_LIMIT),
-            details: details.nil? ? "" : render(details, DETAILS_LIMIT) }
+          result = { summary: bounded(summary.join(" | "), SUMMARY_LIMIT),
+                     details: details.nil? ? "" : render(details, DETAILS_LIMIT) }
+          result[:card] = Presentation::Fallback.render(fallback: -> { result.values.reject(&:empty?).join("\n\n") }) do
+            failure_card(action, error, url, names, details, result[:details])
+          end
+          result
         rescue StandardError
-          { summary: OMITTED, details: OMITTED }
+          { summary: OMITTED, details: OMITTED, card: OMITTED }
         end
 
         # @return [Hash{Symbol => String}] A concise status and Markdown comparison.
@@ -82,23 +87,136 @@ module ReportportalCucumber
         private
 
         def assertion_markdown(status, name, expected, actual, details, presentation:)
+          return assertion_card(status, name, expected, actual, details) if presentation
+
           title = render(name, VALUE_LIMIT)
-          title = Presentation::MarkdownText.inline(title, limit: VALUE_LIMIT) if presentation
           rows = ["## Assertion: #{title}", "", "**Outcome:** #{status}", "",
                   "| Expected | Actual |", "| --- | --- |",
-                  "| #{table_cell(expected, presentation: presentation)} | #{table_cell(actual, presentation: presentation)} |"]
+                  "| #{table_cell(expected)} | #{table_cell(actual)} |"]
           unless details.nil?
             text = render(details, DETAILS_LIMIT)
-            text = Presentation::MarkdownText.inline(text, limit: DETAILS_LIMIT) if presentation
             rows.concat(["", "### Details", "", text])
           end
           rows.join("\n")
         end
 
-        def table_cell(value, presentation:)
-          return Presentation::MarkdownText.cell(render(value, VALUE_LIMIT), limit: VALUE_LIMIT) if presentation
-
+        def table_cell(value)
           render(value, VALUE_LIMIT).gsub("|", "\\|").gsub(/[\r\n]+/, " ")
+        end
+
+        def assertion_card(status, name, expected, actual, details)
+          title = card_title(render(name, VALUE_LIMIT))
+          expected_text = ledger_value(expected, VALUE_LIMIT)
+          if status == "PASS"
+            title = "\u2713 Assertion passed \u00b7 #{title}"
+            if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
+              title += " \u00b7 expected #{card_code(expected_text)}"
+            end
+            parts = [title]
+          else
+            parts = ["## \u2717 Assertion failed \u00b7 #{title}"]
+            actual_text = ledger_value(actual, VALUE_LIMIT)
+            limit = DETAILS_LIMIT - parts.first.bytesize - 72 - (details.nil? ? 0 : 256)
+            comparison = comparison_block(expected_text, actual_text, limit)
+            append_card_fence(parts, comparison, "text")
+          end
+          append_card_details(parts, details, render(details, DETAILS_LIMIT)) unless details.nil?
+          parts.join("\n\n")
+        end
+
+        def failure_card(action, error, url, names, details, diagnostic)
+          title = safe_string(action, 128)
+          title = "Failure evidence" if title.strip.empty?
+          parts = ["## \u2717 #{card_title(title)}"]
+          location = []
+          klass = safe_string(error.class.name, 128)
+          location << card_code(klass) unless klass.empty?
+          location << "at #{card_code(safe_url(url, 512))}" unless url.nil?
+          meta = [location.join(" ")].reject(&:empty?)
+          meta << "evidence #{names.map { |name| card_code(name) }.join(', ')}" unless names.empty?
+          parts << meta.join(" \u00b7 ") unless meta.empty?
+          message = safe_string(error.message, VALUE_LIMIT)
+          append_card_fence(parts, message, "text") unless message.empty?
+          append_card_details(parts, details, diagnostic) unless details.nil?
+          parts.join("\n\n")
+        end
+
+        def ledger_value(value, limit)
+          text = render(value, limit)
+          return text if value.is_a?(String)
+
+          bounded(ledger_json(parsed_diagnostic(text)), limit)
+        end
+
+        def parsed_diagnostic(text)
+          JSON.parse(text)
+        rescue JSON::ParserError
+          text
+        end
+
+        def ledger_json(value)
+          Presentation::LedgerJson.format(value) || raise(StandardError, "JSON presentation unavailable")
+        end
+
+        def append_card_details(parts, original, diagnostic)
+          value = original.is_a?(String) ? diagnostic : parsed_diagnostic(diagnostic)
+          if inline_details?(value)
+            pairs = value.map { |key, item| "#{card_code(key)} = #{card_code(scalar_text(item))}" }
+            section = "_Details_ #{pairs.join(" \u00b7 ")}".rstrip
+            if parts.join("\n\n").bytesize + section.bytesize + 2 <= DETAILS_LIMIT
+              parts << section
+              return
+            end
+          end
+          append_card_fence(parts, ledger_json(value), "json", caption: "_Details_")
+        end
+
+        def inline_details?(value)
+          value.is_a?(Hash) && value.length <= 6 && value.values.all? do |item|
+            safe_scalar?(item) && !item.is_a?(Symbol) && scalar_text(item).length <= 80
+          end
+        end
+
+        def scalar_text(value)
+          value.is_a?(String) ? value : ledger_json(value)
+        end
+
+        def comparison_block(expected, actual, limit)
+          values = [expected, actual].map { |text| text.gsub(/\r\n|\r|\n/, "\n          ") }
+          # Indentation can expand newline-heavy values beyond the whole card's
+          # budget. Keep both labels, rather than clipping away the actual value.
+          if values.sum(&:bytesize) + 21 > limit
+            values = values.map { |text| bounded(text, (limit - 21) / 2) }
+          end
+          "expected  #{values.first}\nactual    #{values.last}"
+        end
+
+        def card_code(text)
+          Presentation::MarkdownText.code(text, limit: VALUE_LIMIT)
+        end
+
+        def card_title(text)
+          loop do
+            escaped = Presentation::MarkdownText.inline(text, limit: VALUE_LIMIT)
+            return escaped if escaped.bytesize <= VALUE_LIMIT
+
+            text = bounded(text, [text.bytesize - (escaped.bytesize - VALUE_LIMIT), 3].max)
+          end
+        end
+
+        def append_card_fence(parts, text, language, caption: nil)
+          # Reserve both maximum-size delimiters before clipping raw evidence,
+          # never clip the finished Markdown and leave user text outside a fence.
+          prefix = caption ? "#{caption}\n\n" : ""
+          remaining = DETAILS_LIMIT - parts.join("\n\n").bytesize - prefix.bytesize - 2
+          limit = [remaining - 2 * Presentation::MarkdownText::MAX_FENCE_BYTES - language.bytesize - 2, 0].max
+          content = bounded(text, limit)
+          fence = Presentation::MarkdownText.fence(content, language, limit: DETAILS_LIMIT)
+          raise StandardError, "Safe evidence fence unavailable" unless fence
+
+          raise StandardError, "Evidence card budget exhausted" if fence.bytesize > remaining
+
+          parts << prefix + fence
         end
 
         def render(value, limit)

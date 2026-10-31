@@ -133,7 +133,7 @@ RSpec.describe Automation::HttpExchange do
                                 response: { status: 200, headers: {}, body: body })
       expect(exchange.level).to eq(:info)
       expect(exchange.summary).to include("POST", "status=200", "18.5ms")
-      expect(exchange.to_markdown).to include("Status: `200`", Automation::EvidenceRedactor::OMITTED)
+      expect(exchange.to_markdown).to include("\u2192 200 \u00b7 19 ms", Automation::EvidenceRedactor::OMITTED)
       expect(exchange.to_markdown).not_to include("HTTP_OMITTED_")
     end
   end
@@ -142,7 +142,7 @@ RSpec.describe Automation::HttpExchange do
     headers = { "X-Diagnostic" => "HTTP_HEADER_SECRET" + ("x" * Automation::EvidenceRedactor::MAX_INPUT_BYTES) }
     exchange = build_exchange(expected_status: 200, response: { status: "200", headers: headers, body: "safe response" })
     expect(exchange.level).to eq(:info)
-    expect(exchange.to_markdown).to include("Status: `200`", "safe response", Automation::EvidenceRedactor::OMITTED)
+    expect(exchange.to_markdown).to include("\u2192 200 \u00b7 19 ms", "safe response", Automation::EvidenceRedactor::OMITTED)
     expect(exchange.to_markdown).not_to include("HTTP_HEADER_SECRET")
   end
 
@@ -272,7 +272,7 @@ RSpec.describe Automation::HttpExchange do
       expect(blocks.map { |block| block[:content] }).to eq([
         "X-Untrusted: #{header}", request_body, response_body
       ])
-      expect(prose).to include("Request", "Response", "Duration")
+      expect(prose).to include("Request", "Response", "19 ms")
       expect(prose).not_to include("<script>", "<img")
     end
 
@@ -295,7 +295,6 @@ RSpec.describe Automation::HttpExchange do
     lib_dir = File.expand_path("../../../lib", __dir__)
     script = <<~RUBY
       loaded_before = $LOADED_FEATURES.dup
-      reportportal_before = defined?(ReportportalCucumber)
       require "reportportal_cucumber/automation/http_exchange"
       abort "missing HttpExchange" unless defined?(Automation::HttpExchange)
       exchange = Automation::HttpExchange.new(
@@ -304,13 +303,18 @@ RSpec.describe Automation::HttpExchange do
       )
       abort "unexpected severity" unless exchange.level == :info
       abort "missing evidence" unless exchange.to_markdown.include?("ok") && exchange.summary.include?("200")
+      abort "missing Ledger card" unless exchange.to_markdown.start_with?("\u2713 GET / \u2192 200")
+      ReportportalCucumber::Presentation::MarkdownText.define_singleton_method(:inline) { |*| raise "helper fault" }
+      abort "missing standalone fallback" unless exchange.to_markdown.start_with?("### Request")
       newly_loaded = $LOADED_FEATURES - loaded_before
+      presentation_helpers = %w[markdown_text ledger_json units fallback].map { |name| "/presentation/\#{name}.rb" }
       core_reportportal = newly_loaded.any? do |path|
-        path.include?("reportportal_cucumber") && !path.include?("/automation/")
+        path.include?("reportportal_cucumber") && !path.include?("/automation/") &&
+          presentation_helpers.none? { |suffix| path.end_with?(suffix) }
       end
       abort "loaded ReportPortal core" if core_reportportal
       abort "loaded Cucumber" if newly_loaded.any? { |path| path.match?(%r{(?:^|/)cucumber(?:/|\\.rb)}) }
-      abort "defined ReportPortal" if reportportal_before.nil? && defined?(ReportportalCucumber)
+      abort "loaded ReportPortal runtime" if ReportportalCucumber.respond_to?(:current_runtime)
     RUBY
     stdout, stderr, status = Open3.capture3(
       "env", "-u", "RUBYOPT", "-u", "BUNDLE_GEMFILE", "-u", "BUNDLE_BIN_PATH", "-u", "BUNDLER_VERSION",
@@ -361,8 +365,17 @@ RSpec.describe Automation::HttpExchange do
     logger = double("logger", warn: nil)
     allow(ReportportalCucumber).to receive(:logger).and_return(logger)
     helper = ReportportalCucumber::Presentation::MarkdownText
-    expect(helper).to receive(:code).once.and_raise("SECRET123")
-    %i[html inline cell fence].each { |entry| expect(helper).not_to receive(entry) }
+    failed = false
+    expect(helper).to receive(:code).once do
+      failed = true
+      raise "SECRET123"
+    end
+    %i[html inline cell fence].each do |entry|
+      allow(helper).to receive(entry).and_wrap_original do |original, *args, **kwargs|
+        expect(failed).to be(false), "presentation helper called after fallback began"
+        original.call(*args, **kwargs)
+      end
+    end
     expect(exchange.to_markdown).to eq(baseline)
     expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
   end
