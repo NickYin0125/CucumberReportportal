@@ -77,13 +77,13 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
             | literal | <value> |
     FEATURE
 
-    expect(results.first.to_markdown).to include("| literal | <value> |", "PLAIN_DOCUMENT")
+    expect(results.first.to_markdown).to include("| literal | &lt;value&gt; |", "PLAIN_DOCUMENT")
   end
 
   it "preserves native header-order expansion without expanding the compiled table a second time" do
     {
       "| cell | other |\n      | <other> | EXPANDED |" => "EXPANDED",
-      "| other | cell |\n      | EXPANDED | <other> |" => "<other>"
+      "| other | cell |\n      | EXPANDED | <other> |" => "&lt;other&gt;"
     }.each do |examples, expected|
       results = compiled_descriptors(<<~FEATURE)
         Feature: Native interpolation
@@ -106,7 +106,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     source = SourceStep.new("Given ", "combined", nil, nil).freeze
     result = described_class.new(step: source, pickle_table: table)
 
-    expect(result.to_markdown).to include("| <other> |  |")
+    expect(result.to_markdown).to include("| &lt;other&gt; |  |")
     expect(result.to_markdown).to eq(result.to_markdown)
     expect(table.rows).to equal(rows)
     expect(rows.first.cells.map(&:value)).to eq(["<other>", ""])
@@ -118,7 +118,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     compiled = SourceDataTable.new([Row.new([Cell.new("wrong")])])
     result = described_class.new(step: source, multiline_arg: table, pickle_table: compiled)
 
-    expect(result.to_markdown).to include("| <other> |  |")
+    expect(result.to_markdown).to include("| &lt;other&gt; |  |")
     expect(result.to_markdown).not_to include("source", "wrong")
   end
 

@@ -84,7 +84,7 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
         combined = events.select { |event| event.pickle_step.argument.doc_string && event.pickle_step.argument.data_table }
 
         expect(tables.keys).to match_array(combined.map { |event| event.test_step.id })
-        combined.zip(["<other>", "TABLE_ONLY_BIRCH"]).each do |event, expected|
+        combined.zip(["&lt;other&gt;", "TABLE_ONLY_BIRCH"]).each do |event, expected|
           expect(tables.fetch(event.test_step.id)).to equal(event.pickle_step.argument.data_table)
           2.times do
             retried = event.test_step.with_action {}

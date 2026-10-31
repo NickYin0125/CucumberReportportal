@@ -48,18 +48,11 @@ module Automation
 
     # @return [String] Structured, bounded Markdown evidence for the exchange.
     def to_markdown
-      preview_budget = { bytes: MAX_PREVIEW_BYTES, lines: MAX_PREVIEW_LINES }
-      lines = ["### Request", "- #{inline_code(@method)} #{inline_code(@url)}"]
-      append_section(lines, @request, preview_budget)
-      lines << ""
-      lines << "### Response"
-      lines << "- Status: #{inline_code(@status_text)}"
-      append_headers(lines, @response, preview_budget)
-      append_body(lines, @response, preview_budget)
-      lines << ""
-      lines << "- Duration: #{inline_code(@duration_ms)} ms" unless @duration_ms.nil?
-      lines << "- Error: #{inline_code(@error)}" unless @error.nil?
-      lines.compact.join("\n")
+      return render_markdown(presentation: false) unless defined?(ReportportalCucumber::Presentation::MarkdownText)
+
+      ReportportalCucumber::Presentation::Fallback.render(fallback: -> { render_markdown(presentation: false) }) do
+        render_markdown(presentation: true)
+      end
     end
 
     # @return [Symbol] Severity based on the observed and expected status.
@@ -75,6 +68,21 @@ module Automation
     end
 
     private
+
+    def render_markdown(presentation:)
+      preview_budget = { bytes: MAX_PREVIEW_BYTES, lines: MAX_PREVIEW_LINES }
+      lines = ["### Request", "- #{inline_code(@method, presentation: presentation)} #{inline_code(@url, presentation: presentation)}"]
+      append_section(lines, @request, preview_budget)
+      lines << ""
+      lines << "### Response"
+      lines << "- Status: #{inline_code(@status_text, presentation: presentation)}"
+      append_headers(lines, @response, preview_budget)
+      append_body(lines, @response, preview_budget)
+      lines << ""
+      lines << "- Duration: #{inline_code(@duration_ms, presentation: presentation)} ms" unless @duration_ms.nil?
+      lines << "- Error: #{inline_code(@error, presentation: presentation)}" unless @error.nil?
+      lines.compact.join("\n")
+    end
 
     def safe_section(section)
       return {}.freeze unless section.is_a?(Hash)
@@ -180,8 +188,10 @@ module Automation
       valid_utf8(value.to_s).gsub(/[\x00-\x1f\x7f]/, " ").gsub(/[[:space:]]+/, " ").strip
     end
 
-    def inline_code(value)
+    def inline_code(value, presentation: true)
       text = bounded_text(plain_line(value), MAX_METADATA_BYTES)
+      return ReportportalCucumber::Presentation::MarkdownText.code(text, limit: MAX_METADATA_BYTES) if presentation
+
       text = "(empty)" if text.empty?
       backticks = text.scan(/`+/).map(&:length).max || 0
       delimiter = "`" * [1, backticks + 1].max

@@ -21,6 +21,9 @@ module ReportportalCucumber
 end
 
 require_relative "reportportal_cucumber/config"
+require_relative "reportportal_cucumber/presentation/markdown_text"
+require_relative "reportportal_cucumber/presentation/ledger_json"
+require_relative "reportportal_cucumber/presentation/units"
 require_relative "reportportal_cucumber/transport/multipart_helper"
 require_relative "reportportal_cucumber/transport/minio_uploader"
 require_relative "reportportal_cucumber/service/payload_builder"
