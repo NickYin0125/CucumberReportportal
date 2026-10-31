@@ -92,12 +92,17 @@ No emoji. No box-drawing characters. No other glyphs.
 | Method | Does | Use for |
 | --- | --- | --- |
 | `html(text)` | `&` → `&amp;`, `<` → `&lt;`, `>` → `&gt;` | Markdown text outside code |
-| `cell(text)` | `html`, then `\` → `\\`, `\|` → `\|`, CR/LF → `<br>`; byte bound as today | Table cells |
+| `cell(text)` | `html`, backslash-escape active inline Markdown punctuation, CR/LF → `<br>`; byte bound as today | Table cells |
 | `inline(text)` | `html`, backslash-escape `` \ ` * _ [ ] \| ~ ``; escape a leading `#`, `>`, `-`, `+` or `N.`; newlines → space | Titles and caption text built from data |
 | `code(text)` | Inline code span with a dynamic backtick delimiter (as `HttpExchange#inline_code`); control characters → space; empty → `(empty)`; **no** entity escaping | Chips |
 | `fence(text, lang)` | Dynamic fence (as `StepDesc#safe_fence`: backticks, then tildes, at most 32 characters) | Blocks |
 
 **Rule:** never entity-escape inside code spans or fences. Markdown shows entities there literally.
+
+Table cells preserve literal punctuation, including emphasis, code-span and link
+delimiters, as required by acceptance P2.1. Intraword underscores, such as those
+in `TABLE_ONLY_AMBER`, are already literal in GFM and stay unchanged. This does
+not change item names or user-authored log messages.
 
 **User-authored text is not escaped:** AppLog / `rp_log` text and a caller-supplied attachment message keep today's behaviour.
 

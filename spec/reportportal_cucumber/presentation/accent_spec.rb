@@ -140,7 +140,7 @@ RSpec.describe ReportportalCucumber::Presentation::Accent do
     data = "<\xFF&".b.freeze
     expect(described_class.title(data)).to eq("<span style=\"#{title_token}\">&lt;\uFFFD&amp;</span>")
     expect(described_class.pill("abcdefgh", tone: :pass, limit: 4)).to end_with(">abcd\\[truncated\\]</span>")
-    expect(described_class.table_header("abcdefgh", columns: 2, limit: 4)).to end_with(">abcd[truncated]</span>")
+    expect(described_class.table_header("abcdefgh", columns: 2, limit: 4)).to end_with(">abcd\\[truncated\\]</span>")
     expect(described_class.details(summary: "abcdefgh", body: data, summary_limit: 4))
       .to eq("<details><summary>abcd[truncated]</summary>\n\n```text\n<\uFFFD&\n```\n\n</details>")
     expect(data.bytes).to eq([60, 255, 38])

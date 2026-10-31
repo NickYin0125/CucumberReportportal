@@ -25,6 +25,19 @@ RSpec.describe "Ledger client Markdown escaping" do
     expect(metadata[:parameters]).to eq("<key>" => "<value>\nnext")
   end
 
+  %w[plain rich].each do |mode|
+    it "preserves literal table values and headers in #{mode} step logs" do
+      rows = [["*header*", "_label_"], ["*star*", "`tick`"],
+              ["[link](https://example.test)", "one\n_under_"]]
+      source.data_table = Struct.new(:rows).new(rows)
+      output = descriptor.to_markdown(mode: :log, presentation: mode)
+      expect(output).to include("\\*header\\*", "\\_label\\_", "\\*star\\*", "\\`tick\\`",
+                                "\\[link\\](https://example.test)", "one<br>\\_under\\_")
+      expect(source.data_table.rows).to eq(rows)
+      expect(descriptor.summary_name).to eq("Given <other> *literal*")
+    end
+  end
+
   %i[html cell inline].each do |entry|
     it "restores the entire baseline step message and warns once when #{entry} raises" do
       allow(markdown).to receive(entry).and_raise(StandardError, "api_key=SECRET123\nunsafe")

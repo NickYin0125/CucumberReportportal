@@ -8,6 +8,20 @@ RSpec.describe ReportportalCucumber::Presentation::MarkdownText do
     expect(described_class.cell("<br>\\|\r\nx\ry\nz")).to eq("&lt;br&gt;\\\\\\|<br>x<br>y<br>z")
   end
 
+  it "keeps Markdown punctuation literal inside table cells" do
+    {
+      "*star*" => "\\*star\\*",
+      "_under_" => "\\_under\\_",
+      "`tick`" => "\\`tick\\`",
+      "~~gone~~" => "\\~\\~gone\\~\\~",
+      "[link](https://example.test)" => "\\[link\\](https://example.test)"
+    }.each do |input, expected|
+      expect(described_class.cell(input)).to eq(expected)
+    end
+    expect(described_class.cell("*first*\n_under_")).to eq("\\*first\\*<br>\\_under\\_")
+    expect(described_class.cell("TABLE_ONLY_AMBER request_id")).to eq("TABLE_ONLY_AMBER request_id")
+  end
+
   it "escapes inline punctuation and leading Markdown without escaping code" do
     expect(described_class.inline("# <x> *a* _b_ [c] | ~d~ `e`\\\nnext"))
       .to eq("\\# &lt;x&gt; \\*a\\* \\_b\\_ \\[c\\] \\| \\~d\\~ \\`e\\`\\\\ next")
