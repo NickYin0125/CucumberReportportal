@@ -13,7 +13,8 @@ not publish any release, move v1.3.1, or change the server/deployment.
 
 | Stable tag | Approved remote ancestry | Version contract |
 | --- | --- | --- |
-| `v1.x.y` | `origin/maintenance/1.x` | Gem and wrapper Chart must both match the tag; original 1.x manifest/title retained |
+| `v1.0.0` through `v1.3.1` | `origin/maintenance/1.x` | Retained historical bundle format: Gem and Chart match the tag |
+| `v1.3.2` and later 1.x | `origin/maintenance/1.x` | Gem matches the tag; Chart has its independently committed version |
 | `v2.x.y` | `origin/main` or exactly `origin/codex/cucumber-12` | Gem matches the tag; packaged Chart matches its independently committed `Chart.yaml` version |
 
 ### Frozen maintenance publication boundary
@@ -28,7 +29,7 @@ Before a new maintenance release, obtain explicit approval for a minimal
 workflow/tooling backport and its necessary QA-owned test harness changes, then
 validate the actual maintenance head on Ruby 3.1+ / Cucumber 9 and 10. Do not use
 only the frozen baseline's results as evidence for a new patch. Preserve the
-legacy gemspec/lock/dependency contract, coupled 1.x package format, historic tags
+legacy gemspec/lock/dependency contract, historical package formats, historic tags
 and server/chart contents; do not backport SDK 2.x runtime/dependency changes.
 Publishing that maintenance ref/tag remains a separate authorized operation.
 
@@ -47,12 +48,15 @@ it does not change these ancestry rules.
 For SDK 2.0.0 the expected packages are
 `reportportal-cucumber-ruby-2.0.0.gem` and
 `reportportal-rich-experience-1.3.1.tgz`. The manifest's `version` is the SDK
-version; new 2.x manifests additionally contain `chartVersion`. Existing 1.x
-manifests remain unchanged for byte-for-byte retained-artifact verification.
+version; new 2.x and SDK 1.3.2+ manifests additionally contain `chartVersion`.
+Existing 1.x manifests through SDK 1.3.1 remain unchanged for byte-for-byte
+retained-artifact verification. For example, SDK 1.3.2 can accompany unchanged
+Chart 1.3.1; its title is `SDK 1.3.2 / Helm 1.3.1`.
 The chart name, stable version, locked bundled dependency, fixed ReportPortal
 `appVersion=26.0.7`, notes, checksums, remote tag and asset bytes remain mandatory
-checks. A chart version need not equal the SDK version on 2.x; no identity check
-is bypassed.
+checks. A chart version need not equal the SDK version on 2.x or 1.3.2+; each
+artifact still has its own identity checks. No Chart or workflow is changed by
+this version-policy update.
 
 ## Validation and candidate packaging
 
