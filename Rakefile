@@ -84,6 +84,7 @@ namespace :rp do
       "bundle",
       "exec",
       "cucumber",
+      "--no-profile",
       "features/deep_water",
       "--format",
       "ReportPortal::Cucumber::Formatter",

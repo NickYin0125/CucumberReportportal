@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+### ReportPortal 26.0.7 Deployment
+
+- Upgrade the companion Chart to 1.3.1 with ReportPortal 26.0.7 and locked official chart 26.10.26. Retain the upstream Kubernetes >=1.35 requirement; Ruby SDK version remains 1.3.0.
+- Add an isolated Docker Compose stack with the matching released service versions, successful migration/bucket initialization barriers, loopback-only routing, read-only video access and retention.
+- Preserve anonymous GET/HEAD/Range video playback while checking denial of list/upload/delete and explicit read revocation. Document the pinned archived MinIO images and production mirror/scan requirement.
+- Validate actual Helm and Compose backends, synchronous/asynchronous reporting semantics, native attachment bytes, UI statistics navigation and real Playwright recording playback.
+- Fix the source live-regression task to bypass the default offline profile, and wait for the Typewords onboarding overlay without forcing UI clicks.
+- Preserve the latest consumer guides. No new GitHub/RubyGems release, in-place historical-data migration or production HA certification is implied.
+
 ## 1.3.0 - 2026-10-13
 
 ### Day-2 Security And Operations

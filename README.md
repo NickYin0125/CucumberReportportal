@@ -148,9 +148,21 @@ outcome and receipt, and completes it. Workers do not start or finish that Launc
 | YAML keys, environment variables, defaults, units, profiles | [Configuration reference](docs/configuration.md) |
 | Receipts, bounded queues, durable spool/replay, identities, attributes, links, video | [Advanced reporting](docs/advanced-reporting.md) |
 | Current examples versus source QA and historical fixtures | [Examples index](examples/README.md) |
-| Deploying the separate ReportPortal stack | [Helm operator guide](helm/reportportal-rich-experience/README.md) |
+| Deploying the separate ReportPortal stack | [Helm operator guide](helm/reportportal-rich-experience/README.md) / [Compose guide](deploy/compose/README.md) |
 | Release changes | [Changelog](CHANGELOG.md) |
 | Design contracts and dated verification | [Historical evidence index](docs/design/README.md) |
+
+## ReportPortal deployment from source
+
+The companion Chart **1.3.1** pins ReportPortal **26.0.7** and official chart
+**26.10.26**, requiring **Kubernetes >=1.35**. The Ruby SDK remains 1.3.0.
+Build this chart from the checkout; the existing v1.3.0 Release's chart asset
+still pins the older server. The root `docker-compose.yml` provides an isolated
+local alternative with the same read-only video policy and retention.
+See the deployment guides above for credentials, storage, migration constraints
+and the archived MinIO image caveat; this is not production HA certification.
+The [26.0.7 compatibility record](https://github.com/NickYin0125/CucumberReportportal/blob/main/docs/reviews/2026-10-31-reportportal-26.0.7-compatibility.md)
+documents the real Helm/Compose, attachment and Playwright playback checks.
 
 ## Developing the SDK
 

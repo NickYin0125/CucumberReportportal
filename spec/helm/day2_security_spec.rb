@@ -10,7 +10,8 @@ RSpec.describe "Day-2 bucket security and portable ingress" do
   let(:chart) { File.expand_path("../../helm/reportportal-rich-experience", __dir__) }
 
   def render(*settings)
-    command = [ENV.fetch("HELM_BIN", "helm"), "template", "day2", chart, "--namespace", "day2"]
+    command = [ENV.fetch("HELM_BIN", "helm"), "template", "day2", chart, "--namespace", "day2",
+               "--kube-version", "1.35.0"]
     settings.each { |setting| command += ["--set", setting] }
     output, error, status = Open3.capture3(*command)
     raise "Chart render failed: #{error}" unless status.success?
@@ -141,6 +142,7 @@ RSpec.describe "Day-2 bucket security and portable ingress" do
   it "reserves at least half of the rendered MinIO volume for non-video data in shipped profiles" do
     %w[values.yaml values-local-latest.yaml values-production.example.yaml values-huawei.example.yaml].each do |profile|
       output, error, status = Open3.capture3(ENV.fetch("HELM_BIN", "helm"), "template", "day2", chart,
+                                            "--kube-version", "1.35.0",
                                             "-f", File.join(chart, profile))
       raise error unless status.success?
 
@@ -157,10 +159,12 @@ RSpec.describe "Day-2 bucket security and portable ingress" do
   it "rejects malformed bucket names and non-positive retention instead of emitting unsafe policies" do
     ["videoBucket.name=bad_bucket", "videoBucket.retention.expireDays=0",
      "videoBucket.retention.expireDays=1.5", "videoBucket.quota.size=0GiB"].each do |setting|
-      _out, _error, status = Open3.capture3(ENV.fetch("HELM_BIN", "helm"), "template", "day2", chart, "--set", setting)
+      _out, _error, status = Open3.capture3(ENV.fetch("HELM_BIN", "helm"), "template", "day2", chart,
+                                           "--kube-version", "1.35.0", "--set", setting)
       expect(status).not_to be_success
     end
     _out, _error, status = Open3.capture3(ENV.fetch("HELM_BIN", "helm"), "template", "day2", chart,
+                                        "--kube-version", "1.35.0",
                                         "--set-string", "videoBucket.retention.expireDays=30")
     expect(status).not_to be_success
   end

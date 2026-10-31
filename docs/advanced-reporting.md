@@ -333,8 +333,10 @@ not RP/browser traffic or bucket authorization. Development credentials/endpoint
 in configuration are unsuitable for production. An uploaded object, a browser
 link, and a playable/safely accessible recording are separate checks.
 
-The **separate companion Chart 1.3.0** pins ReportPortal `26.0.5` and official
-chart `26.8.12`; its version is independent of browser playback behavior. It uses
+The **separate companion Chart 1.3.1** in this checkout pins ReportPortal `26.0.7`
+and official chart `26.10.26`, requiring Kubernetes `>=1.35`. The SDK remains
+1.3.0; the existing v1.3.0 Release's Chart asset still pins the older server.
+Build the new chart from source. Its version is independent of browser playback behavior. It uses
 Prefix routes with a configurable controller class and dedicated-bucket
 reconciliation. Its intentional internal-network public mode grants only
 anonymous `s3:GetObject`, retaining GET/HEAD/Range playback without anonymous
@@ -347,7 +349,9 @@ CSP bypass. v1.2.0's historical rc.2 Chart archive does not contain the 1.3.0
 policy fixes. For exact deployment scope, retention, TLS, Huawei/private-cloud
 operations, and renderer restrictions, follow the
 [Helm operator guide](../helm/reportportal-rich-experience/README.md). No deployment
-change is needed for the ordinary API/PNG/JSON examples. Local compatibility
+change is needed for the ordinary API/PNG/JSON examples. The
+[Compose guide](../deploy/compose/README.md) provides a separate local profile.
+Both deployment guides document archived MinIO images and upgrade precautions. Local compatibility
 does not certify production HA or a particular private-cloud ingress.
 
 ## Dated evidence and limitations

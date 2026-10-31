@@ -186,10 +186,10 @@ RSpec.describe "Installed release packaging" do
 
   it "pins the dependency and compares the approved chart payload with packaged source" do
     chart = YAML.safe_load_file(File.join(root, chart_relative, "Chart.yaml"))
-    expect(chart.fetch("version")).to eq("1.3.0")
-    expect(chart.fetch("appVersion")).to eq("26.0.5")
+    expect(chart.fetch("version")).to eq("1.3.1")
+    expect(chart.fetch("appVersion")).to eq("26.0.7")
     expect(chart.fetch("dependencies")).to eq([
-      { "name" => "reportportal", "version" => "26.8.12", "repository" => "https://k8s.reportportal.io/" }
+      { "name" => "reportportal", "version" => "26.10.26", "repository" => "https://k8s.reportportal.io/" }
     ])
     protected_chart_hashes.each do |relative, digest|
       expect(Digest::SHA256.file(File.join(root, chart_relative, relative)).hexdigest).to eq(digest)
@@ -203,7 +203,7 @@ RSpec.describe "Installed release packaging" do
     chart_source = File.join(@scratch, "chart")
     FileUtils.cp_r(File.join(root, chart_relative), chart_source)
     @run.call(helm, "package", chart_source, "--destination", @scratch)
-    @chart_package = File.join(@scratch, "reportportal-rich-experience-1.3.0.tgz")
+    @chart_package = File.join(@scratch, "reportportal-rich-experience-1.3.1.tgz")
     @built_artifacts << @chart_package
     entries = {}
     Zlib::GzipReader.open(@chart_package) do |gzip|
@@ -212,8 +212,8 @@ RSpec.describe "Installed release packaging" do
       end
     end
     packaged_chart = YAML.safe_load(entries.fetch("reportportal-rich-experience/Chart.yaml"))
-    expect(packaged_chart.fetch("version")).to eq("1.3.0")
-    expect(packaged_chart.fetch("appVersion")).to eq("26.0.5")
+    expect(packaged_chart.fetch("version")).to eq("1.3.1")
+    expect(packaged_chart.fetch("appVersion")).to eq("26.0.7")
     protected_chart_hashes.each do |relative, digest|
       expect(Digest::SHA256.hexdigest(entries.fetch("reportportal-rich-experience/#{relative}"))).to eq(digest)
     end

@@ -1,5 +1,8 @@
 # Values under `reportportal` are passed directly to the official ReportPortal chart.
 reportportal:
+  # Optional Prime services require private images and are not part of this stack.
+  prime:
+    enabled: false
   ingress:
     enable: true
     class: traefik
@@ -77,8 +80,9 @@ videoBucket:
     ttlSecondsAfterFinished: 300
     activeDeadlineSeconds: 600
     image:
-      repository: minio/mc
-      tag: RELEASE.2025-07-21T05-28-08Z
+      # Same mc 2025-07-21 release; the original minio/mc registry is unavailable.
+      repository: bitnamilegacy/minio-client
+      tag: 2025.7.21-debian-12-r0
       pullPolicy: IfNotPresent
     wait:
       attempts: 60

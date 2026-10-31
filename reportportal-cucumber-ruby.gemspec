@@ -25,6 +25,7 @@ Gem::Specification.new do |spec|
       "docs/*.md",
       "docs/design/*.md",
       "docs/reviews/assets/*.png",
+      "deploy/compose/*.md",
       "helm/reportportal-rich-experience/*.md",
       "examples/**/*",
       "exe/**/*",

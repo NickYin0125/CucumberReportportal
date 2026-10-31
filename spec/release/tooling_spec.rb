@@ -28,12 +28,12 @@ RSpec.describe ReleaseTooling do
       apiVersion: v2
       name: reportportal-rich-experience
       version: 1.3.0
-      appVersion: "26.0.5"
+      appVersion: "26.0.7"
     YAML
     File.write(File.join(@root, ReleaseTooling::Source::CHART, "charts/reportportal/Chart.yaml"), <<~YAML)
       apiVersion: v2
       name: reportportal
-      version: 26.8.12
+      version: 26.10.26
     YAML
     allow(commands).to receive(:run).and_call_original
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "HEAD", chdir: @root).and_return("#{sha}\n")
@@ -87,11 +87,11 @@ RSpec.describe ReleaseTooling do
   end
 
   it "verifies SDK/chart agreement and independent ReportPortal identity" do
-    expect(source.identity).to include("version" => "1.3.0", "appVersion" => "26.0.5")
+    expect(source.identity).to include("version" => "1.3.0", "appVersion" => "26.0.7")
     chart_path = File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml")
     File.write(chart_path, File.read(chart_path).sub("version: 1.3.0", "version: 1.2.0"))
     expect { source.identity }.to raise_error(ReleaseTooling::Error, /versions must match/)
-    File.write(chart_path, File.read(chart_path).sub("version: 1.2.0", "version: 1.3.0").sub("26.0.5", "26.0.6"))
+    File.write(chart_path, File.read(chart_path).sub("version: 1.2.0", "version: 1.3.0").sub("26.0.7", "26.0.5"))
     expect { source.identity }.to raise_error(ReleaseTooling::Error, /appVersion/)
   end
 
