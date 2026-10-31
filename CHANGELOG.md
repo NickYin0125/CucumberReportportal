@@ -7,6 +7,7 @@
 - Failure logs show the exception, feature location and project frames before the full original backtrace.
 - Client-built Markdown escapes user markup; attachment captions show kind, size and available dimensions, unnamed files use step-derived names, and JSON previews are compact.
 - Hook item names are simplified without changing topology. Native global hooks remain Launch-scoped where observed; their independent Item-name checks are N/A, not fabricated hook items.
+- Preserve explicit native Before/After/AfterStep names through Cucumber's hook-created event, retaining retry labels and clearing scalar metadata on finalization.
 - Step-argument logs caption tables and DocStrings, align numeric columns without changing values, and omit the repeated step line. Argument-free steps have no description; Outline descriptions show Examples values on one line.
 - Assertion, failure-evidence and HTTP cards preserve diagnostic values, HTTP severity and existing sanitized bounds.
 - Keep structured HTTP and assertion bodies in their baseline format for native Cucumber and terminal formatters; apply Ledger cards only to the RP route.

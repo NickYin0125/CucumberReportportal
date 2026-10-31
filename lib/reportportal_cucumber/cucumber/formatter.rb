@@ -40,6 +40,8 @@ module ReportportalCucumber
         @combined_step_tables_mutex = Mutex.new
         @attachment_name_mutex = Mutex.new
         @attachment_name_counts = Hash.new(0)
+        @hook_names = {}
+        @hook_names_mutex = Mutex.new
         @feature_states = {}
         @rule_states = {}
         @scenario_states = {}
@@ -447,6 +449,7 @@ module ReportportalCucumber
           test_run_started: method(:handle_test_run_started),
           test_suite_started: method(:handle_test_suite_started),
           test_case_started: method(:handle_test_case_started),
+          hook_test_step_created: method(:handle_hook_test_step_created),
           test_step_created: method(:handle_test_step_created),
           test_step_started: method(:handle_test_step_started),
           attach_called: method(:handle_attach_called),
@@ -686,6 +689,29 @@ module ReportportalCucumber
       end
 
       # @param event [Object]
+      # @return [void]
+      def handle_hook_test_step_created(event)
+        return unless reporting_enabled?
+
+        step_id = extract_test_step_id(event)
+        return unless step_id
+
+        name = begin
+          value = fetch_value(event, [:hook, :name])
+          text = String.new(value.to_s) unless value.nil?
+          text.freeze unless text.nil? || text.strip.empty?
+        rescue StandardError
+          :unavailable
+        end
+        # Native retries reuse step IDs. Retain only scalar names until run close.
+        @hook_names_mutex.synchronize do
+          return if @finalized
+
+          name ? @hook_names[step_id] = name : @hook_names.delete(step_id)
+        end
+      end
+
+      # @param event [Cucumber::Events::TestStepStarted]
       # @return [void]
       def handle_test_step_started(event)
         return unless reporting_enabled?
@@ -1007,6 +1033,7 @@ module ReportportalCucumber
       ensure
         @combined_step_tables_mutex.synchronize { @combined_step_tables.clear } if @finalized
         @attachment_name_mutex.synchronize { @attachment_name_counts.clear } if @finalized
+        @hook_names_mutex.synchronize { @hook_names.clear } if @finalized
         emit_incomplete_reporting_summary(status) if @finalized
         if @finalized && ReportportalCucumber.current_runtime.equal?(self)
           ReportportalCucumber.current_runtime = nil
@@ -1888,8 +1915,15 @@ module ReportportalCucumber
                   when "after_all", "after_class" then "AfterAll hook"
                   else "Hook"
                   end
-          unnamed = base_name.match?(/\A\s*(before|after|after\s*step|before\s*all|after\s*all|around)?\s*hook\s*\z/i)
-          unnamed ? label : "#{label} \u00b7 #{base_name}"
+          name = @hook_names_mutex&.synchronize { @hook_names[extract_test_step_id(event)] }
+          raise "Native hook name unavailable" if name == :unavailable
+
+          if name
+            "#{label} \u00b7 #{name}"
+          else
+            unnamed = base_name.match?(/\A\s*(before|after|after\s*step|before\s*all|after\s*all|around)?\s*hook\s*\z/i)
+            unnamed ? label : "#{label} \u00b7 #{base_name}"
+          end
         end
       end
 

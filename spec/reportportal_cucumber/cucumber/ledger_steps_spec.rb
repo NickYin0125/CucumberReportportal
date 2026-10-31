@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "cucumber/hooks"
+require "cucumber/events"
+require "cucumber/core/test/hook_step"
+require "cucumber/core"
 
 RSpec.describe ReportportalCucumber::Cucumber::Formatter do
   let(:formatter) { described_class.allocate }
@@ -75,5 +79,69 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     allow(ReportportalCucumber).to receive(:logger).and_return(logger)
     expect(formatter.send(:hook_display_name, { hook_type: "before" }, name)).to eq("Before Hook: Before hook")
     expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
+  end
+
+  context "with native named hooks" do
+    before do
+      allow(formatter).to receive(:reporting_enabled?).and_return(true)
+      formatter.instance_variable_set(:@hook_names, {})
+      formatter.instance_variable_set(:@hook_names_mutex, Mutex.new)
+    end
+
+    { before: ["Before hook", "BEFORE_METHOD"], after: ["After hook", "AFTER_METHOD"],
+      after_step: ["AfterStep hook", "AFTER_METHOD"] }.each do |kind, (label, wire_type)|
+      it "keeps the native #{kind} name, including when it resembles an unnamed label" do
+        location = ::Cucumber::Core::Test::Location.new("features/support/hooks.rb", 8)
+        args = ["hook-#{kind}", location]
+        args.insert(1, ::Cucumber::Core::Test::Step.new("business", "Given work", location)) if kind == :after_step
+        step = ::Cucumber::Hooks.public_send("#{kind}_hook", *args) {}
+        name = +"#{label}"
+        hook = Struct.new(:name).new(name)
+        created = ::Cucumber::Events.registry.fetch(:hook_test_step_created).new(step, hook)
+        started = ::Cucumber::Events.registry.fetch(:test_step_started).new(step)
+        formatter.send(:handle_hook_test_step_created, created)
+        name.replace("caller mutated")
+        2.times do
+          expect(formatter.send(:extract_step_name, started)).to eq("#{label} \u00b7 #{label}")
+          expect(formatter.send(:reportportal_step_type, started)).to eq(wire_type)
+        end
+        expect(step.text).to eq(label)
+        expect(formatter.instance_variable_get(:@hook_names).values).to all(be_frozen)
+      end
+    end
+
+    it "retains only named scalar metadata and ignores events after finalization" do
+      event = { test_step: { id: "hook" }, hook: { name: "Open browser" } }
+      formatter.send(:handle_hook_test_step_created, event)
+      expect(formatter.instance_variable_get(:@hook_names)).to eq("hook" => "Open browser")
+      [nil, "", "  "].each do |name|
+        formatter.send(:handle_hook_test_step_created, event.merge(hook: { name: name }))
+        expect(formatter.instance_variable_get(:@hook_names)).to be_empty
+      end
+      formatter.instance_variable_set(:@finalized, true)
+      formatter.send(:handle_hook_test_step_created, event)
+      expect(formatter.instance_variable_get(:@hook_names)).to be_empty
+    end
+
+    it "falls back once without leaking an exception when native metadata cannot be read" do
+      hook = double("hook")
+      allow(hook).to receive(:name).and_raise("SECRET123")
+      logger = double("logger", warn: nil)
+      allow(ReportportalCucumber).to receive(:logger).and_return(logger)
+      formatter.send(:handle_hook_test_step_created, { test_step: { id: "hook" }, hook: hook })
+      expect(formatter.send(:hook_display_name, { step_id: "hook", hook_type: "before" }, "Before hook"))
+        .to eq("Before Hook: Before hook")
+      expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
+    end
+
+    it "keeps concurrent named hooks separate" do
+      threads = 8.times.map do |i|
+        Thread.new do
+          formatter.send(:handle_hook_test_step_created, { test_step: { id: i.to_s }, hook: { name: "Browser #{i}" } })
+          formatter.send(:hook_display_name, { step_id: i.to_s, hook_type: "before" }, "Before hook")
+        end
+      end
+      expect(threads.map(&:value)).to eq(8.times.map { |i| "Before hook \u00b7 Browser #{i}" })
+    end
   end
 end
