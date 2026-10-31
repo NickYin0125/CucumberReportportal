@@ -118,13 +118,34 @@ RSpec.describe "Release workflow security and validation contract" do
     expect(checkout.dig("with", "ref")).to eq("4ca2f770e0a84e83688f165ba04b4db8ef855cf9")
     driver = steps.find { |step| step.dig("with", "path") == ".ci-driver" }
     expect(driver.fetch("with")).to include("ref" => "${{ github.sha }}", "persist-credentials" => false,
-                                             "sparse-checkout" => "spec/fixtures/legacy_fault_process.rb")
+                                             "sparse-checkout-cone-mode" => false)
+    drivers = %w[legacy_fault_process.rb legacy_portability.rb legacy_portability_specs.rb]
+      .map { |name| "spec/fixtures/#{name}" }
+    expect(driver.dig("with", "sparse-checkout").lines.map(&:strip)).to eq(drivers)
     expect(legacy.dig("env", "LEGACY_SOURCE_ROOT")).to eq("${{ github.workspace }}")
     runs = steps.filter_map { |step| step["run"] }.join("\n")
     expect(runs).to include("bundle exec rspec", "bundle exec cucumber", "bundle install --jobs 4",
                            "refs/tags/v1.3.1^{commit}", "git diff --exit-code -- . ':!Gemfile' ':!Gemfile.lock'")
-    expect(runs).to include("bundle exec rspec spec .ci-driver/spec/fixtures/legacy_fault_process.rb --exclude-pattern spec/day2/fault_process_spec.rb",
-                           "sha256sum --check .ci-driver/legacy-production.sha256")
+    originals = %w[spec/day2/fault_process_spec.rb spec/reportportal_cucumber/cucumber/world_spec.rb
+                   spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb]
+    suite = steps.find { |step| step.fetch("run", "").include?("bundle exec rspec spec") }
+    expect(suite.fetch("run").gsub(/ *\\\n\s*/, " ").strip).to eq(
+      "bundle exec rspec spec .ci-driver/spec/fixtures/legacy_fault_process.rb " \
+      ".ci-driver/spec/fixtures/legacy_portability_specs.rb --exclude-pattern '{#{originals.join(',')}}'"
+    )
+    expect(suite.fetch("env")).to eq("M4A_CHILD_EVIDENCE_DIR" => "${{ runner.temp }}/legacy-m4a")
+    audit = steps.find { |step| step["name"] == "Require unchanged baseline production source" }
+    expect(audit.fetch("if")).to eq("always()")
+    expect(audit.fetch("run")).to include("sha256sum --check .ci-driver/legacy-production.sha256",
+                                          *originals, *drivers.map { |path| ".ci-driver/#{path}" })
+    artifacts = steps.find { |step| step["uses"] == "actions/upload-artifact@v6" }
+    expect(artifacts.fetch("if")).to eq("always()")
+    expect(artifacts.dig("with", "include-hidden-files")).to be(true)
+    expect(artifacts.dig("with", "path").lines.map(&:strip)).to contain_exactly(
+      "Gemfile.lock", *originals, *drivers.map { |path| ".ci-driver/#{path}" },
+      ".ci-driver/legacy-production.sha256", "${{ runner.temp }}/legacy-m4a/public-delivery-child.json",
+      "${{ runner.temp }}/legacy-m4a/attempt-admissions.ndjson"
+    )
     original = File.read(File.join(root, "spec/fixtures/legacy_fault_process.rb"))
     expect(original).to include("4b2e01d3343dba4d1d902b8cc835e7c29a82893efb87241453783fcb379ced70",
                                'Gem.loaded_specs.fetch("cucumber").version.to_s')

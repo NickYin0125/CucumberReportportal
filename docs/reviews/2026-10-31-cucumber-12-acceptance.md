@@ -168,3 +168,52 @@ Coverage child bootstraps use paths in temporary directories without spaces.
 Remote CI and the unexecuted legacy Ruby-version matrix remain separate from
 the local results above. Raw IO/Hash attachment behavior inherited from upstream
 Cucumber is outside this SDK acceptance change.
+
+## Remote Legacy Fixture Follow-Up
+
+Remote run `41160430806` at `8083141dff8bbbef1f0614d2097e36ab4fef2a62`
+passed both SDK 2.x cells (929 examples and 7 offline scenarios each), but exposed
+two portability assumptions in the immutable 1.x test fixtures. Neither finding
+requires a production change. The unchanged baseline remains
+`4ca2f770e0a84e83688f165ba04b4db8ef855cf9`.
+
+- Ruby 3.1 `IO.pipe` does not implement `path`; RSpec rejected the verified negative
+  expectation before exercising the SDK. The driver supplies a raising singleton
+  method on that one reader and retains both negative `path` and `read` expectations.
+- Cucumber 9's backtrace trimming matches the older Ruby frame spelling. Actual
+  Ruby 3.1.7/3.3.12 failures contained two frames: 259 message bytes, a 617-byte
+  queue estimate, and a delivered 418-byte JSON request. Ruby 3.4.2 retained 57
+  frames: 8,793 message bytes and a 9,151-byte queue estimate, correctly rejected
+  against the 1,400-byte cap. Moving its temporary directory to `/tmp` still gave
+  8,926 bytes. The version-only extra-rejection expectation, not SDK routing, was
+  wrong; temporary-path length alone was not the cause.
+
+`spec/fixtures/legacy_portability.rb` SHA-verifies both original specs and applies
+exact, single-occurrence fixture substitutions in memory. It preserves every
+original case and existing wire, ownership, retry, batch-bound and provenance
+assertion. The failure now has an intentionally bounded backtrace; assertions
+require exactly one real native error log on the first attempt's action, exactly
+two explicit 4,096-byte artifact rejections, and no other admission rejections.
+No global mock relaxation, SDK patch, original-file edit or skipped case is used.
+
+All four supported local legacy combinations (Ruby 3.1.7/3.3.12 with Cucumber
+9.2.1/10.2.0) passed the nine affected cases. Native Ruby 3.4.2/Cucumber 9.2.1
+also passed nine as a diagnostic comparison, not an added support claim.
+Bounded runs confirmed five logs, one failure log, two oversized rejections,
+zero other rejections and zero possible duplicates. Linux failure JSON requests
+were 335-336 bytes; native macOS was 381 bytes. Each attachment multipart request
+was 829 bytes, below the unchanged 5,000-byte request cap.
+
+Driver/workflow guards passed 17/17. The CI engineer independently ran the release
+suite: 44/44. Discovery alone verified all 889 legacy cases remain, with unique
+example IDs; no full baseline suite was repeated. Six new guard cases bring the
+expected current suite count to 935. The second remote run is not claimed green
+by these local results. Linux probes used isolated minimal bundles and actual
+aarch64 containers, not the remote x86_64 dependency graph or Ruby 3.3.13 patch.
+
+[Measured backtraces, real CLI wire captures, counters, focused results and source hashes](assets/cucumber-12-legacy-portability-2026-10-31.json)
+retain the distinction between queue accounting, instrumentation input JSON,
+and actual HTTP body bytes. Candidate production/dependencies are unchanged from
+`8083141`; all 37 exported baseline production files also match immutable Git
+objects. CI wiring retains the original source diff/hash audits and uploads all
+three original specs, the reviewed drivers, dependency lock and child evidence.

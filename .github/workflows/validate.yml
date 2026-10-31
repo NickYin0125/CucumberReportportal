@@ -97,7 +97,7 @@ jobs:
       CUCUMBER_MAJOR: ${{ matrix.cucumber }}
       LEGACY_SOURCE_ROOT: ${{ github.workspace }}
     steps:
-      # maintenance/1.x is frozen locally at this released commit, not yet published.
+      # maintenance/1.x remains frozen at this immutable released commit.
       # Never install Cucumber 9/10 against the SDK 2.x checkout/gemspec.
       - uses: actions/checkout@v6
         with:
@@ -110,16 +110,19 @@ jobs:
           test "$(git rev-parse HEAD)" = 4ca2f770e0a84e83688f165ba04b4db8ef855cf9
           test "$(git rev-parse --verify 'refs/tags/v1.3.1^{commit}')" = 4ca2f770e0a84e83688f165ba04b4db8ef855cf9
 
-      # The driver replaces only the historical literal-version fault spec;
-      # it SHA-verifies that original and retains all seven behavioral cases.
-      - name: Check out the reviewed version-neutral legacy test driver
+      # These drivers SHA-verify the original specs and retain every case,
+      # normalizing only version provenance and platform-dependent fixture inputs.
+      - name: Check out the reviewed immutable legacy test drivers
         uses: actions/checkout@v6
         with:
           ref: ${{ github.sha }}
           path: .ci-driver
           fetch-depth: 1
           persist-credentials: false
-          sparse-checkout: spec/fixtures/legacy_fault_process.rb
+          sparse-checkout: |
+            spec/fixtures/legacy_fault_process.rb
+            spec/fixtures/legacy_portability.rb
+            spec/fixtures/legacy_portability_specs.rb
           sparse-checkout-cone-mode: false
 
       - name: Record immutable legacy production hashes before execution
@@ -151,8 +154,14 @@ jobs:
           helm dependency build ./helm/reportportal-rich-experience
           sha256sum --check "$RUNNER_TEMP/chart-lock.sha256"
 
-      - name: Run the legacy RSpec suite with explicit test-only provenance normalization
-        run: bundle exec rspec spec .ci-driver/spec/fixtures/legacy_fault_process.rb --exclude-pattern spec/day2/fault_process_spec.rb
+      - name: Run the legacy RSpec suite with explicit test-only fixture normalization
+        env:
+          M4A_CHILD_EVIDENCE_DIR: ${{ runner.temp }}/legacy-m4a
+        run: |
+          bundle exec rspec spec \
+            .ci-driver/spec/fixtures/legacy_fault_process.rb \
+            .ci-driver/spec/fixtures/legacy_portability_specs.rb \
+            --exclude-pattern '{spec/day2/fault_process_spec.rb,spec/reportportal_cucumber/cucumber/world_spec.rb,spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'
 
       - name: Run the full released baseline offline Cucumber profile
         run: bundle exec cucumber
@@ -162,7 +171,13 @@ jobs:
         run: |
           git diff --exit-code -- . ':!Gemfile' ':!Gemfile.lock'
           sha256sum --check .ci-driver/legacy-production.sha256
-          sha256sum spec/day2/fault_process_spec.rb .ci-driver/spec/fixtures/legacy_fault_process.rb
+          sha256sum \
+            spec/day2/fault_process_spec.rb \
+            spec/reportportal_cucumber/cucumber/world_spec.rb \
+            spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb \
+            .ci-driver/spec/fixtures/legacy_fault_process.rb \
+            .ci-driver/spec/fixtures/legacy_portability.rb \
+            .ci-driver/spec/fixtures/legacy_portability_specs.rb
 
       - name: Retain the exact legacy dependency resolution
         if: always()
@@ -172,8 +187,14 @@ jobs:
           path: |
             Gemfile.lock
             spec/day2/fault_process_spec.rb
+            spec/reportportal_cucumber/cucumber/world_spec.rb
+            spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb
             .ci-driver/spec/fixtures/legacy_fault_process.rb
+            .ci-driver/spec/fixtures/legacy_portability.rb
+            .ci-driver/spec/fixtures/legacy_portability_specs.rb
             .ci-driver/legacy-production.sha256
+            ${{ runner.temp }}/legacy-m4a/public-delivery-child.json
+            ${{ runner.temp }}/legacy-m4a/attempt-admissions.ndjson
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 7
