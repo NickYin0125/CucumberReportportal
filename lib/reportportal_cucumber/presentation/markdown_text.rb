@@ -29,7 +29,10 @@ module ReportportalCucumber
         # @return [String] Escaped cell with only client-generated <br> tags.
         def cell(text, limit: CELL_LIMIT)
           Fallback.render(fallback: -> { OMITTED }) do
-            html(text, limit: limit).gsub(/[\\|]/) { |char| "\\#{char}" }.gsub(/\r\n|\r|\n/, "<br>")
+            value = html(text, limit: limit).gsub(/[\\`*\[\]|~]/) { |char| "\\#{char}" }
+            # Intraword underscores are already literal in GFM; keep golden IDs unchanged.
+            value = value.gsub(/(?<![[:alnum:]])_|_(?![[:alnum:]])/) { "\\_" }
+            value.gsub(/\r\n|\r|\n/, "<br>")
           end
         end
 

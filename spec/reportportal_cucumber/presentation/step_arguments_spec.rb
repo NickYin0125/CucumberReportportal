@@ -58,7 +58,7 @@ RSpec.describe "Ledger step arguments" do
     expect(huge).not_to receive(:strip)
     expect(huge).not_to receive(:match?)
     output = descriptor(rows: [["value"], [huge]]).to_markdown(mode: :log)
-    expect(output).to include("| --- |", "#{'1' * 512}[truncated]")
+    expect(output).to include("| --- |", "#{'1' * 512}\\[truncated\\]")
     expect(output.bytesize).to be <= step_class::CONTENT_BYTE_LIMIT
   end
 
