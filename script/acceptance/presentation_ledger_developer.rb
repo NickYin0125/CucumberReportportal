@@ -13,18 +13,20 @@ require_relative "presentation_ledger_developer/testcards"
 module LedgerDeveloper
   class Runner
     HOME = File.join(__dir__, "presentation_ledger_developer")
-    PROBE = <<~'RUBY'
+    BOOTSTRAP = "require #{File.join(HOME, 'activation.rb').dump}; LedgerDeveloper::Activation.activate!; ".freeze
+    PROBE = BOOTSTRAP + <<~'RUBY'
       require "json"
-      gem "cucumber", ENV.fetch("LEDGER_CUCUMBER")
       require "cucumber"
       require "cucumber/glue/dsl"
       require "reportportal_cucumber"
       puts JSON.generate(ruby: RUBY_DESCRIPTION, ruby_version: RUBY_VERSION,
         cucumber: Gem.loaded_specs.fetch("cucumber").version.to_s, sdk: ReportportalCucumber::VERSION,
+        cucumber_expressions: Gem.loaded_specs.fetch("cucumber-cucumber-expressions").version.to_s,
+        activation: LedgerDeveloper::Activation.provenance,
         named_hooks: Cucumber::Glue::Dsl.instance_method(:Before).parameters.include?([:key, :name]),
         gems: Gem.loaded_specs.transform_values { |g| {version: g.version.to_s, path: g.full_gem_path} })
     RUBY
-    CLI = 'gem "cucumber", ENV.fetch("LEDGER_CUCUMBER"); load Gem.bin_path("cucumber", "cucumber", ENV.fetch("LEDGER_CUCUMBER"))'
+    CLI = BOOTSTRAP + 'load Gem.bin_path("cucumber", "cucumber", ENV.fetch("LEDGER_CUCUMBER"))'
 
     def initialize(argv)
       @options = { transport: "offline", mode: "plain", fixtures: "smoke", sdk_root: ROOT,
@@ -65,7 +67,7 @@ module LedgerDeveloper
     def environment
       env = ENV.to_h.select { |key, _| %w[PATH HOME TMPDIR GEM_HOME GEM_PATH LANG LC_ALL].include?(key) }
       env["GEM_PATH"] = @options[:gem_path] if @options[:gem_path]
-      env.merge("LEDGER_CUCUMBER" => @options[:cucumber], "CUCUMBER_PUBLISH_ENABLED" => "false",
+      env.merge("LEDGER_CUCUMBER" => @options[:cucumber], "LEDGER_SDK_ROOT" => @options[:sdk_root], "CUCUMBER_PUBLISH_ENABLED" => "false",
                 "CUCUMBER_PUBLISH_QUIET" => "true", "NO_COLOR" => "1", "RP_ENABLED" => "false")
     end
 
@@ -179,8 +181,9 @@ module LedgerDeveloper
         File.write(File.join(scratch, "native.feature"), source)
         command = [@options[:ruby], "-e", CLI, "--", "--no-profile", "--publish-quiet", "--dry-run",
                    "--require", File.join(HOME, "support.rb"), "--format", "progress", "native.feature"]
-        # No SDK load path, RP formatter, World installation, key, or observer.
-        process = execute(environment, command, scratch)
+        # Resolve the selected SDK's dependencies, but install no RP formatter,
+        # World, hooks, key, or observer for these grammar-only probes.
+        process = execute(environment.merge(activation_environment(scratch)), command, scratch)
         write(File.join(scratch, "process.json"), process)
         token = order == "doc-first" ? "| key | value |" : '"""'
         rejected = process[:exit] == 2 && !process[:timed_out] &&
@@ -202,7 +205,7 @@ module LedgerDeveloper
 
     def child_environment(row, wire, directory)
       mode = row[:presentation] || @options[:mode]
-      env = environment.merge("LEDGER_DEVELOPER_RUN" => "1", "LEDGER_FIXTURE" => row[:id], "LEDGER_EVIDENCE" => directory,
+      env = environment.merge(activation_environment(directory)).merge("LEDGER_DEVELOPER_RUN" => "1", "LEDGER_FIXTURE" => row[:id], "LEDGER_EVIDENCE" => directory,
                               "LEDGER_MEDIA" => File.join(@output, "media"), "LEDGER_JPEG" => File.join(@output, "media/jpeg.jpg"),
                               "LEDGER_PROGRESSIVE_JPEG" => File.join(@output, "media/progressive_jpeg.jpg"),
                               "RP_ENABLED" => "true", "RP_CONFIG" => File.join(@output, "empty-config.yml"),
@@ -222,6 +225,11 @@ module LedgerDeveloper
         env["RP_LAUNCH_DESCRIPTION"] = "Given description" if row[:id] == "F19c"
       end
       env
+    end
+
+    def activation_environment(directory)
+      { "LEDGER_ACTIVATION_REPORT" => File.join(directory, "activation.json"),
+        "LEDGER_EXPECTED_ACTIVATION" => File.join(@output, "probe-activation.json") }
     end
 
     def run_row(row)
@@ -263,7 +271,7 @@ module LedgerDeveloper
       result
     rescue StandardError => error
       write(File.join(directory, "wire.json"), wire.records) if wire
-      result = { id: row[:id], execution: "harness_error", error_class: error.class.name, exit: 2 }
+      result = process_error(row, directory, process, "#{error.class}: #{error.message}")
       write(File.join(directory, "result.json"), result)
       result
     ensure
@@ -271,7 +279,19 @@ module LedgerDeveloper
     end
 
     def evaluate(row, directory, process, wire, snapshot)
-      native = JSON.parse(File.read(File.join(directory, "native.json")))
+      report = File.join(directory, "native.json")
+      unless File.file?(report) && File.size(report).positive?
+        return process_error(row, directory, process, "Native JSON report missing or empty")
+      end
+      begin
+        native = JSON.parse(File.read(report))
+      rescue JSON::ParserError => error
+        return process_error(row, directory, process, "Invalid native JSON report: #{error.message}")
+      end
+      return process_error(row, directory, process, "Native JSON report is not an array") unless native.is_a?(Array)
+      if process[:timed_out] || process[:signal] || ![0, 1].include?(process[:exit])
+        return process_error(row, directory, process, "Child process did not complete normal Cucumber execution")
+      end
       scenarios = native.flat_map { |feature| feature.fetch("elements", []) }.reject { |element| element["type"] == "background" }
       results = scenarios.flat_map { |scenario| %w[before steps after].flat_map { |key| scenario.fetch(key, []).map { |step| step["result"] }.compact } }
       failures = results.select { |r| r["status"] == "failed" }
@@ -294,6 +314,7 @@ module LedgerDeveloper
                  expected_failure_marker: !row[:error] || failures.all? { |r| r.fetch("error_message", "").include?(row[:error]) },
                  exact_escaping_failures: row[:id] != "F14-negative" || failures.each_with_index.all? { |r, i| r.fetch("error_message").start_with?(LedgerDeveloper::ESCAPES.fetch(i) + " (RuntimeError)") },
                  selected_sdk_only: !runtime.fetch("loaded_sdk_files").empty? && runtime.fetch("loaded_sdk_files").all? { |path| File.realpath(path).start_with?(File.realpath(File.join(@options[:sdk_root], "lib")) + "/") },
+                 dependency_activation_matches_probe: runtime["activation"] == @runtime.fetch("activation"),
                  sdk_unchanged_during_fixture: runtime["sdk_source_changed_during_fixture"] == false,
                  raw_attachment_bytes_and_mime: expected_files.sort == wire.records.flat_map { |r| r[:files] || [] }.map { |f| [f[:sha256], f[:bytes], f[:mime]] }.sort,
                  wire_recorded: !wire.records.empty?,
@@ -317,6 +338,14 @@ module LedgerDeveloper
         limitations: row[:limitations], legacy_companion_of: row[:legacy_companion_of], acceptance_verdict: "not_assessed" }
     end
 
+    def process_error(row, directory, process, detail)
+      { id: row[:id], execution: "harness_error", exit: 2, error_class: "DeveloperProcessEvidenceError",
+        report_error: detail, process_evidence: File.join(directory, "process.json"),
+        child_exit: process && process[:exit], child_signal: process && process[:signal],
+        child_timed_out: process && process[:timed_out], child_stdout: process && process[:stdout],
+        child_stderr: process && process[:stderr], acceptance_verdict: "not_assessed" }
+    end
+
     def run
       return 0 if @options[:help]
       selected = select_rows
@@ -333,13 +362,11 @@ module LedgerDeveloper
       File.write(File.join(@output, "empty-config.yml"), "{}\n")
       probe = execute(environment, [@options[:ruby], "-I", File.join(@options[:sdk_root], "lib"), "-e", PROBE], @output)
       write(File.join(@output, "probe.json"), probe)
-      raise "Runtime probe failed; inspect probe.json" unless probe[:exit] == 0
+      raise "Runtime probe failed (exit #{probe[:exit]}); inspect probe.json\n#{probe[:stderr]}" unless probe[:exit] == 0
       @runtime = JSON.parse(probe[:stdout])
+      write(File.join(@output, "probe-activation.json"), @runtime.fetch("activation"))
       major = @runtime.fetch("sdk").split(".").first
-      ruby_version = Gem::Version.new(@runtime.fetch("ruby_version"))
       cucumber = @runtime.fetch("cucumber").to_i
-      valid = major == "1" ? ruby_version >= Gem::Version.new("3.1") && [9, 10].include?(cucumber) : ruby_version >= Gem::Version.new("3.3") && cucumber == 12
-      raise "Unsupported SDK/Ruby/Cucumber boundary; see probe.json" unless valid
       selected = selected.flat_map { |row| row[:cucumber12] && cucumber < 12 ? [row, LedgerDeveloper.legacy_companion(row)] : [row] }
       sha = git_read("rev-parse", "HEAD")
       status = git_read("status", "--short")
@@ -355,6 +382,7 @@ module LedgerDeveloper
       results = selected.map do |row|
         result = run_row(row)
         puts "#{row[:id]}: #{result[:execution]}"
+        warn result[:child_stderr] if result[:exit] == 2 && result[:child_stderr] && !result[:child_stderr].empty?
         result
       end
       # Preserve synthetic SECRET123 test inputs; redact only a real API key if
