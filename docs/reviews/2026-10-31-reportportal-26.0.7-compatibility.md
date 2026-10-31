@@ -45,6 +45,22 @@ seconds. The default offline Cucumber profile passed **1 scenario, 3 steps**.
 The machine-readable summary accompanies this record in
 `assets/reportportal-26.0.7-results.json`.
 
+### Clean Main Publication Checkpoint
+
+After merging the latest consumer-guide updates, clean candidate commit
+`a05d7d819714cc7b7d27b0233e4bdb73387873ae` passed **865 RSpec examples, 0 failures,
+0 pending** and **1 offline Cucumber scenario / 3 steps**. The earlier 887-example
+working-tree check included unpublished Logger preview tests; those draft files
+were intentionally excluded, not removed from the existing main test suite.
+
+This clean candidate also repeated real Kubernetes acceptance: synchronous
+Launch **8** confirmed **16 scenarios / 48 logs**, including the expected business
+failure; asynchronous Launch **9** passed **5 scenarios / 19 persisted logs**.
+Attachment bytes were reconciled again. Strict async receipts still correctly
+remain locally settled but unconfirmed, with exit 2; API readback is separate.
+No Logger formatting changes, SDK version bump, or new release tag is included
+in this main publication.
+
 | Real backend run | Native business result | Persisted RP result | Delivery receipt |
 | --- | --- | --- | --- |
 | Helm sync, Launch 4 | 16 scenarios: 15 passed, 1 deliberately failed | 4 suites, 16 scenarios, 48 logs | Complete; 48 confirmed |
