@@ -46,7 +46,87 @@ RSpec.describe "Scoped Ledger rich routing" do
     logger.assertion(name: "Failure", expected: "expected", actual: "actual", passed: false)
   end
 
+  def plain_cards
+    ["\u2713 GET /card \u2192 200\n\n`https://example.test/card`\n\n_Response_ \u00b7 4 B\n\n```text\nsafe\n```",
+     "\u2713 Assertion passed \u00b7 Order &lt;other&gt; \u00b7 expected `001.2300`",
+     "## \u2717 Assertion failed \u00b7 Failure\n\n```text\nexpected  expected\nactual    actual\n```"]
+  end
+
+  def native_assertion(name, expected, actual, outcome: "PASS")
+    "## Assertion: #{name}\n\n**Outcome:** #{outcome}\n\n| Expected | Actual |\n| --- | --- |\n| #{expected} | #{actual} |"
+  end
+
   after { ReportportalCucumber.current_runtime = nil }
+
+  %w[plain rich].each do |mode|
+    it "keeps full native terminal output byte-identical to the baseline in #{mode} mode" do
+      records, native = [], []
+      instance = formatter(mode, records)
+      ReportportalCucumber.current_runtime = instance
+      output = StringIO.new
+      world = world_for([instance], native)
+      original_log = world.method(:log)
+      world.define_singleton_method(:log) do |message|
+        output.puts("\n#{message}")
+        original_log.call(message)
+      end
+      allow(Time).to receive(:now).and_return(time)
+      logger = Automation::CucumberLogger.new(world: world, output: output, color: false)
+      logger.assertion(name: "Order", expected: "OK", actual: "OK", passed: true)
+      logger.http(method: :post, url: "https://example.test/orders", request: { body: { n: 1 } },
+        response: { status: 201, body: { accepted: true } }, duration_ms: 84)
+      expect(output.string).to eq(<<~TEXT)
+        2026-10-31 00:00:00.000  INFO   PASS: Order (Attached to Report)
+
+        ## Assertion: Order
+
+        **Outcome:** PASS
+
+        | Expected | Actual |
+        | --- | --- |
+        | OK | OK |
+        2026-10-31 00:00:00.000  INFO   POST https://example.test/orders status=201 84ms (Attached to Report)
+
+        ### Request
+        - `POST` `https://example.test/orders`
+        - Body:
+        ```json
+        {
+          "n": 1
+        }
+        ```
+
+        ### Response
+        - Status: `201`
+        - Body:
+        ```json
+        {
+          "accepted": true
+        }
+        ```
+
+        - Duration: `84` ms
+      TEXT
+      expect(records.length).to eq(2)
+      expect(records).to all(include(item_uuid: "step", level: :info))
+      expect(records.map { |entry| entry[:message] }).not_to eq(native)
+      expect(records.map { |entry| entry[:message] }).to all(include("<span style=")) if mode == "rich"
+    end
+
+    it "selects #{mode} RP bodies only when the exact native bytes match" do
+      records = []
+      instance = formatter(mode, records)
+      card = Automation::ReportContext::LogCard.new("native baseline", plain: "RP plain") { "RP rich" }
+      Automation::ReportContext.with(rp_log_card: card) do
+        ["native baseline", "RP plain", "native baseline "].each do |body|
+          instance.attach(body, "text/x.cucumber.log+plain", nil)
+        end
+      end
+      expect(records.map { |entry| entry[:message] }).to eq(["RP #{mode}", "RP plain", "native baseline "])
+      expect(card.native).to be_frozen
+      expect(card.plain).to be_frozen
+    end
+  end
 
   it "lets two formatters independently select their mode while native and terminal stay plain" do
     plain_records, rich_records, native = [], [], []
@@ -58,7 +138,12 @@ RSpec.describe "Scoped Ledger rich routing" do
     logger = Automation::CucumberLogger.new(world: world_for([plain, rich], native), output: output, color: false)
     allow(Time).to receive(:now).and_return(time)
     structured_logs(logger)
-    expect(native).to eq(plain_records.map { |record| record[:message] })
+    expect(plain_records.map { |record| record[:message] }).to eq(plain_cards)
+    expect(native).to eq([
+      "### Request\n- `GET` `https://example.test/card`\n\n### Response\n- Status: `200`\n- Body:\n```text\nsafe\n```\n",
+      native_assertion("Order <other>", "001.2300", "001.2300"),
+      native_assertion("Failure", "expected", "actual", outcome: "FAIL")
+    ])
     expect(native.join).not_to include("<span style", "<details")
     expect(rich_records.length).to eq(3)
     expect(rich_records.map { |record| record[:message] }).to all(include("<span style="))
@@ -132,7 +217,7 @@ RSpec.describe "Scoped Ledger rich routing" do
       .send(:render_markdown, presentation: false)
     expect(first_records.first[:message]).to eq(baseline)
     expect(second_records.first[:message]).to eq(baseline)
-    expect(native.first).to start_with("\u2713 GET /card")
+    expect(native.first).to eq(baseline)
     expect(Automation::ReportContext.current).to eq({})
   end
 
@@ -163,7 +248,7 @@ RSpec.describe "Scoped Ledger rich routing" do
       expect(records.length).to eq(1)
       expect(records.first).to include(item_uuid: name, level: :info)
       expect(records.first[:message]).to include(accent.title(name), "expected `#{name}`")
-      expect(native).to eq(["\u2713 Assertion passed \u00b7 #{name} \u00b7 expected `#{name}`"])
+      expect(native).to eq([native_assertion(name, name, name)])
       expect(context).to eq({})
     end
   ensure
@@ -228,9 +313,12 @@ RSpec.describe "Scoped Ledger rich routing" do
     logger = Automation::CucumberLogger.new(world: world, output: StringIO.new)
     logger.assertion(name: name, expected: expected, actual: actual, passed: false, details: details)
     [native.first, rp.first].each do |message|
-      expect(message).to include("Original name", 'expected  { "count": 1 }', 'actual    { "count": 0 }', 'original details')
+      expect(message).to include("Original name", 'original details')
       expect(message).not_to include("Changed", '"count": 2', '"count": 3')
     end
+    expect(native.first).to eq(native_assertion("Original name", '{"count":1}', '{"count":0}', outcome: "FAIL") +
+      "\n\n### Details\n\n{\"label\":\"original details\"}")
+    expect(rp.first).to include('expected  { "count": 1 }', 'actual    { "count": 0 }')
     expect(native.first).not_to include("<span style")
     expect(rp.first).to include(accent.pill("FAIL", tone: :fail))
     expect(expected).to eq(count: 2)
@@ -253,7 +341,7 @@ RSpec.describe "Scoped Ledger rich routing" do
     expect(accent).to receive(:pill).once.and_raise("SECRET123")
     expect(ReportportalCucumber.logger).to receive(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
     Automation::CucumberLogger.new(world: world, output: StringIO.new).assertion(**values)
-    expect(native.first).to eq(ReportportalCucumber::Service::EvidencePresenter.assertion(**original)[:markdown])
+    expect(native.first).to eq(baseline)
     expect(rp.first).to eq(baseline)
     expect(rp.first).to be_frozen
     expect(rp.first).not_to include("Changed")
@@ -274,9 +362,9 @@ RSpec.describe "Scoped Ledger rich routing" do
       expect(native.join).not_to include("<span style", "<details")
       if mode == "rich"
         expect(direct.map(&:first)).to all(include("<span style="))
-        expect(direct.last.first.lines.first).to eq(native.last.lines.first)
+        expect(direct.last.first.lines.first).to eq(plain_cards.last.lines.first)
       else
-        expect(direct.map(&:first)).to eq(native)
+        expect(direct.map(&:first)).to eq(plain_cards)
       end
     end
   end

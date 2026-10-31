@@ -90,7 +90,7 @@ RSpec.describe "M2 assertion diagnostics" do
     expect(output.string.bytesize).to be <= 600
     expect(native.first.bytesize).to be <= ReportportalCucumber::Service::EvidencePresenter::DETAILS_LIMIT
     expect(rp_entries.first.first.bytesize).to be <= ReportportalCucumber::Service::EvidencePresenter::DETAILS_LIMIT
-    expect(native.join).to include("credential check", "Assertion failed")
+    expect(native.join).to include("## Assertion: credential check", "**Outcome:** FAIL")
     expect(rp_entries.join).to include("credential check", "Assertion failed")
   ensure
     AppLog.clear!

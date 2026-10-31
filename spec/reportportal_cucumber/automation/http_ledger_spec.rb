@@ -216,7 +216,7 @@ RSpec.describe Automation::HttpExchange, "Ledger cards" do
     bound = Automation::CucumberLogger.new(world: world, output: output, color: false)
     bound.http(method: :get, url: "https://example.test/words", response: { status: 404 }, duration_ms: 18.5)
     expect(output.string).to eq("2026-10-31 10:20:30.000  WARN   GET https://example.test/words status=404 18.5ms (Attached to Report)\n")
-    expect(native).to eq(["## \u26a0 GET /words \u2192 404 \u00b7 19 ms\n\n`https://example.test/words`"])
-    expect(rp).to eq([[native.first, { level: :warn, mirror: false }]])
+    expect(native).to eq(["### Request\n- `GET` `https://example.test/words`\n\n### Response\n- Status: `404`\n\n- Duration: `18.5` ms"])
+    expect(rp).to eq([["## \u26a0 GET /words \u2192 404 \u00b7 19 ms\n\n`https://example.test/words`", { level: :warn, mirror: false }]])
   end
 end

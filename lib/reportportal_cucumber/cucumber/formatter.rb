@@ -356,8 +356,8 @@ module ReportportalCucumber
         if normalized_type == "text/x.cucumber.log+plain"
           message = src.to_s
           card = Automation::ReportContext.current[:rp_log_card]
-          if @config.presentation == "rich" && card.is_a?(Automation::ReportContext::LogCard) && card.plain.b == message.b
-            message = card.rich
+          if card.is_a?(Automation::ReportContext::LogCard) && card.native.b == message.b
+            message = @config.presentation == "rich" ? card.rich : card.plain
           end
           emit_world_log(message: message, level: level, timestamp: Time.now)
           return

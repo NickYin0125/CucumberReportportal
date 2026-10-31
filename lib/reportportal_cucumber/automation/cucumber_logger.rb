@@ -142,10 +142,11 @@ module Automation
 
       fallback_state = {}
       report_message = exchange.to_markdown(fallback_state: fallback_state)
-      card = ReportContext::LogCard.new(report_message) do
+      native_message = exchange.native_markdown
+      card = ReportContext::LogCard.new(native_message, plain: report_message) do
         exchange.to_markdown(presentation: "rich", fallback_state: fallback_state)
       end
-      emit_cucumber_log(report_message, level, rp_card: card)
+      emit_cucumber_log(native_message, level, rp_card: card)
       emit_reportportal_log(report_message, level, rp_card: card)
     end
 
@@ -167,9 +168,10 @@ module Automation
       return unless report
 
       markdown = presentation.fetch(:markdown)
+      native_message = presentation.fetch(:native_markdown, markdown)
       render_rich = presentation[:rich_markdown] || -> { markdown }
-      card = ReportContext::LogCard.new(markdown, &render_rich)
-      emit_cucumber_log(markdown, level, rp_card: card)
+      card = ReportContext::LogCard.new(native_message, plain: markdown, &render_rich)
+      emit_cucumber_log(native_message, level, rp_card: card)
       emit_reportportal_log(markdown, level, rp_card: card)
     end
 
