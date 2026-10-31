@@ -79,7 +79,7 @@ RSpec.describe "Ledger candidate version and documentation" do
     )
   end
 
-  [4, 5].each do |number|
+  [4, 5, 6].each do |number|
     it "retains the exact owner Q/A for Decision #{number} in all three design documents" do
       proposal = document("docs/design/presentation-ledger-proposal.md")
       match = proposal.match(/^#{number}\. Question: (.+)\n\n +Owner answer: (.+)$/)
