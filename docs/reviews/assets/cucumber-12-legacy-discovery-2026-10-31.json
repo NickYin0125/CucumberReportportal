@@ -1,0 +1,1697 @@
+{
+  "date": "2026-10-31",
+  "failed_remote_run": 41161391563,
+  "failed_commit": "98104e2a5a5a00c349e33f16e9171b5a52dc8efb",
+  "immutable_baseline": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+  "root_cause": "RSpec 3.13.6 file_glob_from prepends spec/ to a pattern beginning {spec/ instead of spec/. The resulting spec/{{spec/...}} excludes nothing; 16 original cases are registered alongside their replacements. This is a workflow argument bug, not a Ruby-version or SDK bug.",
+  "prior_claim_correction": "The earlier 889 discovery proof was Ruby 3.4.2 only, using spec/{a,b,c}. It did not test the shipped {spec/a,spec/b,spec/c} command. The prior exact-command claim was incorrect. Run 41161391563 actually discovered/executed 905 in each of four legacy cells.",
+  "remote_legacy_observations": [
+    {
+      "id": 124419500899,
+      "runtime": {
+        "ruby": "3.3.13",
+        "sdk": "1.3.1",
+        "cucumber": "10.2.0"
+      },
+      "observed_rspec": {
+        "examples": 905,
+        "failures": 0,
+        "pending": 0
+      },
+      "observed_failure_lines": []
+    },
+    {
+      "id": 124419500985,
+      "runtime": {
+        "ruby": "3.3.13",
+        "sdk": "1.3.1",
+        "cucumber": "9.2.1"
+      },
+      "observed_rspec": {
+        "examples": 905,
+        "failures": 5,
+        "pending": 0
+      },
+      "observed_failure_lines": [
+        {
+          "timestamp": "2026-10-31T02:48:53.5902914Z",
+          "text": "Failures:"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5903837Z",
+          "text": "1) Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5905580Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5907261Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5907936Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5908400Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5909048Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5910161Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5911604Z",
+          "text": "2) Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5912984Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5913799Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5914296Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5915052Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5915857Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5916788Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5917421Z",
+          "text": "3) Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5918049Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5918396Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5918636Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5918859Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5919206Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5919694Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5920296Z",
+          "text": "4) Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5921256Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5921608Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5921819Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5922038Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5922531Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5923013Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5923701Z",
+          "text": "5) M4-A public bounded delivery integration captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5924400Z",
+          "text": "Failure/Error: expect(extra_oversized_rejections).to eq(expected_extra)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5925062Z",
+          "text": "expected: 1"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5925275Z",
+          "text": "got: 0"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5925476Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5926077Z",
+          "text": "# ./spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb:188:in `block (3 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5927478Z",
+          "text": "# ./spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5934069Z",
+          "text": "Finished in 3 minutes 15.9 seconds (files took 1.19 seconds to load)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5934585Z",
+          "text": "905 examples, 5 failures"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5935151Z",
+          "text": "Failed examples:"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5935752Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:1] # Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5936751Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:2] # Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5937728Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:3] # Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5938710Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:4] # Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.5940003Z",
+          "text": "rspec ./spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb[1:1] # M4-A public bounded delivery integration captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:53.6243084Z",
+          "text": "##[error]Process completed with exit code 1."
+        }
+      ]
+    },
+    {
+      "id": 124419501002,
+      "runtime": {
+        "ruby": "3.1.7",
+        "sdk": "1.3.1",
+        "cucumber": "9.2.1"
+      },
+      "observed_rspec": {
+        "examples": 905,
+        "failures": 6,
+        "pending": 0
+      },
+      "observed_failure_lines": [
+        {
+          "timestamp": "2026-10-31T02:48:42.8950966Z",
+          "text": "Failures:"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8952007Z",
+          "text": "1) Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8952964Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8953431Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8953712Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8954030Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8954507Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8955094Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8955824Z",
+          "text": "2) Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8956495Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8956897Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8957141Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8957385Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8958118Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8958702Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8959424Z",
+          "text": "3) Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8960090Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8960499Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8960739Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8960979Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8961370Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8961947Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8963074Z",
+          "text": "4) Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8963738Z",
+          "text": "Failure/Error: expect(result.fetch(\"cucumber\")).to eq(\"10.2.0\")"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8964128Z",
+          "text": "expected: \"10.2.0\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8964520Z",
+          "text": "got: \"9.2.1\""
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8964738Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8965069Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:44:in `block (4 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8965553Z",
+          "text": "# ./spec/day2/fault_process_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8966260Z",
+          "text": "5) M4-A public bounded delivery integration captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8966960Z",
+          "text": "Failure/Error: expect(extra_oversized_rejections).to eq(expected_extra)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8967334Z",
+          "text": "expected: 1"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8967685Z",
+          "text": "got: 0"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8967884Z",
+          "text": "(compared using ==)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8968402Z",
+          "text": "# ./spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb:188:in `block (3 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8969245Z",
+          "text": "# ./spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb:10:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8970086Z",
+          "text": "6) ReportportalCucumber::Cucumber::World rejects an IO.pipe through diagnostics without probing path or reading it"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8970648Z",
+          "text": "Failure/Error: expect(reader).not_to receive(:path)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8970982Z",
+          "text": "#<IO:fd 5> does not implement: path"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8971459Z",
+          "text": "# ./spec/reportportal_cucumber/cucumber/world_spec.rb:185:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8978203Z",
+          "text": "Finished in 3 minutes 9.5 seconds (files took 0.87488 seconds to load)"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8978781Z",
+          "text": "905 examples, 6 failures"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8979017Z",
+          "text": "Failed examples:"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8979619Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:1] # Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8980617Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:2] # Day2 native process fault isolation preserves original native business failure under HTTP 400, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8981606Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:3] # Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=false"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8982575Z",
+          "text": "rspec ./spec/day2/fault_process_spec.rb[1:4] # Day2 native process fault isolation preserves original native business failure under HTTP 401, strict=true"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8983805Z",
+          "text": "rspec ./spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb[1:1] # M4-A public bounded delivery integration captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.8985134Z",
+          "text": "rspec ./spec/reportportal_cucumber/cucumber/world_spec.rb[1:5] # ReportportalCucumber::Cucumber::World rejects an IO.pipe through diagnostics without probing path or reading it"
+        },
+        {
+          "timestamp": "2026-10-31T02:48:42.9302397Z",
+          "text": "##[error]Process completed with exit code 1."
+        }
+      ]
+    },
+    {
+      "id": 124419501017,
+      "runtime": {
+        "ruby": "3.1.7",
+        "sdk": "1.3.1",
+        "cucumber": "10.2.0"
+      },
+      "observed_rspec": {
+        "examples": 905,
+        "failures": 1,
+        "pending": 0
+      },
+      "observed_failure_lines": [
+        {
+          "timestamp": "2026-10-31T02:47:42.9667519Z",
+          "text": "Failures:"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9668081Z",
+          "text": "1) ReportportalCucumber::Cucumber::World rejects an IO.pipe through diagnostics without probing path or reading it"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9668605Z",
+          "text": "Failure/Error: expect(reader).not_to receive(:path)"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9668918Z",
+          "text": "#<IO:fd 5> does not implement: path"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9669341Z",
+          "text": "# ./spec/reportportal_cucumber/cucumber/world_spec.rb:185:in `block (2 levels) in <top (required)>'"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9692577Z",
+          "text": "Finished in 2 minutes 13.8 seconds (files took 0.54226 seconds to load)"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9692905Z",
+          "text": "905 examples, 1 failure"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9693047Z",
+          "text": "Failed examples:"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:42.9693587Z",
+          "text": "rspec ./spec/reportportal_cucumber/cucumber/world_spec.rb[1:5] # ReportportalCucumber::Cucumber::World rejects an IO.pipe through diagnostics without probing path or reading it"
+        },
+        {
+          "timestamp": "2026-10-31T02:47:43.0004968Z",
+          "text": "##[error]Process completed with exit code 1."
+        }
+      ]
+    }
+  ],
+  "actual_workflow_run_block": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern 'spec/{day2/fault_process_spec.rb,reportportal_cucumber/cucumber/world_spec.rb,reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec rspec \"${legacy_args[@]}\"\n",
+  "workflow_sha256": "16994d4ae41bd6e80a78ebc279a8c05b3ce672132c18b09b01b7cfef3e1d2b3c",
+  "guard_spec_sha256": "fc148bcc3afc959e1d05e15e452d5211f2713d30f5ad21cb8dc20bbad47e5d00",
+  "baseline_production_files_verified": 37,
+  "unchanged_from_second_run": [
+    "lib",
+    "Gemfile",
+    "Gemfile.lock",
+    "reportportal-cucumber-ruby.gemspec",
+    "spec/fixtures/legacy_fault_process.rb",
+    "spec/fixtures/legacy_portability.rb",
+    "spec/fixtures/legacy_portability_specs.rb"
+  ],
+  "exact_preflight_matrix": {
+    "discovery-ruby31-c10-verified.json": {
+      "correct": {
+        "exit": 0,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern 'spec/{day2/fault_process_spec.rb,reportportal_cucumber/cucumber/world_spec.rb,reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "Immutable legacy discovery verified: 889 examples, 889 unique IDs\n",
+        "stderr": "",
+        "summary": {
+          "duration": 0.037694292,
+          "example_count": 889,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 889,
+        "ruby": "3.1.7",
+        "cucumber": "10.2.0",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 0,
+        "report_sha256": "9715b438ab7b4c9ae662b1c7913046ecf819a691857ea08a20dd6c9f8841f3f8",
+        "report": "/qa/evidence/discovery-ruby31-c10-correct/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby31-c10-correct/audit.json"
+      },
+      "broken": {
+        "exit": 1,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern '{spec/day2/fault_process_spec.rb,spec/reportportal_cucumber/cucumber/world_spec.rb,spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "",
+        "stderr": "Immutable legacy discovery must contain exactly 889 unique examples without errors\n",
+        "summary": {
+          "duration": 0.045161917,
+          "example_count": 905,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 905,
+        "ruby": "3.1.7",
+        "cucumber": "10.2.0",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_process_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [
+          "spec/day2/fault_process_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb"
+        ],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled",
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection",
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 7,
+        "report_sha256": "1ad92a09c06579fff4193a916904a7e713d1026ea696891684dae1382e7902a7",
+        "report": "/qa/evidence/discovery-ruby31-c10-broken/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby31-c10-broken/audit.json"
+      }
+    },
+    "discovery-ruby31-c9-verified.json": {
+      "correct": {
+        "exit": 0,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern 'spec/{day2/fault_process_spec.rb,reportportal_cucumber/cucumber/world_spec.rb,reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "Immutable legacy discovery verified: 889 examples, 889 unique IDs\n",
+        "stderr": "",
+        "summary": {
+          "duration": 0.045901,
+          "example_count": 889,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 889,
+        "ruby": "3.1.7",
+        "cucumber": "9.2.1",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 0,
+        "report_sha256": "42c9c44d463371dda714eeafcf9e15e2238fd78685240b54b02fed293228ba44",
+        "report": "/qa/evidence/discovery-ruby31-c9-correct/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby31-c9-correct/audit.json"
+      },
+      "broken": {
+        "exit": 1,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern '{spec/day2/fault_process_spec.rb,spec/reportportal_cucumber/cucumber/world_spec.rb,spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "",
+        "stderr": "Immutable legacy discovery must contain exactly 889 unique examples without errors\n",
+        "summary": {
+          "duration": 0.041447459,
+          "example_count": 905,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 905,
+        "ruby": "3.1.7",
+        "cucumber": "9.2.1",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_process_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [
+          "spec/day2/fault_process_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb"
+        ],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled",
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection",
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 7,
+        "report_sha256": "463e9b6a8bf2e9a41d5fc283bd3caa37ba6e241fd19c9638a813d2680e38dbe2",
+        "report": "/qa/evidence/discovery-ruby31-c9-broken/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby31-c9-broken/audit.json"
+      }
+    },
+    "discovery-ruby33-c10-verified.json": {
+      "correct": {
+        "exit": 0,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern 'spec/{day2/fault_process_spec.rb,reportportal_cucumber/cucumber/world_spec.rb,reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "Immutable legacy discovery verified: 889 examples, 889 unique IDs\n",
+        "stderr": "",
+        "summary": {
+          "duration": 0.034784584,
+          "example_count": 889,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 889,
+        "ruby": "3.3.12",
+        "cucumber": "10.2.0",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 0,
+        "report_sha256": "e10ef73ea037637af26e2d1067e72b9617b1ec534b4ce82d538671b5f808e38d",
+        "report": "/qa/evidence/discovery-ruby33-c10-correct/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby33-c10-correct/audit.json"
+      },
+      "broken": {
+        "exit": 1,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern '{spec/day2/fault_process_spec.rb,spec/reportportal_cucumber/cucumber/world_spec.rb,spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "",
+        "stderr": "Immutable legacy discovery must contain exactly 889 unique examples without errors\n",
+        "summary": {
+          "duration": 0.019570625,
+          "example_count": 905,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 905,
+        "ruby": "3.3.12",
+        "cucumber": "10.2.0",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_process_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [
+          "spec/day2/fault_process_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb"
+        ],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled",
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection",
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 7,
+        "report_sha256": "a6574ee9e0f5b35aa6d60b49ea8e6d2e684769afc6dc0194071425d4903190a8",
+        "report": "/qa/evidence/discovery-ruby33-c10-broken/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby33-c10-broken/audit.json"
+      }
+    },
+    "discovery-ruby33-c9-verified.json": {
+      "correct": {
+        "exit": 0,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern 'spec/{day2/fault_process_spec.rb,reportportal_cucumber/cucumber/world_spec.rb,reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "Immutable legacy discovery verified: 889 examples, 889 unique IDs\n",
+        "stderr": "",
+        "summary": {
+          "duration": 0.024285666,
+          "example_count": 889,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 889,
+        "ruby": "3.3.12",
+        "cucumber": "9.2.1",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 0,
+        "report_sha256": "3cf234556edf1f4253b76e0c469951fafff8b910207a11ca919853e65c319c08",
+        "report": "/qa/evidence/discovery-ruby33-c9-correct/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby33-c9-correct/audit.json"
+      },
+      "broken": {
+        "exit": 1,
+        "command": "legacy_args=(\n  spec\n  .ci-driver/spec/fixtures/legacy_fault_process.rb\n  .ci-driver/spec/fixtures/legacy_portability_specs.rb\n  --exclude-pattern '{spec/day2/fault_process_spec.rb,spec/reportportal_cucumber/cucumber/world_spec.rb,spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'\n)\nbundle exec rspec \"${legacy_args[@]}\" --dry-run --format json --out \"$RUNNER_TEMP/legacy-discovery.json\"\nbundle exec ruby -rjson -e '\n  report = JSON.parse(File.read(ARGV.fetch(0)))\n  summary = report.fetch(\"summary\")\n  examples = report.fetch(\"examples\")\n  ids = examples.map { |example| example.fetch(\"id\") }\n  valid = summary.fetch(\"example_count\") == 889 && examples.length == 889 &&\n    ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&\n    summary.fetch(\"failure_count\").zero? && summary.fetch(\"pending_count\").zero? &&\n    summary.fetch(\"errors_outside_of_examples_count\").zero?\n  abort \"Immutable legacy discovery must contain exactly 889 unique examples without errors\" unless valid\n  puts \"Immutable legacy discovery verified: 889 examples, 889 unique IDs\"\n' \"$RUNNER_TEMP/legacy-discovery.json\"\n",
+        "stdout": "",
+        "stderr": "Immutable legacy discovery must contain exactly 889 unique examples without errors\n",
+        "summary": {
+          "duration": 0.019896041,
+          "example_count": 905,
+          "failure_count": 0,
+          "pending_count": 0,
+          "errors_outside_of_examples_count": 0
+        },
+        "unique_ids": 905,
+        "ruby": "3.3.12",
+        "cucumber": "9.2.1",
+        "files_to_run": [
+          "spec/day2/endurance_contract_spec.rb",
+          "spec/day2/endurance_inertness_spec.rb",
+          "spec/day2/endurance_metrics_spec.rb",
+          "spec/day2/endurance_portability_spec.rb",
+          "spec/day2/endurance_wire_spec.rb",
+          "spec/day2/fault_live_gate_spec.rb",
+          "spec/day2/fault_live_validation_spec.rb",
+          "spec/day2/fault_process_spec.rb",
+          "spec/day2/fault_proxy_spec.rb",
+          "spec/day2/task_spec.rb",
+          "spec/deployment/compose_spec.rb",
+          "spec/deployment/live_regression_task_spec.rb",
+          "spec/examples/logger_parameters_demo_spec.rb",
+          "spec/helm/day2_security_spec.rb",
+          "spec/helm/latest_chart_spec.rb",
+          "spec/packaging/release_package_spec.rb",
+          "spec/release/tooling_spec.rb",
+          "spec/release/workflows_spec.rb",
+          "spec/reportportal_cucumber/automation/cucumber_logger_spec.rb",
+          "spec/reportportal_cucumber/automation/evidence_redactor_spec.rb",
+          "spec/reportportal_cucumber/automation/http_exchange_spec.rb",
+          "spec/reportportal_cucumber/automation/http_privacy_integration_spec.rb",
+          "spec/reportportal_cucumber/automation/m2_assertion_spec.rb",
+          "spec/reportportal_cucumber/automation/reporting_routing_spec.rb",
+          "spec/reportportal_cucumber/automation/terminal_format_spec.rb",
+          "spec/reportportal_cucumber/config_attributes_spec.rb",
+          "spec/reportportal_cucumber/config_cli_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/config_identity_spec.rb",
+          "spec/reportportal_cucumber/config_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/config_links_spec.rb",
+          "spec/reportportal_cucumber/config_m4a_spec.rb",
+          "spec/reportportal_cucumber/config_m4c_spec.rb",
+          "spec/reportportal_cucumber/config_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_attributes_spec.rb",
+          "spec/reportportal_cucumber/cucumber/ast_metadata_spec.rb",
+          "spec/reportportal_cucumber/cucumber/cli_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_lifecycle_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/formatter_strict_m4d_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m2_evidence_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3a_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3b_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_attributes_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_formatter_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m3c_links_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4b_completion_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_fixture_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_interrupt_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4d_reporting_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/reporting_experience_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/security_regression_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb",
+          "spec/reportportal_cucumber/http/client_spec.rb",
+          "spec/reportportal_cucumber/reportportal/api_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models/step_desc_spec.rb",
+          "spec/reportportal_cucumber/reportportal/models_spec.rb",
+          "spec/reportportal_cucumber/reportportal/spool_replay_api_spec.rb",
+          "spec/reportportal_cucumber/runtime/capture_publication_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_ownership_native_spec.rb",
+          "spec/reportportal_cucumber/runtime/context_spec.rb",
+          "spec/reportportal_cucumber/runtime/join_spec.rb",
+          "spec/reportportal_cucumber/runtime/log_buffer_spec.rb",
+          "spec/reportportal_cucumber/sandbox/reportportal_chaos_spec.rb",
+          "spec/reportportal_cucumber/sandbox/rp_mock_server_spec.rb",
+          "spec/reportportal_cucumber/service/attachment_presentation_spec.rb",
+          "spec/reportportal_cucumber/service/delivery_faults_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/payload_builder_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_capture_admission_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4a_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_m4b_spec.rb",
+          "spec/reportportal_cucumber/service/queue_processor_spec.rb",
+          "spec/reportportal_cucumber/service/raw_missing_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/replay_unavailable_summary_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_attributes_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_identity_spec.rb",
+          "spec/reportportal_cucumber/service/scenario_links_spec.rb",
+          "spec/reportportal_cucumber/service/security_spool_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_cli_integration_spec.rb",
+          "spec/reportportal_cucumber/service/spool_replay_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/spool_store_m4c_spec.rb",
+          "spec/reportportal_cucumber/service/store_diagnostics_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_encoding_m4d_spec.rb",
+          "spec/reportportal_cucumber/service/store_feedback_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/deadline_m4b_spec.rb",
+          "spec/reportportal_cucumber/transport/http_status_policy_m4d_spec.rb",
+          "spec/reportportal_cucumber/transport/minio_uploader_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_helper_spec.rb",
+          "spec/reportportal_cucumber/transport/multipart_m4a_spec.rb",
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+          ".ci-driver/spec/fixtures/legacy_portability_specs.rb"
+        ],
+        "selected_originals": [
+          "spec/day2/fault_process_spec.rb",
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb",
+          "spec/reportportal_cucumber/cucumber/world_spec.rb"
+        ],
+        "protected_descriptions": {
+          "spec/reportportal_cucumber/cucumber/world_spec.rb": [
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled",
+            "supports rp_attach(file_path, mime_type: nil) without reading the attachment into memory",
+            "keeps backwards-compatible byte attachments with explicit name and mime",
+            "forwards unsupported streams unconsumed for bounded queue rejection diagnostics",
+            "rejects oversized raw text without expanding its content as a candidate path",
+            "rejects an IO.pipe through diagnostics without probing path or reading it",
+            "preserves a StringIO caller cursor while admitting its backing bytes",
+            "mirrors rp_log to stdout when console mirror mode is enabled",
+            "does not mirror rp_log when console mirror mode is disabled"
+          ],
+          "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb": [
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection",
+            "captures actual Cucumber multipart bodies, retry ownership, and partial evidence rejection"
+          ],
+          ".ci-driver/spec/fixtures/legacy_fault_process.rb": [
+            "preserves original native business failure under HTTP 400, strict=false",
+            "preserves original native business failure under HTTP 400, strict=true",
+            "preserves original native business failure under HTTP 401, strict=false",
+            "preserves original native business failure under HTTP 401, strict=true",
+            "handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt",
+            "does not replace a business failure with final metadata outage",
+            "bounds the whole native finalization with slow HTTP instead of one budget per request"
+          ]
+        },
+        "original_fault_registered": 7,
+        "report_sha256": "ca9af2983249528dee5a5d1d5a5ae69db0d766c0075f94631d911315c037ae3e",
+        "report": "/qa/evidence/discovery-ruby33-c9-broken/legacy-discovery.json",
+        "audit": "/qa/evidence/discovery-ruby33-c9-broken/audit.json"
+      }
+    }
+  },
+  "behavioral_guard": {
+    "source": "spec/release/workflows_spec.rb",
+    "focused_result": "12 examples, 0 failures",
+    "fixture": "873 remaining cases + 7 fault driver + 9 portability driver; originals contribute 7+8+1 only when malformed pattern selects them",
+    "positive": "Entire YAML shell block executes: 889 preflight, then 889 cheap synthetic examples; original files never load and both drivers load once in each of two processes",
+    "negative": "Only exclusion pattern changed to the shipped malformed variant: 905 preflight, inline gate exits 1; exactly one process loaded fixtures, proving full run did not occur"
+  },
+  "raw_host_evidence_root": "/tmp/rp-legacy-portability/evidence",
+  "observation_script": "require \"digest\"\nrequire \"fileutils\"\nrequire \"json\"\nrequire \"open3\"\nrequire \"yaml\"\n\nworkflow = \"/qa/validation.yml\"\nstep = YAML.load_file(workflow).dig(\"jobs\", \"legacy\", \"steps\").find { |entry| entry.fetch(\"run\", \"\").include?(\"legacy_args=(\") }\ncommand = step.fetch(\"run\")\ntail = 'bundle exec rspec \"${legacy_args[@]}\"' + \"\\n\"\nraise \"Unexpected final command\" unless command.end_with?(tail)\n# Execute the exact workflow preflight; full business execution is intentionally omitted.\npreflight = command.delete_suffix(tail)\noriginals = %w[spec/day2/fault_process_spec.rb spec/reportportal_cucumber/cucumber/world_spec.rb spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb]\ndrivers = %w[.ci-driver/spec/fixtures/legacy_fault_process.rb .ci-driver/spec/fixtures/legacy_portability_specs.rb]\ncorrect = \"spec/{#{originals.map { |path| path.delete_prefix('spec/') }.join(',')}}\"\nbroken = \"{#{originals.join(',')}}\"\nraise \"Missing exact workflow pattern\" unless preflight.scan(correct).length == 1\nworld_descriptions = File.read(\"/qa/source/#{originals[1]}\").scan(/^  it \"([^\"]+)\"/).flatten\nm4a_descriptions = File.read(\"/qa/source/#{originals[2]}\").scan(/^  it \"([^\"]+)\"/).flatten\nfault_descriptions = [400, 401].product([false, true]).map do |status, strict|\n  \"preserves original native business failure under HTTP #{status}, strict=#{strict}\"\nend + [\n  \"handles real SIGINT in a Cucumber subprocess with a bounded exit and an honest receipt\",\n  \"does not replace a business failure with final metadata outage\",\n  \"bounds the whole native finalization with slow HTTP instead of one budget per request\"\n]\nexpected = { originals[1] => world_descriptions, originals[2] => m4a_descriptions, drivers.first => fault_descriptions }\nresults = {}\n{ \"correct\" => preflight, \"broken\" => preflight.sub(correct, broken) }.each do |variant, script|\n  directory = \"/qa/evidence/discovery-#{ARGV.fetch(0)}-#{variant}\"\n  FileUtils.mkdir_p(directory)\n  audit_path = File.join(directory, \"audit.json\")\n  env = { \"RUNNER_TEMP\" => directory, \"LEGACY_SOURCE_ROOT\" => \"/qa/source\",\n          \"DISCOVERY_AUDIT_PATH\" => audit_path, \"RUBYOPT\" => \"-r/qa/discovery_audit.rb\" }\n  stdout, stderr, status = Open3.capture3(env, \"/bin/bash\", \"-e\", \"-o\", \"pipefail\", \"-c\", script, chdir: \"/qa/source\")\n  File.write(File.join(directory, \"stdout.log\"), stdout)\n  File.write(File.join(directory, \"stderr.log\"), stderr)\n  report = JSON.parse(File.read(File.join(directory, \"legacy-discovery.json\")))\n  audit = JSON.parse(File.read(audit_path))\n  files = audit.fetch(\"files_to_run\").map { |path| path.delete_prefix(\"/qa/source/\") }\n  examples = report.fetch(\"examples\")\n  by_file = examples.group_by { |entry| entry.fetch(\"file_path\").delete_prefix(\"./\") }\n  protected = expected.to_h do |relative, descriptions|\n    actual = by_file.fetch(relative, []).map { |entry| entry.fetch(\"description\") }\n    if variant == \"correct\"\n      raise \"Protected case mismatch #{relative}\" unless actual.sort == descriptions.sort && actual.uniq == actual\n    end\n    [relative, actual]\n  end\n  if variant == \"correct\"\n    raise \"Correct preflight failed #{stderr}\" unless status.success?\n    raise \"Original selected\" unless (files & originals).empty?\n    raise \"Drivers missing or repeated\" unless drivers.all? { |path| files.count(path) == 1 }\n    raise \"Original fault cases registered\" unless by_file.fetch(originals.first, []).empty?\n    raise \"Expected 889 unique cases\" unless examples.length == 889 && examples.map { |entry| entry.fetch(\"id\") }.uniq.length == 889\n  else\n    raise \"Broken pattern not rejected\" unless status.exitstatus == 1 && examples.length == 905 && (files & originals).sort == originals.sort\n    raise \"Wrong rejection reason\" unless stderr.include?(\"exactly 889 unique examples\")\n  end\n  results[variant] = {\n    exit: status.exitstatus, command: script, stdout: stdout, stderr: stderr,\n    summary: report.fetch(\"summary\"), unique_ids: examples.map { |entry| entry.fetch(\"id\") }.uniq.length,\n    ruby: audit.fetch(\"ruby\"), cucumber: audit.fetch(\"cucumber\"),\n    files_to_run: files, selected_originals: files & originals,\n    protected_descriptions: protected, original_fault_registered: by_file.fetch(originals.first, []).length,\n    report_sha256: Digest::SHA256.file(File.join(directory, \"legacy-discovery.json\")).hexdigest,\n    report: File.join(directory, \"legacy-discovery.json\"), audit: audit_path\n  }\nend\noutput = \"/qa/evidence/discovery-#{ARGV.fetch(0)}-verified.json\"\nFile.write(output, JSON.pretty_generate(results) + \"\\n\")\nputs JSON.generate(results.transform_values { |value| value.slice(:ruby, :cucumber, :exit, :summary, :unique_ids, :selected_originals, :original_fault_registered) })\n",
+  "observation_audit_script": "at_exit do\n  if defined?(RSpec::Core) && ENV[\"DISCOVERY_AUDIT_PATH\"]\n    require \"json\"\n    File.write(ENV.fetch(\"DISCOVERY_AUDIT_PATH\"), JSON.pretty_generate(\n      ruby: RUBY_VERSION, cucumber: Gem.loaded_specs.fetch(\"cucumber\").version.to_s,\n      files_to_run: RSpec.configuration.files_to_run,\n      examples: RSpec.world.all_examples.map { |example| example.metadata.slice(:file_path, :description, :full_description, :line_number) }\n    ))\n  end\nend\n",
+  "limitations": [
+    "Actual Linux aarch64 Ruby 3.1.7 and 3.3.12; remote uses x86_64 and Ruby 3.3.13.",
+    "Baseline discovery executes the exact workflow array and JSON validator, with only the final full RSpec execution deliberately omitted. All 889 examples are registered, not executed as business tests.",
+    "An observation-only RUBYOPT at_exit hook records RSpec files_to_run and metadata without changing selection or fixtures.",
+    "Private bundles contain the real baseline SDK/Cucumber/RSpec/WebMock plus Rake/Sinatra/Rantly needed for discovery, not the full remote lock graph.",
+    "No production or existing driver changes, SDK rebuild, Git write, third push or remote success is claimed by this QA evidence."
+  ]
+}

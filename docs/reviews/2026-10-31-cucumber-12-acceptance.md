@@ -217,3 +217,46 @@ and actual HTTP body bytes. Candidate production/dependencies are unchanged from
 `8083141`; all 37 exported baseline production files also match immutable Git
 objects. CI wiring retains the original source diff/hash audits and uploads all
 three original specs, the reviewed drivers, dependency lock and child evidence.
+
+## Discovery Correction After Second CI
+
+The preceding 889-case discovery claim had a narrower scope than the subsequent
+handoff stated: it ran only on native Ruby 3.4.2 and used `spec/{a,b,c}`, not the
+shipped `{spec/a,spec/b,spec/c}` argument. Claiming that it proved the exact CI
+command was incorrect. Remote run `41161391563` at `98104e2` actually ran 905
+legacy cases in every cell: Ruby 3.1/C9 had six failures, 3.1/C10 one, 3.3/C9
+five, and 3.3/C10 zero. Both current SDK cells passed 935 plus seven offline
+scenarios. The aggregate gate correctly failed.
+
+RSpec 3.13.6 `Configuration#file_glob_from` prepends the requested directory when
+the pattern does not begin with `spec/`. The leading brace produced
+`spec/{{spec/...}}`, excluding none of the three originals. All 16 historical
+cases therefore ran alongside their replacements. This second failure was a
+workflow argument defect, not a Ruby-version difference or SDK regression.
+
+The corrected workflow now uses one `legacy_args` array for both discovery and
+execution. Before full execution, actual RSpec JSON discovery must report 889
+nonempty unique IDs, no failures, no pending cases and no loading errors.
+The discovery artifact is retained even on failure. A new behavioral test runs
+the entire YAML shell block against a fixture tree: 873 retained cases plus
+7/9 driver cases. It verifies the corrected 889-case preflight and execution,
+no original-file loads, and one driver load per process. Its old-pattern negative
+control registers 905 and must exit before full execution.
+
+The exact current workflow preflight was then executed in actual Ruby 3.1.7 and
+3.3.12 containers with Cucumber 9.2.1 and 10.2.0. All four produced 889 unique
+cases, each of the 16 expected replacement descriptions once, both driver files
+once, and zero original files in `RSpec.configuration.files_to_run`. The former
+pattern produced 905 and failed the new gate in all four cells. Only the final
+full business-suite invocation was deliberately omitted from these real-baseline
+checks; the complete shell block was exercised by the cheap fixture regression.
+
+Focused workflow tests passed 12/12; the CI engineer independently passed the
+release suite 45/45. The next current-suite count is 936. Production, dependencies
+and all three reviewed legacy drivers remain byte-identical to `98104e2`; no
+SDK rebuild or repeated full baseline execution was performed. Ruby 3.3.12
+aarch64 discovery is not a claim about remote Ruby 3.3.13 x86_64 execution.
+
+[Exact command, four positive/negative discovery reports, selected-file audits and remote failure excerpts](assets/cucumber-12-legacy-discovery-2026-10-31.json)
+supersede the earlier overbroad discovery claim. Third remote CI remains the
+parent-owned validation gate; these results do not claim it has passed.

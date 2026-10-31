@@ -2,6 +2,11 @@
 
 require "rspec"
 require "yaml"
+require "fileutils"
+require "json"
+require "open3"
+require "shellwords"
+require "tmpdir"
 
 RSpec.describe "Release workflow security and validation contract" do
   let(:root) { File.expand_path("../..", __dir__) }
@@ -128,11 +133,14 @@ RSpec.describe "Release workflow security and validation contract" do
                            "refs/tags/v1.3.1^{commit}", "git diff --exit-code -- . ':!Gemfile' ':!Gemfile.lock'")
     originals = %w[spec/day2/fault_process_spec.rb spec/reportportal_cucumber/cucumber/world_spec.rb
                    spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb]
-    suite = steps.find { |step| step.fetch("run", "").include?("bundle exec rspec spec") }
-    expect(suite.fetch("run").gsub(/ *\\\n\s*/, " ").strip).to eq(
-      "bundle exec rspec spec .ci-driver/spec/fixtures/legacy_fault_process.rb " \
-      ".ci-driver/spec/fixtures/legacy_portability_specs.rb --exclude-pattern '{#{originals.join(',')}}'"
-    )
+    suite = steps.find { |step| step.fetch("run", "").include?("legacy_args=(") }
+    normalized = suite.fetch("run")
+    arguments = Shellwords.split(normalized.match(/\Alegacy_args=\((.*?)\n\)/m)[1])
+    expect(arguments).to eq(["spec", ".ci-driver/spec/fixtures/legacy_fault_process.rb",
+      ".ci-driver/spec/fixtures/legacy_portability_specs.rb", "--exclude-pattern",
+      "spec/{#{originals.map { |path| path.delete_prefix('spec/') }.join(',')}}"])
+    expect(normalized).to include('bundle exec rspec "${legacy_args[@]}" --dry-run --format json',
+                                  'bundle exec rspec "${legacy_args[@]}"')
     expect(suite.fetch("env")).to eq("M4A_CHILD_EVIDENCE_DIR" => "${{ runner.temp }}/legacy-m4a")
     audit = steps.find { |step| step["name"] == "Require unchanged baseline production source" }
     expect(audit.fetch("if")).to eq("always()")
@@ -144,12 +152,71 @@ RSpec.describe "Release workflow security and validation contract" do
     expect(artifacts.dig("with", "path").lines.map(&:strip)).to contain_exactly(
       "Gemfile.lock", *originals, *drivers.map { |path| ".ci-driver/#{path}" },
       ".ci-driver/legacy-production.sha256", "${{ runner.temp }}/legacy-m4a/public-delivery-child.json",
-      "${{ runner.temp }}/legacy-m4a/attempt-admissions.ndjson"
+      "${{ runner.temp }}/legacy-m4a/attempt-admissions.ndjson", "${{ runner.temp }}/legacy-discovery.json"
     )
     original = File.read(File.join(root, "spec/fixtures/legacy_fault_process.rb"))
     expect(original).to include("4b2e01d3343dba4d1d902b8cc835e7c29a82893efb87241453783fcb379ced70",
                                'Gem.loaded_specs.fetch("cucumber").version.to_s')
     expect(runs).not_to include('File.write("reportportal-cucumber-ruby.gemspec"', "gem push", "kubectl apply")
+  end
+
+  it "executes the exact legacy workflow discovery and rejects the former duplicate-loading command" do
+    step = validation.dig("jobs", "legacy", "steps").find { |entry| entry.fetch("run", "").include?("legacy_args=(") }
+    command = step.fetch("run")
+    originals = {
+      "spec/day2/fault_process_spec.rb" => 7,
+      "spec/reportportal_cucumber/cucumber/world_spec.rb" => 8,
+      "spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb" => 1
+    }
+    retained = {
+      "spec/remaining_spec.rb" => 873,
+      ".ci-driver/spec/fixtures/legacy_fault_process.rb" => 7,
+      ".ci-driver/spec/fixtures/legacy_portability_specs.rb" => 9
+    }
+    correct = "spec/{#{originals.keys.map { |path| path.delete_prefix('spec/') }.join(',')}}"
+    broken = "{#{originals.keys.join(',')}}"
+    expect(command.scan(correct).length).to eq(1)
+
+    Dir.mktmpdir("legacy-discovery-") do |directory|
+      originals.merge(retained).each do |relative, count|
+        path = File.join(directory, relative)
+        FileUtils.mkdir_p(File.dirname(path))
+        File.write(path, <<~RUBY)
+          File.open(ENV.fetch("DISCOVERY_LOAD_AUDIT"), "a") { |file| file.puts([Process.pid, #{relative.inspect}].join("\t")) }
+          RSpec.describe #{relative.inspect} do
+            #{count}.times { |index| it("case \#{index}") {} }
+          end
+        RUBY
+      end
+
+      { "correct" => command, "broken" => command.sub(correct, broken) }.each do |variant, script|
+        output = File.join(directory, variant)
+        FileUtils.mkdir_p(output)
+        audit = File.join(output, "loads.tsv")
+        env = { "BUNDLE_GEMFILE" => File.join(root, "Gemfile"), "RUNNER_TEMP" => output,
+                "DISCOVERY_LOAD_AUDIT" => audit }
+        stdout, stderr, status = Open3.capture3(env, "/bin/bash", "-e", "-o", "pipefail", "-c", script, chdir: directory)
+        discovery = JSON.parse(File.read(File.join(output, "legacy-discovery.json")))
+        examples = discovery.fetch("examples")
+        loads = File.readlines(audit).map { |line| line.strip.split("\t", 2) }.group_by(&:first)
+        expect(examples.map { |example| example.fetch("id") }.uniq.length).to eq(examples.length)
+
+        if variant == "correct"
+          expect(status.success?).to be(true), "#{stdout}\n#{stderr}"
+          expect(examples.length).to eq(889)
+          expect(examples.group_by { |example| example.fetch("file_path").delete_prefix("./") }.transform_values(&:length)).to eq(retained)
+          expect(loads.length).to eq(2), "discovery and full run must each load their own fixtures"
+          loads.each_value { |entries| expect(entries.map(&:last)).to contain_exactly(*retained.keys) }
+          expect(stdout).to include("889 examples, 0 failures")
+        else
+          expect(status.success?).to be(false), "the malformed pattern must stop at the discovery gate"
+          expect(examples.length).to eq(905)
+          expect(loads.length).to eq(1), "no full run is permitted after duplicate discovery"
+          expect(loads.values.first.map(&:last)).to contain_exactly(*originals.keys, *retained.keys)
+          expect(stdout).not_to include("905 examples, 0 failures")
+        end
+      end
+    end
   end
 
   it "uses fixed release-line ancestry checks and rejects all unsupported major tags" do

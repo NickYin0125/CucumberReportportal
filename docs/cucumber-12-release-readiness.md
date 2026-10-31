@@ -95,14 +95,20 @@ and runtime/source provenance assertions remain. This is not a count-only
 change from one to zero: Cucumber 9's Ruby-dependent backtrace filtering made the
 original extra-rejection assumption nonportable. No SDK runtime is patched.
 
-The exact legacy RSpec command is:
+The full-suite command uses these exact arguments, shared with discovery:
 
 ```sh
 bundle exec rspec spec \
   .ci-driver/spec/fixtures/legacy_fault_process.rb \
   .ci-driver/spec/fixtures/legacy_portability_specs.rb \
-  --exclude-pattern '{spec/day2/fault_process_spec.rb,spec/reportportal_cucumber/cucumber/world_spec.rb,spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'
+  --exclude-pattern 'spec/{day2/fault_process_spec.rb,reportportal_cucumber/cucumber/world_spec.rb,reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'
 ```
+
+The workflow stores these arguments once in `legacy_args`. Before full execution,
+the same array runs with `--dry-run --format json`; a fail-fast check requires
+889 reported examples, 889 nonempty unique IDs, and zero failures, pending cases
+or discovery errors. `legacy-discovery.json` is retained by the always-run artifact
+upload. A malformed exclusion therefore cannot start another full legacy suite.
 
 All original behavioral cases remain required. The baseline Gemfile remains `BUNDLE_GEMFILE`, and
 `LEGACY_SOURCE_ROOT` names that same immutable checkout. Before/after SHA-256
@@ -139,7 +145,7 @@ The following observations apply only to this role's commands, not to all QA wor
 | Real shared-checkout cleanliness guard | Rejected the dirty/untracked checkout as expected using existing immutable v1.3.1 identity; no package build or publication attempted |
 | Initial release spec run before QA fixture updates | 29 examples, 17 failures from old main-only ancestry fixtures and single-job workflow assumptions; retained as initial evidence, not a final gate result |
 | Initial pre-portability release tooling/workflow specs | 38 examples, 0 failures on native Ruby 3.4.2 with the frozen isolated Cucumber 12 bundle; publication mocked |
-| Post-portability release tooling/workflow specs | `bundle exec rspec spec/release --format progress`: 44 examples, 0 failures, including six new driver guards; publication mocked, not performed |
+| Post-portability release tooling/workflow specs | Initially 44/0; after the actual-discovery regression, `bundle exec rspec spec/release --format progress`: 45 examples, 0 failures; publication mocked, not performed |
 | Isolated immutable v1.3.1 / Cucumber 9.2.1 / Ruby 3.4.2 RSpec | 889 examples, 13 failures, 1 pending initially: nine local Helm 3.7.1 failures plus four historical tests hard-coding Cucumber 10.2.0 |
 | Same Cucumber 9 baseline, correct Helm 3.18.4 | `spec/helm`: 18 examples, 0 failures; all nine old-Helm failures resolved without deployment/source changes |
 | Initial prepared Cucumber 9 full behavioral suite with the provenance-only driver | 889 examples, 0 failures, no pending; native Ruby 3.4.2, Cucumber 9.2.1, SDK 1.3.1, Helm 3.18.4; before the later portability driver, original on-disk spec unchanged |
@@ -204,15 +210,40 @@ defect. All four legacy production hash/diff audits and evidence uploads passed.
 The required gate failed and the release bundle job was skipped; no failure was
 waived and no release artifact was published.
 
-**Second run pending:** the reviewed test-only portability drivers and workflow
-wiring above are prepared for the parent's commit/push and rerun. QA's
-[measured portability evidence](reviews/assets/cucumber-12-legacy-portability-2026-10-31.json) records
-9 focused cases passing on each Ruby 3.1.7/3.3.12 x Cucumber 9.2.1/10.2.0 cell,
-plus native Ruby 3.4.2/C9.2.1; exact-command dry-run discovery retains all 889
-legacy cases. These are focused checks and discovery, not a second full-suite
-or remote pass. Six new guard tests make the next target suite's expected count
-935 rather than 929. The maintainer's post-change release suite passed 44/0.
-The 2.0 production source remains frozen; no commit or push was made by this role.
+The second [CI run 41161391563](https://github.com/NickYin0125/CucumberReportportal/actions/runs/41161391563)
+at `98104e2a5a5a00c349e33f16e9171b5a52dc8efb` also failed. Both target cells passed
+935 examples with zero failures/pending and 7 offline scenarios / 21 steps each.
+Every legacy cell ran **905, not 889**, because all 16 original cases were loaded
+alongside their replacements:
+
+| Ruby / Cucumber | RSpec | Offline Cucumber |
+| --- | --- | --- |
+| 3.1.7 / 9.2.1 | 905 examples, 6 failures | Skipped after RSpec failure |
+| 3.1.7 / 10.2.0 | 905 examples, 1 failure | Skipped after RSpec failure |
+| 3.3.13 / 9.2.1 | 905 examples, 5 failures | Skipped after RSpec failure |
+| 3.3.13 / 10.2.0 | 905 examples, 0 failures | 1 scenario / 3 steps passed |
+
+The gate failed and bundle was skipped; all four legacy source audits passed,
+verifying 37 production files per cell. RSpec 3.13.6 prefixes the discovery
+directory to `{spec/...}`, producing `spec/{{spec/...}}`, which excludes nothing.
+The corrected `spec/{...}` begins with the directory and excludes all three
+originals. This is RSpec directory-prefix behavior, not a Ruby-version difference.
+
+**Correction:** the earlier 889-case proof used `spec/{...}` on native Ruby 3.4.2
+only, not the ultimately shipped `{spec/...}` command. The prior exact-command
+claim was wrong. The earlier focused portability checks remain separately
+recorded in QA's [portability evidence](reviews/assets/cucumber-12-legacy-portability-2026-10-31.json).
+
+**Third run pending:** QA's [exact discovery evidence](reviews/assets/cucumber-12-legacy-discovery-2026-10-31.json)
+now verifies the actual workflow preflight on all four Ruby 3.1.7/3.3.12 x
+Cucumber 9.2.1/10.2.0 combinations: 889 unique cases, all 16 replacement cases
+registered once, and no original files selected. Each old-pattern control finds
+905 and is rejected. The new regression executes the entire workflow block on
+synthetic fixtures and proves rejection prevents full execution. The maintainer's
+release suite passes 45/0. The next target suite is expected to contain **936**
+cases; legacy remains **889**. These local discovery checks are not a third remote
+or full business-suite pass. Production and dependency sources remain frozen;
+no commit or push was made by this role.
 
 ## QA handoff contract
 
@@ -250,7 +281,7 @@ installed gems matched all 37 core source hashes. The joined-thread regression
 is resolved; exact coverage, package hashes and verification limits remain in
 the QA-owned report and evidence, not duplicated or superseded here.
 
-**The first remote CI run failed; the second run is pending. Stable-tag
+**The first two remote CI runs failed; the third run is pending. Stable-tag
 publication remains blocked until all required remote CI matrices pass.**
 `v2.0.0` notes and local validation artifacts
 are prepared only; no new stable tag is created or claimed, and no release is

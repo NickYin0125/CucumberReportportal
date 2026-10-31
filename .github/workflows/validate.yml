@@ -158,10 +158,26 @@ jobs:
         env:
           M4A_CHILD_EVIDENCE_DIR: ${{ runner.temp }}/legacy-m4a
         run: |
-          bundle exec rspec spec \
-            .ci-driver/spec/fixtures/legacy_fault_process.rb \
-            .ci-driver/spec/fixtures/legacy_portability_specs.rb \
-            --exclude-pattern '{spec/day2/fault_process_spec.rb,spec/reportportal_cucumber/cucumber/world_spec.rb,spec/reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'
+          legacy_args=(
+            spec
+            .ci-driver/spec/fixtures/legacy_fault_process.rb
+            .ci-driver/spec/fixtures/legacy_portability_specs.rb
+            --exclude-pattern 'spec/{day2/fault_process_spec.rb,reportportal_cucumber/cucumber/world_spec.rb,reportportal_cucumber/cucumber/m4a_public_delivery_integration_spec.rb}'
+          )
+          bundle exec rspec "${legacy_args[@]}" --dry-run --format json --out "$RUNNER_TEMP/legacy-discovery.json"
+          bundle exec ruby -rjson -e '
+            report = JSON.parse(File.read(ARGV.fetch(0)))
+            summary = report.fetch("summary")
+            examples = report.fetch("examples")
+            ids = examples.map { |example| example.fetch("id") }
+            valid = summary.fetch("example_count") == 889 && examples.length == 889 &&
+              ids.all? { |id| id.is_a?(String) && !id.empty? } && ids.uniq.length == 889 &&
+              summary.fetch("failure_count").zero? && summary.fetch("pending_count").zero? &&
+              summary.fetch("errors_outside_of_examples_count").zero?
+            abort "Immutable legacy discovery must contain exactly 889 unique examples without errors" unless valid
+            puts "Immutable legacy discovery verified: 889 examples, 889 unique IDs"
+          ' "$RUNNER_TEMP/legacy-discovery.json"
+          bundle exec rspec "${legacy_args[@]}"
 
       - name: Run the full released baseline offline Cucumber profile
         run: bundle exec cucumber
@@ -193,6 +209,7 @@ jobs:
             .ci-driver/spec/fixtures/legacy_portability.rb
             .ci-driver/spec/fixtures/legacy_portability_specs.rb
             .ci-driver/legacy-production.sha256
+            ${{ runner.temp }}/legacy-discovery.json
             ${{ runner.temp }}/legacy-m4a/public-delivery-child.json
             ${{ runner.temp }}/legacy-m4a/attempt-admissions.ndjson
           include-hidden-files: true
