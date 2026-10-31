@@ -4,6 +4,23 @@ Normal stable tags invoke `Tag Release`: verify tag/main ancestry, run the compl
 offline validation, build gem/Chart/checksums/provenance and publish through a draft.
 Only the publish job has contents-write permission. No RubyGems push is performed.
 
+## Independent SDK and Chart versions
+
+Starting with SDK 1.3.2, the Gem version must match the release tag, but it no
+longer needs to match the Helm Chart version. The Chart filename, archive
+metadata and `chartVersion` manifest field are checked against the independently
+committed `Chart.yaml`. For example, SDK 1.3.2 can accompany unchanged Chart
+1.3.1 / ReportPortal 26.0.7. Release titles display both versions.
+
+SDK 1.3.1 and older 1.x bundles retain their original manifest/title format and
+identity checks, so historical assets still verify without rebuilding or
+overwriting them. Package names, appVersion, digests, tag and commit checks remain
+mandatory. This does not change release ancestry, workflows, deployment files or
+grant permission to publish; the historical maintenance publication workflow
+still needs a separately approved backport before a future maintenance release.
+
+## Recover validated assets
+
 If publication fails after validation and artifact preservation, do not move the
 tag or rebuild/replace already published assets. From a trusted `main` checkout:
 
