@@ -1,0 +1,683 @@
+{
+  "schema": "immutable-retry-read-supplement/1",
+  "launch_id": 1123,
+  "observed_at": "2026-10-31T18:21:54Z",
+  "original_audit": "docs/reviews/assets/ledger-qa-live/20261031T180948Z-hooks-12.0.1-rich-1/F15-hooks-retry/read-api-audit.json",
+  "original_audit_sha256": "b615b277de5f1c1d15afe93998c1df33f3e14f85626d22d0f6214e4e6b592152",
+  "source_snapshot": "docs/reviews/assets/ledger-qa-live/20261031T180948Z-hooks-12.0.1-rich-1/F15-hooks-retry/snapshot.json",
+  "source_snapshot_sha256": "82a4dc0f846b5ad837db38fab17f8d231eaab1145599c8946c69809beec6a728",
+  "launch": {
+    "owner": "superadmin",
+    "description": "",
+    "id": 1123,
+    "uuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+    "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+    "number": 1,
+    "startTime": "2026-10-31T18:10:52.568Z",
+    "endTime": "2026-10-31T18:10:53.136Z",
+    "lastModified": "2026-10-31T18:10:53.149625Z",
+    "status": "PASSED",
+    "statistics": {
+      "executions": {
+        "total": 1,
+        "passed": 1
+      },
+      "defects": {}
+    },
+    "attributes": [],
+    "mode": "DEFAULT",
+    "analysing": [],
+    "approximateDuration": 0.0,
+    "hasRetries": true,
+    "rerun": false,
+    "metadata": {
+      "rp.cluster.lastRun": "1793470253183"
+    },
+    "retentionPolicy": "REGULAR",
+    "launchType": "AUTOMATION"
+  },
+  "raw_item_pages_with_actual_retry_nesting": [
+    {
+      "content": [
+        {
+          "id": 8982,
+          "uuid": "4d0dadea-2558-4868-b374-8a6c8d18ccec",
+          "name": "Feature: Independent native named hooks retry",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-10-31T18:10:52.632Z",
+          "endTime": "2026-10-31T18:10:53.135Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 1123,
+          "uniqueId": "auto:a7f127d52872424066eb3b42bbb523ce",
+          "testCaseHash": 1622864544,
+          "patternTemplates": [],
+          "path": "8982",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8984,
+          "uuid": "8e57b05c-f39d-40e5-8d30-7bee4715ef56",
+          "name": "Before hook · Open browser",
+          "parameters": [],
+          "attributes": [],
+          "type": "BEFORE_METHOD",
+          "startTime": "2026-10-31T18:10:52.664Z",
+          "endTime": "2026-10-31T18:10:52.712Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8983,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:6dd89e1e5ff5b269e20323e2a80f565e",
+          "testCaseHash": -1728542655,
+          "patternTemplates": [],
+          "path": "8982.8983.8984",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8985,
+          "uuid": "637b9251-5c59-46e8-9f89-51add25a98c6",
+          "name": "Given QA named hook business step",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-10-31T18:10:52.727Z",
+          "endTime": "2026-10-31T18:10:52.772Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8983,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:17903b268acb1ae56ec23804dd264083",
+          "testCaseHash": 1117513817,
+          "patternTemplates": [],
+          "path": "8982.8983.8985",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8986,
+          "uuid": "b6293c0e-81ad-43b0-955a-8ec77efed99c",
+          "name": "AfterStep hook · Inspect step",
+          "parameters": [],
+          "attributes": [],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-10-31T18:10:52.788Z",
+          "endTime": "2026-10-31T18:10:52.806Z",
+          "status": "SKIPPED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8983,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:3d2331084e1710c80a9a5702af592fa3",
+          "testCaseHash": 2014057404,
+          "patternTemplates": [],
+          "path": "8982.8983.8986",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8987,
+          "uuid": "728fe6aa-ffb2-4db8-9ae0-cd1388125c02",
+          "name": "After hook · Close browser",
+          "parameters": [],
+          "attributes": [],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-10-31T18:10:52.818Z",
+          "endTime": "2026-10-31T18:10:52.838Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8983,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:61ac84631eff0b87637e622fa96d4744",
+          "testCaseHash": -681599608,
+          "patternTemplates": [],
+          "path": "8982.8983.8987",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8988,
+          "uuid": "1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+          "name": "Scenario: Scalar hook metadata retry",
+          "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-10-31T18:10:52.904Z",
+          "endTime": "2026-10-31T18:10:53.107Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 8982,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 1123,
+          "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+          "testCaseHash": 2025491222,
+          "patternTemplates": [],
+          "retries": [
+            {
+              "id": 8983,
+              "uuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+              "name": "Scenario: Scalar hook metadata retry",
+              "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+              "parameters": [],
+              "attributes": [],
+              "type": "STEP",
+              "startTime": "2026-10-31T18:10:52.633Z",
+              "endTime": "2026-10-31T18:10:52.894Z",
+              "status": "FAILED",
+              "statistics": {
+                "executions": {},
+                "defects": {}
+              },
+              "parent": 8982,
+              "hasChildren": false,
+              "hasStats": true,
+              "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9",
+              "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+              "testCaseHash": 2025491222,
+              "patternTemplates": [],
+              "hasNestedSteps": false
+            }
+          ],
+          "path": "8982.8988",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 8989,
+          "uuid": "cd8be183-ba35-41b8-8834-5470dff5bb9e",
+          "name": "Before hook · Open browser",
+          "parameters": [],
+          "attributes": [],
+          "type": "BEFORE_METHOD",
+          "startTime": "2026-10-31T18:10:52.924Z",
+          "endTime": "2026-10-31T18:10:52.964Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8988,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              },
+              {
+                "id": 8988,
+                "name": "Scenario: Scalar hook metadata retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:6dd89e1e5ff5b269e20323e2a80f565e",
+          "testCaseHash": -1728542655,
+          "patternTemplates": [],
+          "path": "8982.8988.8989",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8990,
+          "uuid": "8dbc29fa-2911-4de7-bd94-f6f8fcd73966",
+          "name": "Given QA named hook business step",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-10-31T18:10:52.978Z",
+          "endTime": "2026-10-31T18:10:53.014Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8988,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              },
+              {
+                "id": 8988,
+                "name": "Scenario: Scalar hook metadata retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:17903b268acb1ae56ec23804dd264083",
+          "testCaseHash": 1117513817,
+          "patternTemplates": [],
+          "path": "8982.8988.8990",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8991,
+          "uuid": "f203c07d-88e9-4939-83bd-34a1f211223d",
+          "name": "AfterStep hook · Inspect step",
+          "parameters": [],
+          "attributes": [],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-10-31T18:10:53.033Z",
+          "endTime": "2026-10-31T18:10:53.061Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8988,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              },
+              {
+                "id": 8988,
+                "name": "Scenario: Scalar hook metadata retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:3d2331084e1710c80a9a5702af592fa3",
+          "testCaseHash": 2014057404,
+          "patternTemplates": [],
+          "path": "8982.8988.8991",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 8992,
+          "uuid": "4463b2db-a5fb-4db9-a835-eecbfd83aa48",
+          "name": "After hook · Close browser",
+          "parameters": [],
+          "attributes": [],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-10-31T18:10:53.073Z",
+          "endTime": "2026-10-31T18:10:53.091Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8988,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 8982,
+                "name": "Feature: Independent native named hooks retry"
+              },
+              {
+                "id": 8988,
+                "name": "Scenario: Scalar hook metadata retry"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1123,
+          "uniqueId": "auto:61ac84631eff0b87637e622fa96d4744",
+          "testCaseHash": -681599608,
+          "patternTemplates": [],
+          "path": "8982.8988.8992",
+          "hasNestedSteps": false
+        }
+      ],
+      "page": {
+        "number": 1,
+        "size": 100,
+        "totalElements": 10,
+        "totalPages": 1
+      }
+    }
+  ],
+  "discovered_missing_ids": [
+    8983
+  ],
+  "validations": [
+    {
+      "id": 8983,
+      "embedded_containers": [
+        {
+          "container_id": 8988,
+          "retry": {
+            "id": 8983,
+            "uuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+            "name": "Scenario: Scalar hook metadata retry",
+            "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+            "parameters": [],
+            "attributes": [],
+            "type": "STEP",
+            "startTime": "2026-10-31T18:10:52.633Z",
+            "endTime": "2026-10-31T18:10:52.894Z",
+            "status": "FAILED",
+            "statistics": {
+              "executions": {},
+              "defects": {}
+            },
+            "parent": 8982,
+            "hasChildren": false,
+            "hasStats": true,
+            "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9",
+            "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+            "testCaseHash": 2025491222,
+            "patternTemplates": [],
+            "hasNestedSteps": false
+          }
+        }
+      ],
+      "direct_item": {
+        "id": 8983,
+        "uuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+        "name": "Scenario: Scalar hook metadata retry",
+        "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-10-31T18:10:52.633Z",
+        "endTime": "2026-10-31T18:10:52.894Z",
+        "status": "FAILED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 8982,
+        "issue": {
+          "issueType": "ti001",
+          "autoAnalyzed": false,
+          "ignoreAnalyzer": false,
+          "externalSystemIssues": []
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9",
+        "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+        "testCaseHash": 2025491222,
+        "patternTemplates": [],
+        "hasNestedSteps": true
+      },
+      "parent_lineage": [
+        {
+          "id": 8983,
+          "uuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+          "name": "Scenario: Scalar hook metadata retry",
+          "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-10-31T18:10:52.633Z",
+          "endTime": "2026-10-31T18:10:52.894Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 8982,
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": []
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+          "testCaseHash": 2025491222,
+          "patternTemplates": [],
+          "hasNestedSteps": true
+        },
+        {
+          "id": 8982,
+          "uuid": "4d0dadea-2558-4868-b374-8a6c8d18ccec",
+          "name": "Feature: Independent native named hooks retry",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-10-31T18:10:52.632Z",
+          "endTime": "2026-10-31T18:10:53.135Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 1123,
+          "uniqueId": "auto:a7f127d52872424066eb3b42bbb523ce",
+          "testCaseHash": 1622864544,
+          "patternTemplates": [],
+          "path": "8982",
+          "hasNestedSteps": false
+        }
+      ],
+      "per_item_filter_responses": {
+        "prefix": {
+          "content": [],
+          "page": {
+            "number": 1,
+            "size": 1,
+            "totalElements": 0,
+            "totalPages": 0
+          }
+        },
+        "secret": {
+          "content": [],
+          "page": {
+            "number": 1,
+            "size": 1,
+            "totalElements": 0,
+            "totalPages": 0
+          }
+        }
+      },
+      "per_item_logs": [],
+      "expected_snapshot_item": {
+        "id": 8983,
+        "uuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+        "name": "Scenario: Scalar hook metadata retry",
+        "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": 1793470252633,
+        "endTime": 1793470252894,
+        "status": "FAILED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 8982,
+        "issue": {
+          "issueType": "ti001",
+          "autoAnalyzed": false,
+          "ignoreAnalyzer": false,
+          "externalSystemIssues": []
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9",
+        "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+        "testCaseHash": 2025491222,
+        "patternTemplates": [],
+        "hasNestedSteps": false
+      },
+      "verdict": "PASS"
+    }
+  ],
+  "expanded_item_ids": [
+    8982,
+    8983,
+    8984,
+    8985,
+    8986,
+    8987,
+    8988,
+    8989,
+    8990,
+    8991,
+    8992
+  ],
+  "expected_snapshot_item_ids": [
+    8982,
+    8983,
+    8984,
+    8985,
+    8986,
+    8987,
+    8988,
+    8989,
+    8990,
+    8991,
+    8992
+  ],
+  "expanded_log_ids": [
+    5972,
+    5973,
+    5974,
+    5975,
+    5976,
+    5977,
+    5978
+  ],
+  "expected_snapshot_log_ids": [
+    5972,
+    5973,
+    5974,
+    5975,
+    5976,
+    5977,
+    5978
+  ],
+  "note": "Original audit mismatch is preserved, not overwritten. Missing first-attempt scenarios must be discovered inside actual retry arrays and directly read with verified UUID/parent/Suite-Launch lineage and per-item scans.",
+  "verdict": "PASS"
+}

@@ -1,0 +1,271 @@
+[
+  {
+    "cell": "M1",
+    "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "apt-get",
+          "update",
+          "-qq"
+        ],
+        "exit": 0,
+        "seconds": 11.190835130000778
+      },
+      {
+        "argv": [
+          "apt-get",
+          "install",
+          "-y",
+          "--no-install-recommends",
+          "git",
+          "ca-certificates",
+          "curl"
+        ],
+        "exit": 0,
+        "seconds": 51.185664314998576
+      },
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-1.3.2"
+        ],
+        "exit": 0,
+        "seconds": 0.013648500000272179
+      },
+      {
+        "argv": [
+          "bundle",
+          "install",
+          "--local"
+        ],
+        "exit": 6,
+        "seconds": 0.44111945800250396
+      },
+      {
+        "argv": [
+          "bundle",
+          "install"
+        ],
+        "exit": 6,
+        "seconds": 19.222034384001745
+      }
+    ],
+    "source_head": "c2e5c9fb3a8c4fa5b1cb14d09941e794130ff36d",
+    "status": "BLOCKED",
+    "reason": "RuntimeError: Dependency resolution blocked"
+  },
+  {
+    "cell": "M2",
+    "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "apt-get",
+          "update",
+          "-qq"
+        ],
+        "exit": 0,
+        "seconds": 11.26337396300005
+      },
+      {
+        "argv": [
+          "apt-get",
+          "install",
+          "-y",
+          "--no-install-recommends",
+          "git",
+          "ca-certificates",
+          "curl"
+        ],
+        "exit": 0,
+        "seconds": 54.130230192000454
+      },
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-1.3.2"
+        ],
+        "exit": 0,
+        "seconds": 0.012517041999672074
+      },
+      {
+        "argv": [
+          "bundle",
+          "install",
+          "--local"
+        ],
+        "exit": 7,
+        "seconds": 0.6294390420007403
+      },
+      {
+        "argv": [
+          "bundle",
+          "install"
+        ],
+        "exit": 6,
+        "seconds": 15.905174716001056
+      }
+    ],
+    "source_head": "c2e5c9fb3a8c4fa5b1cb14d09941e794130ff36d",
+    "status": "BLOCKED",
+    "reason": "RuntimeError: Dependency resolution blocked"
+  },
+  {
+    "cell": "M3",
+    "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "apt-get",
+          "update",
+          "-qq"
+        ],
+        "exit": 0,
+        "seconds": 10.374746045003121
+      },
+      {
+        "argv": [
+          "apt-get",
+          "install",
+          "-y",
+          "--no-install-recommends",
+          "git",
+          "ca-certificates",
+          "curl"
+        ],
+        "exit": 0,
+        "seconds": 74.4173471590002
+      },
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-1.3.2"
+        ],
+        "exit": 0,
+        "seconds": 0.026661374999093823
+      },
+      {
+        "argv": [
+          "gem",
+          "install",
+          "bundler",
+          "-v",
+          "2.6.6",
+          "--no-document"
+        ],
+        "exit": 0,
+        "seconds": 3.7772532519993547
+      },
+      {
+        "argv": [
+          "bundle",
+          "_2.6.6_",
+          "install",
+          "--local"
+        ],
+        "exit": 0,
+        "seconds": 0.7955973750031262
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "ruby",
+          "-e",
+          "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+        ],
+        "exit": 0,
+        "seconds": 1.826695875999576
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "rspec",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/20261031T065239Z/M3/rspec.json"
+        ],
+        "exit": 1,
+        "seconds": 561.7175992150005
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "cucumber",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/20261031T065239Z/M3/cucumber.json"
+        ],
+        "exit": 1,
+        "seconds": 2.3650083349966735
+      },
+      {
+        "argv": [
+          "/usr/local/bin/ruby",
+          "/Users/nick/Documents/crr-qa-1.3.2/spec/acceptance/ledger_qa/run.rb",
+          "--transport",
+          "offline",
+          "--mode",
+          "plain",
+          "--fixtures",
+          "all",
+          "--sdk-root",
+          "/Users/nick/Documents/crr-qa-1.3.2",
+          "--cucumber",
+          "9.2.1",
+          "--gem-path",
+          "/bundle/ruby/3.3.0",
+          "--jpeg",
+          "/qa-media/jpeg.jpg",
+          "--output",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/20261031T065239Z/M3/fixtures"
+        ],
+        "exit": 2,
+        "seconds": 2.957725043001119
+      }
+    ],
+    "source_head": "c2e5c9fb3a8c4fa5b1cb14d09941e794130ff36d",
+    "runtime": {
+      "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+      "cucumber": "9.2.1",
+      "sdk": "1.3.2"
+    },
+    "rspec": {
+      "duration": 557.466585494,
+      "example_count": 1329,
+      "failure_count": 24,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0
+    },
+    "cucumber": {
+      "scenarios": 1,
+      "steps": 3,
+      "statuses": {
+        "passed": 2,
+        "failed": 1
+      }
+    },
+    "status": "FAIL"
+  }
+]

@@ -1,0 +1,710 @@
+[
+  {
+    "cell": "M1",
+    "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M1/source"
+        ],
+        "exit": 0,
+        "seconds": 0.014991083000495564
+      },
+      {
+        "argv": [
+          "bundle",
+          "_2.6.6_",
+          "install",
+          "--local"
+        ],
+        "exit": 0,
+        "seconds": 1.0623163749987725
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "ruby",
+          "-e",
+          "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+        ],
+        "exit": 0,
+        "seconds": 1.7581832089999807
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "rspec",
+          "--require",
+          "./spec/acceptance/ledger_qa/deadline_probe.rb",
+          "spec",
+          "spec/acceptance/ledger_qa/properties.rb",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M1/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+        ],
+        "exit": 0,
+        "seconds": 423.6878577759999
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "cucumber",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M1/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+        ],
+        "exit": 0,
+        "seconds": 2.6798894179992203
+      },
+      {
+        "argv": [
+          "/usr/local/bin/ruby",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M1/source/spec/acceptance/ledger_qa/isolated.rb",
+          "--transport",
+          "offline",
+          "--mode",
+          "plain",
+          "--fixtures",
+          "all",
+          "--sdk-root",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M1/source",
+          "--cucumber",
+          "9.2.1",
+          "--gem-path",
+          "/bundle/ruby/3.1.0",
+          "--jpeg",
+          "/qa-media/jpeg.jpg",
+          "--output",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M1/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+        ],
+        "exit": 0,
+        "seconds": 72.95468070000061
+      }
+    ],
+    "source_head": "f8872fa76c75024da01cc32c9746eb0a243f8389",
+    "runtime": {
+      "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+      "cucumber": "9.2.1",
+      "sdk": "1.3.2"
+    },
+    "rspec": {
+      "duration": 420.571321917,
+      "example_count": 1350,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0
+    },
+    "cucumber": {
+      "scenarios": 1,
+      "steps": 3,
+      "statuses": {
+        "passed": 3
+      }
+    },
+    "status": "PASS"
+  },
+  {
+    "cell": "M2",
+    "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M2/source"
+        ],
+        "exit": 0,
+        "seconds": 0.012101749998691957
+      },
+      {
+        "argv": [
+          "bundle",
+          "_2.6.6_",
+          "install",
+          "--local"
+        ],
+        "exit": 0,
+        "seconds": 0.8136034589988412
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "ruby",
+          "-e",
+          "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+        ],
+        "exit": 0,
+        "seconds": 2.203212001000793
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "rspec",
+          "--require",
+          "./spec/acceptance/ledger_qa/deadline_probe.rb",
+          "spec",
+          "spec/acceptance/ledger_qa/properties.rb",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M2/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+        ],
+        "exit": 0,
+        "seconds": 414.3594421880007
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "cucumber",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M2/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+        ],
+        "exit": 0,
+        "seconds": 1.7168284170002153
+      },
+      {
+        "argv": [
+          "/usr/local/bin/ruby",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M2/source/spec/acceptance/ledger_qa/isolated.rb",
+          "--transport",
+          "offline",
+          "--mode",
+          "plain",
+          "--fixtures",
+          "all",
+          "--sdk-root",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M2/source",
+          "--cucumber",
+          "10.2.0",
+          "--gem-path",
+          "/bundle/ruby/3.1.0",
+          "--jpeg",
+          "/qa-media/jpeg.jpg",
+          "--output",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M2/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+        ],
+        "exit": 0,
+        "seconds": 43.94613852100156
+      }
+    ],
+    "source_head": "f8872fa76c75024da01cc32c9746eb0a243f8389",
+    "runtime": {
+      "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+      "cucumber": "10.2.0",
+      "sdk": "1.3.2"
+    },
+    "rspec": {
+      "duration": 407.151449785,
+      "example_count": 1350,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0
+    },
+    "cucumber": {
+      "scenarios": 1,
+      "steps": 3,
+      "statuses": {
+        "passed": 3
+      }
+    },
+    "status": "PASS"
+  },
+  {
+    "cell": "M3",
+    "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M3/source"
+        ],
+        "exit": 0,
+        "seconds": 0.012496832998294849
+      },
+      {
+        "argv": [
+          "bundle",
+          "_2.6.6_",
+          "install",
+          "--local"
+        ],
+        "exit": 0,
+        "seconds": 0.5162859580013901
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "ruby",
+          "-e",
+          "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+        ],
+        "exit": 0,
+        "seconds": 0.8954242920008255
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "rspec",
+          "--require",
+          "./spec/acceptance/ledger_qa/deadline_probe.rb",
+          "spec",
+          "spec/acceptance/ledger_qa/properties.rb",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M3/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+        ],
+        "exit": 0,
+        "seconds": 344.779203864
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "cucumber",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M3/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+        ],
+        "exit": 0,
+        "seconds": 2.3957057509978767
+      },
+      {
+        "argv": [
+          "/usr/local/bin/ruby",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M3/source/spec/acceptance/ledger_qa/isolated.rb",
+          "--transport",
+          "offline",
+          "--mode",
+          "plain",
+          "--fixtures",
+          "all",
+          "--sdk-root",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M3/source",
+          "--cucumber",
+          "9.2.1",
+          "--gem-path",
+          "/bundle/ruby/3.3.0",
+          "--jpeg",
+          "/qa-media/jpeg.jpg",
+          "--output",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M3/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+        ],
+        "exit": 0,
+        "seconds": 49.32535289699808
+      }
+    ],
+    "source_head": "f8872fa76c75024da01cc32c9746eb0a243f8389",
+    "runtime": {
+      "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+      "cucumber": "9.2.1",
+      "sdk": "1.3.2"
+    },
+    "rspec": {
+      "duration": 342.681873422,
+      "example_count": 1350,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0
+    },
+    "cucumber": {
+      "scenarios": 1,
+      "steps": 3,
+      "statuses": {
+        "passed": 3
+      }
+    },
+    "status": "PASS"
+  },
+  {
+    "cell": "M4",
+    "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M4/source"
+        ],
+        "exit": 0,
+        "seconds": 0.011645499998849118
+      },
+      {
+        "argv": [
+          "bundle",
+          "_2.6.6_",
+          "install",
+          "--local"
+        ],
+        "exit": 0,
+        "seconds": 0.4852729170015664
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "ruby",
+          "-e",
+          "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+        ],
+        "exit": 0,
+        "seconds": 0.9771672089991625
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "rspec",
+          "--require",
+          "./spec/acceptance/ledger_qa/deadline_probe.rb",
+          "spec",
+          "spec/acceptance/ledger_qa/properties.rb",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M4/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+        ],
+        "exit": 0,
+        "seconds": 329.91088077600216
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "cucumber",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M4/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+        ],
+        "exit": 0,
+        "seconds": 1.691856999997981
+      },
+      {
+        "argv": [
+          "/usr/local/bin/ruby",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M4/source/spec/acceptance/ledger_qa/isolated.rb",
+          "--transport",
+          "offline",
+          "--mode",
+          "plain",
+          "--fixtures",
+          "all",
+          "--sdk-root",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M4/source",
+          "--cucumber",
+          "10.2.0",
+          "--gem-path",
+          "/bundle/ruby/3.3.0",
+          "--jpeg",
+          "/qa-media/jpeg.jpg",
+          "--output",
+          "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M4/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+        ],
+        "exit": 0,
+        "seconds": 47.01006964699991
+      }
+    ],
+    "source_head": "f8872fa76c75024da01cc32c9746eb0a243f8389",
+    "runtime": {
+      "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+      "cucumber": "10.2.0",
+      "sdk": "1.3.2"
+    },
+    "rspec": {
+      "duration": 325.714383248,
+      "example_count": 1350,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0
+    },
+    "cucumber": {
+      "scenarios": 1,
+      "steps": 3,
+      "statuses": {
+        "passed": 3
+      }
+    },
+    "status": "PASS"
+  },
+  {
+    "cell": "M5",
+    "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M5/source"
+        ],
+        "exit": 0,
+        "seconds": 0.007194083998911083
+      },
+      {
+        "argv": [
+          "bundle",
+          "_2.6.6_",
+          "install",
+          "--local"
+        ],
+        "exit": 0,
+        "seconds": 0.3611421669993433
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "ruby",
+          "-e",
+          "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+        ],
+        "exit": 0,
+        "seconds": 0.8791399170004297
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "rspec",
+          "--require",
+          "./spec/acceptance/ledger_qa/deadline_probe.rb",
+          "spec",
+          "spec/acceptance/ledger_qa/properties.rb",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M5/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+        ],
+        "exit": 0,
+        "seconds": 356.31028058000084
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "cucumber",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M5/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+        ],
+        "exit": 0,
+        "seconds": 10.362916837999364
+      },
+      {
+        "argv": [
+          "/usr/local/bin/ruby",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M5/source/spec/acceptance/ledger_qa/isolated.rb",
+          "--transport",
+          "offline",
+          "--mode",
+          "plain",
+          "--fixtures",
+          "all",
+          "--sdk-root",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M5/source",
+          "--cucumber",
+          "12.0.1",
+          "--gem-path",
+          "/bundle/ruby/3.3.0",
+          "--jpeg",
+          "/qa-media/jpeg.jpg",
+          "--output",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M5/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+        ],
+        "exit": 0,
+        "seconds": 47.12404006400175
+      }
+    ],
+    "source_head": "cd0b400a2046e4b7958777165d77b67fcaf56577",
+    "runtime": {
+      "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+      "cucumber": "12.0.1",
+      "sdk": "2.0.1"
+    },
+    "rspec": {
+      "duration": 353.599984219,
+      "example_count": 1407,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0
+    },
+    "cucumber": {
+      "scenarios": 7,
+      "steps": 21,
+      "statuses": {
+        "passed": 21
+      }
+    },
+    "status": "PASS"
+  },
+  {
+    "cell": "M6",
+    "ruby": "ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux]",
+    "commands": [
+      {
+        "argv": [
+          "git",
+          "config",
+          "--global",
+          "--add",
+          "safe.directory",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M6/source"
+        ],
+        "exit": 0,
+        "seconds": 0.037930250000499655
+      },
+      {
+        "argv": [
+          "bundle",
+          "_2.6.6_",
+          "install",
+          "--local"
+        ],
+        "exit": 0,
+        "seconds": 0.543589583998255
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "ruby",
+          "-e",
+          "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+        ],
+        "exit": 0,
+        "seconds": 0.9936649590017623
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "rspec",
+          "--require",
+          "./spec/acceptance/ledger_qa/deadline_probe.rb",
+          "spec",
+          "spec/acceptance/ledger_qa/properties.rb",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M6/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+        ],
+        "exit": 0,
+        "seconds": 364.06645258199933
+      },
+      {
+        "argv": [
+          "bundle",
+          "exec",
+          "cucumber",
+          "--format",
+          "progress",
+          "--format",
+          "json",
+          "--out",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M6/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+        ],
+        "exit": 0,
+        "seconds": 11.160013795997656
+      },
+      {
+        "argv": [
+          "/usr/local/bin/ruby",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M6/source/spec/acceptance/ledger_qa/isolated.rb",
+          "--transport",
+          "offline",
+          "--mode",
+          "plain",
+          "--fixtures",
+          "all",
+          "--sdk-root",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M6/source",
+          "--cucumber",
+          "12.0.1",
+          "--gem-path",
+          "/bundle/ruby/3.4.0",
+          "--jpeg",
+          "/qa-media/jpeg.jpg",
+          "--output",
+          "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-runs/final-fixed-20261031/M6/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+        ],
+        "exit": 0,
+        "seconds": 44.23067356300089
+      }
+    ],
+    "source_head": "cd0b400a2046e4b7958777165d77b67fcaf56577",
+    "runtime": {
+      "ruby": "ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux]",
+      "cucumber": "12.0.1",
+      "sdk": "2.0.1"
+    },
+    "rspec": {
+      "duration": 361.907720251,
+      "example_count": 1407,
+      "failure_count": 0,
+      "pending_count": 0,
+      "errors_outside_of_examples_count": 0
+    },
+    "cucumber": {
+      "scenarios": 7,
+      "steps": 21,
+      "statuses": {
+        "passed": 21
+      }
+    },
+    "status": "PASS"
+  }
+]

@@ -1,0 +1,53 @@
+{
+  "schema": "qa-archive-restoration-proof/1",
+  "version": "2.0.1",
+  "checked_at_utc": "2026-10-31T18:47:58Z",
+  "method": "Stream actual decompressed entry bytes in manifest order, hash every file, reject truncation/extra bytes; no SDK checkout is extracted.",
+  "results": [
+    {
+      "group": "live",
+      "archive": {
+        "path": "docs/reviews/assets/presentation-ledger-2.0.1-live-raw.tar.xz",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "bytes": 6311084,
+        "sha256": "11ceb4b0d0e879c522cb478339aec4ac533604057b9424d83c19d92d457c3884",
+        "entry_set_verified": true
+      },
+      "verified_file_count": 8296,
+      "verified_uncompressed_bytes": 628997205,
+      "every_restored_file_sha256_matches": true
+    },
+    {
+      "group": "checks",
+      "archive": {
+        "path": "docs/reviews/assets/presentation-ledger-2.0.1-checks-raw.tar.xz",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "bytes": 8910460,
+        "sha256": "0ece71aad1cc5acaadd92353c5d9bfc67f97801abc6060ac1f7d42cc45129bad",
+        "entry_set_verified": true
+      },
+      "verified_file_count": 11810,
+      "verified_uncompressed_bytes": 683768123,
+      "every_restored_file_sha256_matches": true
+    },
+    {
+      "group": "matrix",
+      "archive": {
+        "path": "docs/reviews/assets/presentation-ledger-2.0.1-matrix-raw.tar.xz",
+        "exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "bytes": 3254396,
+        "sha256": "11e585c8099a9155cb3f8a014cf96e9e21155d7bc1550d98a54b305b30f0dd80",
+        "entry_set_verified": true
+      },
+      "verified_file_count": 3450,
+      "verified_uncompressed_bytes": 277532761,
+      "every_restored_file_sha256_matches": true
+    }
+  ]
+}
