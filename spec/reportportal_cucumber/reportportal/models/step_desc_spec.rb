@@ -172,7 +172,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     result = descriptor(source, native_test_step(text: "the payload for JPM", argument: runtime_doc))
 
     expect(result.to_markdown).to include("**Then** the payload for JPM")
-    expect(result.to_markdown).to include("```json\n{\n  \"buyer\": \"JPM\"")
+    expect(result.to_markdown).to include("```json\n{ \"buyer\": \"JPM\" }\n```")
     expect(result.to_markdown).not_to include("<buyer>")
   end
 
