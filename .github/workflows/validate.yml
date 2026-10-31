@@ -238,8 +238,6 @@ jobs:
     outputs:
       artifact-id: ${{ steps.artifacts.outputs.artifact-id }}
     env:
-      BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
-      BUNDLE_FROZEN: "true"
       RELEASE_TAG: ${{ github.ref_name }}
       RELEASE_SHA: ${{ github.sha }}
     steps:
@@ -252,7 +250,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
-          bundler-cache: true
 
       - uses: azure/setup-helm@v5
         with:
@@ -270,7 +267,8 @@ jobs:
           sha256sum --check "$RUNNER_TEMP/chart-lock.sha256"
 
       - name: Build verified release bundle
-        run: bundle exec ruby script/release/cli.rb build "$RELEASE_TAG" "$RELEASE_SHA" "$RUNNER_TEMP/release-bundle"
+        # This tool uses only standard libraries; a vendor/bundle install dirties source.
+        run: ruby script/release/cli.rb build "$RELEASE_TAG" "$RELEASE_SHA" "$RUNNER_TEMP/release-bundle"
 
       - name: Preserve validated release bundle
         id: artifacts

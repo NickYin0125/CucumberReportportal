@@ -1,0 +1,128 @@
+name: Rebuild Validated Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing stable SDK 2.x tag (never moved)
+        required: true
+        type: string
+      source_run_id:
+        description: Failed Tag Release run with every matrix passed and no bundle produced
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: tag-release-refs/tags/${{ inputs.tag }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      source-sha: ${{ steps.verify.outputs.source-sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - name: Require complete original validation and no prior publication artifacts
+        id: verify
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v2\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]*$ ]]
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main
+          source_sha="$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}")"
+          git merge-base --is-ancestor "$source_sha" refs/remotes/origin/main
+          workflow_id="$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/release.yml" --jq .id)"
+          proof="$RUNNER_TEMP/rebuild-proof"
+          mkdir -p "$proof"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" > "$proof/run.json"
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/jobs?filter=latest&per_page=100" > "$proof/jobs.json"
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID/artifacts?per_page=100" > "$proof/artifacts.json"
+          gh api --paginate --slurp "repos/$GITHUB_REPOSITORY/releases?per_page=100" > "$proof/releases.json"
+          ruby script/release/rebuild_gate.rb "$RELEASE_TAG" "$source_sha" "$SOURCE_RUN_ID" "$workflow_id" "$proof"
+          echo "source-sha=$source_sha" >> "$GITHUB_OUTPUT"
+
+  rebuild:
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      artifact-id: ${{ steps.artifacts.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.preflight.outputs.source-sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - uses: azure/setup-helm@v5
+        with:
+          version: "v3.18.4"
+      - name: Build from original clean source without installing a development bundle
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_SHA: ${{ needs.preflight.outputs.source-sha }}
+        run: |
+          export HELM_BIN="$(command -v helm)"
+          test -x "$HELM_BIN"
+          sha256sum helm/reportportal-rich-experience/Chart.lock > "$RUNNER_TEMP/chart-lock.sha256"
+          helm repo add reportportal https://k8s.reportportal.io/
+          helm repo update
+          helm dependency build ./helm/reportportal-rich-experience
+          sha256sum --check "$RUNNER_TEMP/chart-lock.sha256"
+          git status --porcelain --untracked-files=normal
+          ruby script/release/cli.rb build "$RELEASE_TAG" "$RELEASE_SHA" "$RUNNER_TEMP/release-bundle"
+      - uses: actions/upload-artifact@v6
+        id: artifacts
+        with:
+          name: rebuilt-release-bundle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/release-bundle/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: [preflight, rebuild]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ needs.preflight.outputs.source-sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+      - uses: actions/download-artifact@v7
+        with:
+          artifact-ids: ${{ needs.rebuild.outputs.artifact-id }}
+          merge-multiple: true
+          path: ${{ runner.temp }}/release-bundle
+      - name: Verify original source and publish the recovered immutable bundle
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_SHA: ${{ needs.preflight.outputs.source-sha }}
+        run: ruby script/release/cli.rb publish "$RELEASE_TAG" "$RELEASE_SHA" "$RUNNER_TEMP/release-bundle"

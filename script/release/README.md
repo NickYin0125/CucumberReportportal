@@ -88,6 +88,28 @@ files retain their original evidence and version scope.
 
 ## Recover original validated artifacts
 
+If every original tag matrix and `validate / gate` passed but **packaging failed
+before any release bundle was retained**, use the separate first-build recovery:
+
+```sh
+gh workflow run release-rebuild.yml --ref main \
+  -f tag="$RELEASE_TAG" -f source_run_id="$VALIDATED_RUN_ID"
+```
+
+This SDK 2.x-only route requires the exact original push/tag/workflow identity,
+each successful matrix cell, a failed bundle job and a skipped publisher. It
+refuses any original bundle from any attempt (even expired), and any release or
+draft for that tag. It checks out the original commit, builds without installing
+development dependencies into source, preserves the new immutable artifact, then
+publishes those exact bytes. It never moves a tag or relaxes source cleanliness.
+The standard packaging job likewise uses only Ruby standard libraries; enabling
+`bundler-cache` there creates an untracked `vendor/bundle` and correctly fails
+the cleanliness guard.
+
+The original failed run stays failed for audit. The successful recovery run is
+the publication evidence. If a bundle already exists, use the retained-artifact
+route below instead; rebuilding or overwriting it is not permitted.
+
 If publication fails after validation and artifact preservation, do not move the
 tag or rebuild/replace already published assets. From a trusted `main` checkout:
 

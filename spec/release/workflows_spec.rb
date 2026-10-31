@@ -14,6 +14,40 @@ RSpec.describe "Release workflow security and validation contract" do
   let(:validation) { YAML.load_file(File.join(root, ".github/workflows/validate.yml")) }
   let(:release) { YAML.load_file(File.join(root, ".github/workflows/release.yml")) }
   let(:resume) { YAML.load_file(File.join(root, ".github/workflows/release-resume.yml")) }
+  let(:rebuild) { YAML.load_file(File.join(root, ".github/workflows/release-rebuild.yml")) }
+
+  it "keeps packaging source clean without hiding untracked dependency files" do
+    steps = validation.dig("jobs", "bundle", "steps")
+    setup = steps.find { |step| step["uses"] == "ruby/setup-ruby@v1" }
+    expect(setup.fetch("with")).not_to have_key("bundler-cache")
+    build = steps.find { |step| step["name"] == "Build verified release bundle" }
+    expect(build.fetch("run")).to start_with("ruby script/release/cli.rb build")
+    expect(steps.to_s).not_to include("bundle install", "bundle exec", "git clean", "--untracked-files=no")
+  end
+
+  it "rebuilds only validated unpublished tags from original source with separate write permissions" do
+    expect(rebuild.fetch(true).keys).to eq(["workflow_dispatch"])
+    expect(rebuild.fetch("permissions")).to eq("contents" => "read", "actions" => "read")
+    expect(rebuild.dig("jobs", "preflight", "if")).to eq("github.ref == 'refs/heads/main'")
+    proof = rebuild.dig("jobs", "preflight", "steps").last.fetch("run")
+    expect(proof).to include("rebuild_gate.rb", "--paginate --slurp", "jobs?filter=latest",
+                            "refs/tags/$RELEASE_TAG^{commit}", "refs/remotes/origin/main")
+    expect(rebuild.dig("concurrency", "group")).to eq(resume.dig("concurrency", "group"))
+    expect(rebuild.dig("concurrency", "cancel-in-progress")).to be(false)
+    expect(rebuild.dig("jobs", "rebuild", "needs")).to eq("preflight")
+    expect(rebuild.dig("jobs", "publish", "needs")).to contain_exactly("preflight", "rebuild")
+    %w[rebuild publish].each do |name|
+      steps = rebuild.dig("jobs", name, "steps")
+      checkout = steps.find { |step| step["uses"] == "actions/checkout@v6" }
+      expect(checkout.fetch("with")).to include("ref" => "${{ needs.preflight.outputs.source-sha }}",
+                                                "persist-credentials" => false, "fetch-depth" => 0)
+      expect(steps.to_s).not_to include("bundler-cache", "bundle install", "git tag", "--force")
+    end
+    expect(rebuild.dig("jobs", "rebuild")).not_to have_key("permissions")
+    expect(rebuild.dig("jobs", "publish", "permissions")).to include("contents" => "write")
+    download = rebuild.dig("jobs", "publish", "steps").find { |step| step["uses"] == "actions/download-artifact@v7" }
+    expect(download.dig("with", "artifact-ids")).to eq("${{ needs.rebuild.outputs.artifact-id }}")
+  end
 
   it "shares the same full validation for PRs, branches and tags with read-only defaults" do
     [ci, validation, release].each { |workflow| expect(workflow.fetch("permissions")).to eq("contents" => "read") }
