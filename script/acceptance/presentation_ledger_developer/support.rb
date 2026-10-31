@@ -67,6 +67,8 @@ module LedgerDeveloper
       end
       at_exit do
         value = { ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch("cucumber").version.to_s,
+                  cucumber_expressions: Gem.loaded_specs.fetch("cucumber-cucumber-expressions").version.to_s,
+                  activation: LedgerDeveloper::Activation.provenance,
                   sdk_version: ReportportalCucumber::VERSION,
                   loaded_sdk_sha256_at_start: source_hashes,
                   sdk_source_changed_during_fixture: source_hashes.any? { |path, sha| Digest::SHA256.file(path).hexdigest != sha },
