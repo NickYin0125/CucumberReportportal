@@ -1467,17 +1467,25 @@ module ReportportalCucumber
         metadata ||= @ast_metadata.scenario(uri: feature_uri, location_line: scenario_line)
         return unless metadata
 
+        Presentation::Fallback.render(fallback: -> { scenario_description(metadata, presentation: false) }) do
+          scenario_description(metadata, presentation: true)
+        end
+      end
+
+      def scenario_description(metadata, presentation:)
         parts = []
         parts << metadata[:description]
         if metadata[:rule_name]
-          parts << "Rule: #{metadata[:rule_name]}"
+          name = metadata[:rule_name]
+          parts << "Rule: #{presentation ? Presentation::MarkdownText.inline(name) : name}"
           parts << metadata[:rule_description]
         end
         if metadata[:examples_name] || metadata[:example_row_line]
-          parts << "Examples: #{metadata[:examples_name]}" if metadata[:examples_name]
+          name = metadata[:examples_name]
+          parts << "Examples: #{presentation ? Presentation::MarkdownText.inline(name) : name}" if name
           parts << "Example row: #{metadata[:example_row_line]}" if metadata[:example_row_line]
           parameters = metadata[:parameters]
-          parts << parameter_description_table(parameters) if parameters
+          parts << parameter_description_table(parameters, presentation: presentation) if parameters
         end
         parts.compact.reject { |part| part.to_s.empty? }.join("\n\n").then { |value| value.empty? ? nil : value }
       end
@@ -1745,7 +1753,15 @@ module ReportportalCucumber
 
       # @param parameters [Hash<String, String>]
       # @return [String]
-      def parameter_description_table(parameters)
+      def parameter_description_table(parameters, presentation: true)
+        if presentation
+          return Presentation::Fallback.render(fallback: -> { parameter_description_table(parameters, presentation: false) }) do
+            header = parameters.keys.map { |cell| Presentation::MarkdownText.cell(cell) }
+            values = parameters.values.map { |cell| Presentation::MarkdownText.cell(cell) }
+            [header, Array.new(parameters.length, "---"), values].map { |cells| "| #{cells.join(' | ')} |" }.join("\n")
+          end
+        end
+
         rows = [parameters.keys, Array.new(parameters.length, "---"), parameters.values].map do |cells|
           "| #{cells.map do |cell|
             cell.to_s.gsub(/\\|\r\n|[|\r\n]/) do |character|

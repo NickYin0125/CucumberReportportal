@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require_relative "../../presentation/markdown_text"
 
 module ReportportalCucumber
   module ReportPortal
@@ -59,39 +60,51 @@ module ReportportalCucumber
 
         # @return [String]
         def to_markdown
-          sections = [header_line]
-          multiline_sections.each do |section|
+          Presentation::Fallback.render(fallback: -> { render_markdown(presentation: false) }) do
+            render_markdown(presentation: true)
+          end
+        end
+
+        # @return [Boolean]
+        def rich?
+          multiline_sections(presentation: false).any? { |section| !section.to_s.strip.empty? }
+        end
+
+        private
+
+        def render_markdown(presentation:)
+          sections = [header_line(presentation: presentation)]
+          multiline_sections(presentation: presentation).each do |section|
             sections << section unless section.to_s.strip.empty?
           end
           sections.join("\n\n")
         end
 
-        # @return [Boolean]
-        def rich?
-          multiline_sections.any? { |section| !section.to_s.strip.empty? }
-        end
-
-        private
-
         # @return [String]
-        def header_line
-          if step_text.empty?
-            "**#{keyword_label}**"
+        def header_line(presentation: true)
+          keyword = presentation ? Presentation::MarkdownText.inline(keyword_label) : keyword_label
+          text = presentation ? Presentation::MarkdownText.inline(step_text) : step_text
+          # Leave room for argument previews even when entity escaping expands a hostile title.
+          if presentation && text.bytesize > CONTENT_BYTE_LIMIT / 2
+            text = Presentation::MarkdownText.inline(step_text, limit: STEP_TEXT_BYTE_LIMIT / 6)
+          end
+          if text.empty?
+            "**#{keyword}**"
           else
-            "**#{keyword_label}** #{step_text}"
+            "**#{keyword}** #{text}"
           end
         end
 
         # @return [Array<String>]
-        def multiline_sections
+        def multiline_sections(presentation: true)
           sections = []
-          remaining = CONTENT_BYTE_LIMIT - header_line.bytesize
-          table_rows = runtime_table_rows || source_table_rows
+          remaining = CONTENT_BYTE_LIMIT - header_line(presentation: presentation).bytesize
+          rows = table_rows
           doc_string = runtime_doc_string || source_doc_string
 
-          if table_rows && !table_rows.empty?
+          if rows && !rows.empty?
             reserve = 2 + (doc_string ? DOC_OMITTED_MARKER.bytesize + 2 : 0)
-            table = data_table_markdown(byte_limit: remaining - reserve)
+            table = data_table_markdown(byte_limit: remaining - reserve, presentation: presentation)
           end
           if table
             sections << table
@@ -132,8 +145,8 @@ module ReportportalCucumber
 
         # @param byte_limit [Integer]
         # @return [String, nil]
-        def data_table_markdown(byte_limit:)
-          rows = runtime_table_rows || source_table_rows
+        def data_table_markdown(byte_limit:, presentation: true)
+          rows = table_rows
           return nil unless rows && !rows.empty?
           return TABLE_OMITTED_MARKER if byte_limit <= TABLE_OMITTED_MARKER.bytesize
 
@@ -148,7 +161,7 @@ module ReportportalCucumber
             cells = Array(cells)
             return append_table_marker(lines, used_bytes, byte_limit) if cells.length > TABLE_COLUMN_LIMIT
 
-            rendered_cells = cells.map { |cell| escape_markdown_cell(cell_value(cell)) }
+            rendered_cells = cells.map { |cell| escape_markdown_cell(cell_value(cell), presentation: presentation) }
             row_line = "| #{rendered_cells.join(' | ')} |"
             candidate = index.zero? ? [row_line, "| #{Array.new(cells.length, '---').join(' | ')} |"] : [row_line]
             candidate_bytes = candidate.sum(&:bytesize) + (candidate.length - 1)
@@ -188,6 +201,11 @@ module ReportportalCucumber
         def source_table_rows
           table = @step.respond_to?(:data_table) ? @step.data_table : nil
           table.rows if table&.respond_to?(:rows)
+        end
+
+        # @return [Array<Object>, nil] Only the legacy executed/source table.
+        def table_rows
+          runtime_table_rows || source_table_rows
         end
 
         # @param cell [Object]
@@ -393,7 +411,9 @@ module ReportportalCucumber
 
         # @param value [String]
         # @return [String]
-        def escape_markdown_cell(value)
+        def escape_markdown_cell(value, presentation: true)
+          return Presentation::MarkdownText.cell(value, limit: CELL_BYTE_LIMIT) if presentation
+
           prefix, truncated = bounded_utf8(value, CELL_BYTE_LIMIT)
           escaped = prefix.gsub(/[\\|]/) { |character| "\\#{character}" }
           escaped = escaped.gsub(/\r\n|\r|\n/, "<br>")

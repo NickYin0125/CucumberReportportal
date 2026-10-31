@@ -3,6 +3,7 @@
 require "json"
 require "uri"
 require_relative "../automation/evidence_redactor"
+require_relative "../presentation/markdown_text"
 
 module ReportportalCucumber
   module Service
@@ -55,7 +56,9 @@ module ReportportalCucumber
         # @param details [Object, nil] Optional supplementary diagnostic details.
         def assertion(name:, expected:, actual:, passed:, details: nil)
           status = passed ? "PASS" : "FAIL"
-          markdown = assertion_markdown(status, name, expected, actual, details)
+          markdown = Presentation::Fallback.render(fallback: -> { assertion_markdown(status, name, expected, actual, details, presentation: false) }) do
+            assertion_markdown(status, name, expected, actual, details, presentation: true)
+          end
           { summary: bounded("#{status}: #{safe_string(name, VALUE_LIMIT)}", SUMMARY_LIMIT),
             markdown: bounded(markdown, DETAILS_LIMIT) }
         rescue StandardError
@@ -78,15 +81,23 @@ module ReportportalCucumber
 
         private
 
-        def assertion_markdown(status, name, expected, actual, details)
-          rows = ["## Assertion: #{render(name, VALUE_LIMIT)}", "", "**Outcome:** #{status}", "",
+        def assertion_markdown(status, name, expected, actual, details, presentation:)
+          title = render(name, VALUE_LIMIT)
+          title = Presentation::MarkdownText.inline(title, limit: VALUE_LIMIT) if presentation
+          rows = ["## Assertion: #{title}", "", "**Outcome:** #{status}", "",
                   "| Expected | Actual |", "| --- | --- |",
-                  "| #{table_cell(expected)} | #{table_cell(actual)} |"]
-          rows.concat(["", "### Details", "", render(details, DETAILS_LIMIT)]) unless details.nil?
+                  "| #{table_cell(expected, presentation: presentation)} | #{table_cell(actual, presentation: presentation)} |"]
+          unless details.nil?
+            text = render(details, DETAILS_LIMIT)
+            text = Presentation::MarkdownText.inline(text, limit: DETAILS_LIMIT) if presentation
+            rows.concat(["", "### Details", "", text])
+          end
           rows.join("\n")
         end
 
-        def table_cell(value)
+        def table_cell(value, presentation:)
+          return Presentation::MarkdownText.cell(render(value, VALUE_LIMIT), limit: VALUE_LIMIT) if presentation
+
           render(value, VALUE_LIMIT).gsub("|", "\\|").gsub(/[\r\n]+/, " ")
         end
 
