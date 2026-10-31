@@ -136,7 +136,7 @@ Each proposal below lists the problem, the exact output, the rules, and the code
 **Output (Launch 76 fixture):**
 
 ````markdown
-## ✗ RuntimeError: INDEPENDENT_FULL_BACKTRACE
+## ✗ RuntimeError: INDEPENDENT\_FULL\_BACKTRACE
 
 `features/audit.feature:5` → `runtime-support.rb:65`
 
@@ -408,13 +408,28 @@ _Details_ `api_key` = `[REDACTED]`
 
 `https://api.example.test/api/orders`
 
-_Request_ · `application/json` · 212 B
+_Request headers · 4_
+
+```text
+Content-Type: application/json
+Accept: application/json
+X-Request-Id: ledger-42
+X-Fixture: F11a
+```
+
+_Request_ · `application/json` · 55 B
 
 ```json
 { "account": "JPM-PRIME", "side": "BUY", "notional": 5000000 }
 ```
 
-_Response_ · `application/json` · 148 B
+_Response headers · 1_
+
+```text
+Content-Type: application/json
+```
+
+_Response_ · `application/json` · 51 B
 
 ```json
 { "orderId": "ORD-20261031-0042", "status": "ACCEPTED" }
@@ -441,6 +456,7 @@ _Response_ · `application/json` · 148 B
     - `_Request headers · N_` and `_Response headers · N_` are each followed by a `text` fence when there are headers.
     - Content type comes from the headers when present.
     - The status is the code only.
+    - Body sizes measure input bytes (a String's bytes, or JSON serialization of a Hash), not the formatted preview. F11a's Hash inputs are 55 B and 51 B; their Ledger JSON previews are 62 B and 56 B.
 - **Bounds.** Existing sanitisation, redaction and size bounds are unchanged (`SUMMARY_LIMIT`, `DETAILS_LIMIT`, `VALUE_LIMIT`, HTTP 16 KiB / 100 lines). The returned `summary:` used by the terminal is unchanged.
 
 **Code**
@@ -613,4 +629,8 @@ the independent tester must assess against them.
 6. Question: 为消除 2.x 文档冲突，是否允许仅将 PR 目标分支 codex/cucumber-12 同步合并进功能分支，并保留目标分支已发布的 2.0.0 CHANGELOG 内容？不合并 PR、不推受保护分支、不强推、不发布。
 
    Owner answer: 允许仅同步目标分支，并保留正式发布历史（推荐）
+
+7. Question: 独立 QA 发现验收金样与明确规则有三处冲突：P1 标题下划线未转义；P8 金样遗漏了 F11a 要求的 4 个请求 Header；同一 Hash 报文实际输入长度为 55/51 B，而金样写成 212/148 B。是否按明确规则修正金样，继续逐字节比较，并完整保留 P1 的 62 帧原始基线栈，不放宽帧数要求？
+
+   Owner answer: 按规则修正金样，保留严格逐字节验收（推荐）
 

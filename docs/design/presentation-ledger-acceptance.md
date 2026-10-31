@@ -129,6 +129,13 @@ Reuse the existing acceptance features where they exist. Write new ones under `f
 | e | Response body of 40 JSON lines | INFO |
 | f | URL `…/orders?token=SECRET123&page=2` | INFO |
 
+F11a uses request headers in this order: `Content-Type: application/json`,
+`Accept: application/json`, `X-Request-Id: ledger-42`, `X-Fixture: F11a`;
+the response has `Content-Type: application/json`. Its bodies are the Hash
+inputs shown in P8, serialized to 55 B and 51 B before Ledger JSON formatting.
+The corrected P8 golden includes these header sections and input-byte counts;
+P8.4 still requires an exact UTF-8 comparison (Decision 7).
+
 **F13 numeric DataTable.** Columns `account`, `qty`, `price`, `change`, `pct`, `code`, `mixed`, `blank`, with these body cells:
 
 - `qty`: `100`, `1,250`, `12,345,678`
@@ -412,4 +419,8 @@ the independent tester must assess against them.
 6. Question: 为消除 2.x 文档冲突，是否允许仅将 PR 目标分支 codex/cucumber-12 同步合并进功能分支，并保留目标分支已发布的 2.0.0 CHANGELOG 内容？不合并 PR、不推受保护分支、不强推、不发布。
 
    Owner answer: 允许仅同步目标分支，并保留正式发布历史（推荐）
+
+7. Question: 独立 QA 发现验收金样与明确规则有三处冲突：P1 标题下划线未转义；P8 金样遗漏了 F11a 要求的 4 个请求 Header；同一 Hash 报文实际输入长度为 55/51 B，而金样写成 212/148 B。是否按明确规则修正金样，继续逐字节比较，并完整保留 P1 的 62 帧原始基线栈，不放宽帧数要求？
+
+   Owner answer: 按规则修正金样，保留严格逐字节验收（推荐）
 
