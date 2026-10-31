@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
       "README.md",
       "CHANGELOG.md",
       "docs/design/*.md",
+      "deploy/compose/*.md",
       "helm/reportportal-rich-experience/*.md",
       "examples/**/*",
       "exe/**/*",

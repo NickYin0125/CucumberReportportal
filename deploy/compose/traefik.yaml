@@ -1,0 +1,50 @@
+# A static provider avoids mounting the Docker control socket into the gateway.
+http:
+  routers:
+    api:
+      rule: PathPrefix(`/api`)
+      service: api
+      middlewares: [api-prefix]
+      entryPoints: [web]
+    uat:
+      rule: PathPrefix(`/uat`)
+      service: uat
+      middlewares: [uat-prefix]
+      entryPoints: [web]
+    ui:
+      rule: PathPrefix(`/ui`)
+      service: ui
+      middlewares: [ui-prefix]
+      entryPoints: [web]
+    videos:
+      rule: PathPrefix(`/automation-videos`)
+      service: videos
+      entryPoints: [web]
+    index:
+      rule: PathPrefix(`/`)
+      priority: 1
+      service: index
+      entryPoints: [web]
+  middlewares:
+    api-prefix:
+      stripPrefix: {prefixes: [/api]}
+    uat-prefix:
+      stripPrefix: {prefixes: [/uat]}
+    ui-prefix:
+      stripPrefix: {prefixes: [/ui]}
+  services:
+    api:
+      loadBalancer:
+        servers: [{url: "http://api:8585"}]
+    uat:
+      loadBalancer:
+        servers: [{url: "http://uat:9999"}]
+    ui:
+      loadBalancer:
+        servers: [{url: "http://ui:8080"}]
+    index:
+      loadBalancer:
+        servers: [{url: "http://index:8080"}]
+    videos:
+      loadBalancer:
+        servers: [{url: "http://minio:9000"}]

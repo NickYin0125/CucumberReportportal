@@ -6,7 +6,15 @@ Given("I record Typewords dictionary navigation and return to Words") do
   @video_page.goto(ENV.fetch("TYPEWORDS_URL"), waitUntil: "domcontentloaded")
   @video_page.wait_for_load_state(state: "networkidle", timeout: 15_000)
   close_tour = @video_page.get_by_role("button", name: "Close Tour", exact: true)
-  close_tour.click if close_tour.count.positive?
+  begin
+    # The tour can mount after the first network-idle notification.
+    close_tour.wait_for(state: "visible", timeout: 5_000)
+    close_tour.click
+    @video_page.locator("svg.shepherd-modal-is-visible").wait_for(state: "hidden", timeout: 5_000)
+  rescue Playwright::TimeoutError
+    # No tour is valid; an obstructing tour must still fail the real interaction.
+    raise if @video_page.locator("svg.shepherd-modal-is-visible").count.positive?
+  end
   @video_page.get_by_role("link", name: "Words", exact: true).wait_for(state: "visible")
   @video_page.get_by_text("Select Dictionary", exact: true).wait_for(state: "visible")
   @video_page.screenshot(path: File.join(VIDEO_RESULTS, "01-words.png"))

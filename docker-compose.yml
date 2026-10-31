@@ -1,0 +1,276 @@
+# ReportPortal 26.0.7 local stack, based on the official 26.0.7 Compose release.
+# Use a distinct project name; never attach PostgreSQL 17 or OpenSearch 2 volumes.
+name: reportportal-2607
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "3"
+
+x-environment: &environment
+  RP_DB_HOST: postgres
+  RP_DB_PORT: 5432
+  RP_DB_NAME: reportportal
+  RP_DB_USER: rpuser
+  RP_DB_PASS: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in a private env file}
+  RP_AMQP_HOST: rabbitmq
+  RP_AMQP_PORT: 5672
+  RP_AMQP_APIPORT: 15672
+  RP_AMQP_USER: rpuser
+  RP_AMQP_PASS: ${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD}
+  RP_AMQP_APIUSER: rpuser
+  RP_AMQP_APIPASS: ${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD}
+  RP_AMQP_ANALYZER-VHOST: analyzer
+  DATASTORE_TYPE: filesystem
+
+x-java-dependencies: &java-dependencies
+  migrations:
+    condition: service_completed_successfully
+  rabbitmq:
+    condition: service_healthy
+
+services:
+  gateway:
+    image: traefik:v2.11.60
+    command:
+      - --providers.file.filename=/etc/traefik/dynamic.yaml
+      - --entrypoints.web.address=:8080
+      - --entrypoints.traefik.address=:8081
+      - --api.insecure=true
+    ports:
+      - "127.0.0.1:${RP_COMPOSE_PORT:-28080}:8080"
+    volumes:
+      - ./deploy/compose/traefik.yaml:/etc/traefik/dynamic.yaml:ro
+    depends_on:
+      video-bucket-init: {condition: service_completed_successfully}
+    restart: unless-stopped
+    logging: *logging
+
+  postgres:
+    image: postgres:18.6
+    environment:
+      POSTGRES_USER: rpuser
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: reportportal
+    volumes:
+      - postgres:/var/lib/postgresql
+    shm_size: 256m
+    mem_limit: 1g
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U rpuser -d reportportal"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+    logging: *logging
+
+  rabbitmq:
+    image: rabbitmq:4.4.0-management
+    environment:
+      RABBITMQ_DEFAULT_USER: rpuser
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD}
+      RABBITMQ_DEFAULT_VHOST: analyzer
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+      - ./deploy/compose/rabbitmq.conf:/etc/rabbitmq/conf.d/99-reportportal.conf:ro
+      - ./deploy/compose/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+    mem_limit: 1g
+    healthcheck:
+      test: [CMD, rabbitmq-diagnostics, -q, ping]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+    restart: unless-stopped
+    logging: *logging
+
+  opensearch:
+    image: opensearchproject/opensearch:3.9.0
+    environment:
+      discovery.type: single-node
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_JAVA_OPTS: ${OPENSEARCH_JAVA_OPTS:--Xms512m -Xmx512m}
+    volumes:
+      - opensearch:/usr/share/opensearch/data
+    mem_limit: 2g
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=2s' >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
+    logging: *logging
+
+  migrations:
+    image: reportportal/migrations:5.15.6
+    environment:
+      POSTGRES_SERVER: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: rpuser
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_DB: reportportal
+    depends_on:
+      postgres: {condition: service_healthy}
+    restart: "no"
+    logging: *logging
+
+  index:
+    image: reportportal/service-index:5.15.2
+    environment:
+      LB_URL: http://gateway:8081
+      TRAEFIK_V2_MODE: "true"
+    depends_on:
+      gateway: {condition: service_started}
+    restart: unless-stopped
+    logging: *logging
+
+  ui:
+    image: reportportal/service-ui:5.15.6
+    environment:
+      RP_SERVER_PORT: "8080"
+    restart: unless-stopped
+    logging: *logging
+
+  jobs:
+    image: reportportal/service-jobs:5.15.3
+    environment:
+      <<: *environment
+      JAVA_OPTS: -XX:MaxRAMPercentage=65.0
+      RP_ENVIRONMENT_VARIABLE_CLEAN_ATTACHMENT_CRON: "0 0 */24 * * *"
+      RP_ENVIRONMENT_VARIABLE_CLEAN_LOG_CRON: "0 0 */24 * * *"
+      RP_ENVIRONMENT_VARIABLE_CLEAN_LAUNCH_CRON: "0 0 */24 * * *"
+    volumes:
+      - storage:/data/storage
+    depends_on: *java-dependencies
+    mem_limit: 1g
+    restart: unless-stopped
+    logging: *logging
+
+  api:
+    image: reportportal/service-api:5.15.6
+    environment:
+      <<: *environment
+      JAVA_OPTS: -Xmx1g
+      RP_REQUESTLOGGING: "false"
+      AUDIT_LOGGER: "OFF"
+      MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED: "false"
+      RP_JOBS_BASEURL: http://jobs:8686
+      REPORTING_QUEUES_COUNT: 10
+      REPORTING_CONSUMER_PREFETCHCOUNT: 10
+      REPORTING_PARKINGLOT_TTL_DAYS: 7
+    volumes:
+      - storage:/data/storage
+    depends_on:
+      <<: *java-dependencies
+      jobs: {condition: service_started}
+    mem_limit: 2g
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS http://localhost:8585/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+    logging: *logging
+
+  uat:
+    image: reportportal/service-authorization:5.15.2
+    environment:
+      <<: *environment
+      RP_INITIAL_ADMIN_PASSWORD: ${RP_INITIAL_ADMIN_PASSWORD:?Set RP_INITIAL_ADMIN_PASSWORD}
+      JAVA_OPTS: -XX:MaxRAMPercentage=65.0 --add-opens=java.base/java.lang=ALL-UNNAMED
+    volumes:
+      - storage:/data/storage
+    depends_on: *java-dependencies
+    mem_limit: 1g
+    healthcheck:
+      test: [CMD-SHELL, "curl -fsS http://localhost:9999/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+    restart: unless-stopped
+    logging: *logging
+
+  analyzer-storage-init:
+    image: busybox:1.38.0
+    user: "0:0"
+    command: [sh, -ec, "chown 65532:65532 /data"]
+    volumes:
+      - type: volume
+        source: analyzer-storage
+        target: /data
+        volume: {nocopy: true}
+    restart: "no"
+    logging: *logging
+
+  analyzer:
+    image: reportportal/service-auto-analyzer:5.15.6
+    environment:
+      LOGGING_LEVEL: info
+      AMQP_EXCHANGE_NAME: analyzer-default
+      AMQP_VIRTUAL_HOST: analyzer
+      AMQP_URL: amqp://rpuser:${RABBITMQ_PASSWORD:?Set RABBITMQ_PASSWORD}@rabbitmq:5672
+      ES_HOSTS: http://opensearch:9200
+      ANALYZER_BINARYSTORE_TYPE: filesystem
+      DATASTORE_TYPE: filesystem
+      FILESYSTEM_DEFAULT_PATH: /data/storage/analyzer
+    volumes:
+      - type: volume
+        source: analyzer-storage
+        target: /data/storage/analyzer
+        volume: {nocopy: true}
+    depends_on:
+      analyzer-storage-init: {condition: service_completed_successfully}
+      opensearch: {condition: service_healthy}
+      rabbitmq: {condition: service_healthy}
+    mem_limit: 1g
+    restart: unless-stopped
+    logging: *logging
+
+  minio:
+    image: bitnamilegacy/minio:2025.7.23-debian-12-r0
+    environment:
+      MINIO_ROOT_USER: rpuser
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD:?Set MINIO_PASSWORD}
+    volumes:
+      - videos:/bitnami/minio/data
+    mem_limit: 512m
+    restart: unless-stopped
+    logging: *logging
+
+  video-bucket-init:
+    image: bitnamilegacy/minio-client:2025.7.21-debian-12-r0
+    entrypoint: [/bin/sh, /configuration/reconcile.sh]
+    environment:
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: rpuser
+      MINIO_SECRET_KEY: ${MINIO_PASSWORD:?Set MINIO_PASSWORD}
+      MINIO_BUCKET: automation-videos
+      MINIO_BUCKET_ENABLED: "true"
+      MINIO_MAKE_PUBLIC: ${VIDEO_ANONYMOUS_READ:-true}
+      MINIO_RETENTION_ENABLED: "true"
+      MINIO_QUOTA_ENABLED: "true"
+      MINIO_QUOTA_SIZE: ${VIDEO_QUOTA_SIZE:-4GiB}
+      MINIO_OBJECT_PREFIX: videos
+      MINIO_WAIT_ATTEMPTS: "60"
+      MINIO_WAIT_SLEEP_SECONDS: "2"
+    volumes:
+      - ./helm/reportportal-rich-experience/files/reconcile-video-bucket.sh:/configuration/reconcile.sh:ro
+      - ./deploy/compose/read-only.json:/configuration/read-only.json:ro
+      - ./deploy/compose/private.json:/configuration/private.json:ro
+      - ./deploy/compose/lifecycle.json:/configuration/lifecycle.json:ro
+    depends_on:
+      minio: {condition: service_started}
+    restart: "no"
+    logging: *logging
+
+volumes:
+  postgres:
+  rabbitmq:
+  opensearch:
+  storage:
+  analyzer-storage:
+  videos:

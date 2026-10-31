@@ -59,14 +59,14 @@ jobs:
       - name: Validate Helm deployment profiles without deploying
         run: |
           chart=./helm/reportportal-rich-experience
-          helm lint "$chart"
-          helm template release-validation "$chart" > /dev/null
+          helm lint "$chart" --kube-version 1.35.0
+          helm template release-validation "$chart" --kube-version 1.35.0 > /dev/null
           for profile in values-local-latest.yaml values-production.example.yaml; do
-            helm lint "$chart" -f "$chart/$profile"
-            helm template release-validation "$chart" -f "$chart/$profile" > /dev/null
+            helm lint "$chart" --kube-version 1.35.0 -f "$chart/$profile"
+            helm template release-validation "$chart" --kube-version 1.35.0 -f "$chart/$profile" > /dev/null
           done
-          helm lint "$chart" -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml"
-          helm template release-validation "$chart" -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml" > /dev/null
+          helm lint "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml"
+          helm template release-validation "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml" > /dev/null
 
       - name: Run full RSpec including installed packaging checks
         run: bundle exec rspec

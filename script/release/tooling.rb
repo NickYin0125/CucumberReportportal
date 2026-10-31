@@ -29,7 +29,7 @@ module ReleaseTooling
 
   class Source
     CHART = "helm/reportportal-rich-experience"
-    APP_VERSION = "26.0.5"
+    APP_VERSION = "26.0.7"
     attr_reader :root, :tag, :commit, :version, :commands
 
     def initialize(root:, tag:, commit:, commands: Commands.new)

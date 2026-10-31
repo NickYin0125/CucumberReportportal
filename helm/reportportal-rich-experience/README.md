@@ -2,7 +2,7 @@
 
 ## Version Contract
 
-Wrapper chart **1.3.0** pins official chart **26.8.12**, ReportPortal **26.0.5**.
+Wrapper chart **1.3.1** pins official chart **26.10.26**, ReportPortal **26.0.7**.
 `appVersion` identifies the ReportPortal server, not the independent Ruby SDK version.
 The dependency archive and lock file are included in the packaged chart.
 The wrapper also initializes RabbitMQ's default vhost as `analyzer`, matching
@@ -13,16 +13,30 @@ verify its user/vhost permissions explicitly during migration.
 
 | Component | Pinned image version |
 | --- | --- |
-| API / migrations | 5.15.4 |
-| UI | 5.15.5 |
-| Authorization / index | 5.15.1 |
-| Jobs | 5.15.2 |
-| Analyzer | 5.15.5 |
-| PostgreSQL | 18.4 |
-| RabbitMQ | 4.3.4-management |
-| OpenSearch | 3.8.0 |
+| API / migrations | 5.15.6 |
+| UI | 5.15.6 |
+| Authorization / index | 5.15.2 |
+| Jobs | 5.15.3 |
+| Analyzer | 5.15.6 |
+| PostgreSQL | 18.6 |
+| RabbitMQ | 4.4.0-management |
+| OpenSearch | 3.9.0 |
+| MinIO | bitnamilegacy/minio:2025.7.23-debian-12-r0 |
+| Bucket initializer | bitnamilegacy/minio-client:2025.7.21-debian-12-r0 |
 
-Requires Kubernetes >= 1.26, Helm 3 and a compatible Ingress controller.
+The original `minio/mc` and MinIO public image endpoints returned access-denied
+during this upgrade. The initializer now uses an available archived Bitnami build
+of mc 2025-07-21; the policy/lifecycle commands are verified against the server.
+These are still archived storage images, not newly maintained 2026 MinIO releases.
+For production/offline installs, scan and mirror the approved images to your
+internal registry and override `reportportal.minio.image` and
+`videoBucket.job.image` explicitly. Do not depend on local Docker image caches.
+
+Requires **Kubernetes >= 1.35**, Helm >= 3.18.4 and a compatible Ingress controller.
+The wrapper retains the upstream Kubernetes requirement; do not bypass it with
+`--kube-version` during a real installation. For offline rendering/lint only,
+pass `--kube-version 1.35.0` when Helm's simulated version is older.
+Optional Prime services remain disabled; no private subscription images are required.
 The routes now use standard `Prefix` matching, preserve the full S3 bucket path,
 and have no NGINX-specific annotations. The default class is `traefik`; the wrapper
 does not install or own your shared controller. A separately installed Traefik
@@ -48,7 +62,7 @@ For isolated local acceptance, the preconfigured hostname is `rp-latest.localhos
 
 ```sh
 helm dependency build ./helm/reportportal-rich-experience
-helm lint ./helm/reportportal-rich-experience -f ./helm/reportportal-rich-experience/values-local-latest.yaml
+helm lint ./helm/reportportal-rich-experience --kube-version 1.35.0 -f ./helm/reportportal-rich-experience/values-local-latest.yaml
 helm install reportportal-latest ./helm/reportportal-rich-experience \
   -n reportportal-latest --create-namespace \
   -f ./helm/reportportal-rich-experience/values-local-latest.yaml \
@@ -67,7 +81,7 @@ resource limits, network policies and availability for your cluster:
 
 ```sh
 helm package ./helm/reportportal-rich-experience -d ./pkg
-helm install reportportal ./pkg/reportportal-rich-experience-1.3.0.tgz \
+helm install reportportal ./pkg/reportportal-rich-experience-1.3.1.tgz \
   -n reportportal --create-namespace -f ./production-values.yaml \
   --wait --wait-for-jobs --timeout 20m
 ```
@@ -110,7 +124,15 @@ CSP or make unsafe HTML safe. For Huawei private-cloud integration, see
 unresolved `values-huawei.example.yaml` overlay. Public CCE documentation is not
 proof of compatibility with your specific Huawei Cloud Stack/UCS installation.
 
-## Existing Installations: Do Not Upgrade Volumes In Place
+## Existing Installations: Check The Cluster And Data Versions First
+
+Chart 26.10.26 raises the minimum Kubernetes version from 1.26 to 1.35 and updates
+PostgreSQL 18.4 to 18.6, RabbitMQ 4.3.4 to 4.4.0, and OpenSearch 3.8 to 3.9.
+Plan backups and verify each dependency's supported upgrade path before upgrading
+an existing release; rollback of the chart is not a database downgrade strategy.
+For local acceptance, a separate Kubernetes 1.35 cluster avoids changing or mounting
+the old cluster's data. The companion [Compose stack](../../deploy/compose/README.md)
+also uses a distinct project name and independent named volumes.
 
 Official chart 26.8.12 changes PostgreSQL and RabbitMQ from Bitnami to CloudPirates
 and upgrades PostgreSQL 17 to 18 and OpenSearch 2 to 3. A normal `helm upgrade` or
@@ -131,7 +153,7 @@ measure, not a production migration or zero-downtime upgrade strategy.
 
 ```sh
 helm dependency build ./helm/reportportal-rich-experience
-helm lint ./helm/reportportal-rich-experience
+helm lint ./helm/reportportal-rich-experience --kube-version 1.35.0
 bundle exec rspec spec/helm/latest_chart_spec.rb
 helm test reportportal-latest -n reportportal-latest --timeout 5m
 ```
@@ -141,5 +163,5 @@ an API compatibility result. Client regression must reconcile native Cucumber
 results, delivery receipts and fresh ReportPortal API items/logs, including failures
 and attachments. See the release-specific validation record in `docs/reviews/`.
 
-Upstream: [26.0.5 release](https://reportportal.io/docs/releases/Version26.0.5/)
-and [chart 26.8.12](https://github.com/reportportal/kubernetes/releases/tag/reportportal-26.8.12).
+Upstream: [26.0.7 release](https://reportportal.io/docs/releases/Version26.0.7/)
+and [chart 26.10.26](https://github.com/reportportal/kubernetes/releases/tag/reportportal-26.10.26).

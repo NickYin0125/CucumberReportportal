@@ -48,8 +48,8 @@ and [Reporting Experience](#reporting-experience).
 Gem **1.3.0** is distributed as an installable archive in the
 [GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.0).
 RubyGems.org publication is separate; do not assume an unversioned registry install
-selects this release. The companion chart is **1.3.0**
-(`appVersion: 26.0.5`, official chart `26.8.12`), not production security/HA
+selects this release. The development companion chart is **1.3.1**
+(`appVersion: 26.0.7`, official chart `26.10.26`, Kubernetes >= 1.35), not production security/HA
 certification. See [the changelog](CHANGELOG.md) for scope and limitations.
 
 Requirements: Ruby `>= 3.1`, Bundler, and Cucumber `>= 9, < 11`.
@@ -940,7 +940,7 @@ experiments. The example separates healthy smoke scenarios from deliberate failu
 
 ## Kubernetes / Helm
 
-Chart `1.3.0` pins ReportPortal `26.0.5` independently of the Ruby
+Chart `1.3.1` pins ReportPortal `26.0.7` independently of the Ruby
 SDK version. It uses standard Prefix routes with a configurable controller class
 (local default: Traefik), and a dedicated-bucket reconciliation Job that grants
 only anonymous `s3:GetObject`. HEAD/Range playback remains available; anonymous
@@ -953,8 +953,9 @@ authenticated. This does not bypass CSP or automatically redact media contents.
 
 See the [Helm operator README](helm/reportportal-rich-experience/README.md), including
 the Huawei private-cloud checklist and operations runbook, for exact deployment
-scope. Use the v1.3.0 GitHub Release's Chart asset for these fixes; v1.2.0's older
-rc.2 archive does not contain them. No Helm deployment or bucket changes are needed
+scope. The new chart is built from this checkout; the existing v1.3.0 Release's
+chart still pins the older server. For local Docker deployment, see the
+[Compose guide](deploy/compose/README.md). No Helm deployment or bucket changes are needed
 to run the API/PNG/JSON examples in this README. Local success is not production HA
 or Huawei ELB certification.
 
