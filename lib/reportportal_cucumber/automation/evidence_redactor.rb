@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "json"
+require "strscan"
 require "uri"
 require_relative "credential_keys"
 
@@ -22,25 +23,48 @@ module Automation
     class UnsafeInput < StandardError; end
     private_constant :UnsafeInput
 
+    escaped_quote = Regexp.escape("\\") + '[\r\n]*"'
+    escaped_body = [Regexp.escape("\\" * 4), Regexp.escape("\\" * 3 + '"'),
+                    "#{Regexp.escape("\\" * 2)}[^\\\\]", /\\[^"\\]/.source, /[^"\\]/.source].join("|")
+    BOUNDARY_KEY_PATTERN = /"(?:\\.|[^"\\])*"(?=[ \t\r\n]*[:=])/m.freeze
+    BOUNDARY_ENCODED_KEY_PATTERN = Regexp.new(
+      "#{escaped_quote}(?:#{escaped_body})*#{escaped_quote}(?=[ \\t\\r\\n]*[:=])",
+      Regexp::MULTILINE
+    ).freeze
+    BOUNDARY_KEY_SEPARATOR = /[ \t\r\n]*[:=][ \t\r\n]*/.freeze
+    BOUNDARY_KEY_CHUNK_CHARS = 256
+    BOUNDARY_ESCAPED_QUOTE_PATTERN = Regexp.new("\\G#{escaped_quote}", Regexp::MULTILINE).freeze
+    BOUNDARY_ESCAPED_VALUE_PATTERN = Regexp.new(
+      "\\G#{escaped_quote}(?:#{escaped_body})*(?:#{escaped_quote}|\\z)", Regexp::MULTILINE
+    ).freeze
+    private_constant :BOUNDARY_KEY_PATTERN, :BOUNDARY_ENCODED_KEY_PATTERN,
+                     :BOUNDARY_KEY_SEPARATOR, :BOUNDARY_KEY_CHUNK_CHARS,
+                     :BOUNDARY_ESCAPED_QUOTE_PATTERN, :BOUNDARY_ESCAPED_VALUE_PATTERN
+
     # @param sensitive_keys [Array<String, Symbol>] Additional sensitive key names.
     # @return [EvidenceRedactor]
     def initialize(sensitive_keys: [])
       keys = DEFAULT_SENSITIVE_KEYS + Array(sensitive_keys).map { |key| valid_utf8(key.to_s) }
       @sensitive_keys = keys.map { |key| normalize_key(key).freeze }.reject(&:empty?).uniq.freeze
+      @boundary_key_limit = @sensitive_keys.map(&:length).max || 0
       alternatives = @sensitive_keys.map do |key|
         key.chars.map { |character| Regexp.escape(character) }.join("[-_.]*")
       end.reject(&:empty?).uniq
       # Consume incomplete quoted values through the bounded input end, even after a dangling escape.
       double_quoted_value = /\\?"(?:\\.|[^"\\]|\\\z)*(?:\\?"|\z)/
       single_quoted_value = /\\?'(?:\\.|[^'\\]|\\\z)*(?:\\?'|\z)/
-      value_pattern = Regexp.union(
+      value_patterns = [
         double_quoted_value, single_quoted_value,
         /Bearer[ \t]+[^\s,;&"'<>]+/, /[^\s,;&"'<>]+/
-      )
-      @key_value_pattern = Regexp.new(
-        "((?<![a-z0-9_.-])[-_.]*(?:#{alternatives.join('|')})[-_.]*(?![a-z0-9_.-])\\\\?\"?)" \
-        "([ \\t\\r\\n]*[:=][ \\t\\r\\n]*)(?:#{value_pattern.source})",
-        Regexp::IGNORECASE
+      ]
+      value_pattern = Regexp.union(value_patterns)
+      key_pattern = "((?<![a-z0-9_.-])[-_.]*(?:#{alternatives.join('|')})[-_.]*(?![a-z0-9_.-])\\\\?\"?)" \
+                    "([ \\t\\r\\n]*[:=][ \\t\\r\\n]*)"
+      @key_value_pattern = Regexp.new("#{key_pattern}(?:#{value_pattern.source})", Regexp::IGNORECASE).freeze
+      @boundary_plain_key_pattern = Regexp.new(key_pattern, Regexp::IGNORECASE).freeze
+      # Detect malformed line breaks conservatively; only the unchanged sanitizer emits text.
+      @boundary_value_pattern = Regexp.new(
+        "\\G(?:#{value_patterns.map(&:source).join('|')})", Regexp::IGNORECASE | Regexp::MULTILINE
       ).freeze
     end
 
@@ -91,7 +115,150 @@ module Automation
       OMITTED
     end
 
+    # @param units [Array<String>] Original independently redacted failure units.
+    # @return [Boolean] Whether a credential requires cross-unit safety context.
+    def cross_unit_credential?(units)
+      parts = units.map { |part| valid_utf8(part) }
+      return false if parts.length < 2
+
+      # Assembly and lexical scans still scale with input; only key decoding is bounded.
+      source = parts.join("\n")
+      boundaries = []
+      offset = 0
+      parts[0...-1].each do |part|
+        offset += part.bytesize
+        boundaries << offset
+        offset += 1
+      end
+      scanner = StringScanner.new(source)
+      while scanner.skip_until(@boundary_plain_key_pattern)
+        start = scanner.pos - scanner.matched_size
+        boundary = boundaries.bsearch { |position| position >= start }
+        break unless boundary
+
+        finish = boundary_value_end(scanner, boundary)
+        return true if finish && crosses_boundary?(boundaries, start, finish)
+      end
+
+      # Parse key tokens only: incomplete JSON and trailing stack frames must not
+      # hide a credential. Keep original offsets, including unit separator newlines.
+      [BOUNDARY_ENCODED_KEY_PATTERN, BOUNDARY_KEY_PATTERN].each do |pattern|
+        scanner.reset
+        while scanner.skip_until(pattern)
+          start = scanner.pos - scanner.matched_size
+          boundary = boundaries.bsearch { |position| position >= start }
+          break unless boundary
+
+          next unless boundary_sensitive_key?(source, start, scanner.pos, encoded: pattern == BOUNDARY_ENCODED_KEY_PATTERN)
+
+          scanner.skip(BOUNDARY_KEY_SEPARATOR)
+          finish = boundary_value_end(scanner, boundary)
+          return true if finish && crosses_boundary?(boundaries, start, finish)
+        end
+      end
+      false
+    end
+
     private
+
+    def crosses_boundary?(boundaries, start, finish)
+      boundary = boundaries.bsearch { |position| position >= start }
+      boundary && boundary < finish
+    end
+
+    def boundary_value_end(scanner, boundary)
+      return boundary_structure_end(scanner, boundary) if scanner.match?(/[\[{]/)
+
+      pattern = scanner.match?(BOUNDARY_ESCAPED_QUOTE_PATTERN) ? BOUNDARY_ESCAPED_VALUE_PATTERN : @boundary_value_pattern
+      scanner.pos if scanner.skip(pattern)
+    end
+
+    def boundary_structure_end(scanner, boundary)
+      closing = scanner.peek(1) == "[" ? "]" : "}"
+      depth = 0
+      begin
+        character = scanner.peek(1)
+        if scanner.match?(BOUNDARY_ESCAPED_QUOTE_PATTERN)
+          scanner.getch unless scanner.skip(BOUNDARY_ESCAPED_VALUE_PATTERN)
+        elsif character == '"' || character == "'"
+          scanner.getch unless scanner.skip(@boundary_value_pattern)
+        else
+          scanner.getch
+          depth += 1 if character == "[" || character == "{"
+          depth -= 1 if (character == "]" || character == "}") && (depth > 1 || character == closing)
+        end
+      end while depth.positive? && !scanner.eos? && scanner.pos <= boundary
+      scanner.pos
+    end
+
+    def boundary_sensitive_key?(source, start, finish, encoded:)
+      characters = boundary_key_characters(source, start, finish, wrapped: encoded)
+      characters = decoded_boundary_key_characters(characters)
+      if encoded
+        characters = characters.lazy.reject { |character| character == "\r" || character == "\n" }
+        characters = decoded_boundary_key_characters(characters)
+      end
+      normalized_boundary_key?(characters)
+    rescue JSON::ParserError, JSON::NestingError
+      normalized_boundary_key?(boundary_key_characters(source, start, finish))
+    end
+
+    def boundary_key_characters(source, start, finish, wrapped: false)
+      Enumerator.new do |output|
+        scanner = StringScanner.new(source)
+        scanner.pos = start
+        output << '"' if wrapped
+        while scanner.pos < finish
+          character = scanner.getch
+          # Compact only the detector stream, not the evidence or byte offsets.
+          output << character unless character == "\r" || character == "\n"
+        end
+        output << '"' if wrapped
+      end
+    end
+
+    def decoded_boundary_key_characters(characters)
+      Enumerator.new do |output|
+        raise JSON::ParserError unless characters.next == '"'
+
+        while (character = characters.next) != '"'
+          if character == "\\"
+            escape = character + characters.next
+            if escape == "\\u"
+              escape << boundary_unicode_digits(characters)
+              if escape[2, 4].to_i(16).between?(0xd800, 0xdbff)
+                raise JSON::ParserError unless characters.next == "\\" && characters.next == "u"
+
+                escape << "\\u" << boundary_unicode_digits(characters)
+              end
+            end
+            JSON.parse('"' + escape + '"').each_char { |decoded| output << decoded }
+          else
+            output << character
+          end
+        end
+      rescue StopIteration
+        raise JSON::ParserError
+      end
+    end
+
+    def boundary_unicode_digits(characters)
+      digits = 4.times.map { characters.next }.join
+      raise JSON::ParserError unless digits.match?(/\A[0-9a-f]{4}\z/i)
+
+      digits
+    end
+
+    def normalized_boundary_key?(characters)
+      # Reuse the exact policy in fixed-size chunks. Keep at most one chunk
+      # beyond the longest configured key, and never accept a mere prefix.
+      normalized = +""
+      characters.each_slice(BOUNDARY_KEY_CHUNK_CHARS) do |chunk|
+        normalized << normalize_key(chunk.join)
+        return false if normalized.length > @boundary_key_limit
+      end
+      sensitive_key?(normalized)
+    end
 
     def new_budget
       { nodes: MAX_STRUCTURE_NODES, bytes: MAX_STRUCTURE_BYTES }

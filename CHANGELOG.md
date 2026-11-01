@@ -4,7 +4,7 @@
 
 ### Ledger Presentation
 
-- Failure logs show the exception, feature location and project frames before the full original backtrace. Credential redaction now matches the 2.x failure-log behavior.
+- Failure logs show the exception, feature location and project frames before the full redacted backtrace. Redact the exception message and original backtrace independently; if a message must be withheld, keep its exception class and safe frame evidence.
 - Client-built Markdown escapes user markup; attachment captions show kind, size and available dimensions, unnamed files use step-derived names, and JSON previews are compact.
 - Hook item names are simplified without changing topology. Native global hooks remain Launch-scoped where observed; their independent Item-name checks are N/A, not fabricated hook items.
 - Preserve explicit native Before/After/AfterStep names through Cucumber's hook-created event, retaining retry labels and clearing scalar metadata on finalization.
@@ -18,11 +18,15 @@
 
 ### Fixes And Known Limitations
 
+- Fixed: v1.3.1 emitted original failure text, while the earlier 1.3.2 candidate's whole-input safety check could omit the entire failure. Message-only ambiguity now withholds only the message. An omitted backtrace is checked once per original frame; cross-unit credentials alone retain the tested whole-input safety path, without relaxing redaction.
+- Known limitation: unsafe individual frames remain omission markers in the raw backtrace and are never presented as project frames. Secrets are not restored for visual fidelity.
+- Known limitation: when a failure message cannot be redacted safely (for example, it looks like escaped JSON), the message is withheld. The exception class and backtrace are still shown. v1.3.1 sent such messages unredacted.
 - Fixed: Text attachments whose preview contained a NUL byte were rejected by ReportPortal and silently lost. Previews now escape NUL, so these attachments persist with unchanged bytes.
 - Known limitation: A native Cucumber log message containing a NUL byte is still not persisted on 1.x. SDK 2.x escapes it.
 
 ### Verification
 
+- The split-redaction changes require fresh full-matrix, real-RP, performance and independent acceptance evidence. The previously tested runtime below is historical and does not certify these changes.
 - Runtime commit `f41888a9fdd6896630765cbbf350353a7f803e59` passed the full local Ruby 3.1.7/3.3.12 x Cucumber 9.2.1/10.2.0 four-cell matrix: 1,403 product examples per cell, with zero failures or pending examples. Independent QA repeated every full cell with 16 additional acceptance properties (1,419 examples per cell), also with zero failures or pending examples. Offline Cucumber passed one scenario and three steps in each developer and independent cell.
 - The local matrix is the accepted Ruby 3.1 and Cucumber 9 evidence (Decision 12); remote CI covers Ruby 3.3 with Cucumber 10. Presentation/UI acceptance is documented separately on `qa/presentation-ledger-1.3.2`; these matrix results alone are not final release authorization. Later documentation-only heads require explicit runtime fingerprint equivalence to the tested commit.
 
