@@ -16,6 +16,15 @@
 - Preserve item hierarchy, identities, statuses, timestamps, ownership, log counts and attachment bytes. Presentation faults retain the original baseline with one warning; rich output preserves ERROR first lines and adds at most 1,024 bytes.
 - Released as a patch at the owner's request; the two opt-in switches are additive and off by default.
 
+### Fixes And Known Limitations
+
+- Fixed: Text attachments whose preview contained a NUL byte were rejected by ReportPortal and silently lost. Previews now escape NUL, so these attachments persist with unchanged bytes.
+- Known limitation: A native Cucumber log message containing a NUL byte is still not persisted on 1.x. SDK 2.x escapes it.
+
+### Verification
+
+- The local Ruby 3.1/3.3 x Cucumber 9/10 four-cell matrix is the accepted Ruby 3.1 and Cucumber 9 evidence (Decision 12); remote CI covers Ruby 3.3 with Cucumber 10. The final tested commit and results will be recorded after WP5 completes; no final verification is claimed yet.
+
 
 ## 1.3.1 - 2026-10-31
 
