@@ -35,4 +35,11 @@ RSpec.describe ReportportalCucumber::Presentation::Fallback do
     allow(logger).to receive(:warn).and_raise("logger unavailable")
     expect(described_class.render(fallback: -> { "baseline" }) { raise "presentation" }).to eq("baseline")
   end
+
+  it "warns per failed message rather than once per process" do
+    2.times { described_class.render(fallback: -> { "baseline" }) { raise "presentation" } }
+    expect(logger).to have_received(:warn).with(described_class::WARNING).twice
+    expect(described_class.singleton_class.private_instance_methods(false)).to include(:warn)
+    expect(described_class.respond_to?(:warn_once, true)).to be(false)
+  end
 end

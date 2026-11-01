@@ -26,20 +26,20 @@ module ReportportalCucumber
         rescue StandardError
           failed = true
           state[:failed] = true if state
-          warn_once
+          warn
         ensure
           Thread.current[ACTIVE_KEY] = nil
         end
         failed ? fallback.call : result
       end
 
-      def self.warn_once
+      def self.warn
         # Never include exception text, class names, or evidence in diagnostics.
         ReportportalCucumber.logger.warn(WARNING)
       rescue StandardError
         nil
       end
-      private_class_method :warn_once
+      private_class_method :warn
     end
   end
 end

@@ -173,7 +173,8 @@ module ReportportalCucumber
           caption = "Full backtrace \u00b7 #{Units.count(frames.length, 'frame')}"
           unless counts.empty?
             noun = hidden.length == 1 ? "frame" : "frames"
-            caption += " \u00b7 #{counts.join(' and ')} #{noun} not shown above"
+            kinds = counts.length == 3 ? "#{counts[0]}, #{counts[1]} and #{counts[2]}" : counts.join(' and ')
+            caption += " \u00b7 #{kinds} #{noun} not shown above"
           end
           caption
         end

@@ -61,6 +61,14 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
     expect(result).not_to include(" \u2192 ")
   end
 
+  it "uses a comma and final conjunction for three hidden frame kinds" do
+    projects = Array.new(9) { |i| "/project/support.rb:#{i}:in 'call'" }
+    frameworks = Array.new(56) { |i| "/ruby/gems/cucumber/runner.rb:#{i}:in 'run'" }
+    raw = (projects + frameworks + ["-e:1:in 'run'", "<internal:kernel>:90:in 'require'"]).join("\n")
+    expect(card(backtrace: raw)).to include("56 framework, 2 runner and 1 project frames not shown above")
+    expect(card(backtrace: raw)).to end_with("```text\n#{raw}\n```")
+  end
+
   it "classifies stdlib and runner frames, shortens locations, and preserves Ruby quote styles" do
     frames = ["#{RbConfig::CONFIG.fetch('rubylibdir')}/json/common.rb:1:in `parse'",
               "/external/features/steps/support.rb:2:in 'work'", "-e:1", "<internal:kernel>:90"]

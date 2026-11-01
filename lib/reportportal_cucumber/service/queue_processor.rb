@@ -558,13 +558,13 @@ module ReportportalCucumber
 
       def flush_batch(records)
         rendered_messages = {}
-        @presentation_failures = {}
+        presentation_failures = {}
         unsettled = records.dup
         routed = route_external_video_records(records)
         chunk = []
         routed.each do |record|
           candidate = chunk + [record]
-          payload = build_payload(candidate, rendered_messages: rendered_messages)
+          payload = build_payload(candidate, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
           size = Transport::MultipartHelper.log_batch_bytes(entries: payload.fetch(:entries), files: payload.fetch(:files))
           if size <= batch_max_bytes
             chunk = candidate
@@ -572,17 +572,17 @@ module ReportportalCucumber
           end
 
           unless chunk.empty?
-            send_chunk(chunk, rendered_messages: rendered_messages)
+            send_chunk(chunk, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
             sent_sequences = chunk.map(&:sequence)
             unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
           end
           chunk = []
-          single = build_payload([record], rendered_messages: rendered_messages)
+          single = build_payload([record], rendered_messages: rendered_messages, presentation_failures: presentation_failures)
           single_size = Transport::MultipartHelper.log_batch_bytes(entries: single.fetch(:entries), files: single.fetch(:files))
           if single_size > batch_max_bytes
             warn_diagnostic_once(:oversized_wire, "ReportPortal log exceeded the request byte limit; preserved in local spool best-effort")
             error = Transport::MultipartHelper::SizeLimitError.new
-            spooled = safe_spool([record], error, outcome: :failed)
+            spooled = safe_spool([record], error, outcome: :failed, presentation_failures: presentation_failures)
             record_delivery([record], [:failed], spooled_indexes: spooled ? [0] : [])
             unsettled.delete(record)
           else
@@ -590,13 +590,13 @@ module ReportportalCucumber
           end
         end
         unless chunk.empty?
-          send_chunk(chunk, rendered_messages: rendered_messages)
+          send_chunk(chunk, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
           sent_sequences = chunk.map(&:sequence)
           unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
         end
       rescue StandardError => error
         unless unsettled.empty?
-          spooled = safe_spool(unsettled, error)
+          spooled = safe_spool(unsettled, error, presentation_failures: presentation_failures)
           record_delivery(unsettled, Array.new(unsettled.length, :ambiguous),
                           spooled_indexes: spooled ? (0...unsettled.length).to_a : [])
         end
@@ -604,13 +604,13 @@ module ReportportalCucumber
         handle_error(error)
       ensure
         rendered_messages.clear
-        @presentation_failures = nil
+        presentation_failures.clear
       end
 
-      def build_payload(records, rendered_messages: nil)
+      def build_payload(records, rendered_messages: nil, presentation_failures: nil)
         Service::PayloadBuilder.build_log_batch(records, presentation: @config.presentation,
                                                 rendered_messages: rendered_messages) do |record|
-          @presentation_failures && (@presentation_failures[record.sequence] ||= {})
+          presentation_failures && (presentation_failures[record.sequence] ||= {})
         end
       end
 
@@ -618,8 +618,8 @@ module ReportportalCucumber
         method.parameters.any? { |kind, name| kind == :key && name == :deadline }
       end
 
-      def send_chunk(records, rendered_messages: nil)
-        payload = build_payload(records, rendered_messages: rendered_messages)
+      def send_chunk(records, rendered_messages: nil, presentation_failures: nil)
+        payload = build_payload(records, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
         deadline = @mutex.synchronize { @work_deadline }
         result = begin
           use_result_api = @api.respond_to?(:log_batch_result) &&
@@ -643,7 +643,7 @@ module ReportportalCucumber
           response = error.respond_to?(:response) ? error.response : nil
           rejected_status = response && response.status >= 400 && response.status < 500 && ![408, 429].include?(response.status)
           category = error.is_a?(Transport::MultipartHelper::SizeLimitError) || rejected_status ? :failed : :ambiguous
-          spooled = safe_spool(records, error, outcome: category)
+          spooled = safe_spool(records, error, outcome: category, presentation_failures: presentation_failures)
           record_delivery(records, Array.new(records.length, category),
                           spooled_indexes: spooled ? (0...records.length).to_a : [])
           if error.is_a?(Transport::MultipartHelper::SizeLimitError)
@@ -664,7 +664,8 @@ module ReportportalCucumber
           next if indexes.empty?
 
           success = safe_spool(indexes.map { |index| records[index] },
-                               ReportingError.new("Log acknowledgement incomplete"), outcome: category)
+                               ReportingError.new("Log acknowledgement incomplete"), outcome: category,
+                               presentation_failures: presentation_failures)
           spooled.concat(indexes) if success
         end
         duplicate_indexes = may_duplicate ? (0...records.length).to_a : []
@@ -710,11 +711,11 @@ module ReportportalCucumber
         value.to_s.match?(%r{\Ahttps?://})
       end
 
-      def safe_spool(records, error, outcome: :ambiguous)
+      def safe_spool(records, error, outcome: :ambiguous, presentation_failures: nil)
         deadline = @mutex.synchronize { @work_deadline }
         return false if deadline&.expired?
 
-        spool(records, error, outcome: outcome)
+        spool(records, error, outcome: outcome, presentation_failures: presentation_failures)
         true
       rescue Service::SpoolStore::Error => spool_error
         warn_spool_failure(spool_error.reason)
@@ -770,8 +771,8 @@ module ReportportalCucumber
         end
       end
 
-      def spool(records, error, outcome: :ambiguous)
-        payload = build_payload(records)
+      def spool(records, error, outcome: :ambiguous, presentation_failures: nil)
+        payload = build_payload(records, presentation_failures: presentation_failures)
         deadline = @mutex.synchronize { @work_deadline }
         @spool_store.persist(entries: payload.fetch(:entries), files: payload.fetch(:files), outcome: outcome,
                              diagnostics: { spoolError: safe_exception_text(error) }, deadline: deadline)
