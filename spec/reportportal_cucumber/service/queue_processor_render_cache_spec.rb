@@ -57,7 +57,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
         expect(multipart.log_batch_bytes(**builder.build_log_batch(chunk, presentation: mode))).to be > limit
       end
       cache_enabled = false
-      allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, **options, &state|
+      allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, options = {}, &state|
         options.delete(:rendered_messages) unless cache_enabled
         original.call(batch, **options, &state)
       end
@@ -92,7 +92,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
       caches = []
       sizes = []
       allow(builder).to receive(:enrich_log_message).and_call_original
-      allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, **options, &state|
+      allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, options = {}, &state|
         cache = options.fetch(:rendered_messages)
         caches << cache
         original.call(batch, **options, &state).tap { sizes << cache.length }
@@ -115,7 +115,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
 
     it "keeps #{mode} fallback messages and warnings unchanged across collision-sensitive probes" do
       caches = []
-      allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, **options, &state|
+      allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, options = {}, &state|
         caches << options.fetch(:rendered_messages)
         original.call(batch, **options, &state)
       end
@@ -142,11 +142,11 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
 
   it "clears the local cache if a size probe fails partway through a flush" do
     caches = []
-    allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, **options, &state|
+    allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, options = {}, &state|
       caches << options.fetch(:rendered_messages)
       original.call(batch, **options, &state)
     end
-    allow(multipart).to receive(:log_batch_bytes).and_wrap_original do |original, **payload|
+    allow(multipart).to receive(:log_batch_bytes).and_wrap_original do |original, payload|
       raise "size probe failed" if payload[:entries].length == 2
 
       original.call(**payload)
@@ -167,7 +167,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
     release = Queue.new
     builds = Queue.new
     persisted = []
-    allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, **options, &state|
+    allow(builder).to receive(:build_log_batch).and_wrap_original do |original, batch, options = {}, &state|
       builds << [Thread.current, options[:rendered_messages]]
       original.call(batch, **options, &state)
     end
