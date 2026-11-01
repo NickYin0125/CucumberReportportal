@@ -243,26 +243,27 @@ response DTOs declare Lists; server persistence uses a Set. Do not describe the
 response contract as an unordered Set. All other acceptance and
 no-merge/no-tag/no-publication requirements remain unchanged.
 
-## Decision 19: Failure-Log Redaction Units
+## Simplified Release Scope
 
-Owner-confirmed on 2026-11-01 after the final release review.
+The owner's simplified 1.3.2 plan replaces WP0-WP5 and its follow-up answers.
+Decision 19 below is the current 1.x failure-content contract. Decisions 20-26
+remain historical records, not additional work or acceptance requirements for
+this plan. PR #5 returns to its approved 173c603 tree; the 2.0.2 draft is paused.
+Verification is limited to the four-cell 1.x matrix, the specified live
+fixtures, and independent P1.1-P1.10/G8 review. All PRs remain drafts; no
+protected-branch push, PR merge, tag or publication is authorized.
 
-19. Decision 15 is corrected for the 1.x line. Its premise, that the old and
-    new Ledger both return the omission marker for the F14 back\slash input,
-    holds on 2.x, where v2.0.0 already redacts the whole failure log. It does
-    not hold on 1.x: v1.3.1 sends failure text without redaction (Launch 3778
-    shows the message and full backtrace; 1.3.2 Launches 3637 and 3731 show
-    only the marker).
+## Decision 19: 1.x Failure-Log Content
 
-    Failure logs are redacted in two units: the message, and the backtrace.
-    If the backtrace unit is omitted, each frame is redacted on its own. If
-    the message unit is omitted, only the message is withheld; the exception
-    class, locations and frames are still shown. No text receives weaker
-    filtering than before. Where 1.3.2 still withholds a message that v1.3.1
-    showed, this is accepted and documented as a known limitation.
+Owner-confirmed on 2026-11-01.
 
-    The P1.2 exception recorded in Decision 15 is withdrawn. The F14
-    back\slash title must render.
+19. On 1.x, the failure log carries the same text v1.3.1 sent, shown in the
+    Ledger failure card. Failure-log redaction is not added in 1.3.2: the 2.x
+    redactor omits the whole failure for common inputs (any backslash in the
+    message), which hid failures that v1.3.1 showed (Launch 3778 versus
+    Launches 3637 and 3731). Decision 15's P1.2 exception is withdrawn on 1.x,
+    and G8 on 1.x means "nothing is sent that v1.3.1 would not have sent".
+    2.x is unchanged; its whole-failure omission is a separate backlog item.
 
 ## Decision 20: Cross-Unit Credential Safety Path
 
