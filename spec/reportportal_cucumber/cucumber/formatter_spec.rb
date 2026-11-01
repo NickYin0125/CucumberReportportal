@@ -224,11 +224,11 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     after_hook = start_items[4]
 
     expect(before_hook).to include(path: "/api/v1/demo/item/item-2")
-    expect(before_hook.fetch(:body)).to include("name" => "Before Hook: setup browser", "type" => "BEFORE_METHOD", "hasStats" => false)
+    expect(before_hook.fetch(:body)).to include("name" => "Before hook · setup browser", "type" => "BEFORE_METHOD", "hasStats" => false)
     expect(background).to include(path: "/api/v1/demo/item/item-2")
     expect(background.fetch(:body)).to include("name" => "[Background] Given shared customer exists", "type" => "STEP", "hasStats" => false)
     expect(after_hook).to include(path: "/api/v1/demo/item/item-2")
-    expect(after_hook.fetch(:body)).to include("name" => "After Hook: close browser", "type" => "AFTER_METHOD", "hasStats" => false)
+    expect(after_hook.fetch(:body)).to include("name" => "After hook · close browser", "type" => "AFTER_METHOD", "hasStats" => false)
   end
 
   context "with real Cucumber HookStep events" do
@@ -398,11 +398,11 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     after_all = start_items[3]
 
     expect(before_all).to include(path: "/api/v1/demo/item/item-1")
-    expect(before_all.fetch(:body)).to include("name" => "BeforeAll Hook: seed database", "type" => "BEFORE_CLASS", "hasStats" => false)
+    expect(before_all.fetch(:body)).to include("name" => "BeforeAll hook · seed database", "type" => "BEFORE_CLASS", "hasStats" => false)
     expect(scenario).to include(path: "/api/v1/demo/item/item-1")
     expect(scenario.fetch(:body)).to include("name" => "Scenario: Class hook scenario", "type" => "STEP", "hasStats" => true)
     expect(after_all).to include(path: "/api/v1/demo/item/item-1")
-    expect(after_all.fetch(:body)).to include("name" => "AfterAll Hook: drop database", "type" => "AFTER_CLASS", "hasStats" => false)
+    expect(after_all.fetch(:body)).to include("name" => "AfterAll hook · drop database", "type" => "AFTER_CLASS", "hasStats" => false)
   end
 
   it "closes open steps and scenarios before feature and launch when run finishes early" do

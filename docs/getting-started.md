@@ -1,29 +1,32 @@
 # Getting started
 
-This guide follows **install the release → run one local Scenario → integrate an
-existing project → add API/UI evidence → run in CI**. Steps 1–2 need only Ruby,
-Bundler, and the gems. No browser, Node, ReportPortal, or source checkout is needed.
+**Version scope:** this guide installs the unpublished SDK **1.3.2** candidate
+from a matching maintainer-supplied or locally built archive, not an invented
+release URL. Use Ruby `>=3.1` and Cucumber `>=9,<11`. The 1.x expressions constraint
+`>=17,<19` remains required for native HTML/message compatibility.
 
-## 1. Install the release
+Follow **install the candidate, run one local Scenario, integrate an existing
+project, add API/UI evidence, then run in CI**. Steps 1-2 need only Ruby, Bundler
+and the gems. Browser tooling, Node, ReportPortal and an SDK source checkout are
+not required to consume a supplied archive.
 
-Requirements: Ruby `>=3.1`, Bundler, Cucumber `>=9,<11`. The current release archive
-is **1.3.1**. The SDK constrains `cucumber-cucumber-expressions` to `>=17,<19` for
-Cucumber 9/10 native HTML/message compatibility; keep that constraint.
+## 1. Install the candidate
 
-From **a directory where you keep projects**, create a fresh consumer project:
+From **a directory where you keep projects**, create a fresh consumer project.
+Set the archive path to the exact candidate supplied by your maintainer; verify
+its checksum and source provenance before installation. There is no assumed
+1.3.2 tag, release asset or RubyGems publication.
 
 ```sh
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.2.gem
 mkdir -p rp-smoke/vendor/cache rp-smoke/features/support rp-smoke/features/step_definitions
 cd rp-smoke
-curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.1.gem \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.1.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.2.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.2.gem --no-document
 ```
 
-Expected: the release archive is in `rp-smoke/vendor/cache`, and RubyGems installs
-`reportportal-cucumber-ruby-1.3.1` plus any missing dependencies. The archive is
-also available through the [release page](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.1)
-for manual download; place it at the same path if curl is unavailable.
+Expected: the candidate archive is in `rp-smoke/vendor/cache`, and RubyGems
+installs `reportportal-cucumber-ruby-1.3.2` plus missing dependencies.
 
 Create **`rp-smoke/Gemfile`**:
 
@@ -31,7 +34,7 @@ Create **`rp-smoke/Gemfile`**:
 source "https://rubygems.org"
 
 gem "cucumber", "~> 10.0"
-gem "reportportal-cucumber-ruby", "= 1.3.1"
+gem "reportportal-cucumber-ruby", "= 1.3.2"
 ```
 
 From **`rp-smoke/`**:
@@ -41,17 +44,19 @@ bundle install
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected: Bundler resolves a supported Cucumber 10 version and the installed or
-cached release; the version check prints `1.3.1`. Commit `Gemfile.lock` in your
-real test project to keep that resolution consistent. RubyGems.org publication
-is separate; do not replace the archive workflow with an unpinned registry install.
+Expected: Bundler resolves supported Cucumber 10 and the installed or cached
+candidate; the version check prints `1.3.2`. Commit `Gemfile.lock` in your
+real test project. Existing published archives remain unchanged.
 
 First-time installs need network access. `gem install --local` and
-`bundle install --local` work only when **all** required dependencies are already
-cached. For source development, a Bundler `path:` must refer to a directory
-containing the gemspec, never to a `.gem` archive. See the
-[source-verification workflow](../examples/current_sdk/README.md#source-and-packaging-verification)
-if you need to build the SDK yourself.
+`bundle install --local` require **all** dependencies to be cached. For source
+development, Bundler `path:` points to a gemspec directory, never a `.gem`.
+See the [isolated source-packaging workflow](../examples/current_sdk/README.md#source-and-packaging-verification)
+to build a candidate yourself.
+
+Presentation defaults remain `RP_PRESENTATION=plain` and `RP_RUN_CONTEXT=false`.
+See [configuration](configuration.md#presentation-and-run-context) for the
+independent RP-only rich and allowlisted Launch-context opt-ins.
 
 ## 2. Run one Scenario locally
 
@@ -127,7 +132,7 @@ their diagnostics can also use the bound logger.
 
 | File / setting | Change | Why |
 | --- | --- | --- |
-| `Gemfile`, `Gemfile.lock` | Pin the released SDK and a supported Cucumber | Repeatable runtime |
+| `Gemfile`, `Gemfile.lock` | Pin the candidate SDK and a supported Cucumber | Repeatable runtime |
 | `features/support/env.rb` | Require the SDK, include its World, bind `AppLog` | Routes helper diagnostics to the executing Scenario |
 | `.reportportal.yml` | Add nonsecret endpoint/project/Launch settings | Share safe defaults |
 | Secret store / CI variables | Inject `RP_API_KEY` | Keep credentials out of source control |

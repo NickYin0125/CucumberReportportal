@@ -176,10 +176,10 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
     )
     api = M4BResponseAPI.new { |entries, _files| response_for(entries) }
     processor = described_class.new(api: api, config: bounded_config, video_uploader: nil)
-    allow(processor).to receive(:build_payload).and_wrap_original do |original, records|
+    allow(processor).to receive(:build_payload).and_wrap_original do |original, records, options = {}|
       raise "subsequent payload failed" if records.length == 1 && records.first.item_uuid == "second"
 
-      original.call(records)
+      original.call(records, **options)
     end
     %w[first second].each do |uuid|
       expect(processor.emit_log(item_uuid: uuid, launch_uuid: "launch", message: "entry-#{uuid}",

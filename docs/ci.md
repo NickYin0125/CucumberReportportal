@@ -4,13 +4,19 @@ Keep the same World/logger setup and formatter command used locally. Start with
 one Launch per CI job; add shared parallel reporting only when the coordinator
 can own its complete lifecycle.
 
+This example consumes SDK **1.3.2**, an unpublished candidate with the unchanged
+Ruby `>=3.1` / Cucumber `>=9,<11` contract.
+
 ## A serial job
 
-Prepare a runner with Ruby `>=3.1`, Bundler, curl, and a supported project lockfile.
+Prepare a runner with Ruby `>=3.1`, Bundler, and a supported project lockfile.
 Use your project's normal browser image/setup only for UI jobs. The example
 below is **consumer GitLab CI configuration**, not the SDK's own release workflow.
 It runs from the checked-out **automation project root**. Inject `RP_API_KEY` as a
-masked CI secret; set your RP endpoint/project to real values.
+masked CI secret; set your RP endpoint/project to real values. Supply a verified
+candidate archive through your CI artifact/mirror process and set
+`SDK_GEM_ARCHIVE` to its absolute local path. This is not a release-download URL,
+and no 1.3.2 publication is assumed.
 
 Add to **`.gitlab-ci.yml`**:
 
@@ -29,10 +35,8 @@ cucumber:
     NO_COLOR: "1"
   before_script:
     - mkdir -p vendor/cache artifacts
-    - >-
-      curl -fL -o vendor/cache/reportportal-cucumber-ruby-1.3.1.gem
-      https://github.com/NickYin0125/CucumberReportportal/releases/download/v1.3.1/reportportal-cucumber-ruby-1.3.1.gem
-    - gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.1.gem --no-document
+    - cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.2.gem
+    - gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.2.gem --no-document
     - bundle install
   script:
     - >-
@@ -57,7 +61,7 @@ retained spool evidence are collected even on failure. `reportportal.out` may
 be absent and is not the delivery receipt.
 
 The project must already have the [version-pinned Gemfile and integration setup](getting-started.md#3-connect-reportportal-and-integrate-an-existing-project).
-Retain/commit its `Gemfile.lock`. Cache approved dependencies or place the release
+Retain/commit its `Gemfile.lock`. Cache approved dependencies or place the candidate
 archive/dependencies in your internal package mirror for an offline runner; a
 first-time `bundle install --local` cannot fetch missing gems. Set
 `RP_ENABLED=false` for a deliberate native-only job and omit the completeness
@@ -175,8 +179,11 @@ profiles, run the offline RSpec suite (including installed-gem packaging checks)
 and execute the default Cucumber suite. Browser/live RP/duration checks are
 separate opt-ins; a green offline run does not claim those were performed.
 
-Stable `vX.Y.Z` release tags validate already-merged source, require matching gem
-and wrapper Chart versions, and package a gem, chart, checksums, and provenance.
+Release publication remains separately authorized and ancestry-gated. SDK 1.3.2+
+requires the Gem to match its tag but permits the independently committed Chart
+version; historical bundles through 1.3.1 retain their original matching-version
+contract. Tooling verifies gem, chart, checksums and provenance; candidate branch
+validation does not authorize a release or backport the publication workflow.
 They do not publish to RubyGems.org or deploy a Kubernetes stack. See the
 [source-checkout release operator guide](https://github.com/NickYin0125/CucumberReportportal/blob/main/script/release/README.md) and
 [changelog](../CHANGELOG.md) for maintainers.

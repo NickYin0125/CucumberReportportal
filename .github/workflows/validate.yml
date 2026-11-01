@@ -68,8 +68,26 @@ jobs:
           helm lint "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml"
           helm template release-validation "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml" > /dev/null
 
+      - name: Prepare synthetic RSpec fault diagnostics
+        run: |
+          umask 077
+          mkdir -p "$RUNNER_TEMP/rspec-fault-diagnostics/day2" "$RUNNER_TEMP/rspec-fault-diagnostics/m4d"
+
       - name: Run full RSpec including installed packaging checks
+        env:
+          DAY2_LOCAL_CAPTURE: ${{ runner.temp }}/rspec-fault-diagnostics/day2
+          M4_D_EVIDENCE_DIR: ${{ runner.temp }}/rspec-fault-diagnostics/m4d
         run: bundle exec rspec
+
+      - name: Retain synthetic RSpec fault diagnostics
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: rspec-faults-ruby-3.3-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/rspec-fault-diagnostics/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Run full offline Cucumber profile
         run: bundle exec cucumber

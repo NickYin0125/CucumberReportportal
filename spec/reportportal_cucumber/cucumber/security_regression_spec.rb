@@ -108,7 +108,8 @@ RSpec.describe "Public Cucumber security regression" do
       )
       expect(all_sinks).to include("security assertion", "security evidence action", "safe readable failure")
       expect(all_sinks).not_to include("SECURITY_READY5_")
-      expect(all_sinks).to include("token_count=12 password_policy=business-only component=payments")
+      expect(result.fetch("logs").map { |log| log.fetch("message") }.join("\n"))
+        .to include("token_count=12 password_policy=business-only component=payments")
       known_png = result.fetch("multipart").flat_map { |payload| payload.fetch("files") }
         .find { |file| file.fetch("filename") == "known-good.png" }
       expect(known_png.fetch("content_type")).to eq("image/png")
@@ -176,18 +177,19 @@ RSpec.describe "Public Cucumber security regression" do
       expect(process_status.success?).to be(true), "Cucumber process failed: #{stderr}"
       result = JSON.parse(File.read(result_path))
       expect(result.fetch("status")).to eq(0), "Cucumber failed: #{result.inspect}"
-      lifecycle_logs = result.fetch("logs").select { |entry| entry.fetch("message", "").include?("LIFECYCLE_") }
+      lifecycle_logs = result.fetch("logs").select { |entry| entry.fetch("message", "").match?(/LIFECYCLE\\?_/) }
       lifecycle_prefixes = [
         "LIFECYCLE_ACCEPTED_STEP_NIL", "LIFECYCLE_ACCEPTED_STEP_OPEN",
         "LIFECYCLE_ACCEPTED_AFTER_NIL", "LIFECYCLE_ACCEPTED_AFTER_OPEN"
       ]
-      expect(lifecycle_logs.map { |entry| lifecycle_prefixes.find { |prefix| entry.fetch("message").start_with?(prefix) } }).to contain_exactly(
+      lifecycle_titles = lifecycle_prefixes.to_h { |prefix| [prefix, "## \u2717 #{prefix.gsub('_') { '\\_' }}"] }
+      expect(lifecycle_logs.map { |entry| lifecycle_titles.key(entry.fetch("message").lines.first.chomp) }).to contain_exactly(
         *lifecycle_prefixes
       )
 
       items_by_uuid = result.fetch("items").to_h { |item| [item.fetch("responseUuid"), item.fetch("body")] }
       expect(lifecycle_logs.map { |entry| items_by_uuid.fetch(entry.fetch("itemUuid")).fetch("name") }.uniq.length).to eq(2)
-      log_for = ->(prefix) { lifecycle_logs.find { |entry| entry.fetch("message").start_with?(prefix) } }
+      log_for = ->(prefix) { lifecycle_logs.find { |entry| entry.fetch("message").lines.first.chomp == lifecycle_titles.fetch(prefix) } }
       step_log = log_for.call("LIFECYCLE_ACCEPTED_STEP_NIL")
       explicit_step_log = log_for.call("LIFECYCLE_ACCEPTED_STEP_OPEN")
       after_log = log_for.call("LIFECYCLE_ACCEPTED_AFTER_NIL")
@@ -237,7 +239,7 @@ RSpec.describe "Public Cucumber security regression" do
           transport_cases = []
           builder_faults = 0
           original_build = ReportportalCucumber::Service::PayloadBuilder.method(:build_log_batch)
-          ReportportalCucumber::Service::PayloadBuilder.define_singleton_method(:build_log_batch) do |records|
+          ReportportalCucumber::Service::PayloadBuilder.define_singleton_method(:build_log_batch) do |records, **options, &state|
             missing_after_transport = ENV.fetch("SECURITY_SPOOL_MODE") == "fallback" && !requests.empty? &&
               records.any? do |record|
                 payload = record.respond_to?(:to_h) ? record.to_h : record
@@ -251,7 +253,7 @@ RSpec.describe "Public Cucumber security regression" do
               builder_faults += 1
               raise RuntimeError, "Injected missing-artifact payload-builder failure after transport"
             end
-            original_build.call(records)
+            original_build.call(records, **options, &state)
           end
           finite_transport_errors = {
             original: '{"\\\\u0070assword":"SECURITY_NATIVE_TRANSPORT_SECRET","detail":"safe offline transport diagnostic"}',
@@ -331,7 +333,7 @@ RSpec.describe "Public Cucumber security regression" do
           expect(missing_path_record.fetch("attachment")).not_to have_key("spooledPath")
 
           byte_record = result.fetch("spool").find do |record|
-            record.fetch("message", "").include?("Failure evidence: known-good.png")
+            record.dig("file", "name") == "known-good.png"
           end
           expect(byte_record).not_to be_nil
           expect(byte_record.fetch("itemUuid")).to match(/\A[0-9a-f-]{36}\z/i)
@@ -343,7 +345,7 @@ RSpec.describe "Public Cucumber security regression" do
         end
         request_text = result.fetch("requests").map { |body| Base64.strict_decode64(body) }.join("\n")
         all_sinks = [stdout, stderr, result.fetch("stdout"), result.fetch("stderr"), File.read(messages),
-                     request_text, result.fetch("spool").to_json].join("\n")
+                     request_text, result.fetch("spool").to_json].map(&:b).join("\n")
         expect(all_sinks).not_to include(
           "SECURITY_EDGE_", "SECURITY_ARTIFACT_MALFORMED", "SECURITY_ARTIFACT_OVERSIZED_",
           "SECURITY_NATIVE_TRANSPORT_SECRET", "SECURITY_CLI_JSON_", "SECURITY_CLI_ERROR_",
@@ -352,7 +354,8 @@ RSpec.describe "Public Cucumber security regression" do
         )
         expect(all_sinks).to include("RuntimeError", "safe offline transport diagnostic")
         expect(all_sinks).not_to include("SECURITY_READY5_")
-        expect(all_sinks).to include("password_policy=business-only token_count=12 monkey=visible component=payments; expected [one, two]")
+        expect(result.fetch("spool").map { |record| record.fetch("message", "") }.join("\n"))
+          .to include("password_policy=business-only token_count=12 monkey=visible component=payments; expected [one, two]")
         result.fetch("spool").each do |record|
           expect(record.fetch("spoolError").bytesize).to be <= 2_048
           expect(record.fetch("fallbackSpoolError").bytesize).to be <= 2_048 if record["fallbackSpoolError"]

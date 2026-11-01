@@ -50,7 +50,7 @@ RSpec.describe "M3C scenario link integration" do
           expect(original).to eq(off_scenarios.find { |candidate| candidate.fetch("name") == item.fetch("name") && candidate.fetch("retry") == item.fetch("retry") }.fetch("description"))
           expect(original).to include("Rule description remains before generated references.") if item.fetch("name").include?("Link example")
           if item.fetch("name").include?("Link example")
-            expected_row = item.fetch("name").include?("alpha") ? "| alpha |" : "| beta |"
+            expected_row = item.fetch("name").include?("alpha") ? "`case` = `alpha`" : "`case` = `beta`"
             expect(original).to include("Scenario-specific outline prose remains unchanged.", "| outline | preserved |", expected_row)
           elsif item.fetch("name").include?("Explicit TMS")
             expect(original).to include("Explicit Scenario prose remains unchanged.")

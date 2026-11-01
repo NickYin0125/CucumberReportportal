@@ -5,6 +5,7 @@ require_relative "../../script/release/tooling"
 
 RSpec.describe ReleaseTooling do
   let(:version) { "1.3.0" }
+  let(:chart_version) { version }
   let(:sha) { "a" * 40 }
   let(:commands) { ReleaseTooling::Commands.new }
   let(:source) { ReleaseTooling::Source.new(root: @root, tag: "v#{version}", commit: sha, commands: commands) }
@@ -28,7 +29,7 @@ RSpec.describe ReleaseTooling do
     File.write(File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml"), <<~YAML)
       apiVersion: v2
       name: reportportal-rich-experience
-      version: #{version}
+      version: #{chart_version}
       appVersion: "26.0.7"
     YAML
     File.write(File.join(@root, ReleaseTooling::Source::CHART, "charts/reportportal/Chart.yaml"), <<~YAML)
@@ -139,19 +140,29 @@ RSpec.describe ReleaseTooling do
     context "with SDK #{release_version} artifacts" do
       let(:version) { release_version }
 
-      it "preserves coupled SDK/chart identity, title, assets and manifest format" do
+      it "records independent SDK/chart identity, title, assets and manifest format" do
         build_fixture
         expect(bundle.verify!).to be(true)
-        expect(source.identity).to eq("tag" => "v#{version}", "commit" => sha, "version" => version, "appVersion" => "26.0.7")
-        expect(source.notes).to start_with("# SDK and Helm #{version}\n")
-        expect(source.asset_names).to eq(["reportportal-cucumber-ruby-#{version}.gem", "reportportal-rich-experience-#{version}.tgz",
+        expect(source.identity).to eq("tag" => "v#{version}", "commit" => sha, "version" => version,
+                                     "chartVersion" => chart_version, "appVersion" => "26.0.7")
+        expect(source.notes).to start_with("# SDK #{version} / Helm #{chart_version}\n")
+        expect(source.asset_names).to eq(["reportportal-cucumber-ruby-#{version}.gem", "reportportal-rich-experience-#{chart_version}.tgz",
                                          "release-manifest.json", "SHA256SUMS"])
+        expect(JSON.parse(File.read(File.join(bundle.directory, "release-manifest.json"))))
+          .to eq(source.identity.merge("sha256" => source.package_names.to_h { |name| [name, bundle.digest(name)] }))
       end
 
-      it "does not introduce SDK/chart version decoupling" do
+      it "ships the new SDK with the unchanged Helm 1.3.1 companion" do
         path = File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml")
         File.write(path, File.read(path).sub("version: #{version}", "version: 1.3.1"))
-        expect { source.identity }.to raise_error(ReleaseTooling::Error, /versions must match exactly/)
+        build_fixture
+        expect(source.identity).to include("version" => version, "chartVersion" => "1.3.1")
+        expect(source.release_title).to eq("SDK #{version} / Helm 1.3.1")
+        expect(source.notes).to start_with("# SDK #{version} / Helm 1.3.1\n")
+        expect(source.package_names).to eq(["reportportal-cucumber-ruby-#{version}.gem", "reportportal-rich-experience-1.3.1.tgz"])
+        expect(JSON.parse(File.read(File.join(bundle.directory, "release-manifest.json"))))
+          .to include("version" => version, "chartVersion" => "1.3.1")
+        expect(bundle.verify!).to be(true)
       end
     end
   end
@@ -257,12 +268,13 @@ RSpec.describe ReleaseTooling do
 
     context "when publishing v1.3.2" do
       let(:version) { "1.3.2" }
+      let(:chart_version) { "1.3.1" }
 
       it "keeps Latest on the 2.x line" do
         publisher.publish!
         expect(gh_commands.last).to eq([
           "gh", "release", "edit", "v1.3.2", "--draft=false", "--latest=false",
-          "--title", "SDK and Helm 1.3.2", "--notes-file", File.join(bundle.directory, "release-notes.md"),
+          "--title", "SDK 1.3.2 / Helm 1.3.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
           "--repo", "owner/repo"
         ])
       end
@@ -270,12 +282,13 @@ RSpec.describe ReleaseTooling do
 
     context "when publishing v2.0.1" do
       let(:version) { "2.0.1" }
+      let(:chart_version) { "1.3.1" }
 
       it "leaves Latest handling unchanged" do
         publisher.publish!
         expect(gh_commands.last).to eq([
           "gh", "release", "edit", "v2.0.1", "--draft=false",
-          "--title", "SDK and Helm 2.0.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
+          "--title", "SDK 2.0.1 / Helm 1.3.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
           "--repo", "owner/repo"
         ])
       end

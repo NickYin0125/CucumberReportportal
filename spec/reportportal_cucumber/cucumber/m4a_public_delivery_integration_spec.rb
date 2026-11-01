@@ -45,7 +45,11 @@ RSpec.describe "M4-A public bounded delivery integration" do
             result.puts(JSON.generate(attempt: attempt, attach_admitted: admitted, evidence_admitted: partial,
               explicit_oversized_rejections: rejected_after - rejected_before))
           end
-          raise "intentional first attempt failure" if attempt == 1
+          if attempt == 1
+            failure = RuntimeError.new("intentional first attempt failure")
+            failure.set_backtrace(["m4a_fixture.rb:1:in `bounded_failure'"])
+            raise failure
+          end
         end
       RUBY
 
@@ -165,7 +169,7 @@ RSpec.describe "M4-A public bounded delivery integration" do
       expect(step_items.length).to eq(scenario_items.length),
         "expected named action children for attempts #{scenario_uuids.inspect}; items=#{capture.fetch('item_requests').map { |item| item.slice('name', 'parentUuid', 'type', 'responseUuid') }.inspect}"
       step_uuids = step_items.map { |item| item.fetch("responseUuid") }
-      reported_logs = capture.fetch("logs").select { |entry| entry.fetch("message").start_with?("Attachment: public-") }
+      reported_logs = capture.fetch("logs").select { |entry| entry.dig("file", "name")&.start_with?("public-") }
       expect(reported_logs.map { |entry| entry.fetch("itemUuid") }.sort).to eq(step_uuids.sort)
       expect(reported_logs.map { |entry| entry.fetch("file").fetch("name") }.sort)
         .to eq(["public-1.txt", "public-2.txt"])
@@ -184,7 +188,19 @@ RSpec.describe "M4-A public bounded delivery integration" do
       counters = capture.fetch("diagnostics").fetch("counters")
       extra_oversized_rejections = counters.fetch("rejected_oversized") -
         attempts.sum { |attempt| attempt.fetch("explicit_oversized_rejections") }
-      expected_extra = capture.fetch("cucumber_version").start_with?("9.") ? 1 : 0
+      # Keep the deliberately bounded native failure in the delivered evidence.
+      failure_logs = capture.fetch("logs").select do |entry|
+        entry.fetch("message").start_with?("## \u2717 RuntimeError: intentional first attempt failure")
+      end
+      expect(failure_logs.length).to eq(1)
+      expect(failure_logs.first.fetch("message")).to include("m4a_fixture.rb:1:in `bounded_failure'")
+      expect(failure_logs.first.fetch("itemUuid")).to eq(step_uuids.first)
+      expect(failure_logs.first.fetch("level")).to eq("error")
+      expect(counters.fetch("rejected_oversized")).to eq(2)
+      other_rejections = counters.select { |key, _| key.start_with?("rejected_") && key != "rejected_oversized" }
+      expect(other_rejections.values).to all(eq(0))
+      expect(counters.fetch("worker_failed")).to eq(0)
+      expected_extra = 0
       expect(extra_oversized_rejections).to eq(expected_extra)
       expect(counters.fetch("accepted")).to eq(capture.fetch("logs").length)
       expect(counters.fetch("sent_batches")).to eq(body_lengths.length)

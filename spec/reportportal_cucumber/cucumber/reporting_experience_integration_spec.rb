@@ -147,7 +147,8 @@ RSpec.describe "ReportPortal reporting experience integration" do
       expect(http_entries.length).to eq(1)
       http_message = http_entries.first.fetch("message")
       expect(http_entries.first).to include("level" => "info", "itemUuid" => step_uuid)
-      expect(http_message.delete("`")).to include("POST https://service.example.test/orders", '"order_id": 73', '"accepted": true', "201", "14 ms")
+      expect(http_message).to start_with("\u2713 POST /orders \u2192 201 \u00b7 14 ms\n\n`https://service.example.test/orders` \u00b7 expected `201`")
+      expect(http_message.delete("`")).to include('"order_id": 73', '"accepted": true', "201", "14 ms")
       expect(http_message).to include("[REDACTED]")
       expect(http_message).not_to include("secret-value")
 
@@ -172,7 +173,36 @@ RSpec.describe "ReportPortal reporting experience integration" do
         matching.first
       end
       expect(native_records).not_to include(nil)
-      expect(native_records.last.fetch(:text)).to eq(http_message)
+      expect(native_records.last.fetch(:text)).to eq(<<~MARKDOWN.chomp)
+        ### Request
+        - `POST` `https://service.example.test/orders`
+        - Headers:
+        ```text
+        Authorization: [REDACTED]
+        Content-Type: application/json
+        ```
+        - Body:
+        ```json
+        {
+          "order_id": 73
+        }
+        ```
+
+        ### Response
+        - Status: `201`
+        - Headers:
+        ```text
+        Content-Type: application/json
+        ```
+        - Body:
+        ```json
+        {
+          "accepted": true
+        }
+        ```
+
+        - Duration: `14` ms
+      MARKDOWN
       expect(native_records.last.fetch(:text)).not_to include("secret-value")
       expect(native_records.map { |record| record[:test_step_id] }.uniq.length).to eq(1)
       step_started = envelopes.find do |envelope|

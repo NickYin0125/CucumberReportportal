@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 require "json"
+require_relative "../../presentation/markdown_text"
+require_relative "../../presentation/ledger_json"
+require_relative "../../presentation/units"
+require_relative "../../presentation/accent"
 
 module ReportportalCucumber
   module ReportPortal
@@ -18,6 +22,7 @@ module ReportportalCucumber
         TRUNCATION_MARKER = "[truncated]"
         TABLE_OMITTED_MARKER = "[table omitted: preview limit exceeded]"
         DOC_OMITTED_MARKER = "[DocString omitted: preview limit exceeded]"
+        NUMERIC_CELL = /\A[+-]?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?%?\z/
 
         # @param step [Object] The localized Gherkin source step.
         # @param multiline_content [String, nil] Legacy executed DocString content.
@@ -57,50 +62,131 @@ module ReportportalCucumber
           step_text
         end
 
-        # @return [String]
-        def to_markdown
-          sections = [header_line]
-          multiline_sections.each do |section|
+        # @param mode [Symbol] :description keeps the header; :log uses argument captions.
+        # @param presentation [String] "rich" accents RP logs only; descriptions stay plain.
+        # @return [String] Bounded Markdown, or the complete pre-Ledger description on failure.
+        def to_markdown(mode: :description, presentation: "plain")
+          Presentation::Fallback.render(fallback: -> { baseline_markdown }) do
+            raise ArgumentError, "Unknown step presentation mode" unless %i[log description].include?(mode)
+
+            accents = [] if presentation == "rich" && mode == :log
+            plain = render_markdown(presentation: true, mode: mode, accents: accents)
+            next plain unless accents
+
+            Presentation::Accent.guard(plain: plain, rich: accents.join("\n\n"), level: :info)
+          end
+        end
+
+        # Exact pre-Ledger rendering, deliberately independent of Presentation helpers.
+        # @return [String] Baseline message for caller-level rendering fallbacks.
+        def baseline_markdown
+          render_markdown(presentation: false)
+        end
+
+        # @return [Boolean]
+        def rich?
+          multiline_sections(presentation: false).any? { |section| !section.to_s.strip.empty? }
+        end
+
+        private
+
+        def render_markdown(presentation:, mode: :description, accents: nil)
+          sections = mode == :log ? [] : [header_line(presentation: presentation)]
+          multiline_sections(presentation: presentation, mode: mode, accents: accents).each do |section|
             sections << section unless section.to_s.strip.empty?
           end
           sections.join("\n\n")
         end
 
-        # @return [Boolean]
-        def rich?
-          multiline_sections.any? { |section| !section.to_s.strip.empty? }
-        end
-
-        private
-
         # @return [String]
-        def header_line
-          if step_text.empty?
-            "**#{keyword_label}**"
+        def header_line(presentation: true)
+          keyword = presentation ? Presentation::MarkdownText.inline(keyword_label) : keyword_label
+          text = presentation ? Presentation::MarkdownText.inline(step_text) : step_text
+          # Leave room for argument previews even when entity escaping expands a hostile title.
+          if presentation && text.bytesize > CONTENT_BYTE_LIMIT / 2
+            text = Presentation::MarkdownText.inline(step_text, limit: STEP_TEXT_BYTE_LIMIT / 6)
+          end
+          if text.empty?
+            "**#{keyword}**"
           else
-            "**#{keyword_label}** #{step_text}"
+            "**#{keyword}** #{text}"
           end
         end
 
         # @return [Array<String>]
-        def multiline_sections
+        def multiline_sections(presentation: true, mode: :description, accents: nil)
           sections = []
-          remaining = CONTENT_BYTE_LIMIT - header_line.bytesize
-          table_rows = runtime_table_rows || source_table_rows
+          remaining = CONTENT_BYTE_LIMIT - (mode == :log ? 0 : header_line(presentation: presentation).bytesize)
+          rows = table_rows
           doc_string = runtime_doc_string || source_doc_string
 
-          if table_rows && !table_rows.empty?
+          if rows && !rows.empty?
             reserve = 2 + (doc_string ? DOC_OMITTED_MARKER.bytesize + 2 : 0)
-            table = data_table_markdown(byte_limit: remaining - reserve)
+            caption = table_caption(rows) if presentation && mode == :log
+            reserve += caption.bytesize + 2 if caption
+            reserve += doc_caption_reserve(doc_string) if presentation && mode == :log && doc_string
+            header = {} if accents
+            table = data_table_markdown(byte_limit: remaining - reserve, presentation: presentation, accent_header: header)
+            # Only the generated, admitted header row is replaced. Caller text
+            # is never searched for HTML or rewritten as an assembled message.
+            rich_table = if header && header[:plain] && table.start_with?(header[:plain])
+                           header[:rich] + table.delete_prefix(header[:plain])
+                         else
+                           table
+                         end
+            table = "#{caption}\n\n#{table}" if caption && table
+            rich_table = "#{caption}\n\n#{rich_table}" if caption && rich_table
           end
           if table
             sections << table
             remaining -= table.bytesize + 2
+            accents << rich_table if accents
           end
 
-          doc = doc_string_markdown(byte_limit: remaining - 2) if doc_string
+          doc_accent = {} if accents
+          doc = doc_string_markdown(byte_limit: remaining - 2, presentation: presentation, mode: mode, accent: doc_accent) if doc_string
           sections << doc if doc
+          accents << (doc_accent[:rich] || doc) if accents && doc
           sections
+        end
+
+        def table_caption(rows)
+          columns = row_cells(rows.first).length
+          "_Data table \u00b7 #{Presentation::Units.count(columns, 'column')} \u00d7 #{Presentation::Units.count(rows.length - 1, 'row')}_"
+        end
+
+        def row_cells(row)
+          Array(row.respond_to?(:cells) ? row.cells : row)
+        end
+
+        def table_alignment(rows, columns)
+          # Alignment is optional; never inspect beyond the existing preview
+          # window merely to prove a column numeric, including hidden rows.
+          return Array.new(columns, '---') if rows.length > CONTENT_LINE_LIMIT
+
+          numeric = Array.new(columns, true)
+          populated = Array.new(columns, false)
+          rows.each_with_index do |row, index|
+            next if index.zero?
+            break unless numeric.any?
+
+            cells = row_cells(row)
+            columns.times do |column|
+              next unless numeric[column]
+
+              value = cell_value(cells[column])
+              if value.bytesize > CELL_BYTE_LIMIT
+                numeric[column] = false
+                next
+              end
+              value = value.strip
+              next if value.empty?
+
+              populated[column] = true
+              numeric[column] = value.match?(NUMERIC_CELL)
+            end
+          end
+          columns.times.map { |column| numeric[column] && populated[column] ? '--:' : '---' }
         end
 
         # @return [String]
@@ -132,8 +218,8 @@ module ReportportalCucumber
 
         # @param byte_limit [Integer]
         # @return [String, nil]
-        def data_table_markdown(byte_limit:)
-          rows = runtime_table_rows || source_table_rows
+        def data_table_markdown(byte_limit:, presentation: true, accent_header: nil)
+          rows = table_rows
           return nil unless rows && !rows.empty?
           return TABLE_OMITTED_MARKER if byte_limit <= TABLE_OMITTED_MARKER.bytesize
 
@@ -144,13 +230,17 @@ module ReportportalCucumber
               return append_table_marker(lines, used_bytes, byte_limit)
             end
 
-            cells = row.respond_to?(:cells) ? row.cells : row
-            cells = Array(cells)
+            cells = row_cells(row)
             return append_table_marker(lines, used_bytes, byte_limit) if cells.length > TABLE_COLUMN_LIMIT
 
-            rendered_cells = cells.map { |cell| escape_markdown_cell(cell_value(cell)) }
+            rendered_cells = cells.map { |cell| escape_markdown_cell(cell_value(cell), presentation: presentation) }
             row_line = "| #{rendered_cells.join(' | ')} |"
-            candidate = index.zero? ? [row_line, "| #{Array.new(cells.length, '---').join(' | ')} |"] : [row_line]
+            if index.zero?
+              alignment = presentation ? table_alignment(rows, cells.length) : Array.new(cells.length, '---')
+              candidate = [row_line, "| #{alignment.join(' | ')} |"]
+            else
+              candidate = [row_line]
+            end
             candidate_bytes = candidate.sum(&:bytesize) + (candidate.length - 1)
             candidate_bytes += 1 unless lines.empty?
             marker_reserve = rows.length > index + 1 ? TABLE_OMITTED_MARKER.bytesize + 1 : 0
@@ -161,6 +251,13 @@ module ReportportalCucumber
 
             lines.concat(candidate)
             used_bytes += candidate_bytes
+            if index.zero? && accent_header && cells.length.between?(1, 6)
+              accent_header[:plain] = row_line
+              accented = cells.map do |cell|
+                Presentation::Accent.table_header(cell_value(cell), columns: cells.length, limit: CELL_BYTE_LIMIT)
+              end
+              accent_header[:rich] = "| #{accented.join(' | ')} |"
+            end
           end
           lines.join("\n")
         end
@@ -190,6 +287,11 @@ module ReportportalCucumber
           table.rows if table&.respond_to?(:rows)
         end
 
+        # @return [Array<Object>, nil] Only the legacy executed/source table.
+        def table_rows
+          runtime_table_rows || source_table_rows
+        end
+
         # @param cell [Object]
         # @return [String]
         def cell_value(cell)
@@ -198,7 +300,36 @@ module ReportportalCucumber
 
         # @param byte_limit [Integer]
         # @return [String, nil]
-        def doc_string_markdown(byte_limit:)
+        def doc_string_markdown(byte_limit:, presentation: true, mode: :description, accent: nil)
+          body = doc_string_body(byte_limit: byte_limit, presentation: presentation)
+          return body unless body && presentation && mode == :log
+
+          doc_string = runtime_doc_string || source_doc_string
+          type = normalized_media_type(doc_string_media_type(doc_string))
+          label = json_media_type?(type) || body.match?(/\A(?:`{3,}|~{3,})json\n/) ? "JSON" : type
+          caption = doc_caption(label)
+          snapshot = {} if accent
+          body = doc_string_body(byte_limit: byte_limit - caption.bytesize - 2, presentation: presentation, snapshot: snapshot)
+          if snapshot && snapshot[:body] && snapshot[:body].lines.count > 20
+            summary = ["Doc string", label, "#{snapshot[:body].lines.count} lines"].reject(&:empty?).join(" \u00b7 ")
+            accent[:rich] = Presentation::Accent.details(
+              summary: summary, body: snapshot[:body], language: snapshot[:language], limit: CONTENT_BYTE_LIMIT
+            )
+          end
+          body ? "#{caption}\n\n#{body}" : nil
+        end
+
+        def doc_caption(label)
+          label.empty? ? "_Doc string_" : "_Doc string \u00b7 #{Presentation::MarkdownText.inline(label, limit: 128)}_"
+        end
+
+        def doc_caption_reserve(doc_string)
+          type = normalized_media_type(doc_string_media_type(doc_string))
+          label = type.empty? || json_media_type?(type) ? "JSON" : type
+          doc_caption(label).bytesize + 2
+        end
+
+        def doc_string_body(byte_limit:, presentation:, snapshot: nil)
           doc_string = runtime_doc_string || source_doc_string
           return nil unless doc_string
           return DOC_OMITTED_MARKER if byte_limit <= DOC_OMITTED_MARKER.bytesize
@@ -213,7 +344,7 @@ module ReportportalCucumber
           normalized_type = normalized_media_type(media_type)
           declared_json = json_media_type?(normalized_type)
           json = declared_json || (
-            normalized_type.empty? && !truncated && content.bytesize <= JSON_PARSE_BYTE_LIMIT && json_value?(content)
+            normalized_type.empty? && !truncated && content.bytesize <= JSON_PARSE_BYTE_LIMIT && json_value?(content, presentation: presentation)
           )
           fallback_marker = TRUNCATION_MARKER
 
@@ -225,22 +356,32 @@ module ReportportalCucumber
             else
               begin
                 parsed = JSON.parse(content)
-                pretty = JSON.pretty_generate(parsed)
-                bounded_pretty, pretty_truncated = bounded_doc_string_content(pretty, byte_limit: content_limit)
-                unless pretty_truncated
-                  block = fenced_block(bounded_pretty, "json")
-                  return block if block && block.bytesize <= byte_limit
-                end
-                fallback_marker = "[JSON pretty-print skipped; showing text]"
+                baseline_pretty = JSON.pretty_generate(parsed)
               rescue JSON::ParserError, JSON::GeneratorError
                 fallback_marker = declared_json ? "[invalid JSON; shown as text]" : TRUNCATION_MARKER
+              else
+                pretty = presentation ? Presentation::LedgerJson.format(parsed) : baseline_pretty
+                pretty ||= baseline_pretty
+                bounded_pretty, pretty_truncated = bounded_doc_string_content(pretty, byte_limit: content_limit)
+                unless pretty_truncated
+                  block = fenced_block(bounded_pretty, "json", presentation: presentation)
+                  if block && block.bytesize <= byte_limit
+                    snapshot&.merge!(body: bounded_pretty, language: "json")
+                    return block
+                  end
+                end
+                fallback_marker = "[JSON pretty-print skipped; showing text]"
               end
             end
           end
 
           content = append_truncation_marker(content, fallback_marker) if truncated || fallback_marker != TRUNCATION_MARKER
-          block = fenced_block(content, json ? "json" : doc_string_language(normalized_type))
-          return block if block && block.bytesize <= byte_limit
+          language = json ? "json" : doc_string_language(normalized_type)
+          block = fenced_block(content, language, presentation: presentation)
+          if block && block.bytesize <= byte_limit
+            snapshot&.merge!(body: content, language: language)
+            return block
+          end
 
           DOC_OMITTED_MARKER
         end
@@ -323,7 +464,11 @@ module ReportportalCucumber
         # @param content [String]
         # @param language [String]
         # @return [String, nil]
-        def fenced_block(content, language)
+        def fenced_block(content, language, presentation: true)
+          if presentation
+            return Presentation::MarkdownText.fence(content, language, limit: CONTENT_BYTE_LIMIT)
+          end
+
           fence = safe_fence(content)
           return nil unless fence
 
@@ -370,8 +515,9 @@ module ReportportalCucumber
 
         # @param content [String]
         # @return [Boolean]
-        def json_value?(content)
-          !JSON.parse(content).nil?
+        def json_value?(content, presentation: true)
+          value = JSON.parse(content)
+          presentation || !value.nil?
         rescue JSON::ParserError
           false
         end
@@ -393,7 +539,9 @@ module ReportportalCucumber
 
         # @param value [String]
         # @return [String]
-        def escape_markdown_cell(value)
+        def escape_markdown_cell(value, presentation: true)
+          return Presentation::MarkdownText.cell(value, limit: CELL_BYTE_LIMIT) if presentation
+
           prefix, truncated = bounded_utf8(value, CELL_BYTE_LIMIT)
           escaped = prefix.gsub(/[\\|]/) { |character| "\\#{character}" }
           escaped = escaped.gsub(/\r\n|\r|\n/, "<br>")

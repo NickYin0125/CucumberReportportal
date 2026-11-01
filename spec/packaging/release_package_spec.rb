@@ -110,7 +110,7 @@ RSpec.describe "Installed release packaging" do
 
   it "has the release identity and verified-origin metadata without a fabricated email" do
     package = Gem::Package.new(@artifact).spec
-    expect(package.version.to_s).to eq("1.3.1")
+    expect(package.version.to_s).to eq("1.3.2")
     expect(package.version).not_to be_prerelease
     expect(package.homepage).to eq("https://github.com/NickYin0125/CucumberReportportal")
     expect(package.metadata.fetch("source_code_uri")).to eq(package.homepage)

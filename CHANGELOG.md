@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.3.2 - Unreleased
+
+### Ledger Presentation
+
+- Failure logs show the exception, feature location and project frames before the full original backtrace. Preserve the failure content v1.3.1 sent, applying only Markdown/HTML escaping for the Ledger card.
+- Client-built Markdown escapes user markup; attachment captions show kind, size and available dimensions, unnamed files use step-derived names, and JSON previews are compact.
+- Hook item names are simplified without changing topology. Native global hooks remain Launch-scoped where observed; their independent Item-name checks are N/A, not fabricated hook items.
+- Preserve explicit native Before/After/AfterStep names through Cucumber's hook-created event, retaining retry labels and clearing scalar metadata on finalization.
+- Step-argument logs caption tables and DocStrings, align numeric columns without changing values, and omit the repeated step line. Argument-free steps have no description; Outline descriptions show Examples values on one line.
+- Assertion, failure-evidence and HTTP cards preserve diagnostic values, HTTP severity and existing sanitized bounds.
+- Keep structured HTTP and assertion bodies in their baseline format for native Cucumber and terminal formatters; apply Ledger cards only to the RP route.
+- Opt-in `RP_RUN_CONTEXT=true` adds allowlisted SDK, Cucumber, Ruby and CI metadata plus a default Launch description; explicit attributes and descriptions win. No workers attribute is generated on 1.x.
+- Opt-in `RP_PRESENTATION=rich` adds status pills, table-header accents and collapsible evidence to ReportPortal log messages only. Native Cucumber, terminal output, caller text and item metadata remain unchanged.
+- Preserve item hierarchy, identities, statuses, timestamps, ownership, log counts and attachment bytes. Presentation faults retain the original baseline with one warning; rich output preserves ERROR first lines and adds at most 1,024 bytes.
+- Released as a patch at the owner's request; the two opt-in switches are additive and off by default.
+
+### Fixes And Known Limitations
+
+- Fixed: preserve the complete original v1.3.1 failure message and every backtrace frame, including backslashes, multiline assertion diffs, Windows paths and escaped JSON. Presentation faults or display limits restore the exact v1.3.1 message instead of withholding content.
+- Fixed: Text attachments whose preview contained a NUL byte were rejected by ReportPortal and silently lost. Previews now escape NUL, so these attachments persist with unchanged bytes.
+- Known limitation: A native Cucumber log message containing a NUL byte is still not persisted on 1.x. SDK 2.x escapes it.
+
+### Verification
+
+- Runtime commit `df072ba0e6f603e66ba87e0b29c75fcc334a8e43` passed the full local Ruby 3.1.7/3.3.12 x Cucumber 9.2.1/10.2.0 four-cell matrix: 1,519 examples per cell (6,076 total), with zero failures or pending examples. Offline Cucumber passed one scenario and three steps in every cell. The first attempt's missing-jq environment failure is retained in the evidence; all four cells were rerun in full after correcting the test environment.
+- Live F01, F04, F14 and F14-negative passed reporting acceptance in plain and rich modes on Cucumber 9 and 10 (Launches 3807-3826, including the frozen 62-frame F04). Original-input replays in Launches 3827-3830 preserved all 14 F14-negative messages and complete backtraces from actual v1.3.1 Launch 3778: 56/56 byte-identical comparisons. Intentionally failing fixtures retained their expected failed business status and completed reporting.
+- Independent QA at `qa/presentation-ledger-1.3.2` commit `4abd436e322069a62f5f3a3de355b5c66260b9f8` passed P1.1-P1.10 and G8 under Decision 19: 715/715 checks, with no scoped defects. The report includes API readbacks, UI evidence and additional boundary controls in Launches 3831-3836. These are scoped presentation and failure-content results, not a claim of broader production certification.
+- Both remote CI checks passed at the tested runtime; remote CI covers Ruby 3.3 with Cucumber 10, while the complete local matrix supplies Ruby 3.1 and Cucumber 9 coverage. This release-note correction changes no runtime, dependencies or tests relative to `df072ba0`.
+
+
 ## 1.3.1 - 2026-10-31
 
 ### Readable Logger And Runnable Examples

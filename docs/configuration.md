@@ -82,6 +82,52 @@ is created. Set `RP_ENABLED=false` for local-only runs rather than relying on
 missing credentials. A CI-owned UUID cannot be combined with `rerun`/`rerun_of`;
 the conflict is rejected. See [shared Launches](ci.md#parallel-workers-and-a-shared-launch).
 
+## Presentation and run context
+
+Available in SDK 1.3.2; both additions are opt-in and off by default.
+
+| Environment variable | YAML key | Default | Type / use |
+| --- | --- | --- | --- |
+| `RP_PRESENTATION` | `presentation` | `plain` | Exact `plain` or `rich`; rich decorates client-built RP log cards only |
+| `RP_RUN_CONTEXT` | `run_context` | `false` | Strict Boolean; add allowlisted Launch metadata and a default description |
+
+An invalid `RP_PRESENTATION` value, including `fancy`, logs one constant warning
+without echoing the value and falls back to plain. Invalid `RP_RUN_CONTEXT`
+Boolean values are rejected; prefer explicit `true` / `false`.
+
+```yaml
+default:
+  presentation: plain
+  run_context: false
+profiles:
+  ledger:
+    presentation: rich
+    run_context: true
+```
+
+Rich mode never changes native Cucumber messages/HTML, terminal summaries,
+arbitrary AppLog text, item names/descriptions, or Launch metadata. It preserves
+every ERROR log's first line and adds at most 1,024 bytes per message; a budget
+or first-line guard retains the plain card. A presentation exception instead
+restores the original pre-Ledger baseline with one nonreflective warning.
+
+Run context adds missing `sdk`, `cucumber`, `ruby`, `git.branch`, `git.sha` and
+`ci.build` attributes. It reads only these environment sources, first non-empty
+value from left to right:
+
+| Attribute | Environment sources |
+| --- | --- |
+| `git.branch` | `GITHUB_REF_NAME`, `CI_COMMIT_REF_NAME`, `BRANCH_NAME` |
+| `git.sha` | `RP_SOURCE_COMMIT`, `GITHUB_SHA`, `CI_COMMIT_SHA`; first 7 characters |
+| `ci.build` | `GITHUB_RUN_ID`, `CI_PIPELINE_ID`, `BUILD_NUMBER` |
+
+Values are trimmed, capped at 128 characters, and omitted when empty. Explicit
+attribute keys win; a non-empty explicit Launch description is retained.
+Otherwise a one-line Cucumber/Ruby/branch description is generated.
+The 1.x formatter never generates a `workers` attribute, even when `PARALLEL_TEST_GROUPS` is set.
+No environment dump or implicit CI API lookup occurs. See
+[Presentation](advanced-reporting.md#presentation) for the card and channel contract.
+
 ## Logger and reporting policy
 
 | Environment variable | YAML key | Default | Type / use |
