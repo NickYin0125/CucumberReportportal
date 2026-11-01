@@ -30,6 +30,13 @@ module ReleaseTooling
   class Source
     CHART = "helm/reportportal-rich-experience"
     APP_VERSION = "26.0.7"
+    IMMUTABLE_LEGACY_TAGS = {
+      "v1.3.1" => "4ca2f770e0a84e83688f165ba04b4db8ef855cf9"
+    }.freeze
+    RELEASE_REFS = {
+      "1" => %w[refs/remotes/origin/maintenance/1.x].freeze,
+      "2" => %w[refs/remotes/origin/main refs/remotes/origin/codex/cucumber-12].freeze
+    }.freeze
     attr_reader :root, :tag, :commit, :version, :commands
 
     def initialize(root:, tag:, commit:, commands: Commands.new)
@@ -38,6 +45,7 @@ module ReleaseTooling
 
       @root, @tag, @commit, @commands = File.expand_path(root), tag, commit, commands
       @version = tag.delete_prefix("v")
+      raise Error, "Only SDK release lines 1.x and 2.x are supported" unless RELEASE_REFS.key?(version.split(".").first)
     end
 
     def identity
@@ -52,13 +60,30 @@ module ReleaseTooling
       { "tag" => tag, "commit" => commit, "version" => version, "appVersion" => APP_VERSION }
     end
 
+    def ancestry_refs
+      refs = RELEASE_REFS.fetch(version.split(".").first).dup
+      refs << "refs/remotes/origin/main" if IMMUTABLE_LEGACY_TAGS[tag] == commit
+      refs
+    end
+
     def verify_commit!
       head = commands.run("git", "rev-parse", "--verify", "HEAD", chdir: root).strip
       raise Error, "Checkout does not match release commit" unless head == commit
       resolved = commands.run("git", "rev-parse", "--verify", "refs/tags/#{tag}^{commit}", chdir: root).strip
       raise Error, "Release tag moved or does not match checkout" unless resolved == commit
 
-      commands.run("git", "merge-base", "--is-ancestor", commit, "refs/remotes/origin/main", chdir: root)
+      approved = ancestry_refs.any? do |ref|
+        begin
+          commands.run("git", "merge-base", "--is-ancestor", commit, ref, chdir: root)
+          true
+        rescue Error
+          false
+        end
+      end
+      raise Error, "Release commit is outside approved release ancestry: #{ancestry_refs.join(', ')}" unless approved
+
+      changes = commands.run("git", "status", "--porcelain", "--untracked-files=normal", chdir: root)
+      raise Error, "Release source must be clean, including untracked files" unless changes.strip.empty?
     end
 
     def notes
@@ -233,7 +258,9 @@ module ReleaseTooling
       raise Error, "Draft asset set mismatch" unless completed.fetch("draft") && uploaded.sort == @source.asset_names.sort
 
       verify_remote!(uploaded)
-      gh("release", "edit", @source.tag, "--draft=false", "--title", "SDK and Helm #{@source.version}", "--notes-file", notes_path)
+      latest_args = @source.tag.start_with?("v1.") ? ["--latest=false"] : []
+      gh("release", "edit", @source.tag, "--draft=false", *latest_args,
+         "--title", "SDK and Helm #{@source.version}", "--notes-file", notes_path)
       puts "Published verified GitHub release #{@source.tag}. RubyGems was not modified."
     end
 
