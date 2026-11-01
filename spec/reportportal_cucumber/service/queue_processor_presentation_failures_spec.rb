@@ -57,7 +57,8 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
   end
 
   def observe_builds(processor, builds)
-    allow(processor).to receive(:build_payload).and_wrap_original do |original, records, **options|
+    # Keep RSpec's prepended Method intact through Ruby 3.1 keyword forwarding.
+    allow(processor).to receive(:build_payload).and_wrap_original do |original, records, options = {}|
       failures = options[:presentation_failures]
       builds << {
         thread: Thread.current, failures: failures, cache: options[:rendered_messages],
@@ -85,7 +86,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
       end
       worker = processor.instance_variable_get(:@worker)
       observe_builds(processor, builds)
-      allow(caption).to receive(:format).and_wrap_original do |original, **options|
+      allow(caption).to receive(:format).and_wrap_original do |original, options|
         raise "SECRET123" if Thread.current == worker
 
         original.call(**options)
@@ -140,7 +141,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
         allow(processor.instance_variable_get(:@spool_store)).to receive(:persist) { |**payload| persisted << payload }
         allow(caption).to receive(:format).and_raise("SECRET123")
         if failure == :probe_error
-          allow(multipart).to receive(:log_batch_bytes).and_wrap_original do |original, **payload|
+          allow(multipart).to receive(:log_batch_bytes).and_wrap_original do |original, payload|
             raise "probe failed" if payload[:entries].length == 2
 
             original.call(**payload)
