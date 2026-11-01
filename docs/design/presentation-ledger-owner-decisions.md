@@ -263,3 +263,31 @@ Owner-confirmed on 2026-11-01 after the final release review.
 
     The P1.2 exception recorded in Decision 15 is withdrawn. The F14
     back\slash title must render.
+
+## Decision 20: Cross-Unit Credential Safety Path
+
+Owner-confirmed on 2026-11-01.
+
+Question: 已复现跨 message/backtrace 边界的凭据泄露风险。是否允许仅在检测到跨边界凭据时保留整体脱敏安全路径，并单独验证其调用数？普通失败仍按 Decision 19 拆分，正常路径保持两次调用；不会放宽任何脱敏规则。
+
+Owner answer: 允许这个受测的安全例外（推荐）
+
+A detected credential spanning redaction-unit boundaries may use the existing
+whole-input safety path instead of independent redaction. This narrow path
+must have its own security and call-count tests. Ordinary failures still use
+Decision 19's two-unit redaction and normal/per-frame call counts. No weaker
+filtering or general byte-equivalence waiver is authorized.
+
+## Decision 21: Draft-Only Release-Tooling Integration
+
+Owner-confirmed on 2026-11-01.
+
+Question: WP4 要等你合并 #7，但最终条件又要求 #7 仍为草稿。是否允许将 #7 的功能分支以 merge commit 合入 #6，直接验证组合状态，同时不改任何受保护分支、四个 PR 都保留草稿？
+
+Owner answer: 允许合入功能分支，四个 PR 保持草稿（推荐）
+
+Merge the reviewed `maintenance/release-ancestry-1.x` feature branch into
+`maintenance/presentation-ledger-1.3.2` using a merge commit. Resolve only
+release-tooling, release-workflow and related-spec conflicts. The combined
+state must pass verification; protected branches remain unchanged, all four
+PRs remain draft, and no PR merge, tag or publication is authorized.
