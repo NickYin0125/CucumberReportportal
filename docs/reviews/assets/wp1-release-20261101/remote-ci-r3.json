@@ -1,0 +1,1382 @@
+{
+  "schema": "wp1-remote-ci-metadata-proof/1",
+  "observed_at_utc": "2026-11-01T12:38:15Z",
+  "repository": "NickYin0125/CucumberReportportal",
+  "candidate_head": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+  "scope": "API-bound run/job status only; not raw test-log or example-count verification, WP5 certification, redaction acceptance, or release authorization.",
+  "not_examined": [
+    "Remote raw test logs and example counts",
+    "New full-suite, matrix, RP or redaction execution",
+    "Publication outside these two CI runs"
+  ],
+  "credential_handling": "Authorized read-only GitHub connector; no credential files, headers, tokens or authentication responses retained.",
+  "references": [
+    {
+      "path": "docs/reviews/assets/wp1-release-20261101/remote-ci-input-r3.json",
+      "sha256": "150e645e82cf382b8b7b67cc9cfa85d772688e6767cd9693fd4ba564e03ff587"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/wp1_remote_ci_binding.rb",
+      "sha256": "2be6ea2c388c247b3464f64d789788da4764681874da84c0e546837b3e70c36f"
+    },
+    {
+      "path": "docs/reviews/assets/wp1-release-20261101/binding-r3.json",
+      "sha256": "dfccba5a4f0184270407c9deebd804c1bedaa1127379f67c6ac12922bb376667"
+    }
+  ],
+  "workflow_bindings": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "mode": "100644",
+      "git_blob": "ded2870ff6ad6a83407f0c4b54a7548698bb78df",
+      "sha256": "06b3ecc97797eef79a5c610261d0e2a1d6ad184a6913e21a44fd15611db19654",
+      "bytes": 303
+    },
+    {
+      "path": ".github/workflows/validate.yml",
+      "mode": "100644",
+      "git_blob": "a42589874ddd36c6b3817a5b402bd91148b7728f",
+      "sha256": "2ac5de99e1b18bfc1e40e1aa628330a12e6fadf43b7f3aa9b5d52d54c7961f72",
+      "bytes": 13486
+    }
+  ],
+  "workflow_policy": {
+    "release_default": false,
+    "ci_override": false,
+    "bundle_condition": "inputs.release && github.event_name == 'push' && github.ref_type == 'tag'",
+    "interpretation": "The observed bundle skip is expected; neither run supplies release=true. No publication or release authorization is inferred."
+  },
+  "collection_history": {
+    "run_exit": 0,
+    "jobs_exit": 1,
+    "local_collection_failed": true
+  },
+  "independent_api_observation": {
+    "collector": "Independent QA: authorized GitHub connector read API; metadata allowlist only",
+    "records": [
+      {
+        "run": {
+          "conclusion": "success",
+          "created_at": "2026-11-01T12:26:57Z",
+          "event": "pull_request",
+          "head_branch": "codex/presentation-ledger-2.0.1",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170",
+          "id": 41306545170,
+          "path": ".github/workflows/ci.yml",
+          "status": "completed",
+          "updated_at": "2026-11-01T12:31:07Z",
+          "run_attempt": 1
+        },
+        "jobs_api_url": "https://api.github.com/repos/NickYin0125/CucumberReportportal/actions/runs/41306545170/jobs?per_page=100",
+        "jobs_total_count": 8,
+        "jobs": [
+          {
+            "completed_at": "2026-11-01T12:30:01Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988446",
+            "id": 124847988446,
+            "name": "test / test (Ruby 3.4)",
+            "started_at": "2026-11-01T12:27:00Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:30:35Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988584",
+            "id": 124847988584,
+            "name": "test / legacy (Ruby 3.3, Cucumber 9)",
+            "started_at": "2026-11-01T12:26:59Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:29:47Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988692",
+            "id": 124847988692,
+            "name": "test / legacy (Ruby 3.1, Cucumber 10)",
+            "started_at": "2026-11-01T12:26:59Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:31:00Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988702",
+            "id": 124847988702,
+            "name": "test / test (Ruby 3.3)",
+            "started_at": "2026-11-01T12:26:59Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:29:48Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988713",
+            "id": 124847988713,
+            "name": "test / legacy (Ruby 3.3, Cucumber 10)",
+            "started_at": "2026-11-01T12:26:59Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:30:14Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988752",
+            "id": 124847988752,
+            "name": "test / legacy (Ruby 3.1, Cucumber 9)",
+            "started_at": "2026-11-01T12:26:59Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:31:06Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124848935179",
+            "id": 124848935179,
+            "name": "test / gate",
+            "started_at": "2026-11-01T12:31:02Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:31:06Z",
+            "conclusion": "skipped",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124848960843",
+            "id": 124848960843,
+            "name": "test / bundle",
+            "started_at": "2026-11-01T12:31:07Z",
+            "status": "completed",
+            "run_id": 41306545170,
+            "run_attempt": 1
+          }
+        ]
+      },
+      {
+        "run": {
+          "conclusion": "success",
+          "created_at": "2026-11-01T12:26:53Z",
+          "event": "push",
+          "head_branch": "codex/presentation-ledger-2.0.1",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562",
+          "id": 41306540562,
+          "path": ".github/workflows/ci.yml",
+          "status": "completed",
+          "updated_at": "2026-11-01T12:30:55Z",
+          "run_attempt": 1
+        },
+        "jobs_api_url": "https://api.github.com/repos/NickYin0125/CucumberReportportal/actions/runs/41306540562/jobs?per_page=100",
+        "jobs_total_count": 8,
+        "jobs": [
+          {
+            "completed_at": "2026-11-01T12:30:46Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973638",
+            "id": 124847973638,
+            "name": "test / test (Ruby 3.3)",
+            "started_at": "2026-11-01T12:26:56Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:30:47Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973803",
+            "id": 124847973803,
+            "name": "test / legacy (Ruby 3.1, Cucumber 10)",
+            "started_at": "2026-11-01T12:26:56Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:29:41Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973844",
+            "id": 124847973844,
+            "name": "test / legacy (Ruby 3.1, Cucumber 9)",
+            "started_at": "2026-11-01T12:26:56Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:30:48Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973847",
+            "id": 124847973847,
+            "name": "test / test (Ruby 3.4)",
+            "started_at": "2026-11-01T12:26:56Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:29:37Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973875",
+            "id": 124847973875,
+            "name": "test / legacy (Ruby 3.3, Cucumber 9)",
+            "started_at": "2026-11-01T12:26:56Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:30:02Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973902",
+            "id": 124847973902,
+            "name": "test / legacy (Ruby 3.3, Cucumber 10)",
+            "started_at": "2026-11-01T12:26:56Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:30:54Z",
+            "conclusion": "success",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124848888866",
+            "id": 124848888866,
+            "name": "test / gate",
+            "started_at": "2026-11-01T12:30:50Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          },
+          {
+            "completed_at": "2026-11-01T12:30:54Z",
+            "conclusion": "skipped",
+            "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+            "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124848914565",
+            "id": 124848914565,
+            "name": "test / bundle",
+            "started_at": "2026-11-01T12:30:55Z",
+            "status": "completed",
+            "run_id": 41306540562,
+            "run_attempt": 1
+          }
+        ]
+      }
+    ]
+  },
+  "checks": [
+    {
+      "id": "master-input-head",
+      "expected": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+      "actual": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+      "verdict": "PASS"
+    },
+    {
+      "id": "master-run-membership",
+      "expected": [
+        41306540562,
+        41306545170
+      ],
+      "actual": [
+        41306540562,
+        41306545170
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "independent-run-membership",
+      "expected": [
+        41306540562,
+        41306545170
+      ],
+      "actual": [
+        41306540562,
+        41306545170
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-identity-event-status",
+      "expected": {
+        "id": 41306545170,
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "path": ".github/workflows/ci.yml",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170"
+      },
+      "actual": {
+        "id": 41306545170,
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "event": "pull_request",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "path": ".github/workflows/ci.yml",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-master-run-schema",
+      "expected": [
+        "conclusion",
+        "created_at",
+        "event",
+        "head_branch",
+        "head_sha",
+        "html_url",
+        "id",
+        "path",
+        "status",
+        "updated_at"
+      ],
+      "actual": [
+        "conclusion",
+        "created_at",
+        "event",
+        "head_branch",
+        "head_sha",
+        "html_url",
+        "id",
+        "path",
+        "status",
+        "updated_at"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-master-run-corroborated",
+      "expected": {
+        "conclusion": "success",
+        "created_at": "2026-11-01T12:26:57Z",
+        "event": "pull_request",
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170",
+        "id": 41306545170,
+        "path": ".github/workflows/ci.yml",
+        "status": "completed",
+        "updated_at": "2026-11-01T12:31:07Z"
+      },
+      "actual": {
+        "conclusion": "success",
+        "created_at": "2026-11-01T12:26:57Z",
+        "event": "pull_request",
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170",
+        "id": 41306545170,
+        "path": ".github/workflows/ci.yml",
+        "status": "completed",
+        "updated_at": "2026-11-01T12:31:07Z"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-complete-jobs-page",
+      "expected": [
+        8,
+        8
+      ],
+      "actual": [
+        8,
+        8
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-exact-job-membership",
+      "expected": [
+        "test / bundle",
+        "test / gate",
+        "test / legacy (Ruby 3.1, Cucumber 10)",
+        "test / legacy (Ruby 3.1, Cucumber 9)",
+        "test / legacy (Ruby 3.3, Cucumber 10)",
+        "test / legacy (Ruby 3.3, Cucumber 9)",
+        "test / test (Ruby 3.3)",
+        "test / test (Ruby 3.4)"
+      ],
+      "actual": [
+        "test / bundle",
+        "test / gate",
+        "test / legacy (Ruby 3.1, Cucumber 10)",
+        "test / legacy (Ruby 3.1, Cucumber 9)",
+        "test / legacy (Ruby 3.3, Cucumber 10)",
+        "test / legacy (Ruby 3.3, Cucumber 9)",
+        "test / test (Ruby 3.3)",
+        "test / test (Ruby 3.4)"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-unique-job-ids",
+      "expected": 8,
+      "actual": 8,
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-job-head-run-attempt-binding",
+      "expected": [
+        [
+          124847988446,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988584,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988692,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988702,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988713,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988752,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848935179,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848960843,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ]
+      ],
+      "actual": [
+        [
+          124847988446,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988584,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988692,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988702,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988713,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847988752,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848935179,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848960843,
+          41306545170,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ]
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-tests-gate-success-bundle-skip",
+      "expected": [
+        [
+          124847988446,
+          "completed",
+          "success"
+        ],
+        [
+          124847988584,
+          "completed",
+          "success"
+        ],
+        [
+          124847988692,
+          "completed",
+          "success"
+        ],
+        [
+          124847988702,
+          "completed",
+          "success"
+        ],
+        [
+          124847988713,
+          "completed",
+          "success"
+        ],
+        [
+          124847988752,
+          "completed",
+          "success"
+        ],
+        [
+          124848935179,
+          "completed",
+          "success"
+        ],
+        [
+          124848960843,
+          "completed",
+          "skipped"
+        ]
+      ],
+      "actual": [
+        [
+          124847988446,
+          "completed",
+          "success"
+        ],
+        [
+          124847988584,
+          "completed",
+          "success"
+        ],
+        [
+          124847988692,
+          "completed",
+          "success"
+        ],
+        [
+          124847988702,
+          "completed",
+          "success"
+        ],
+        [
+          124847988713,
+          "completed",
+          "success"
+        ],
+        [
+          124847988752,
+          "completed",
+          "success"
+        ],
+        [
+          124848935179,
+          "completed",
+          "success"
+        ],
+        [
+          124848960843,
+          "completed",
+          "skipped"
+        ]
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-master-job-schemas",
+      "expected": [
+        [
+          "completed_at",
+          "conclusion",
+          "head_sha",
+          "html_url",
+          "id",
+          "name",
+          "started_at",
+          "status"
+        ]
+      ],
+      "actual": [
+        [
+          "completed_at",
+          "conclusion",
+          "head_sha",
+          "html_url",
+          "id",
+          "name",
+          "started_at",
+          "status"
+        ]
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-master-jobs-corroborated",
+      "expected": [
+        {
+          "completed_at": "2026-11-01T12:30:01Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988446",
+          "id": 124847988446,
+          "name": "test / test (Ruby 3.4)",
+          "started_at": "2026-11-01T12:27:00Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:35Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988584",
+          "id": 124847988584,
+          "name": "test / legacy (Ruby 3.3, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:47Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988692",
+          "id": 124847988692,
+          "name": "test / legacy (Ruby 3.1, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:31:00Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988702",
+          "id": 124847988702,
+          "name": "test / test (Ruby 3.3)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:48Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988713",
+          "id": 124847988713,
+          "name": "test / legacy (Ruby 3.3, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:14Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988752",
+          "id": 124847988752,
+          "name": "test / legacy (Ruby 3.1, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:31:06Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124848935179",
+          "id": 124848935179,
+          "name": "test / gate",
+          "started_at": "2026-11-01T12:31:02Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:31:06Z",
+          "conclusion": "skipped",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124848960843",
+          "id": 124848960843,
+          "name": "test / bundle",
+          "started_at": "2026-11-01T12:31:07Z",
+          "status": "completed"
+        }
+      ],
+      "actual": [
+        {
+          "completed_at": "2026-11-01T12:30:01Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988446",
+          "id": 124847988446,
+          "name": "test / test (Ruby 3.4)",
+          "started_at": "2026-11-01T12:27:00Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:35Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988584",
+          "id": 124847988584,
+          "name": "test / legacy (Ruby 3.3, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:47Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988692",
+          "id": 124847988692,
+          "name": "test / legacy (Ruby 3.1, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:31:00Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988702",
+          "id": 124847988702,
+          "name": "test / test (Ruby 3.3)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:48Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988713",
+          "id": 124847988713,
+          "name": "test / legacy (Ruby 3.3, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:14Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124847988752",
+          "id": 124847988752,
+          "name": "test / legacy (Ruby 3.1, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:59Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:31:06Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124848935179",
+          "id": 124848935179,
+          "name": "test / gate",
+          "started_at": "2026-11-01T12:31:02Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:31:06Z",
+          "conclusion": "skipped",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306545170/job/124848960843",
+          "id": 124848960843,
+          "name": "test / bundle",
+          "started_at": "2026-11-01T12:31:07Z",
+          "status": "completed"
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306545170-jobs-endpoint",
+      "expected": "https://api.github.com/repos/NickYin0125/CucumberReportportal/actions/runs/41306545170/jobs?per_page=100",
+      "actual": "https://api.github.com/repos/NickYin0125/CucumberReportportal/actions/runs/41306545170/jobs?per_page=100",
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-identity-event-status",
+      "expected": {
+        "id": 41306540562,
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "path": ".github/workflows/ci.yml",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562"
+      },
+      "actual": {
+        "id": 41306540562,
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "path": ".github/workflows/ci.yml",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-master-run-schema",
+      "expected": [
+        "conclusion",
+        "created_at",
+        "event",
+        "head_branch",
+        "head_sha",
+        "html_url",
+        "id",
+        "path",
+        "status",
+        "updated_at"
+      ],
+      "actual": [
+        "conclusion",
+        "created_at",
+        "event",
+        "head_branch",
+        "head_sha",
+        "html_url",
+        "id",
+        "path",
+        "status",
+        "updated_at"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-master-run-corroborated",
+      "expected": {
+        "conclusion": "success",
+        "created_at": "2026-11-01T12:26:53Z",
+        "event": "push",
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562",
+        "id": 41306540562,
+        "path": ".github/workflows/ci.yml",
+        "status": "completed",
+        "updated_at": "2026-11-01T12:30:55Z"
+      },
+      "actual": {
+        "conclusion": "success",
+        "created_at": "2026-11-01T12:26:53Z",
+        "event": "push",
+        "head_branch": "codex/presentation-ledger-2.0.1",
+        "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+        "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562",
+        "id": 41306540562,
+        "path": ".github/workflows/ci.yml",
+        "status": "completed",
+        "updated_at": "2026-11-01T12:30:55Z"
+      },
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-complete-jobs-page",
+      "expected": [
+        8,
+        8
+      ],
+      "actual": [
+        8,
+        8
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-exact-job-membership",
+      "expected": [
+        "test / bundle",
+        "test / gate",
+        "test / legacy (Ruby 3.1, Cucumber 10)",
+        "test / legacy (Ruby 3.1, Cucumber 9)",
+        "test / legacy (Ruby 3.3, Cucumber 10)",
+        "test / legacy (Ruby 3.3, Cucumber 9)",
+        "test / test (Ruby 3.3)",
+        "test / test (Ruby 3.4)"
+      ],
+      "actual": [
+        "test / bundle",
+        "test / gate",
+        "test / legacy (Ruby 3.1, Cucumber 10)",
+        "test / legacy (Ruby 3.1, Cucumber 9)",
+        "test / legacy (Ruby 3.3, Cucumber 10)",
+        "test / legacy (Ruby 3.3, Cucumber 9)",
+        "test / test (Ruby 3.3)",
+        "test / test (Ruby 3.4)"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-unique-job-ids",
+      "expected": 8,
+      "actual": 8,
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-job-head-run-attempt-binding",
+      "expected": [
+        [
+          124847973638,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973803,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973844,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973847,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973875,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973902,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848888866,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848914565,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ]
+      ],
+      "actual": [
+        [
+          124847973638,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973803,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973844,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973847,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973875,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124847973902,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848888866,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ],
+        [
+          124848914565,
+          41306540562,
+          "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          1
+        ]
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-tests-gate-success-bundle-skip",
+      "expected": [
+        [
+          124847973638,
+          "completed",
+          "success"
+        ],
+        [
+          124847973803,
+          "completed",
+          "success"
+        ],
+        [
+          124847973844,
+          "completed",
+          "success"
+        ],
+        [
+          124847973847,
+          "completed",
+          "success"
+        ],
+        [
+          124847973875,
+          "completed",
+          "success"
+        ],
+        [
+          124847973902,
+          "completed",
+          "success"
+        ],
+        [
+          124848888866,
+          "completed",
+          "success"
+        ],
+        [
+          124848914565,
+          "completed",
+          "skipped"
+        ]
+      ],
+      "actual": [
+        [
+          124847973638,
+          "completed",
+          "success"
+        ],
+        [
+          124847973803,
+          "completed",
+          "success"
+        ],
+        [
+          124847973844,
+          "completed",
+          "success"
+        ],
+        [
+          124847973847,
+          "completed",
+          "success"
+        ],
+        [
+          124847973875,
+          "completed",
+          "success"
+        ],
+        [
+          124847973902,
+          "completed",
+          "success"
+        ],
+        [
+          124848888866,
+          "completed",
+          "success"
+        ],
+        [
+          124848914565,
+          "completed",
+          "skipped"
+        ]
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-master-job-schemas",
+      "expected": [
+        [
+          "completed_at",
+          "conclusion",
+          "head_sha",
+          "html_url",
+          "id",
+          "name",
+          "started_at",
+          "status"
+        ]
+      ],
+      "actual": [
+        [
+          "completed_at",
+          "conclusion",
+          "head_sha",
+          "html_url",
+          "id",
+          "name",
+          "started_at",
+          "status"
+        ]
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-master-jobs-corroborated",
+      "expected": [
+        {
+          "completed_at": "2026-11-01T12:30:46Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973638",
+          "id": 124847973638,
+          "name": "test / test (Ruby 3.3)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:47Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973803",
+          "id": 124847973803,
+          "name": "test / legacy (Ruby 3.1, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:41Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973844",
+          "id": 124847973844,
+          "name": "test / legacy (Ruby 3.1, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:48Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973847",
+          "id": 124847973847,
+          "name": "test / test (Ruby 3.4)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:37Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973875",
+          "id": 124847973875,
+          "name": "test / legacy (Ruby 3.3, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:02Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973902",
+          "id": 124847973902,
+          "name": "test / legacy (Ruby 3.3, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:54Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124848888866",
+          "id": 124848888866,
+          "name": "test / gate",
+          "started_at": "2026-11-01T12:30:50Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:54Z",
+          "conclusion": "skipped",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124848914565",
+          "id": 124848914565,
+          "name": "test / bundle",
+          "started_at": "2026-11-01T12:30:55Z",
+          "status": "completed"
+        }
+      ],
+      "actual": [
+        {
+          "completed_at": "2026-11-01T12:30:46Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973638",
+          "id": 124847973638,
+          "name": "test / test (Ruby 3.3)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:47Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973803",
+          "id": 124847973803,
+          "name": "test / legacy (Ruby 3.1, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:41Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973844",
+          "id": 124847973844,
+          "name": "test / legacy (Ruby 3.1, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:48Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973847",
+          "id": 124847973847,
+          "name": "test / test (Ruby 3.4)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:29:37Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973875",
+          "id": 124847973875,
+          "name": "test / legacy (Ruby 3.3, Cucumber 9)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:02Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124847973902",
+          "id": 124847973902,
+          "name": "test / legacy (Ruby 3.3, Cucumber 10)",
+          "started_at": "2026-11-01T12:26:56Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:54Z",
+          "conclusion": "success",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124848888866",
+          "id": 124848888866,
+          "name": "test / gate",
+          "started_at": "2026-11-01T12:30:50Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-01T12:30:54Z",
+          "conclusion": "skipped",
+          "head_sha": "2ad45b29cbf0eb3b491979ffc60553ee9a414aed",
+          "html_url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41306540562/job/124848914565",
+          "id": 124848914565,
+          "name": "test / bundle",
+          "started_at": "2026-11-01T12:30:55Z",
+          "status": "completed"
+        }
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "id": "run-41306540562-jobs-endpoint",
+      "expected": "https://api.github.com/repos/NickYin0125/CucumberReportportal/actions/runs/41306540562/jobs?per_page=100",
+      "actual": "https://api.github.com/repos/NickYin0125/CucumberReportportal/actions/runs/41306540562/jobs?per_page=100",
+      "verdict": "PASS"
+    },
+    {
+      "id": "ci-calls-validation-without-release-override",
+      "expected": true,
+      "actual": true,
+      "verdict": "PASS"
+    },
+    {
+      "id": "release-input-default-false",
+      "expected": true,
+      "actual": true,
+      "verdict": "PASS"
+    },
+    {
+      "id": "gate-requires-both-test-families-success",
+      "expected": true,
+      "actual": true,
+      "verdict": "PASS"
+    },
+    {
+      "id": "bundle-requires-release-push-tag",
+      "expected": true,
+      "actual": true,
+      "verdict": "PASS"
+    }
+  ],
+  "verdict": "PASS"
+}
