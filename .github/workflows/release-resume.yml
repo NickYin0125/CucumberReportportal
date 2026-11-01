@@ -22,7 +22,8 @@ concurrency:
 
 jobs:
   preflight:
-    if: github.ref == 'refs/heads/main'
+    # For 1.x recovery: gh workflow run release-resume.yml --ref maintenance/1.x
+    if: github.ref == 'refs/heads/main' || (github.ref == 'refs/heads/maintenance/1.x' && startsWith(inputs.tag, 'v1.'))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
@@ -41,12 +42,33 @@ jobs:
           RELEASE_TAG: ${{ inputs.tag }}
           SOURCE_RUN_ID: ${{ inputs.source_run_id }}
         run: |
-          [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]] || exit 1
           [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]*$ ]]
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main
+          case "$GITHUB_REF" in
+            refs/heads/main)
+              git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main
+              ;;
+            refs/heads/maintenance/1.x)
+              [[ "$RELEASE_TAG" == v1.* ]] || exit 1
+              git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/maintenance/1.x
+              ;;
+            *) exit 1 ;;
+          esac
           source_sha="$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}")"
-          git merge-base --is-ancestor "$source_sha" refs/remotes/origin/main
+          case "$RELEASE_TAG" in
+            v1.*)
+              if ! git merge-base --is-ancestor "$source_sha" refs/remotes/origin/maintenance/1.x; then
+                test "$RELEASE_TAG:$source_sha" = v1.3.1:4ca2f770e0a84e83688f165ba04b4db8ef855cf9
+                git merge-base --is-ancestor "$source_sha" refs/remotes/origin/main
+              fi
+              ;;
+            v2.*)
+              git merge-base --is-ancestor "$source_sha" refs/remotes/origin/main ||
+                git merge-base --is-ancestor "$source_sha" refs/remotes/origin/codex/cucumber-12
+              ;;
+            *) exit 1 ;;
+          esac
           workflow_id="$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/release.yml" --jq .id)"
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" > "$RUNNER_TEMP/source-run.json"
           jq -e --arg sha "$source_sha" --arg tag "$RELEASE_TAG" --argjson workflow "$workflow_id" \
@@ -80,6 +102,28 @@ jobs:
           path: release-source
           fetch-depth: 0
           persist-credentials: false
+      - name: Recheck original tag and fixed release-line ancestry before recovery publication
+        working-directory: release-source
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+          RELEASE_SHA: ${{ needs.preflight.outputs.source-sha }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          test "$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}")" = "$RELEASE_SHA"
+          case "$RELEASE_TAG" in
+            v1.*)
+              if ! git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/maintenance/1.x; then
+                test "$RELEASE_TAG:$RELEASE_SHA" = v1.3.1:4ca2f770e0a84e83688f165ba04b4db8ef855cf9
+                git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main
+              fi
+              ;;
+            v2.*)
+              git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main ||
+                git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/codex/cucumber-12
+              ;;
+            *) exit 1 ;;
+          esac
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"

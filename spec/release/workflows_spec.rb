@@ -36,7 +36,7 @@ RSpec.describe "Release workflow security and validation contract" do
     expect(publish.fetch("steps").last.dig("env", "GITHUB_TOKEN")).to eq("${{ secrets.GITHUB_TOKEN }}")
   end
 
-  it "has full tag/main history with non-persisted credentials and Node24 checkout" do
+  it "has full release-line history with non-persisted credentials and Node24 checkout" do
     jobs = [validation.dig("jobs", "test"), release.dig("jobs", "preflight"), release.dig("jobs", "publish")]
     jobs.each do |job|
       checkout = job.fetch("steps").find { |step| step.fetch("uses", "").start_with?("actions/checkout@") }
@@ -45,7 +45,9 @@ RSpec.describe "Release workflow security and validation contract" do
     end
     %w[preflight publish].each do |name|
       runs = release.dig("jobs", name, "steps").filter_map { |step| step["run"] }.join("\n")
-      expect(runs).to include("git merge-base --is-ancestor", "refs/remotes/origin/main", "refs/tags/$RELEASE_TAG^{commit}")
+      expect(runs).to include("git merge-base --is-ancestor", "refs/remotes/origin/main", "refs/tags/$RELEASE_TAG^{commit}",
+                             "refs/remotes/origin/maintenance/1.x", "refs/remotes/origin/codex/cucumber-12",
+                             "v1.3.1:4ca2f770e0a84e83688f165ba04b4db8ef855cf9", "*) exit 1")
     end
   end
 
@@ -88,16 +90,49 @@ RSpec.describe "Release workflow security and validation contract" do
     expect(release.to_s).not_to include("gem push", "workflow_dispatch", "workflow_run")
   end
 
-  it "allows draft recovery only from main and a completed original tag validation" do
+  it "allows main recovery and limits the exact maintenance controller to 1.x tags" do
+    expect(resume.dig("jobs", "preflight", "if"))
+      .to eq("github.ref == 'refs/heads/main' || (github.ref == 'refs/heads/maintenance/1.x' && startsWith(inputs.tag, 'v1.'))")
+    expect(resume.dig("jobs", "publish", "needs")).to eq("preflight")
+    checkout = resume.dig("jobs", "preflight", "steps").first
+    expect(checkout.fetch("with")).to include("ref" => "${{ github.sha }}", "fetch-depth" => 0, "persist-credentials" => false)
+  end
+
+  it "checks stable tags and the controller checkout against its fixed trusted remote before source or API lookup" do
+    run = resume.dig("jobs", "preflight", "steps").last.fetch("run")
+    expect(run).to include('test "$(git rev-parse HEAD)" = "$GITHUB_SHA"', 'case "$GITHUB_REF" in',
+                          "refs/heads/main)", "refs/heads/maintenance/1.x)", '[[ "$RELEASE_TAG" == v1.* ]] || exit 1',
+                          'git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/main',
+                          'git merge-base --is-ancestor "$GITHUB_SHA" refs/remotes/origin/maintenance/1.x')
+    expect(run.index('[[ "$RELEASE_TAG" =~')).to be < run.index('case "$GITHUB_REF" in')
+    expect(run.index('case "$GITHUB_REF" in')).to be < run.index('source_sha=')
+    expect(run.index('source_sha=')).to be < run.index('workflow_id=')
+  end
+
+  it "requires a completed original tag validation and retained immutable artifacts for draft recovery" do
     expect(resume.fetch(true).keys).to eq(["workflow_dispatch"])
-    expect(resume.dig("jobs", "preflight", "if")).to eq("github.ref == 'refs/heads/main'")
     expect(resume.fetch("permissions")).to eq("contents" => "read", "actions" => "read")
     run = resume.dig("jobs", "preflight", "steps").last.fetch("run")
     expect(run).to include(".status == \"completed\"", ".event == \"push\"", ".head_sha == $sha",
                           ".head_branch == $tag", ".workflow_id == $workflow", '"validate / test"',
                           '.conclusion == "success"', ".expired == false", "git merge-base --is-ancestor")
     expect(run).not_to include("git tag", "--force")
+    expect(run).to include("refs/remotes/origin/maintenance/1.x", "refs/remotes/origin/codex/cucumber-12",
+                          "v1.3.1:4ca2f770e0a84e83688f165ba04b4db8ef855cf9", "*) exit 1")
     expect(resume.dig("concurrency", "cancel-in-progress")).to be(false)
+  end
+
+  it "rechecks the original tag and release ancestry in the recovery source before publication tooling runs" do
+    steps = resume.dig("jobs", "publish", "steps")
+    guard = steps.find { |step| step["working-directory"] == "release-source" }
+    expect(guard.fetch("env")).to eq("RELEASE_TAG" => "${{ inputs.tag }}", "RELEASE_SHA" => "${{ needs.preflight.outputs.source-sha }}")
+    expect(guard.fetch("run")).to include('test "$(git rev-parse HEAD)" = "$RELEASE_SHA"',
+                                         "refs/tags/$RELEASE_TAG^{commit}", "refs/remotes/origin/maintenance/1.x",
+                                         "v1.3.1:4ca2f770e0a84e83688f165ba04b4db8ef855cf9")
+    checkout = steps.find { |step| step.dig("with", "path") == "release-source" }
+    setup = steps.find { |step| step["uses"] == "ruby/setup-ruby@v1" }
+    expect(steps.index(checkout)).to be < steps.index(guard)
+    expect(steps.index(guard)).to be < steps.index(setup)
   end
 
   it "reuses original immutable artifacts and source rather than rebuilding an existing tag" do

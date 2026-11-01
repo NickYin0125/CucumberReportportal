@@ -22,8 +22,8 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
-      # Do not execute repository code before establishing main ancestry.
-      - name: Require an unchanged stable tag on main
+      # Establish fixed release-line ancestry before executing repository code.
+      - name: Require an unchanged stable tag on its approved release line
         env:
           RELEASE_TAG: ${{ github.ref_name }}
           RELEASE_SHA: ${{ github.sha }}
@@ -31,7 +31,19 @@ jobs:
           [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
           test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
           test "$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}")" = "$RELEASE_SHA"
-          git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main
+          case "$RELEASE_TAG" in
+            v1.*)
+              if ! git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/maintenance/1.x; then
+                test "$RELEASE_TAG:$RELEASE_SHA" = v1.3.1:4ca2f770e0a84e83688f165ba04b4db8ef855cf9
+                git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main
+              fi
+              ;;
+            v2.*)
+              git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main ||
+                git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/codex/cucumber-12
+              ;;
+            *) exit 1 ;;
+          esac
 
   validate:
     needs: preflight
@@ -53,14 +65,27 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Recheck tag and main ancestry before publication
+      - name: Recheck stable tag and fixed release-line ancestry before publication
         env:
           RELEASE_TAG: ${{ github.ref_name }}
           RELEASE_SHA: ${{ github.sha }}
         run: |
+          [[ "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]
           test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
           test "$(git rev-parse --verify "refs/tags/$RELEASE_TAG^{commit}")" = "$RELEASE_SHA"
-          git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main
+          case "$RELEASE_TAG" in
+            v1.*)
+              if ! git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/maintenance/1.x; then
+                test "$RELEASE_TAG:$RELEASE_SHA" = v1.3.1:4ca2f770e0a84e83688f165ba04b4db8ef855cf9
+                git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main
+              fi
+              ;;
+            v2.*)
+              git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/main ||
+                git merge-base --is-ancestor "$RELEASE_SHA" refs/remotes/origin/codex/cucumber-12
+              ;;
+            *) exit 1 ;;
+          esac
 
       - uses: ruby/setup-ruby@v1
         with:
