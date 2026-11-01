@@ -18,11 +18,7 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
   end
 
   def card(error: self.error, message: error.message, backtrace: self.backtrace, cwd: self.cwd)
-    evidence = Automation::FailureRedactor.new.redact(message: message, frames: backtrace.split("\n", -1))
-    return evidence.baseline if evidence.fallback_only
-
-    described_class.format(error: error, message: evidence.message, backtrace: evidence.backtrace,
-                           baseline: evidence.baseline, cwd: cwd)
+    described_class.format(error: error, message: message, backtrace: backtrace, cwd: cwd)
   end
 
   it "renders the project-first card and preserves all 62 original tail lines exactly" do
@@ -41,10 +37,26 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
   end
 
   it "puts continuation lines after meta and labels the project block only for a continuation" do
-    result = card(message: "\n\nfirst\nsecond <raw>\nthird & raw", backtrace: project_frames.join("\n"))
+    message = "\n\nfirst\nsecond <raw>\nthird & raw"
+    result = card(message: message, backtrace: project_frames.join("\n"))
     expect(result).to start_with("## \u2717 RuntimeError: first\n\n`features/audit.feature:5` \u2192 `runtime-support.rb:65`")
     expect(result).to include("```text\nsecond <raw>\nthird & raw\n```\n\n_Project frames_\n\n```text")
+    expect(result).to include("_Full message_\n\n```text\n#{message}\n```")
     expect(card).not_to include("_Project frames_")
+  end
+
+  it "retains P1.5's lines-two-and-three block without repeating an ordinary multiline headline" do
+    result = card(message: "first\nsecond <raw>\nthird & raw", backtrace: project_frames.join("\n"))
+    expect(result).to include("```text\nsecond <raw>\nthird & raw\n```\n\n_Project frames_\n\n```text")
+    expect(result).not_to include("_Full message_", "```text\nfirst\n")
+    expect(result.scan("first").length).to eq(1)
+  end
+
+  it "adds full-message evidence only beyond the exact title clipping boundary" do
+    length = described_class::TITLE_LIMIT - "## \u2717 RuntimeError: ".length
+    expect(card(message: "x" * length, backtrace: "")).not_to include("_Full message_")
+    message = "x" * (length + 1)
+    expect(card(message: message, backtrace: "")).to include("_Full message_\n\n```text\n#{message}\n```")
   end
 
   it "shows at most eight non-feature project frames and puts the feature last" do
@@ -145,6 +157,7 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
     title = card(message: "x" * 500, backtrace: "").lines.first.chomp
     expect(title.length).to eq(200)
     expect(title).to end_with("\u2026")
+    expect(card(message: "x" * 500, backtrace: "")).to include("```text\n#{'x' * 500}\n```")
     title = card(message: "<b>*" * 100, backtrace: "").lines.first.chomp
     expect(title.length).to be <= 200
     expect(title).not_to match(/[<>]|&[^;]*\u2026|\\\u2026/)
@@ -152,65 +165,70 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
       .to eq("## \u2717 RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;")
   end
 
-  it "renders only redacted evidence and preserves frames when a message is withheld" do
+  it "preserves credential-looking message and frame content without interpreting escaped JSON" do
     result = card(message: 'api_key=SECRET123 failed', backtrace: "/project/support.rb:1:in 'token=SECRET123'")
-    expect(result).not_to include("SECRET123")
-    expect(result).to include("api\\_key=\\[REDACTED\\]", "token=[REDACTED]")
+    expect(result).to include("api\\_key=SECRET123 failed", "token=SECRET123")
     result = card(message: 'failed {"\\u0070assword":"SECRET123"}')
-    expect(result).to start_with("## \u2717 RuntimeError\n\n_Message withheld: unsafe or ambiguous input_")
+    expect(result).to start_with("## \u2717 RuntimeError")
+    expect(result).to include('failed {"\\\\u0070assword":"SECRET123"}')
     expect(result).to end_with("```text\n#{backtrace}\n```")
-    expect(result).not_to include("SECRET123")
+    expect(result).not_to include("Message withheld")
   end
 
-  it "uses a supplied redacted baseline without constructing another redactor" do
+  it "uses raw parts and a supplied original baseline without constructing a redactor" do
     expect(Automation::EvidenceRedactor).not_to receive(:new)
-    result = described_class.format(error: error, message: "api_key=[REDACTED]", backtrace: "support.rb:1",
-                                    baseline: "api_key=[REDACTED]\nsupport.rb:1", cwd: cwd)
-    expect(result).not_to include("SECRET123")
-    expect(result).to include("api\\_key=\\[REDACTED\\]", "support.rb:1")
+    result = described_class.format(error: error, message: "api_key=SECRET123", backtrace: "support.rb:1",
+                                    baseline: "api_key=SECRET123\nsupport.rb:1", cwd: cwd)
+    expect(result).to include("api\\_key=SECRET123", "support.rb:1")
   end
 
-  it "makes no redaction calls when rendering already-safe parts" do
+  it "makes no redaction calls when rendering original parts" do
     expect(Automation::EvidenceRedactor).not_to receive(:new)
     expect(described_class.format(error: error, message: error.message, backtrace: backtrace, cwd: cwd))
       .to include("Full backtrace")
   end
 
-  it "keeps a secret assigned across the message/frame boundary redacted" do
+  it "preserves raw text across the message/frame boundary" do
     result = card(message: "failure password=", backtrace: "CROSS_BOUNDARY_SECRET\nsupport.rb:1")
     expect(result).to start_with("## \u2717 RuntimeError: failure password=")
-    expect(result).not_to include("CROSS_BOUNDARY_SECRET")
-    expect(result).to end_with("```text\n[REDACTED]\nsupport.rb:1\n```")
+    expect(result).to end_with("```text\nCROSS_BOUNDARY_SECRET\nsupport.rb:1\n```")
   end
 
-  it "returns the whole baseline when a cross-boundary quoted secret changes line count" do
+  it "does not collapse quoted credential-looking text across the message/frame boundary" do
     message = 'failure password="secret first half'
     trace = "secret second half\"\nsupport.rb:1"
-    expected = Automation::EvidenceRedactor.new.redact_text("#{message}\n#{trace}")
-    expect(expected.count("\n")).not_to eq("#{message}\n#{trace}".count("\n"))
-    expect(card(message: message, backtrace: trace)).to eq(expected)
-    expect(expected).not_to include("secret first", "secret second")
+    result = card(message: message, backtrace: trace)
+    expect(result).to start_with("## \u2717 RuntimeError: #{message}")
+    expect(result).to end_with("```text\n#{trace}\n```")
   end
 
-  it "retains a safe structural fallback when rendering raises" do
+  it "treats a raw omission-marker string as ordinary message and frame content" do
+    marker = "[REDACTED] [evidence omitted: unsafe or oversized input]"
+    result = card(message: marker, backtrace: marker)
+    expect(result).to start_with("## \u2717 RuntimeError: \\[REDACTED\\] \\[evidence omitted: unsafe or oversized input\\]")
+    expect(result).to end_with("```text\n#{marker}\n```")
+    expect(result).not_to include("Message withheld")
+  end
+
+  it "retains the original fallback when rendering raises" do
     allow(ReportportalCucumber::Presentation::MarkdownText).to receive(:inline).and_raise(ArgumentError)
-    expect(described_class.format(error: error, message: "[REDACTED]", backtrace: "", baseline: "[REDACTED]", cwd: cwd))
-      .to eq("[REDACTED]")
+    expect(described_class.format(error: error, message: "password=RAW", backtrace: "", baseline: "password=RAW", cwd: cwd))
+      .to eq("password=RAW")
   end
 
-  it "splits safe evidence without losing trailing empty message or backtrace lines" do
+  it "preserves trailing empty message and backtrace lines" do
     result = card(message: "headline\n", backtrace: "support.rb:1\n")
     expect(result).to start_with("## \u2717 RuntimeError: headline")
+    expect(result).to include("```text\nheadline\n\n```")
     expect(result).to end_with("```text\nsupport.rb:1\n\n```")
   end
 
-  it "preserves the baseline Step failed when sanitizing an encoded empty message" do
-    expect(card(message: '""', backtrace: "")).to eq("Step failed")
+  it "preserves literal JSON quotes instead of decoding an empty string" do
+    expect(card(message: '""', backtrace: "")).to eq("## \u2717 RuntimeError: \"\"")
   end
 
-  it "preserves the redacted baseline on oversized evidence or unsafe fences" do
-    expect(card(message: "x" * 65_537)).to start_with("## \u2717 RuntimeError\n\n_Message withheld:")
-    expect(card(message: "x" * 65_537)).to end_with("```text\n#{backtrace}\n```")
+  it "preserves the exact original baseline on oversized evidence or unsafe fences" do
+    expect(card(message: "x" * 65_537)).to eq("#{'x' * 65_537}\n#{backtrace}")
     message = "`" * 32 + "~" * 32
     logger = double("logger", warn: nil)
     allow(ReportportalCucumber).to receive(:logger).and_return(logger)

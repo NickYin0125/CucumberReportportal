@@ -7,7 +7,6 @@ require_relative "ast_metadata"
 require_relative "native_lifecycle"
 require_relative "../automation/report_context"
 require_relative "../automation/evidence_redactor"
-require_relative "../automation/failure_redactor"
 require_relative "../service/evidence_presenter"
 require_relative "../service/scenario_identity"
 require_relative "../service/scenario_attributes"
@@ -1192,18 +1191,17 @@ module ReportportalCucumber
           else
             error.to_s
           end
-        frames =
+        backtrace =
           if error.respond_to?(:backtrace)
-            Array(error.backtrace).map(&:to_s)
+            Array(error.backtrace).join("\n")
           else
-            [fetch_value(error, :backtrace).to_s]
+            fetch_value(error, :backtrace).to_s
           end
-        evidence = Automation::FailureRedactor.new.redact(message: details, frames: frames)
-        message = Presentation::Fallback.render(fallback: -> { evidence.baseline }) do
-          next evidence.baseline if evidence.fallback_only
-
-          Presentation::FailureCard.format(error: error, message: evidence.message, backtrace: evidence.backtrace,
-                                          presentation: @config.presentation, baseline: evidence.baseline)
+        baseline = [details, backtrace].reject(&:empty?).join("\n")
+        baseline = "Step failed" if baseline.empty?
+        message = Presentation::Fallback.render(fallback: -> { baseline }) do
+          Presentation::FailureCard.format(error: error, message: details, backtrace: backtrace,
+                                          presentation: @config.presentation, baseline: baseline)
         end
         @log_buffer.emit_log(
           item_uuid: item_uuid,

@@ -42,12 +42,14 @@ RSpec.describe "RP-only Ledger accents" do
 
   it "folds the complete failure tail without changing ERROR identity or raw evidence" do
     frames = "/project/step.rb:5:in 'run'\n/gems/cucumber/core.rb:6:in 'call'\n-e:1"
-    evidence = Automation::FailureRedactor.new.redact(message: error.message, frames: frames.split("\n"))
-    arguments = { error: error, message: evidence.message, backtrace: evidence.backtrace,
-                  baseline: evidence.baseline, cwd: "/project" }
+    arguments = { error: error, message: error.message, backtrace: frames,
+                  baseline: "#{error.message}\n#{frames}", cwd: "/project" }
     plain = ReportportalCucumber::Presentation::FailureCard.format(**arguments)
     rich = ReportportalCucumber::Presentation::FailureCard.format(**arguments, presentation: "rich")
-    check_guard(plain, rich, level: :error)
+    expect(rich.bytesize).to be <= plain.bytesize + 1024
+    expect(rich.lines.first).to eq(plain.lines.first)
+    expect(plain).to include("token=SECRET123")
+    expect(rich).to include("token=SECRET123")
     expect(rich).to include("<details><summary>Full backtrace", "</summary>\n\n```text\n#{frames}\n```\n\n</details>")
     expect(rich.gsub(/<[^>]*>/, "")).to include(frames)
   end
@@ -210,13 +212,12 @@ RSpec.describe "RP-only Ledger accents" do
   %i[details guard].each do |helper|
     it "restores the complete pre-Ledger failure message once on Accent.#{helper} fault" do
       frames = "/project/step.rb:5\n/gems/cucumber/core.rb:6"
-      evidence = Automation::FailureRedactor.new.redact(message: error.message, frames: frames.split("\n"))
       expect(accent).to receive(helper).once.and_raise("SECRET123")
       result = ReportportalCucumber::Presentation::FailureCard.format(
-        error: error, message: evidence.message, backtrace: evidence.backtrace,
-        baseline: evidence.baseline, presentation: "rich"
+        error: error, message: error.message, backtrace: frames,
+        baseline: "#{error.message}\n#{frames}", presentation: "rich"
       )
-      expect(result).to eq("failure <other> token=[REDACTED]\n#{frames}")
+      expect(result).to eq("#{error.message}\n#{frames}")
       expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
     end
   end

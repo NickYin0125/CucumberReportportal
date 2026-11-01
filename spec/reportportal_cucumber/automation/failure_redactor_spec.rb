@@ -34,7 +34,8 @@ RSpec.describe Automation::FailureRedactor do
         frames.each { |frame| expect(output).to include(frame) }
         expect(output).not_to include("SENSITIVE_VALUE")
         if disposition == :withheld
-          expect(output).to start_with("## \u2717 RuntimeError\n\n_Message withheld: unsafe or ambiguous input_")
+          expect(output).to start_with("## \u2717 RuntimeError: \\[REDACTED\\]")
+          expect(output).not_to include("Message withheld")
         end
       end
     end
@@ -73,7 +74,7 @@ RSpec.describe Automation::FailureRedactor do
     expect(result.baseline).not_to include("FRAME_SECRET")
   end
 
-  it "keeps an omitted frame in the raw tail but never promotes it to a project frame" do
+  it "keeps the unused legacy helper's omission marker in the raw card tail as ordinary text" do
     bad = 'failure {"\\u0070assword":"FRAME_SECRET"}'
     original = [frames.first, bad, frames.last]
     result = sanitizer.redact(message: "failure", frames: original)

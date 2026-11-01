@@ -4,7 +4,6 @@ require "rbconfig"
 require_relative "markdown_text"
 require_relative "units"
 require_relative "accent"
-require_relative "../automation/evidence_redactor"
 
 module ReportportalCucumber
   module Presentation
@@ -14,21 +13,23 @@ module ReportportalCucumber
       PROJECT_LIMIT = 8
       FRAMEWORK_LIMIT = 3
       LOCATION_LIMIT = 40
-      BYTE_LIMIT = Automation::EvidenceRedactor::MAX_INPUT_BYTES
+      BYTE_LIMIT = MarkdownText::INPUT_LIMIT
 
       class << self
-        # Formats already-redacted parts without applying a second safety policy.
+        # Formats the original v1.3.1 failure content using presentation escaping only.
         # @param error [Object] Original failure; only Exceptions get a class title.
-        # @param message [String] Redacted exception message or omission marker.
-        # @param backtrace [String] Redacted joined backtrace.
+        # @param message [String] Original exception message.
+        # @param backtrace [String] Original joined backtrace.
         # @param cwd [String] Project root used only for displayed locations.
         # @param presentation [String] "plain" or RP-only "rich".
-        # @param baseline [String, nil] Safe fallback supplied by the formatter.
-        # @return [String] Bounded card, or the exact redacted baseline on failure.
+        # @param baseline [String, nil] Original v1.3.1 message supplied by the formatter.
+        # @return [String] Bounded card, or the exact original baseline on failure.
         def format(error:, message:, backtrace:, cwd: Dir.pwd, presentation: "plain", baseline: nil)
           baseline ||= [message, backtrace].reject(&:empty?).join("\n")
           baseline = "Step failed" if baseline.empty?
           Fallback.render(fallback: -> { baseline }) do
+            next baseline if baseline.bytesize > BYTE_LIMIT || !baseline.dup.force_encoding(Encoding::UTF_8).valid_encoding?
+
             card = render(error, message, backtrace, cwd)
             next baseline if card.bytesize > BYTE_LIMIT
             next card unless presentation == "rich"
@@ -41,8 +42,6 @@ module ReportportalCucumber
         private
 
         def render(error, message, backtrace, cwd, accent: false)
-          withheld = message == Automation::EvidenceRedactor::OMITTED
-          message = "" if withheld
           message_lines = message.lines(chomp: true)
           first = message_lines.index { |line| !line.strip.empty? }
           headline = first ? message_lines[first] : ""
@@ -51,8 +50,10 @@ module ReportportalCucumber
           title_text = [klass, headline].reject(&:empty?).join(": ")
           return "Step failed" if title_text.empty? && backtrace.empty?
 
-          sections = [title(title_text.empty? ? "Step failed" : title_text)]
-          sections << "_Message withheld: unsafe or ambiguous input_" if withheld
+          full_title = "## \u2717 #{MarkdownText.inline(title_text.empty? ? 'Step failed' : title_text, limit: BYTE_LIMIT)}"
+          sections = [title(full_title)]
+          displayed_message = first ? message_lines[first..].join("\n") : ""
+          full_message = message if displayed_message != message || full_title.length > TITLE_LIMIT
           frames = backtrace.lines(chomp: true).map { |line| frame(line, cwd) }
           feature = frames.find { |entry| entry[:feature] }
           projects = frames.select { |entry| entry[:kind] == :project && !entry[:feature] }
@@ -70,6 +71,10 @@ module ReportportalCucumber
             end.join("\n")
             sections << fenced(aligned)
           end
+          if full_message && !full_message.empty?
+            sections << "_Full message_"
+            sections << fenced(full_message)
+          end
           unless backtrace.empty?
             caption = tail_caption(frames, shown)
             if accent
@@ -82,8 +87,7 @@ module ReportportalCucumber
           sections.join("\n\n")
         end
 
-        def title(value)
-          line = "## \u2717 #{MarkdownText.inline(value, limit: BYTE_LIMIT)}"
+        def title(line)
           return line if line.length <= TITLE_LIMIT
 
           # Do not cut through an entity or Markdown escape when bounding a title.
@@ -97,10 +101,6 @@ module ReportportalCucumber
         end
 
         def frame(line, cwd)
-          if line == Automation::EvidenceRedactor::OMITTED
-            return { location: line, method: "", kind: :omitted, feature: false }
-          end
-
           match = line.match(/\A(.+?):(\d+)(?::in ['`](.*)['`])?\z/)
           path = match ? match[1] : line
           location = display_path(path, cwd)
@@ -140,7 +140,7 @@ module ReportportalCucumber
           extension = File.extname(name)
           stem = name.delete_suffix(extension)
           budget = LOCATION_LIMIT - extension.length - line.length - 1
-          # Impossible suffixes fall back to the intact redacted evidence.
+          # Impossible suffixes fall back to the intact original evidence.
           raise ArgumentError, "Location suffix exceeds display budget" if budget < 1
 
           left = (budget + 1) / 2
