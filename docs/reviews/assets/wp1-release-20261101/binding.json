@@ -1,0 +1,129 @@
+{
+  "schema": "wp1-release-date-only-binding/1",
+  "checked_at_utc": "2026-11-01T12:14:54Z",
+  "version": "2.0.1",
+  "previous_candidate_head": "173c6038b417e86aeb4f268649ce4c81aa30888e",
+  "candidate_head": "c0ba73368e089d58212e3ebb25ca6abce9eb8c6f",
+  "actually_tested_runtime_head": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "verdict": "FAIL",
+  "scope": "Bounded WP1 CHANGELOG-date and local-package equivalence only; not new WP5 certification, redaction verification, CI signoff or release authorization",
+  "protected_branch_or_tag_mutation": false,
+  "feature_worktree_mutation": false,
+  "network_publication": false,
+  "helper_self_test": {
+    "verdict": "PASS",
+    "assertions": 24,
+    "scope": "Helper-only positive/negative tests; no SDK behavior certification"
+  },
+  "prior_binding": {
+    "source": "docs/reviews/assets/wp5-ci-final-20261101/docs-only-final-binding-r2.json",
+    "sha256": "6943d50b426824e1197bb3651d4b06201791ff8103a607e137e45de5cc608018",
+    "claim_limit": "Immutable historical equivalence input, not a new SDK execution"
+  },
+  "date_only_delta": {
+    "changed_paths": [
+      "CHANGELOG.md"
+    ],
+    "diff_stat": " CHANGELOG.md | 2 +-\n 1 file changed, 1 insertion(+), 1 deletion(-)\n",
+    "patch": "diff --git a/CHANGELOG.md b/CHANGELOG.md\nindex 3c13b0e2..096580b8 100644\n--- a/CHANGELOG.md\n+++ b/CHANGELOG.md\n@@ -1,6 +1,6 @@\n # Changelog\n \n-## 2.0.1 - Unreleased\n+## 2.0.1 - 2026-11-01\n \n ### Ledger Presentation\n \n",
+    "before_sha256": "a839c4ac4fac40cb648f57f3ab5821ae4d746ae3b78ce81af67cf1d049372e6f",
+    "after_sha256": "0292c57f262e8807a5003f9f1f94b7c6a16aa6efdd89993b5684fc03d1b4e103",
+    "exact_one_line_date_replacement": true
+  },
+  "fingerprints": {
+    "runtime_lib": {
+      "sources": {
+        "3f20313c20b25071fbc49b31e1c6bc772bd599e4": {
+          "count": 46,
+          "git_path_mode_blob_sha256": "2794d868d87ca55b54b4324ac63136a97a5ec10b84a327463d909c71a864f4ac"
+        },
+        "173c6038b417e86aeb4f268649ce4c81aa30888e": {
+          "count": 46,
+          "git_path_mode_blob_sha256": "2794d868d87ca55b54b4324ac63136a97a5ec10b84a327463d909c71a864f4ac"
+        },
+        "c0ba73368e089d58212e3ebb25ca6abce9eb8c6f": {
+          "count": 46,
+          "git_path_mode_blob_sha256": "2794d868d87ca55b54b4324ac63136a97a5ec10b84a327463d909c71a864f4ac"
+        }
+      },
+      "unchanged": true,
+      "matches_prior_binding": true
+    },
+    "tests_and_features": {
+      "sources": {
+        "3f20313c20b25071fbc49b31e1c6bc772bd599e4": {
+          "count": 190,
+          "git_path_mode_blob_sha256": "f40425c1188fb23151fbefbc32fc16c791f49da42141d0d23f507856a80945cc"
+        },
+        "173c6038b417e86aeb4f268649ce4c81aa30888e": {
+          "count": 190,
+          "git_path_mode_blob_sha256": "f40425c1188fb23151fbefbc32fc16c791f49da42141d0d23f507856a80945cc"
+        },
+        "c0ba73368e089d58212e3ebb25ca6abce9eb8c6f": {
+          "count": 190,
+          "git_path_mode_blob_sha256": "f40425c1188fb23151fbefbc32fc16c791f49da42141d0d23f507856a80945cc"
+        }
+      },
+      "unchanged": true,
+      "matches_prior_binding": true
+    },
+    "gemspec_gemfile_lock": {
+      "sources": {
+        "3f20313c20b25071fbc49b31e1c6bc772bd599e4": {
+          "count": 3,
+          "git_path_mode_blob_sha256": "cd096b9fe57db8577de72422c371743d7fc6bdce7345b637adb6693b9f683596"
+        },
+        "173c6038b417e86aeb4f268649ce4c81aa30888e": {
+          "count": 3,
+          "git_path_mode_blob_sha256": "cd096b9fe57db8577de72422c371743d7fc6bdce7345b637adb6693b9f683596"
+        },
+        "c0ba73368e089d58212e3ebb25ca6abce9eb8c6f": {
+          "count": 3,
+          "git_path_mode_blob_sha256": "cd096b9fe57db8577de72422c371743d7fc6bdce7345b637adb6693b9f683596"
+        }
+      },
+      "unchanged": true,
+      "matches_prior_binding": true
+    },
+    "helm_and_workflows": {
+      "sources": {
+        "3f20313c20b25071fbc49b31e1c6bc772bd599e4": {
+          "count": 22,
+          "git_path_mode_blob_sha256": "1b79566ec3ba40e84e617b900e50c2232acc1030d417b4aab41c2cf7ad871fec"
+        },
+        "173c6038b417e86aeb4f268649ce4c81aa30888e": {
+          "count": 22,
+          "git_path_mode_blob_sha256": "1b79566ec3ba40e84e617b900e50c2232acc1030d417b4aab41c2cf7ad871fec"
+        },
+        "c0ba73368e089d58212e3ebb25ca6abce9eb8c6f": {
+          "count": 22,
+          "git_path_mode_blob_sha256": "1b79566ec3ba40e84e617b900e50c2232acc1030d417b4aab41c2cf7ad871fec"
+        }
+      },
+      "unchanged": true,
+      "matches_prior_binding": true
+    },
+    "every_non_approved_document_path": {
+      "sources": {
+        "3f20313c20b25071fbc49b31e1c6bc772bd599e4": {
+          "count": 535,
+          "git_path_mode_blob_sha256": "0ce9d52b4610a386cbb1f263a596159dfa3adfb14a7bec2b96d5b739c04f5886"
+        },
+        "173c6038b417e86aeb4f268649ce4c81aa30888e": {
+          "count": 535,
+          "git_path_mode_blob_sha256": "0ce9d52b4610a386cbb1f263a596159dfa3adfb14a7bec2b96d5b739c04f5886"
+        },
+        "c0ba73368e089d58212e3ebb25ca6abce9eb8c6f": {
+          "count": 535,
+          "git_path_mode_blob_sha256": "0ce9d52b4610a386cbb1f263a596159dfa3adfb14a7bec2b96d5b739c04f5886"
+        }
+      },
+      "unchanged": true,
+      "matches_prior_binding": false
+    }
+  },
+  "failure": {
+    "error_class": "RuntimeError",
+    "message": "Runtime/source fingerprints differ"
+  }
+}
