@@ -4,9 +4,11 @@ require "rspec"
 require_relative "../../script/release/tooling"
 
 RSpec.describe ReleaseTooling do
+  let(:version) { "1.3.0" }
+  let(:chart_version) { version }
   let(:sha) { "a" * 40 }
   let(:commands) { ReleaseTooling::Commands.new }
-  let(:source) { ReleaseTooling::Source.new(root: @root, tag: "v1.3.0", commit: sha, commands: commands) }
+  let(:source) { ReleaseTooling::Source.new(root: @root, tag: "v#{version}", commit: sha, commands: commands) }
   let(:bundle) { ReleaseTooling::Bundle.new(source, File.join(@root, "output")) }
 
   before do
@@ -15,7 +17,7 @@ RSpec.describe ReleaseTooling do
     File.write(File.join(@root, "reportportal-cucumber-ruby.gemspec"), <<~RUBY)
       Gem::Specification.new do |s|
         s.name = "reportportal-cucumber-ruby"
-        s.version = "1.3.0"
+        s.version = "#{version}"
         s.summary = "Release fixture"
         s.authors = ["Test"]
         s.license = "MIT"
@@ -23,11 +25,11 @@ RSpec.describe ReleaseTooling do
       end
     RUBY
     File.write(File.join(@root, "payload.rb"), "# release fixture\n")
-    File.write(File.join(@root, "CHANGELOG.md"), "# Changelog\n\n## 1.3.0 - 2026-10-13\n\n### Safety\n\n- English release notes.\n\n## 1.2.0\n\n- Older notes.\n")
+    File.write(File.join(@root, "CHANGELOG.md"), "# Changelog\n\n## #{version} - 2026-10-13\n\n### Safety\n\n- English release notes.\n\n## 1.2.0\n\n- Older notes.\n")
     File.write(File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml"), <<~YAML)
       apiVersion: v2
       name: reportportal-rich-experience
-      version: 1.3.0
+      version: #{chart_version}
       appVersion: "26.0.7"
     YAML
     File.write(File.join(@root, ReleaseTooling::Source::CHART, "charts/reportportal/Chart.yaml"), <<~YAML)
@@ -37,8 +39,10 @@ RSpec.describe ReleaseTooling do
     YAML
     allow(commands).to receive(:run).and_call_original
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "HEAD", chdir: @root).and_return("#{sha}\n")
-    allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/v1.3.0^{commit}", chdir: @root).and_return("#{sha}\n")
+    allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/#{source.tag}^{commit}", chdir: @root).and_return("#{sha}\n")
+    allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/maintenance/1.x", chdir: @root).and_return("")
     allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/main", chdir: @root).and_return("")
+    allow(commands).to receive(:run).with("git", "status", "--porcelain", "--untracked-files=normal", chdir: @root).and_return("")
     allow(commands).to receive(:run).with("git", "show", "-s", "--format=%ct", sha, chdir: @root).and_return("1791849600\n")
   end
 
@@ -80,7 +84,7 @@ RSpec.describe ReleaseTooling do
   end
 
   it "requires stable tags and complete commit identities" do
-    ["v1.3", "v01.3.0", "v1.3.0-rc.1", "v1.3.0;echo unsafe"].each do |tag|
+    ["v1.3", "v01.3.0", "v1.3.0-rc.1", "v1.3.0;echo unsafe", "v0.1.0", "v3.0.0"].each do |tag|
       expect { ReleaseTooling::Source.new(root: @root, tag: tag, commit: sha) }.to raise_error(ReleaseTooling::Error)
     end
     expect { ReleaseTooling::Source.new(root: @root, tag: "v1.3.0", commit: "abc") }.to raise_error(ReleaseTooling::Error)
@@ -95,12 +99,72 @@ RSpec.describe ReleaseTooling do
     expect { source.identity }.to raise_error(ReleaseTooling::Error, /appVersion/)
   end
 
-  it "rejects moved tags and commits outside main" do
+  it "rejects moved tags and commits outside approved maintenance ancestry" do
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/v1.3.0^{commit}", chdir: @root).and_return("b" * 40)
     expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /tag moved/)
     allow(commands).to receive(:run).with("git", "rev-parse", "--verify", "refs/tags/v1.3.0^{commit}", chdir: @root).and_return(sha)
-    allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/main", chdir: @root).and_raise(ReleaseTooling::Error, "outside main")
-    expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /outside main/)
+    allow(commands).to receive(:run).with("git", "merge-base", "--is-ancestor", sha, "refs/remotes/origin/maintenance/1.x", chdir: @root).and_raise(ReleaseTooling::Error, "outside maintenance")
+    expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /outside approved release ancestry/)
+  end
+
+  it "blocks dirty source before building or making any publication request" do
+    publisher = ReleaseTooling::Publisher.new(source, bundle.directory, repository: "owner/repo")
+    [" M payload.rb\n", "M  payload.rb\n", "?? credentials.txt\n"].each do |dirty|
+      allow(commands).to receive(:run).with("git", "status", "--porcelain", "--untracked-files=normal", chdir: @root).and_return(dirty)
+      expect { source.verify_commit! }.to raise_error(ReleaseTooling::Error, /must be clean/)
+      expect { bundle.build! }.to raise_error(ReleaseTooling::Error, /must be clean/)
+      expect { publisher.publish! }.to raise_error(ReleaseTooling::Error, /must be clean/)
+    end
+    expect(commands).not_to have_received(:run).with("gh", any_args)
+    expect(commands).not_to have_received(:run).with(Gem.ruby, any_args)
+    expect(File.exist?(bundle.directory)).to be(false)
+  end
+
+  context "with the immutable v1.3.1 release" do
+    let(:version) { "1.3.1" }
+    let(:sha) { "4ca2f770e0a84e83688f165ba04b4db8ef855cf9" }
+
+    it "verifies the original manifest format, title and exact asset names" do
+      build_fixture
+      identity = { "tag" => "v1.3.1", "commit" => sha, "version" => "1.3.1", "appVersion" => "26.0.7" }
+      expect(source.identity).to eq(identity)
+      expect(source.notes).to eq("# SDK and Helm 1.3.1\n\n### Safety\n\n- English release notes.\n")
+      expect(source.asset_names).to eq(%w[reportportal-cucumber-ruby-1.3.1.gem reportportal-rich-experience-1.3.1.tgz release-manifest.json SHA256SUMS])
+      expect(JSON.parse(File.read(File.join(bundle.directory, "release-manifest.json"))))
+        .to eq(identity.merge("sha256" => source.package_names.to_h { |name| [name, bundle.digest(name)] }))
+      expect(bundle.verify!).to be(true)
+    end
+  end
+
+  %w[1.3.2 2.0.1].each do |release_version|
+    context "with SDK #{release_version} artifacts" do
+      let(:version) { release_version }
+
+      it "records independent SDK/chart identity, title, assets and manifest format" do
+        build_fixture
+        expect(bundle.verify!).to be(true)
+        expect(source.identity).to eq("tag" => "v#{version}", "commit" => sha, "version" => version,
+                                     "chartVersion" => chart_version, "appVersion" => "26.0.7")
+        expect(source.notes).to start_with("# SDK #{version} / Helm #{chart_version}\n")
+        expect(source.asset_names).to eq(["reportportal-cucumber-ruby-#{version}.gem", "reportportal-rich-experience-#{chart_version}.tgz",
+                                         "release-manifest.json", "SHA256SUMS"])
+        expect(JSON.parse(File.read(File.join(bundle.directory, "release-manifest.json"))))
+          .to eq(source.identity.merge("sha256" => source.package_names.to_h { |name| [name, bundle.digest(name)] }))
+      end
+
+      it "ships the new SDK with the unchanged Helm 1.3.1 companion" do
+        path = File.join(@root, ReleaseTooling::Source::CHART, "Chart.yaml")
+        File.write(path, File.read(path).sub("version: #{version}", "version: 1.3.1"))
+        build_fixture
+        expect(source.identity).to include("version" => version, "chartVersion" => "1.3.1")
+        expect(source.release_title).to eq("SDK #{version} / Helm 1.3.1")
+        expect(source.notes).to start_with("# SDK #{version} / Helm 1.3.1\n")
+        expect(source.package_names).to eq(["reportportal-cucumber-ruby-#{version}.gem", "reportportal-rich-experience-1.3.1.tgz"])
+        expect(JSON.parse(File.read(File.join(bundle.directory, "release-manifest.json"))))
+          .to include("version" => version, "chartVersion" => "1.3.1")
+        expect(bundle.verify!).to be(true)
+      end
+    end
   end
 
   it "takes only the exact versioned changelog section" do
@@ -162,7 +226,7 @@ RSpec.describe ReleaseTooling do
       allow(commands).to receive(:run).with("gh", any_args) do |*args, **options|
         gh_commands << args
         case args[1..2]
-        when ["api", "repos/owner/repo/releases/tags/v1.3.0"]
+        when ["api", "repos/owner/repo/releases/tags/#{source.tag}"]
           expect(options).to eq(allow_missing: true)
           remote[:release] && !remote[:release].fetch("draft") && JSON.generate(remote[:release])
         when ["api", "repos/owner/repo/releases?per_page=100"]
@@ -200,6 +264,61 @@ RSpec.describe ReleaseTooling do
       expect(gh_commands.last[1..2]).to eq(%w[release edit])
       expect(gh_commands.count { |args| args[2] == "download" }).to eq(4)
       expect(gh_commands.flatten).not_to include("--clobber", "delete")
+    end
+
+    context "when publishing v1.3.2" do
+      let(:version) { "1.3.2" }
+      let(:chart_version) { "1.3.1" }
+
+      it "keeps Latest on the 2.x line" do
+        publisher.publish!
+        expect(gh_commands.last).to eq([
+          "gh", "release", "edit", "v1.3.2", "--draft=false", "--latest=false",
+          "--title", "SDK 1.3.2 / Helm 1.3.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
+          "--repo", "owner/repo"
+        ])
+      end
+    end
+
+    context "when publishing v2.0.1" do
+      let(:version) { "2.0.1" }
+      let(:chart_version) { "1.3.1" }
+
+      it "leaves Latest handling unchanged" do
+        publisher.publish!
+        expect(gh_commands.last).to eq([
+          "gh", "release", "edit", "v2.0.1", "--draft=false",
+          "--title", "SDK 2.0.1 / Helm 1.3.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
+          "--repo", "owner/repo"
+        ])
+      end
+    end
+
+    context "with the immutable v1.3.1 release" do
+      let(:version) { "1.3.1" }
+      let(:sha) { "4ca2f770e0a84e83688f165ba04b4db8ef855cf9" }
+
+      it "keeps the original title for both draft creation and final publication" do
+        publisher.publish!
+        %w[create edit].each do |action|
+          arguments = gh_commands.find { |args| args[2] == action }
+          expect(arguments[arguments.index("--title") + 1]).to eq("SDK and Helm 1.3.1")
+        end
+      end
+
+      it "returns before any edit when the historical release is already published" do
+        remote[:release] = release.merge("draft" => false,
+          "assets" => source.asset_names.map { |name| { "name" => name, "state" => "uploaded" } })
+        source.asset_names.each do |name|
+          remote[name] = File.binread(File.join(bundle.directory, name))
+        end
+
+        publisher.publish!
+
+        expect(gh_commands.count { |args| args[2] == "download" }).to eq(source.asset_names.length)
+        expect(gh_commands.all? { |args| args[1] == "api" || args[2] == "download" }).to be(true)
+        expect(gh_commands.none? { |args| args[2] == "edit" }).to be(true)
+      end
     end
 
     it "resumes a partially uploaded draft without overwriting existing assets" do

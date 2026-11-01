@@ -179,7 +179,7 @@ RSpec.describe "Independent SDK and Helm release versions" do
     publisher.publish!
     expect(commands).to have_received(:run).with("gh", "release", "create", source.tag, "--verify-tag", "--draft", "--target", commit,
                                                "--title", "SDK 1.3.2 / Helm 1.3.1", "--notes-file", anything, "--repo", "owner/repo")
-    expect(commands).to have_received(:run).with("gh", "release", "edit", source.tag, "--draft=false", "--title", "SDK 1.3.2 / Helm 1.3.1",
+    expect(commands).to have_received(:run).with("gh", "release", "edit", source.tag, "--draft=false", "--latest=false", "--title", "SDK 1.3.2 / Helm 1.3.1",
                                                "--notes-file", anything, "--repo", "owner/repo")
   end
 end
