@@ -167,9 +167,10 @@ module ReportportalCucumber
 
       # @param records [Array<#to_h, Hash>]
       # @param presentation [String] Explicit queue configuration; defaults to "plain".
+      # @param rendered_messages [Hash, nil] Flush-local messages keyed by sequence, final filename and mode.
       # @yield [record] Optional message-local presentation failure state.
       # @return [Hash]
-      def build_log_batch(records, presentation: "plain")
+      def build_log_batch(records, presentation: "plain", rendered_messages: nil)
         used_names = {}
         entries = []
         files = []
@@ -179,13 +180,24 @@ module ReportportalCucumber
           attachment = normalize_attachment(payload[:attachment] || payload["attachment"])
           filename = attachment && unique_filename(attachment.fetch(:name), used_names)
           fallback_state = yield(record) if block_given?
+          sequence = payload[:sequence] || payload["sequence"]
+          cache_key = rendered_messages && sequence && [sequence, filename, presentation]
+          message = if cache_key && rendered_messages.key?(cache_key)
+                      rendered_messages.fetch(cache_key)
+                    else
+                      rendered = enrich_log_message(
+                        payload[:message] || payload["message"], attachment && attachment.merge(name: filename),
+                        fallback_state: fallback_state, presentation: presentation,
+                        level: normalize_log_level(payload[:level] || payload["level"])
+                      )
+                      rendered_messages[cache_key] = rendered if cache_key
+                      rendered
+                    end
           entries << build_log_entry(
             launch_uuid: payload[:launch_uuid] || payload["launch_uuid"],
             item_uuid: payload[:item_uuid] || payload["item_uuid"],
             time: payload[:timestamp] || payload["timestamp"],
-            message: enrich_log_message(payload[:message] || payload["message"], attachment && attachment.merge(name: filename),
-                                        fallback_state: fallback_state, presentation: presentation,
-                                        level: normalize_log_level(payload[:level] || payload["level"])),
+            message: message,
             level: payload[:level] || payload["level"],
             file_name: filename
           )
