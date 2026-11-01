@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ledger-developer-f09",
+    "uri": "features/presentation_ledger/qa_runtime/F09.feature",
+    "keyword": "Feature",
+    "name": "Ledger developer F09",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      },
+      {
+        "name": "@ledger_developer",
+        "line": 1
+      },
+      {
+        "name": "@F09",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "ledger-developer-f09;f09",
+        "keyword": "Scenario",
+        "name": "F09",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger NUL inputs",
+            "line": 4,
+            "embeddings": [
+              {
+                "mime_type": "text/plain",
+                "data": "bWluaW1hbABOVUwgcGF5bG9hZAo="
+              }
+            ],
+            "output": [
+              "native log\u0000NUL message\n",
+              "native log\\u0000NUL message\n"
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:179"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2470709
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          },
+          {
+            "name": "@ledger_developer",
+            "line": 1
+          },
+          {
+            "name": "@F09",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

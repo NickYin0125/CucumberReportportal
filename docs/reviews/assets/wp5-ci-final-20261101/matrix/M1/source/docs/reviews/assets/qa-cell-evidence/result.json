@@ -1,0 +1,122 @@
+{
+  "cell": "M1",
+  "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "config",
+        "--global",
+        "--add",
+        "safe.directory",
+        "/qa/source"
+      ],
+      "exit": 0,
+      "seconds": 0.004674791009165347
+    },
+    {
+      "argv": [
+        "bundle",
+        "_2.6.6_",
+        "install",
+        "--local"
+      ],
+      "exit": 0,
+      "seconds": 0.5393802500038873
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "ruby",
+        "-e",
+        "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+      ],
+      "exit": 0,
+      "seconds": 0.7062799580016872
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "rspec",
+        "spec",
+        "spec/acceptance/ledger_qa/properties.rb",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/qa/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+      ],
+      "exit": 0,
+      "seconds": 163.57277540600626
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "cucumber",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/qa/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+      ],
+      "exit": 0,
+      "seconds": 0.8143870829953812
+    },
+    {
+      "argv": [
+        "/usr/local/bin/ruby",
+        "/qa/source/spec/acceptance/ledger_qa/isolated.rb",
+        "--transport",
+        "offline",
+        "--mode",
+        "plain",
+        "--fixtures",
+        "all",
+        "--sdk-root",
+        "/qa/source",
+        "--cucumber",
+        "9.2.1",
+        "--gem-path",
+        "/bundle/ruby/3.1.0",
+        "--jpeg",
+        "/qa-media/jpeg.jpg",
+        "--output",
+        "/qa/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+      ],
+      "exit": 0,
+      "seconds": 21.740231718998984
+    }
+  ],
+  "source_head": "f41888a9fdd6896630765cbbf350353a7f803e59",
+  "runtime": {
+    "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+    "cucumber": "9.2.1",
+    "sdk": "1.3.2"
+  },
+  "rspec": {
+    "duration": 162.551946908,
+    "example_count": 1419,
+    "failure_count": 0,
+    "pending_count": 0,
+    "errors_outside_of_examples_count": 0
+  },
+  "cucumber": {
+    "scenarios": 1,
+    "steps": 3,
+    "statuses": {
+      "passed": 3
+    }
+  },
+  "required_commands": [
+    "rspec",
+    "cucumber",
+    "fixtures"
+  ],
+  "diagnostic_observer_requested": false,
+  "status": "PASS"
+}

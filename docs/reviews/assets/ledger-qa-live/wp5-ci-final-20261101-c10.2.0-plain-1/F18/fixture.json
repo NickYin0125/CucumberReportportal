@@ -1,0 +1,12 @@
+{
+  "id": "F18",
+  "source": "@reportportal_live @ledger_developer @F18 \nFeature: Ledger developer F18\n  Scenario: Large previews and DocString media types\n    Given ledger large previews\n    And ledger document:\n      \"\"\"json\n      {\n        \"source\": \"declared\",\n        \"values\": [\n          1,\n          true,\n          null\n        ]\n      }\n      \"\"\"\n    And ledger document:\n      \"\"\"\n      {\"source\":\"detected\",\"values\":[1,true,null]}\n      \"\"\"\n    And ledger document:\n      \"\"\"text/markdown\n      # User Markdown\n      <other> stays raw\n      \"\"\"\n    And ledger document:\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n    And ledger document:\n      \"\"\"json\n      {\n        \"line1\": 1,\n        \"line2\": 2,\n        \"line3\": 3,\n        \"line4\": 4,\n        \"line5\": 5,\n        \"line6\": 6,\n        \"line7\": 7,\n        \"line8\": 8,\n        \"line9\": 9,\n        \"line10\": 10,\n        \"line11\": 11,\n        \"line12\": 12,\n        \"line13\": 13,\n        \"line14\": 14,\n        \"line15\": 15,\n        \"line16\": 16,\n        \"line17\": 17,\n        \"line18\": 18,\n        \"line19\": 19,\n        \"line20\": 20,\n        \"line21\": 21,\n        \"line22\": 22,\n        \"line23\": 23\n      }\n      \"\"\"\n",
+  "negative": false,
+  "scenarios": 1,
+  "failed": 0,
+  "origin": "presentation-ledger-acceptance.md section 3",
+  "limitations": [
+
+  ],
+  "source_sha256": "216758bc1093aa10940a5273c4cb42c2a656265c057d860a0dcb4043f39af184"
+}

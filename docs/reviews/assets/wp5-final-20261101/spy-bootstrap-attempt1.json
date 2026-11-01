@@ -1,0 +1,7 @@
+{
+  "status": "HARNESS_ERROR_NOT_PRODUCT_EVIDENCE",
+  "exit": 1,
+  "stderr": "ruby: invalid option --require  (-h will show valid options) (RuntimeError)",
+  "cause": "The synthetic Docker bootstrap omitted the Ruby option terminator before RSpec's --require argument.",
+  "correction": "Re-run with -- before the RSpec arguments. No product source, fixture or assertion changed; no original output overwritten."
+}

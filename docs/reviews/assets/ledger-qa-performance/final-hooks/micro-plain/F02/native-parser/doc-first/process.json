@@ -1,0 +1,23 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/ruby/3.4.2/bin/ruby",
+    "-e",
+    "require \"/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/activation.rb\"; LedgerDeveloper::Activation.activate!; require \"cucumber/load_path\";\n$LOAD_PATH.delete(\"lib\");\nqa_source = File.realpath(ENV.fetch(\"LEDGER_SDK_ROOT\"));\n$LOAD_PATH.unshift(File.join(qa_source, \"lib\"));\nrequire File.join(qa_source, \"lib/reportportal_cucumber\");\nqa_loaded = $LOADED_FEATURES.grep(%r{/reportportal_cucumber(?:/|\\.rb)});\nabort \"QA source isolation failed before Cucumber execution\" unless qa_loaded.all? { |path| File.realpath(path).start_with?(qa_source + \"/lib/\") };\n load Gem.bin_path(\"cucumber\", \"cucumber\", ENV.fetch(\"LEDGER_CUCUMBER\"))",
+    "--",
+    "--no-profile",
+    "--backtrace",
+    "--publish-quiet",
+    "--dry-run",
+    "--require",
+    "/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb",
+    "--format",
+    "progress",
+    "native.feature"
+  ],
+  "exit": 2,
+  "signal": null,
+  "timed_out": false,
+  "seconds": 0.3833640000084415,
+  "stdout": "Disabling profiles...\n",
+  "stderr": "native.feature: (8:7): expected: #EOF, #StepLine, #TagLine, #ExamplesLine, #ScenarioLine, #RuleLine, #Comment, #Empty, got '| key | value |' (Cucumber::Core::Gherkin::ParseError)\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:53:in 'Cucumber::Core::Gherkin::Parser#process'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:22:in 'block in Cucumber::Core::Gherkin::Parser#document'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:68:in 'Enumerator::Yielder#yield'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:68:in 'block in Gherkin::Stream::ParserMessageStream#yield_parse_errors'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:57:in 'Array#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:57:in 'Gherkin::Stream::ParserMessageStream#yield_parse_errors'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:46:in 'block (2 levels) in Gherkin::Stream::ParserMessageStream#messages'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:83:in 'Enumerator::Yielder#yield'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:83:in 'block (2 levels) in Gherkin::Stream::ParserMessageStream#sources'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:82:in 'Array#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:82:in 'block in Gherkin::Stream::ParserMessageStream#sources'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:29:in 'Enumerator::Generator#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:29:in 'Enumerator#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-gherkin-39.1.0/lib/gherkin/stream/parser_message_stream.rb:29:in 'block in Gherkin::Stream::ParserMessageStream#messages'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:21:in 'Enumerator::Generator#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:21:in 'Enumerator#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:21:in 'Cucumber::Core::Gherkin::Parser#document'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:33:in 'block in Cucumber::Core#parse'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:32:in 'Array#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:32:in 'Cucumber::Core#parse'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:24:in 'Cucumber::Core#compile'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-10.2.0/lib/cucumber/runtime.rb:80:in 'Cucumber::Runtime#run!'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-10.2.0/lib/cucumber/cli/main.rb:29:in 'Cucumber::Cli::Main#execute!'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-10.2.0/bin/cucumber:9:in '<top (required)>'\n-e:8:in 'Kernel#load'\n-e:8:in '<main>'\n"
+}

@@ -1,0 +1,19 @@
+{
+  "source_result": "docs/reviews/assets/wp5-final-20261101/spec-repair-ruby31-focused.json",
+  "runtime_source": "docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source",
+  "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+  "test_projection": "Only the three implementer-corrected spec files were overlaid read-only; original runtime library bytes and strict assertions were unchanged.",
+  "examples": 26,
+  "failures": 1,
+  "failed_assertion": "queue_processor_m4b_spec.rb:217 expects elapsed < 0.12",
+  "actual_elapsed_seconds": 0.1342089579993626,
+  "handle_error_observer_loaded": false,
+  "observer_absence_evidence": [
+    "The actual docker/rspec invocation supplied only the three product spec paths and progress/json output formatters, with no diagnostic --require.",
+    "No /qa-tools observer mount or RUBYOPT override was supplied.",
+    "final_wp5_spy_probe.rb is absent from the original M2 source projection; it was created later in the separate 2x QA worktree.",
+    "The 19-example handle_error-observer run has separate wp5-focused-spy-observed.json and wp5-spy-errors.ndjson outputs."
+  ],
+  "classification": "Retained uninstrumented strict timing failure under competing jobs. Causation is not established; do not attribute it to observer I/O or waive the bound.",
+  "final_rerun_requirement": "Run the full matrix without the diagnostic handle_error observer and without altering assertions or timeouts."
+}

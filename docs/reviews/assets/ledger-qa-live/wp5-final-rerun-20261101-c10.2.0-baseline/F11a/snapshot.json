@@ -1,0 +1,317 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 2753,
+      "uuid": "dbe8016d-24d0-4e42-8767-99d20faec62f",
+      "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-baseline-F11a",
+      "number": 1,
+      "startTime": 1793505559588,
+      "endTime": 1793505559710,
+      "lastModified": 1793505559724,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "attributes": [
+
+      ],
+      "mode": "DEFAULT",
+      "analysing": [
+
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 22017,
+      "uuid": "2d6b3c65-5449-41d3-87e4-6d5dd8b14d99",
+      "name": "Feature: Ledger developer F11a",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "SUITE",
+      "startTime": 1793505559602,
+      "endTime": 1793505559709,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 2753,
+      "uniqueId": "auto:ff25646404e575f877c0e938f1588b36",
+      "testCaseHash": 1958460406,
+      "patternTemplates": [
+
+      ],
+      "path": "22017",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 22018,
+      "uuid": "b25f8868-6af4-4254-8047-1396fa330fbf",
+      "name": "Scenario: F11a",
+      "codeRef": "features/presentation_ledger/qa_runtime/F11a.feature:3",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793505559603,
+      "endTime": 1793505559693,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 22017,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 2753,
+      "uniqueId": "cb5a44d65ecd97cb26f08a7e57b44fb32261f2ca",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F11a.feature:3",
+      "testCaseHash": -110241297,
+      "patternTemplates": [
+
+      ],
+      "path": "22017.22018",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 22019,
+      "uuid": "8c0b2d8d-cf76-4065-be32-993c3aa1f3e6",
+      "name": "Given ledger HTTP a",
+      "description": "**Given** ledger HTTP a",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793505559650,
+      "endTime": 1793505559678,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 22018,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2753,
+      "uniqueId": "auto:1f157ef8fd607af362b26a2823bceea1",
+      "testCaseHash": -421496552,
+      "patternTemplates": [
+
+      ],
+      "path": "22017.22018.22019",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 14397,
+      "time": "2026-11-01T03:59:19.667Z",
+      "message": "### Request\n- `POST` `https://api.example.test/api/orders`\n- Headers:\n```text\nContent-Type: application/json\nAccept: application/json\nX-Request-Id: ledger-42\nX-Fixture: F11a\n```\n- Body:\n```json\n{\n  \"account\": \"JPM-PRIME\",\n  \"side\": \"BUY\",\n  \"notional\": 5000000\n}\n```\n\n### Response\n- Status: `201`\n- Headers:\n```text\nContent-Type: application/json\n```\n- Body:\n```json\n{\n  \"orderId\": \"ORD-20261031-0042\",\n  \"status\": \"ACCEPTED\"\n}\n```\n\n- Duration: `84` ms",
+      "level": "info",
+      "itemId": 22019
+    }
+  ],
+  "files": [
+
+  ],
+  "queries": [
+    {
+      "launch_id": 2753,
+      "items_by_launch": [
+        {
+          "id": 22017,
+          "uuid": "2d6b3c65-5449-41d3-87e4-6d5dd8b14d99",
+          "name": "Feature: Ledger developer F11a",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "SUITE",
+          "startTime": "2026-11-01T03:59:19.602Z",
+          "endTime": "2026-11-01T03:59:19.709Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-baseline-F11a",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 2753,
+          "uniqueId": "auto:ff25646404e575f877c0e938f1588b36",
+          "testCaseHash": 1958460406,
+          "patternTemplates": [
+
+          ],
+          "path": "22017",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 22018,
+          "uuid": "b25f8868-6af4-4254-8047-1396fa330fbf",
+          "name": "Scenario: F11a",
+          "codeRef": "features/presentation_ledger/qa_runtime/F11a.feature:3",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T03:59:19.603Z",
+          "endTime": "2026-11-01T03:59:19.693Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "parent": 22017,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-baseline-F11a",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 22017,
+                "name": "Feature: Ledger developer F11a"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 2753,
+          "uniqueId": "cb5a44d65ecd97cb26f08a7e57b44fb32261f2ca",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F11a.feature:3",
+          "testCaseHash": -110241297,
+          "patternTemplates": [
+
+          ],
+          "path": "22017.22018",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 22019,
+          "uuid": "8c0b2d8d-cf76-4065-be32-993c3aa1f3e6",
+          "name": "Given ledger HTTP a",
+          "description": "**Given** ledger HTTP a",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T03:59:19.650Z",
+          "endTime": "2026-11-01T03:59:19.678Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 22018,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-baseline-F11a",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 22017,
+                "name": "Feature: Ledger developer F11a"
+              },
+              {
+                "id": 22018,
+                "name": "Scenario: F11a"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2753,
+          "uniqueId": "auto:1f157ef8fd607af362b26a2823bceea1",
+          "testCaseHash": -421496552,
+          "patternTemplates": [
+
+          ],
+          "path": "22017.22018.22019",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

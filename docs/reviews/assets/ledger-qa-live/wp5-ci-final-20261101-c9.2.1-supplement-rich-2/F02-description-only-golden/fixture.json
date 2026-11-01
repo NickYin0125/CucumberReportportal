@@ -1,0 +1,18 @@
+{
+  "id": "F02-description-only-golden",
+  "source": "@reportportal_live @F02\nFeature: Outline description golden companion\n  Scenario Outline: Frozen row descriptions\n    Given ledger records this table:\n      | key | value |\n      | combined | <value> |\n    # Physical row anchors are part of the P4 input.\n    # Compound arguments are covered separately under Decision 4.\n    # Keep Examples data on lines 12 and 13.\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n",
+  "negative": false,
+  "scenarios": 2,
+  "failed": 0,
+  "origin": "Decision 4 separate-argument description companion; native compound parse probes remain separate",
+  "limitations": [
+    "Generated feature line numbers differ from the historical line-12 golden; original data is unchanged."
+  ],
+  "cucumber12": false,
+  "native_parser_sources": {
+    "doc-first": "@reportportal_live @ledger_developer @F02 \nFeature: Ledger developer F02\n  Scenario Outline: doc-first\n    Given ledger combined \"doc-first\":\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n      | key | value |\n      | combined | <value> |\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n\n",
+    "table-first": "@reportportal_live @ledger_developer @F02 \nFeature: Ledger developer F02\n  Scenario Outline: table-first\n    Given ledger combined \"table-first\":\n      | key | value |\n      | combined | <value> |\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n\n"
+  },
+  "logical_fixture": "F02-description-only",
+  "source_sha256": "ea358d516d3977deb48f0dd4e67c3981d28571d65f6b7bf9f5ef6c45f62235b1"
+}

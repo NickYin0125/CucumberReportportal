@@ -1,0 +1,22 @@
+@reportportal_live @ledger_developer @F05 
+Feature: Ledger developer F05
+  Scenario: Distinct PNG 1
+    Given ledger screenshot 1
+  Scenario: Distinct PNG 2
+    Given ledger screenshot 2
+  Scenario: Distinct PNG 3
+    Given ledger screenshot 3
+  Scenario: Distinct PNG 4
+    Given ledger screenshot 4
+  Scenario: Distinct PNG 5
+    Given ledger screenshot 5
+  Scenario: Distinct PNG 6
+    Given ledger screenshot 6
+  Scenario: Distinct PNG 7
+    Given ledger screenshot 7
+  Scenario: Distinct PNG 8
+    Given ledger screenshot 8
+  Scenario: Distinct PNG 9
+    Given ledger screenshot 9
+  Scenario: Distinct PNG 10
+    Given ledger screenshot 10

@@ -1,0 +1,11 @@
+{
+  "decision": 16,
+  "received_date": "2026-11-01",
+  "source": "Direct owner authorization quoted by Master in this QA conversation",
+  "owner_exact_question": "远端 CI 的未改动 1.3.1 基线出现 SIGINT/Spool 和超时失败。是否允许把这些既有 CI 稳定性问题纳入独立排查，必要时另作修复提交？保持全部断言，不推受保护分支、不合并或发布。",
+  "owner_exact_answer": "允许独立排查与必要修复（推荐）",
+  "criterion": "V6",
+  "authorized_exception": "Bounded CI-only diagnostics and failure-capture retention, with separate deterministic deadline regression tests, may change the reviewed validation workflow. No Helm changes, runtime changes, production-budget changes, existing-assertion loosening, protected pushes, merges or publication are authorized.",
+  "audit_status": "PENDING_NEW_TEST_CI_HEADS_AND_EXACT_DIFF",
+  "claim_limit": "This authorization is not a PASS, a G10 waiver, or a classification of the original failures as runner-only. Exact new-head diffs and fresh independent evidence remain required."
+}

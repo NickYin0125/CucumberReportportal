@@ -1,0 +1,576 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 1144,
+      "uuid": "977d6724-306d-47fc-bb8d-76ccc46743b1",
+      "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-10.2.0-plain-1-F15-hooks-fault",
+      "number": 1,
+      "startTime": 1793470314182,
+      "endTime": 1793470314420,
+      "lastModified": 1793470314432,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "attributes": [
+
+      ],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 9164,
+      "uuid": "74de938c-9f55-4f38-903b-f4f3d0c8b2f2",
+      "name": "Feature: Independent native named hooks fault",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "SUITE",
+      "startTime": 1793470314211,
+      "endTime": 1793470314419,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 1144,
+      "uniqueId": "auto:5788f5d6514aae5157f6906a55d8f74f",
+      "testCaseHash": 1611663898,
+      "patternTemplates": [
+
+      ],
+      "path": "9164",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 9165,
+      "uuid": "a5e9f7c3-595b-48b8-9fd7-2c8f4cafa23d",
+      "name": "Scenario: Scalar hook metadata fault",
+      "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-fault.feature:3",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793470314212,
+      "endTime": 1793470314404,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 9164,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 1144,
+      "uniqueId": "9aa75b2fe0ae84dc1c7da311d890f74b9a8093f4",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-fault.feature:3",
+      "testCaseHash": -1831071216,
+      "patternTemplates": [
+
+      ],
+      "path": "9164.9165",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 9166,
+      "uuid": "fca347d1-9cba-4b99-bfbf-2b6b1a4058fd",
+      "name": "Before Hook: Before hook",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "BEFORE_METHOD",
+      "startTime": 1793470314279,
+      "endTime": 1793470314302,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 9165,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 1144,
+      "uniqueId": "auto:edf557b601550d585e1b5633da4b17cf",
+      "testCaseHash": 1833207588,
+      "patternTemplates": [
+
+      ],
+      "path": "9164.9165.9166",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 9167,
+      "uuid": "7f11006c-9f88-4393-a53e-e43048a9c969",
+      "name": "Given QA named hook business step",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793470314314,
+      "endTime": 1793470314333,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 9165,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 1144,
+      "uniqueId": "auto:d937a84a0a58d1fba89447b59e013bb0",
+      "testCaseHash": -1508123495,
+      "patternTemplates": [
+
+      ],
+      "path": "9164.9165.9167",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 9168,
+      "uuid": "20842db4-a194-40fc-80f6-8f7cecdd7c73",
+      "name": "AfterStep hook · Inspect step",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "AFTER_METHOD",
+      "startTime": 1793470314343,
+      "endTime": 1793470314369,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 9165,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 1144,
+      "uniqueId": "auto:664136feda5cad330211ca1fabbb5004",
+      "testCaseHash": 1882204156,
+      "patternTemplates": [
+
+      ],
+      "path": "9164.9165.9168",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 9169,
+      "uuid": "42242584-acfb-437a-87fb-4412360b33d9",
+      "name": "After hook · Close browser",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "AFTER_METHOD",
+      "startTime": 1793470314379,
+      "endTime": 1793470314395,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 9165,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 1144,
+      "uniqueId": "auto:013dc5a106394fd5a8ca1741192a62b7",
+      "testCaseHash": -1903300280,
+      "patternTemplates": [
+
+      ],
+      "path": "9164.9165.9169",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 6118,
+      "time": "2026-10-31T18:11:54.293Z",
+      "message": "QA_NAMED_BEFORE",
+      "level": "info",
+      "itemId": 9166
+    },
+    {
+      "id": 6119,
+      "time": "2026-10-31T18:11:54.326Z",
+      "message": "QA_NAMED_BUSINESS_PASSED",
+      "level": "info",
+      "itemId": 9167
+    },
+    {
+      "id": 6120,
+      "time": "2026-10-31T18:11:54.357Z",
+      "message": "QA_NAMED_AFTER_STEP",
+      "level": "info",
+      "itemId": 9168
+    },
+    {
+      "id": 6121,
+      "time": "2026-10-31T18:11:54.388Z",
+      "message": "QA_NAMED_AFTER",
+      "level": "info",
+      "itemId": 9169
+    }
+  ],
+  "files": [
+
+  ],
+  "queries": [
+    {
+      "launch_id": 1144,
+      "items_by_launch": [
+        {
+          "id": 9164,
+          "uuid": "74de938c-9f55-4f38-903b-f4f3d0c8b2f2",
+          "name": "Feature: Independent native named hooks fault",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "SUITE",
+          "startTime": "2026-10-31T18:11:54.211Z",
+          "endTime": "2026-10-31T18:11:54.419Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-10.2.0-plain-1-F15-hooks-fault",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 1144,
+          "uniqueId": "auto:5788f5d6514aae5157f6906a55d8f74f",
+          "testCaseHash": 1611663898,
+          "patternTemplates": [
+
+          ],
+          "path": "9164",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 9165,
+          "uuid": "a5e9f7c3-595b-48b8-9fd7-2c8f4cafa23d",
+          "name": "Scenario: Scalar hook metadata fault",
+          "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-fault.feature:3",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-10-31T18:11:54.212Z",
+          "endTime": "2026-10-31T18:11:54.404Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "parent": 9164,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-10.2.0-plain-1-F15-hooks-fault",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 9164,
+                "name": "Feature: Independent native named hooks fault"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 1144,
+          "uniqueId": "9aa75b2fe0ae84dc1c7da311d890f74b9a8093f4",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-fault.feature:3",
+          "testCaseHash": -1831071216,
+          "patternTemplates": [
+
+          ],
+          "path": "9164.9165",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 9166,
+          "uuid": "fca347d1-9cba-4b99-bfbf-2b6b1a4058fd",
+          "name": "Before Hook: Before hook",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "BEFORE_METHOD",
+          "startTime": "2026-10-31T18:11:54.279Z",
+          "endTime": "2026-10-31T18:11:54.302Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 9165,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-10.2.0-plain-1-F15-hooks-fault",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 9164,
+                "name": "Feature: Independent native named hooks fault"
+              },
+              {
+                "id": 9165,
+                "name": "Scenario: Scalar hook metadata fault"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1144,
+          "uniqueId": "auto:edf557b601550d585e1b5633da4b17cf",
+          "testCaseHash": 1833207588,
+          "patternTemplates": [
+
+          ],
+          "path": "9164.9165.9166",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 9167,
+          "uuid": "7f11006c-9f88-4393-a53e-e43048a9c969",
+          "name": "Given QA named hook business step",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-10-31T18:11:54.314Z",
+          "endTime": "2026-10-31T18:11:54.333Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 9165,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-10.2.0-plain-1-F15-hooks-fault",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 9164,
+                "name": "Feature: Independent native named hooks fault"
+              },
+              {
+                "id": 9165,
+                "name": "Scenario: Scalar hook metadata fault"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1144,
+          "uniqueId": "auto:d937a84a0a58d1fba89447b59e013bb0",
+          "testCaseHash": -1508123495,
+          "patternTemplates": [
+
+          ],
+          "path": "9164.9165.9167",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 9168,
+          "uuid": "20842db4-a194-40fc-80f6-8f7cecdd7c73",
+          "name": "AfterStep hook · Inspect step",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-10-31T18:11:54.343Z",
+          "endTime": "2026-10-31T18:11:54.369Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 9165,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-10.2.0-plain-1-F15-hooks-fault",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 9164,
+                "name": "Feature: Independent native named hooks fault"
+              },
+              {
+                "id": 9165,
+                "name": "Scenario: Scalar hook metadata fault"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1144,
+          "uniqueId": "auto:664136feda5cad330211ca1fabbb5004",
+          "testCaseHash": 1882204156,
+          "patternTemplates": [
+
+          ],
+          "path": "9164.9165.9168",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 9169,
+          "uuid": "42242584-acfb-437a-87fb-4412360b33d9",
+          "name": "After hook · Close browser",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-10-31T18:11:54.379Z",
+          "endTime": "2026-10-31T18:11:54.395Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 9165,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-10.2.0-plain-1-F15-hooks-fault",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 9164,
+                "name": "Feature: Independent native named hooks fault"
+              },
+              {
+                "id": 9165,
+                "name": "Scenario: Scalar hook metadata fault"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 1144,
+          "uniqueId": "auto:013dc5a106394fd5a8ca1741192a62b7",
+          "testCaseHash": -1903300280,
+          "patternTemplates": [
+
+          ],
+          "path": "9164.9165.9169",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

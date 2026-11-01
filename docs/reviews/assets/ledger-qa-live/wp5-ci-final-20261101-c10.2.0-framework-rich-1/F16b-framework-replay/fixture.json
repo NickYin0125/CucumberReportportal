@@ -1,0 +1,14 @@
+{
+  "id": "F16b-framework-replay",
+  "source": "@reportportal_live @F16\nFeature: Controlled framework-only error input\n  Scenario: Explicit event input replay\n    Given QA controlled framework-only event failure\n",
+  "negative": true,
+  "scenarios": 1,
+  "failed": 1,
+  "origin": "Controlled event-input replay, not a naturally generated JSON.parse stack. Original native F16b capture is retained separately.",
+  "limitations": [
+    "The real raised error is recorded before adapting its formatter input. No frozen F04 input is read or changed."
+  ],
+  "error": "JSON::ParserError",
+  "unsupported": null,
+  "source_sha256": "17d1e690ff936e19c576eb0ea51de1bba0be1f5ad0ae0e5bf3ee21edb927b96e"
+}

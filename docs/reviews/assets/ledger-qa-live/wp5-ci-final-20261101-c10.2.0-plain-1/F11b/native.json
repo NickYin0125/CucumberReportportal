@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ledger-developer-f11b",
+    "uri": "features/presentation_ledger/qa_runtime/F11b.feature",
+    "keyword": "Feature",
+    "name": "Ledger developer F11b",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      },
+      {
+        "name": "@ledger_developer",
+        "line": 1
+      },
+      {
+        "name": "@F11",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "ledger-developer-f11b;f11b",
+        "keyword": "Scenario",
+        "name": "F11b",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger HTTP b",
+            "line": 4,
+            "output": [
+              "### Request\n- `GET` `/words`\n\n### Response\n- Status: `404`\n\n- Duration: `31` ms"
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:199"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1982750
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          },
+          {
+            "name": "@ledger_developer",
+            "line": 1
+          },
+          {
+            "name": "@F11",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

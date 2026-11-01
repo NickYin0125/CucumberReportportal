@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ledger-developer-f16b",
+    "uri": "features/presentation_ledger/qa_runtime/F16b.feature",
+    "keyword": "Feature",
+    "name": "Ledger developer F16b",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      },
+      {
+        "name": "@ledger_developer",
+        "line": 1
+      },
+      {
+        "name": "@F16",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "ledger-developer-f16b;f16b",
+        "keyword": "Scenario",
+        "name": "F16b",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger failure shape b",
+            "line": 4,
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:233"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "unexpected token at '{' (JSON::ParserError)\n/usr/local/lib/ruby/3.3.0/json/common.rb:220:in `parse'\n/usr/local/lib/ruby/3.3.0/json/common.rb:220:in `parse'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:236:in `block in <top (required)>'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `instance_exec'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `block in cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:53:in `cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:30:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/step_definition.rb:135:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:34:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:27:in `block in activate'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/action/defined.rb:24:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:36:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:30:in `test_step'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:24:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `each'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:31:in `block in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:20:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:56:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/retry.rb:23:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/quit.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/compiler.rb:32:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:36:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:35:in `parse'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:24:in `compile'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/runtime.rb:80:in `run!'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/cli/main.rb:29:in `execute!'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/bin/cucumber:9:in `<top (required)>'\n-e:8:in `load'\n-e:8:in `<main>'\nfeatures/presentation_ledger/qa_runtime/F16b.feature:4:in `ledger failure shape b'",
+              "duration": 160625
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          },
+          {
+            "name": "@ledger_developer",
+            "line": 1
+          },
+          {
+            "name": "@F16",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

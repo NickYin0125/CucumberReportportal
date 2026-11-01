@@ -1,0 +1,1544 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3701,
+      "uuid": "c4ee6773-bb56-4058-9b17-5a4a51e101af",
+      "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+      "number": 1,
+      "startTime": 1793506826760,
+      "endTime": 1793506827358,
+      "lastModified": 1793506827381,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 4,
+          "passed": 4
+        },
+        "defects": {
+        }
+      },
+      "attributes": [
+
+      ],
+      "mode": "DEFAULT",
+      "analysing": [
+
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 29622,
+      "uuid": "3ad5a9d0-9b9e-47f7-acb6-6510a1e5eff4",
+      "name": "Feature: Ledger developer F02-legacy-separate",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "SUITE",
+      "startTime": 1793506826776,
+      "endTime": 1793506827357,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 4,
+          "passed": 4
+        },
+        "defects": {
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3701,
+      "uniqueId": "auto:235c71fa47c3a8ce14ccf51aeac12827",
+      "testCaseHash": 1988642951,
+      "patternTemplates": [
+
+      ],
+      "path": "29622",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29623,
+      "uuid": "2f0757bb-1559-48aa-9f6a-d6e52e84b17d",
+      "name": "Scenario: doc-first separate argument companion",
+      "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3",
+      "description": "`value` = `TABLE_ONLY_AMBER` · _Examples: Table-only substitution · line 15_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "TABLE_ONLY_AMBER"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506826777,
+      "endTime": 1793506826958,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 29622,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3701,
+      "uniqueId": "da24dc205712cdb1585bdf34a04fa119863c5c5b",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3[value=TABLE_ONLY_AMBER]",
+      "testCaseHash": 604765309,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29623",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29624,
+      "uuid": "a8a7afdc-fa03-4e2e-bfca-39cae3dda331",
+      "name": "Given ledger legacy separate document:",
+      "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506826812,
+      "endTime": 1793506826837,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29623,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:f54368f22a43e942544af34d30ec9268",
+      "testCaseHash": 838920041,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29623.29624",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29625,
+      "uuid": "e8bd4fb8-73b7-4986-8fba-6068815d46c4",
+      "name": "Given ledger legacy separate table:",
+      "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_AMBER |",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506826851,
+      "endTime": 1793506826913,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29623,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:4cdda8e187457adf73d18d282764d63c",
+      "testCaseHash": -361504382,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29623.29625",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29626,
+      "uuid": "28bc98e1-6cbe-4ad5-9529-7697505d9316",
+      "name": "Then ledger verifies separate arguments \"TABLE_ONLY_AMBER\" in \"doc-first\" order",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506826931,
+      "endTime": 1793506826944,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29623,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:9c1ad46a1bfa0c7aec23b094d5a6df28",
+      "testCaseHash": -760562649,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29623.29626",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29627,
+      "uuid": "38b5fd6e-1dcf-4883-91cc-a7ad07162807",
+      "name": "Scenario: doc-first separate argument companion",
+      "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3",
+      "description": "`value` = `TABLE_ONLY_BIRCH` · _Examples: Table-only substitution · line 16_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "TABLE_ONLY_BIRCH"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506826967,
+      "endTime": 1793506827098,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 29622,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3701,
+      "uniqueId": "9419a3a4fddb2ef4dce20032dac382915751c6a3",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3[value=TABLE_ONLY_BIRCH]",
+      "testCaseHash": 630174800,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29627",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29628,
+      "uuid": "d791474a-cd00-4cc3-936f-339bcf1e10a5",
+      "name": "Given ledger legacy separate document:",
+      "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506826976,
+      "endTime": 1793506826994,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29627,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:f54368f22a43e942544af34d30ec9268",
+      "testCaseHash": 838920041,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29627.29628",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29629,
+      "uuid": "a8606aa2-19c8-4edf-9c09-6d438eaa6568",
+      "name": "Given ledger legacy separate table:",
+      "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_BIRCH |",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827012,
+      "endTime": 1793506827053,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29627,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:4cdda8e187457adf73d18d282764d63c",
+      "testCaseHash": -361504382,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29627.29629",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29630,
+      "uuid": "431ef334-0395-4b1e-b9f2-d0e0c6532aa3",
+      "name": "Then ledger verifies separate arguments \"TABLE_ONLY_BIRCH\" in \"doc-first\" order",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827073,
+      "endTime": 1793506827086,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29627,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:4125b29341f6e7e8ff3cf2a1bb03b500",
+      "testCaseHash": 1772631604,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29627.29630",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29631,
+      "uuid": "2a3d30ce-e525-4855-ba9d-6f005beb4d4a",
+      "name": "Scenario: table-first separate argument companion",
+      "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18",
+      "description": "`value` = `TABLE_ONLY_AMBER` · _Examples: Table-only substitution · line 30_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "TABLE_ONLY_AMBER"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827107,
+      "endTime": 1793506827227,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 29622,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3701,
+      "uniqueId": "21f320c87613a582b3cffdc873e7e7c5a2be49a0",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18[value=TABLE_ONLY_AMBER]",
+      "testCaseHash": 817128423,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29631",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29632,
+      "uuid": "5ab5a8bf-ffed-4634-904e-f69a5ca3a1fa",
+      "name": "Given ledger legacy separate table:",
+      "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_AMBER |",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827121,
+      "endTime": 1793506827139,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29631,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:8bd2e30e184c3950ff61fddb54ceb6f2",
+      "testCaseHash": 1589330456,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29631.29632",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29633,
+      "uuid": "fc374dd2-ff6c-4129-a357-dc2fae04cca6",
+      "name": "Given ledger legacy separate document:",
+      "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827151,
+      "endTime": 1793506827173,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29631,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:41efceefc66cefb6c9d922992275592e",
+      "testCaseHash": -1337870573,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29631.29633",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29634,
+      "uuid": "e7414709-ba5f-4fae-bcdb-fc4e09819933",
+      "name": "Then ledger verifies separate arguments \"TABLE_ONLY_AMBER\" in \"table-first\" order",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827182,
+      "endTime": 1793506827193,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29631,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:3e4bdd30b96f723654a7b2c79926bb50",
+      "testCaseHash": 1320408807,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29631.29634",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29635,
+      "uuid": "49e12f5d-386b-402b-9022-059cdaa26dcb",
+      "name": "Scenario: table-first separate argument companion",
+      "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18",
+      "description": "`value` = `TABLE_ONLY_BIRCH` · _Examples: Table-only substitution · line 31_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "TABLE_ONLY_BIRCH"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827237,
+      "endTime": 1793506827340,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 29622,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3701,
+      "uniqueId": "6c37b8e8145712fea5dc7a29d62eeacc2297b2c2",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18[value=TABLE_ONLY_BIRCH]",
+      "testCaseHash": 842537914,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29635",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29636,
+      "uuid": "968b2c4a-77eb-4dc5-8556-fd34e42c73a8",
+      "name": "Given ledger legacy separate table:",
+      "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_BIRCH |",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827253,
+      "endTime": 1793506827275,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29635,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:8bd2e30e184c3950ff61fddb54ceb6f2",
+      "testCaseHash": 1589330456,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29635.29636",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29637,
+      "uuid": "c0851169-a5f9-4847-add7-6b320bca9a7b",
+      "name": "Given ledger legacy separate document:",
+      "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827288,
+      "endTime": 1793506827306,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29635,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:41efceefc66cefb6c9d922992275592e",
+      "testCaseHash": -1337870573,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29635.29637",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 29638,
+      "uuid": "4cf581a9-742b-475b-8b40-b34025e06ee8",
+      "name": "Then ledger verifies separate arguments \"TABLE_ONLY_BIRCH\" in \"table-first\" order",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506827317,
+      "endTime": 1793506827329,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 29635,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3701,
+      "uniqueId": "auto:894b07241bea631640592053f43da6f1",
+      "testCaseHash": 473629108,
+      "patternTemplates": [
+
+      ],
+      "path": "29622.29635.29638",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 19257,
+      "time": "2026-11-01T04:20:26.828Z",
+      "message": "_Doc string_\n\n```\nCONSTANT_DOC\n```",
+      "level": "info",
+      "itemId": 29624
+    },
+    {
+      "id": 19258,
+      "time": "2026-11-01T04:20:26.862Z",
+      "message": "_Data table · 2 columns × 1 row_\n\n| <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">key</span> | <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">value</span> |\n| --- | --- |\n| combined | TABLE_ONLY_AMBER |",
+      "level": "info",
+      "itemId": 29625
+    },
+    {
+      "id": 19259,
+      "time": "2026-11-01T04:20:26.984Z",
+      "message": "_Doc string_\n\n```\nCONSTANT_DOC\n```",
+      "level": "info",
+      "itemId": 29628
+    },
+    {
+      "id": 19260,
+      "time": "2026-11-01T04:20:27.041Z",
+      "message": "_Data table · 2 columns × 1 row_\n\n| <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">key</span> | <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">value</span> |\n| --- | --- |\n| combined | TABLE_ONLY_BIRCH |",
+      "level": "info",
+      "itemId": 29629
+    },
+    {
+      "id": 19261,
+      "time": "2026-11-01T04:20:27.131Z",
+      "message": "_Data table · 2 columns × 1 row_\n\n| <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">key</span> | <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">value</span> |\n| --- | --- |\n| combined | TABLE_ONLY_AMBER |",
+      "level": "info",
+      "itemId": 29632
+    },
+    {
+      "id": 19262,
+      "time": "2026-11-01T04:20:27.165Z",
+      "message": "_Doc string_\n\n```\nCONSTANT_DOC\n```",
+      "level": "info",
+      "itemId": 29633
+    },
+    {
+      "id": 19263,
+      "time": "2026-11-01T04:20:27.263Z",
+      "message": "_Data table · 2 columns × 1 row_\n\n| <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">key</span> | <span style=\"font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D\">value</span> |\n| --- | --- |\n| combined | TABLE_ONLY_BIRCH |",
+      "level": "info",
+      "itemId": 29636
+    },
+    {
+      "id": 19264,
+      "time": "2026-11-01T04:20:27.298Z",
+      "message": "_Doc string_\n\n```\nCONSTANT_DOC\n```",
+      "level": "info",
+      "itemId": 29637
+    }
+  ],
+  "files": [
+
+  ],
+  "queries": [
+    {
+      "launch_id": 3701,
+      "items_by_launch": [
+        {
+          "id": 29622,
+          "uuid": "3ad5a9d0-9b9e-47f7-acb6-6510a1e5eff4",
+          "name": "Feature: Ledger developer F02-legacy-separate",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "SUITE",
+          "startTime": "2026-11-01T04:20:26.776Z",
+          "endTime": "2026-11-01T04:20:27.357Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 4,
+              "passed": 4
+            },
+            "defects": {
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3701,
+          "uniqueId": "auto:235c71fa47c3a8ce14ccf51aeac12827",
+          "testCaseHash": 1988642951,
+          "patternTemplates": [
+
+          ],
+          "path": "29622",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29623,
+          "uuid": "2f0757bb-1559-48aa-9f6a-d6e52e84b17d",
+          "name": "Scenario: doc-first separate argument companion",
+          "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3",
+          "description": "`value` = `TABLE_ONLY_AMBER` · _Examples: Table-only substitution · line 15_",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "TABLE_ONLY_AMBER"
+            }
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:26.777Z",
+          "endTime": "2026-11-01T04:20:26.958Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "parent": 29622,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3701,
+          "uniqueId": "da24dc205712cdb1585bdf34a04fa119863c5c5b",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3[value=TABLE_ONLY_AMBER]",
+          "testCaseHash": 604765309,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29623",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 29624,
+          "uuid": "a8a7afdc-fa03-4e2e-bfca-39cae3dda331",
+          "name": "Given ledger legacy separate document:",
+          "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:26.812Z",
+          "endTime": "2026-11-01T04:20:26.837Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29623,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29623,
+                "name": "Scenario: doc-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:f54368f22a43e942544af34d30ec9268",
+          "testCaseHash": 838920041,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29623.29624",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29625,
+          "uuid": "e8bd4fb8-73b7-4986-8fba-6068815d46c4",
+          "name": "Given ledger legacy separate table:",
+          "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_AMBER |",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:26.851Z",
+          "endTime": "2026-11-01T04:20:26.913Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29623,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29623,
+                "name": "Scenario: doc-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:4cdda8e187457adf73d18d282764d63c",
+          "testCaseHash": -361504382,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29623.29625",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29626,
+          "uuid": "28bc98e1-6cbe-4ad5-9529-7697505d9316",
+          "name": "Then ledger verifies separate arguments \"TABLE_ONLY_AMBER\" in \"doc-first\" order",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:26.931Z",
+          "endTime": "2026-11-01T04:20:26.944Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29623,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29623,
+                "name": "Scenario: doc-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:9c1ad46a1bfa0c7aec23b094d5a6df28",
+          "testCaseHash": -760562649,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29623.29626",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29627,
+          "uuid": "38b5fd6e-1dcf-4883-91cc-a7ad07162807",
+          "name": "Scenario: doc-first separate argument companion",
+          "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3",
+          "description": "`value` = `TABLE_ONLY_BIRCH` · _Examples: Table-only substitution · line 16_",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "TABLE_ONLY_BIRCH"
+            }
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:26.967Z",
+          "endTime": "2026-11-01T04:20:27.098Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "parent": 29622,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3701,
+          "uniqueId": "9419a3a4fddb2ef4dce20032dac382915751c6a3",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:3[value=TABLE_ONLY_BIRCH]",
+          "testCaseHash": 630174800,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29627",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 29628,
+          "uuid": "d791474a-cd00-4cc3-936f-339bcf1e10a5",
+          "name": "Given ledger legacy separate document:",
+          "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:26.976Z",
+          "endTime": "2026-11-01T04:20:26.994Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29627,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29627,
+                "name": "Scenario: doc-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:f54368f22a43e942544af34d30ec9268",
+          "testCaseHash": 838920041,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29627.29628",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29629,
+          "uuid": "a8606aa2-19c8-4edf-9c09-6d438eaa6568",
+          "name": "Given ledger legacy separate table:",
+          "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_BIRCH |",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.012Z",
+          "endTime": "2026-11-01T04:20:27.053Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29627,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29627,
+                "name": "Scenario: doc-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:4cdda8e187457adf73d18d282764d63c",
+          "testCaseHash": -361504382,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29627.29629",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29630,
+          "uuid": "431ef334-0395-4b1e-b9f2-d0e0c6532aa3",
+          "name": "Then ledger verifies separate arguments \"TABLE_ONLY_BIRCH\" in \"doc-first\" order",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.073Z",
+          "endTime": "2026-11-01T04:20:27.086Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29627,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29627,
+                "name": "Scenario: doc-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:4125b29341f6e7e8ff3cf2a1bb03b500",
+          "testCaseHash": 1772631604,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29627.29630",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29631,
+          "uuid": "2a3d30ce-e525-4855-ba9d-6f005beb4d4a",
+          "name": "Scenario: table-first separate argument companion",
+          "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18",
+          "description": "`value` = `TABLE_ONLY_AMBER` · _Examples: Table-only substitution · line 30_",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "TABLE_ONLY_AMBER"
+            }
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.107Z",
+          "endTime": "2026-11-01T04:20:27.227Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "parent": 29622,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3701,
+          "uniqueId": "21f320c87613a582b3cffdc873e7e7c5a2be49a0",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18[value=TABLE_ONLY_AMBER]",
+          "testCaseHash": 817128423,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29631",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 29632,
+          "uuid": "5ab5a8bf-ffed-4634-904e-f69a5ca3a1fa",
+          "name": "Given ledger legacy separate table:",
+          "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_AMBER |",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.121Z",
+          "endTime": "2026-11-01T04:20:27.139Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29631,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29631,
+                "name": "Scenario: table-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:8bd2e30e184c3950ff61fddb54ceb6f2",
+          "testCaseHash": 1589330456,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29631.29632",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29633,
+          "uuid": "fc374dd2-ff6c-4129-a357-dc2fae04cca6",
+          "name": "Given ledger legacy separate document:",
+          "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.151Z",
+          "endTime": "2026-11-01T04:20:27.173Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29631,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29631,
+                "name": "Scenario: table-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:41efceefc66cefb6c9d922992275592e",
+          "testCaseHash": -1337870573,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29631.29633",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29634,
+          "uuid": "e7414709-ba5f-4fae-bcdb-fc4e09819933",
+          "name": "Then ledger verifies separate arguments \"TABLE_ONLY_AMBER\" in \"table-first\" order",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.182Z",
+          "endTime": "2026-11-01T04:20:27.193Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29631,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29631,
+                "name": "Scenario: table-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:3e4bdd30b96f723654a7b2c79926bb50",
+          "testCaseHash": 1320408807,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29631.29634",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29635,
+          "uuid": "49e12f5d-386b-402b-9022-059cdaa26dcb",
+          "name": "Scenario: table-first separate argument companion",
+          "codeRef": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18",
+          "description": "`value` = `TABLE_ONLY_BIRCH` · _Examples: Table-only substitution · line 31_",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "TABLE_ONLY_BIRCH"
+            }
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.237Z",
+          "endTime": "2026-11-01T04:20:27.340Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {
+            }
+          },
+          "parent": 29622,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3701,
+          "uniqueId": "6c37b8e8145712fea5dc7a29d62eeacc2297b2c2",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F02-legacy-separate-golden.feature:18[value=TABLE_ONLY_BIRCH]",
+          "testCaseHash": 842537914,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29635",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 29636,
+          "uuid": "968b2c4a-77eb-4dc5-8556-fd34e42c73a8",
+          "name": "Given ledger legacy separate table:",
+          "description": "**Given** ledger legacy separate table:\n\n| key | value |\n| --- | --- |\n| combined | TABLE_ONLY_BIRCH |",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.253Z",
+          "endTime": "2026-11-01T04:20:27.275Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29635,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29635,
+                "name": "Scenario: table-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:8bd2e30e184c3950ff61fddb54ceb6f2",
+          "testCaseHash": 1589330456,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29635.29636",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29637,
+          "uuid": "c0851169-a5f9-4847-add7-6b320bca9a7b",
+          "name": "Given ledger legacy separate document:",
+          "description": "**Given** ledger legacy separate document:\n\n```\nCONSTANT_DOC\n```",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.288Z",
+          "endTime": "2026-11-01T04:20:27.306Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29635,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29635,
+                "name": "Scenario: table-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:41efceefc66cefb6c9d922992275592e",
+          "testCaseHash": -1337870573,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29635.29637",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 29638,
+          "uuid": "4cf581a9-742b-475b-8b40-b34025e06ee8",
+          "name": "Then ledger verifies separate arguments \"TABLE_ONLY_BIRCH\" in \"table-first\" order",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:20:27.317Z",
+          "endTime": "2026-11-01T04:20:27.329Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 29635,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c10.2.0-supplement-rich-1-F02-legacy-separate-golden",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 29622,
+                "name": "Feature: Ledger developer F02-legacy-separate"
+              },
+              {
+                "id": 29635,
+                "name": "Scenario: table-first separate argument companion"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3701,
+          "uniqueId": "auto:894b07241bea631640592053f43da6f1",
+          "testCaseHash": 473629108,
+          "patternTemplates": [
+
+          ],
+          "path": "29622.29635.29638",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

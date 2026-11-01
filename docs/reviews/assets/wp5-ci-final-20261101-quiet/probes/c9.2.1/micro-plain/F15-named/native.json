@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ledger-developer-f15",
+    "uri": "features/presentation_ledger/qa_runtime/F15-named.feature",
+    "keyword": "Feature",
+    "name": "Ledger developer F15",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      },
+      {
+        "name": "@ledger_developer",
+        "line": 1
+      },
+      {
+        "name": "@F15",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "ledger-developer-f15;f15",
+        "keyword": "Scenario",
+        "name": "F15",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger literal named hook",
+            "line": 4,
+            "output": [
+              "named hook"
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:114"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 746041
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          },
+          {
+            "name": "@ledger_developer",
+            "line": 1
+          },
+          {
+            "name": "@F15",
+            "line": 1
+          }
+        ],
+        "before": [
+          {
+            "output": [
+              "LEDGER_NAMED_BEFORE"
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:99"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 498125
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

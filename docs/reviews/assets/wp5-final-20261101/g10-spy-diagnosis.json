@@ -1,0 +1,24 @@
+{
+  "criterion": "G10",
+  "verdict": "FAIL",
+  "severity": "S2",
+  "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+  "ruby": "3.1.7",
+  "cucumber": "10.2.0",
+  "full_suite": {"examples": 1408, "failures": 18, "pending": 0},
+  "focused_with_error_observer": {"examples": 19, "failures": 18, "pending": 0},
+  "non_mocked_control": {"accepted": 2, "confirmed": 2, "shutdown": true, "errors": []},
+  "independently_observed_underlying_errors": [
+    "M4B and_wrap_original wrapper receives records=nil and raises NoMethodError on records.length.",
+    "Cache and_wrap_original wrapper receives a LogRecord as original and raises NoMethodError on original.call.",
+    "Failure-state spy receives record=nil and raises NoMethodError on record.sequence."
+  ],
+  "inference": "The passing non-mocked control and callback values recorded inside RSpec wrappers point to spy callback forwarding, not a demonstrated general SDK delivery failure. G10 still requires an unchanged full-suite rerun after the implementer's fix; no waiver is applied.",
+  "sources": {
+    "full_suite": "docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/rspec.json",
+    "focused": "docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/wp5-focused-spy-observed.json",
+    "underlying_exceptions": "docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/wp5-spy-errors.ndjson",
+    "pure_delivery": "docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/wp5-cache-probe.json"
+  },
+  "claim_limit": "Synthetic diagnostics only. Master standalone-RSpec observations are context, not this QA's evidence. No product source, assertion, timeout or acceptance threshold was edited."
+}

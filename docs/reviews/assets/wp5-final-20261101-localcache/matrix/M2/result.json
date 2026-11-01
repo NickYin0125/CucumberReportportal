@@ -1,0 +1,118 @@
+{
+  "cell": "M2",
+  "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "config",
+        "--global",
+        "--add",
+        "safe.directory",
+        "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source"
+      ],
+      "exit": 0,
+      "seconds": 0.0334255830020993
+    },
+    {
+      "argv": [
+        "bundle",
+        "_2.6.6_",
+        "install",
+        "--local"
+      ],
+      "exit": 0,
+      "seconds": 1.528905583996675
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "ruby",
+        "-e",
+        "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+      ],
+      "exit": 0,
+      "seconds": 1.8925774589952198
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "rspec",
+        "--require",
+        "./spec/acceptance/ledger_qa/deadline_probe.rb",
+        "spec",
+        "spec/acceptance/ledger_qa/properties.rb",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+      ],
+      "exit": 1,
+      "seconds": 544.4321523269973
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "cucumber",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+      ],
+      "exit": 0,
+      "seconds": 3.6450437099992996
+    },
+    {
+      "argv": [
+        "/usr/local/bin/ruby",
+        "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/spec/acceptance/ledger_qa/isolated.rb",
+        "--transport",
+        "offline",
+        "--mode",
+        "plain",
+        "--fixtures",
+        "all",
+        "--sdk-root",
+        "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source",
+        "--cucumber",
+        "10.2.0",
+        "--gem-path",
+        "/bundle/ruby/3.1.0",
+        "--jpeg",
+        "/qa-media/jpeg.jpg",
+        "--output",
+        "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+      ],
+      "exit": 0,
+      "seconds": 95.39167704500142
+    }
+  ],
+  "source_head": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+  "runtime": {
+    "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+    "cucumber": "10.2.0",
+    "sdk": "1.3.2"
+  },
+  "rspec": {
+    "duration": 540.700081708,
+    "example_count": 1408,
+    "failure_count": 18,
+    "pending_count": 0,
+    "errors_outside_of_examples_count": 0
+  },
+  "cucumber": {
+    "scenarios": 1,
+    "steps": 3,
+    "statuses": {
+      "passed": 3
+    }
+  },
+  "status": "FAIL"
+}

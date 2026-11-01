@@ -1,0 +1,26 @@
+{
+  "scope": "Independent synthetic curator tests, exact unchanged assertions, QA-only mounted scratch",
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "-v",
+    "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa:/qa/spec/acceptance/ledger_qa:ro",
+    "-v",
+    "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/wp5-ci-final-20261101/curator-validation-tmp:/qa/docs/reviews/assets/curator-validation-tmp",
+    "-e",
+    "TMPDIR=/qa/docs/reviews/assets/curator-validation-tmp",
+    "-w",
+    "/qa",
+    "ruby:3.4-slim",
+    "ruby",
+    "/qa/spec/acceptance/ledger_qa/final_wp5_curate_test.rb"
+  ],
+  "exit": 0,
+  "stdout": "PASS quiet_root\nPASS history_and_browser\nPASS archives\nPASS escapes_and_size\nPASS missing_and_cross_root\nPASS stable_inputs\n35 assertions; synthetic fixtures only\n",
+  "stderr": "",
+  "test_sha256": "e99d52d13445b7f54766c432c7011fd03ca0312c35890db6727dac30924e4186",
+  "curator_sha256": "037345ce91ec9bc9c857a885b35f3b45a3fd5f8d65d4e8d1096dd00d2e98e3db",
+  "earlier_attempt": "publication-integrity-synthetic-validation.json",
+  "explanation": "First host attempt nested synthetic roots inside the canonical QA root, so outside-fixture path was recognized as canonical QA evidence rather than an escaped browser asset. Container preserves identical tests and host writes stay in allowed QA assets while synthetic root namespace is independent."
+}

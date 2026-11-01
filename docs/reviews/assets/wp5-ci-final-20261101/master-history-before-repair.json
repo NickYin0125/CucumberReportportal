@@ -1,0 +1,1272 @@
+{
+  "role": "Master full historical-check preservation audit; no product verdict",
+  "version": "1.3.2",
+  "observed_at_utc": "2026-11-01T11:31:12Z",
+  "committed_qa_head": "2fb71187a1a6b4a45056050eaaeac6629139c342",
+  "original_file_sha256": "7676f73042bce1160786ed3cf29c75d6e4cb29f1a257ba010d3ac30458b1d485",
+  "observed_file_sha256": "888983e9358ed4ae2995ea845b47a7832b72a6cbbffe46fd3d99e03a7dc29c3d",
+  "original_checks": 6781,
+  "observed_checks": 29591,
+  "missing": [],
+  "changed": [
+    {
+      "original": {
+        "criterion": "G10",
+        "check": "M2: final-head complete suite/offline Cucumber has not finished",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "required_source": "wp5-final-20261101/matrix/M2"
+        },
+        "expected": "Required final-head proof",
+        "actual": null,
+        "verdict": "BLOCKED",
+        "evidence": {
+          "source": "wp5-final-20261101/matrix/M2",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00095"
+      },
+      "draft_variant": {
+        "criterion": "G10",
+        "check": "M2: exact final runtime full suite plus offline Cucumber, no failures/pending",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "cell": "M2",
+          "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+          "commands": [
+            {
+              "argv": [
+                "git",
+                "config",
+                "--global",
+                "--add",
+                "safe.directory",
+                "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source"
+              ],
+              "exit": 0,
+              "seconds": 0.0334255830020993
+            },
+            {
+              "argv": [
+                "bundle",
+                "_2.6.6_",
+                "install",
+                "--local"
+              ],
+              "exit": 0,
+              "seconds": 1.528905583996675
+            },
+            {
+              "argv": [
+                "bundle",
+                "exec",
+                "ruby",
+                "-e",
+                "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+              ],
+              "exit": 0,
+              "seconds": 1.8925774589952198
+            },
+            {
+              "argv": [
+                "bundle",
+                "exec",
+                "rspec",
+                "--require",
+                "./spec/acceptance/ledger_qa/deadline_probe.rb",
+                "spec",
+                "spec/acceptance/ledger_qa/properties.rb",
+                "--format",
+                "progress",
+                "--format",
+                "json",
+                "--out",
+                "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+              ],
+              "exit": 1,
+              "seconds": 544.4321523269973
+            },
+            {
+              "argv": [
+                "bundle",
+                "exec",
+                "cucumber",
+                "--format",
+                "progress",
+                "--format",
+                "json",
+                "--out",
+                "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+              ],
+              "exit": 0,
+              "seconds": 3.6450437099992996
+            },
+            {
+              "argv": [
+                "/usr/local/bin/ruby",
+                "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/spec/acceptance/ledger_qa/isolated.rb",
+                "--transport",
+                "offline",
+                "--mode",
+                "plain",
+                "--fixtures",
+                "all",
+                "--sdk-root",
+                "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source",
+                "--cucumber",
+                "10.2.0",
+                "--gem-path",
+                "/bundle/ruby/3.1.0",
+                "--jpeg",
+                "/qa-media/jpeg.jpg",
+                "--output",
+                "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+              ],
+              "exit": 0,
+              "seconds": 95.39167704500142
+            }
+          ],
+          "source_head": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+          "runtime": {
+            "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+            "cucumber": "10.2.0",
+            "sdk": "1.3.2"
+          },
+          "rspec": {
+            "duration": 540.700081708,
+            "example_count": 1408,
+            "failure_count": 18,
+            "pending_count": 0,
+            "errors_outside_of_examples_count": 0
+          },
+          "cucumber": {
+            "scenarios": 1,
+            "steps": 3,
+            "statuses": {
+              "passed": 3
+            }
+          },
+          "status": "FAIL"
+        },
+        "expected": [
+          "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+          "PASS",
+          0,
+          0
+        ],
+        "actual": [
+          "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+          "FAIL",
+          18,
+          0
+        ],
+        "verdict": "FAIL",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/result.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00095"
+      }
+    },
+    {
+      "original": {
+        "criterion": "P8.9",
+        "check": "M2: final-head omission/bounds spec evidence unavailable",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "required_source": "wp5-final-20261101/matrix/M2"
+        },
+        "expected": "Required final-head proof",
+        "actual": null,
+        "verdict": "BLOCKED",
+        "evidence": {
+          "source": "wp5-final-20261101/matrix/M2",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00096"
+      },
+      "draft_variant": {
+        "criterion": "P8.9",
+        "check": "M2: unchanged omission marker and public bounds verified by product and independent specs",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": "At least 2 matching examples, all passed",
+        "actual": [
+          {
+            "full_description": "ReportportalCucumber::Service::EvidencePresenter sanitizes before rendering and keeps omission markers and all existing public bounds",
+            "status": "passed",
+            "file_path": "./spec/reportportal_cucumber/service/evidence_presenter_spec.rb",
+            "line_number": 175
+          },
+          {
+            "full_description": "Independent Ledger acceptance properties P8.9 retains the existing size limits and omission marker",
+            "status": "passed",
+            "file_path": "./spec/acceptance/ledger_qa/properties.rb",
+            "line_number": 96
+          }
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/source/docs/reviews/assets/qa-cell-evidence/rspec.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00096"
+      }
+    },
+    {
+      "original": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1: 24 public-entry fault captures not complete (21/24)",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "required_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1"
+        },
+        "expected": "Required final-head proof",
+        "actual": null,
+        "verdict": "BLOCKED",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00101"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-Accent-details: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-details-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "Accent.details",
+              "baseline_callable_result": "INDEPENDENT_FULL_BACKTRACE\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:48:in `inner_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:43:in `deep_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:156:in `block in <top (required)>'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `instance_exec'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `block in cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:50:in `cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:27:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/step_definition.rb:136:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:34:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:27:in `block in activate'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/actions/action.rb:25:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:36:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:30:in `test_step'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:24:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `each'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:31:in `block in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:20:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:56:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/retry.rb:23:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/quit.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/tag_filter.rb:18:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/compiler.rb:32:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/gherkin/parser.rb:36:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:35:in `parse'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:24:in `compile'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/runtime.rb:81:in `run!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/cli/main.rb:29:in `execute!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/bin/cucumber:9:in `<top (required)>'\n-e:8:in `load'\n-e:8:in `<main>'\nfeatures/presentation_ledger/qa_runtime/F04.feature:4:in `ledger deep failure'",
+              "actual_result": "INDEPENDENT_FULL_BACKTRACE\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:48:in `inner_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:43:in `deep_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:156:in `block in <top (required)>'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `instance_exec'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `block in cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:50:in `cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:27:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/step_definition.rb:136:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:34:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:27:in `block in activate'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/actions/action.rb:25:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:36:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:30:in `test_step'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:24:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `each'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:31:in `block in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:20:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:56:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/retry.rb:23:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/quit.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/tag_filter.rb:18:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/compiler.rb:32:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/gherkin/parser.rb:36:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:35:in `parse'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:24:in `compile'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/runtime.rb:81:in `run!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/cli/main.rb:29:in `execute!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/bin/cucumber:9:in `<top (required)>'\n-e:8:in `load'\n-e:8:in `<main>'\nfeatures/presentation_ledger/qa_runtime/F04.feature:4:in `ledger deep failure'",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          1,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          1,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-details/F04/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00101"
+      }
+    },
+    {
+      "original": {
+        "criterion": "G9",
+        "check": "Cucumber 10.2.0: 24 public-entry fault captures not complete (0/24)",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "required_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c10.2.0"
+        },
+        "expected": "Required final-head proof",
+        "actual": null,
+        "verdict": "BLOCKED",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c10.2.0",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00102"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-Accent-guard: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-guard-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "Accent.guard",
+              "baseline_callable_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "actual_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-guard/F10a/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00102"
+      }
+    },
+    {
+      "original": {
+        "criterion": "G11",
+        "check": "Cucumber 9.2.1: uncontended F01-F18 performance rerun pending; early contended attempt is NOT acceptance proof",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "required_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-quiet/probes/c9.2.1"
+        },
+        "expected": "Required final-head proof",
+        "actual": null,
+        "verdict": "BLOCKED",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-quiet/probes/c9.2.1",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00103"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-Accent-pill: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-pill-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "Accent.pill",
+              "baseline_callable_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "actual_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-pill/F10a/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00103"
+      }
+    },
+    {
+      "original": {
+        "criterion": "G11",
+        "check": "Cucumber 10.2.0: uncontended F01-F18 performance rerun pending; early contended attempt is NOT acceptance proof",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "required_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-quiet/probes/c10.2.0"
+        },
+        "expected": "Required final-head proof",
+        "actual": null,
+        "verdict": "BLOCKED",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101-quiet/probes/c10.2.0",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00104"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-Accent-table_header: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-table_header-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "Accent.table_header",
+              "baseline_callable_result": "**And** ledger records this table:\n\n| not_numeric | also_not_numeric | invalid_group | unicode_minus |\n| --- | --- | --- | --- |\n| .5 | 1e3 | 1,23 | −12 |",
+              "actual_result": "**And** ledger records this table:\n\n| not_numeric | also_not_numeric | invalid_group | unicode_minus |\n| --- | --- | --- | --- |\n| .5 | 1e3 | 1,23 | −12 |",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-table_header/F13/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00104"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V1",
+        "check": "Final source version constant and freshly built package version",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": [
+          "1.3.2",
+          "1.3.2",
+          "1e136e89eb21276330e5fc9f1769fe9521a83cb9"
+        ],
+        "actual": [
+          "1.3.2",
+          "1.3.2",
+          "1e136e89eb21276330e5fc9f1769fe9521a83cb9"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00105"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-Accent-title: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-title-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "Accent.title",
+              "baseline_callable_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "actual_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-title/F10a/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00105"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V2",
+        "check": "Frozen-baseline lock diff contains only the gem's own PATH version",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": [
+          "-    reportportal-cucumber-ruby (1.3.1)",
+          "+    reportportal-cucumber-ruby (1.3.2)"
+        ],
+        "actual": [
+          "-    reportportal-cucumber-ruby (1.3.1)",
+          "+    reportportal-cucumber-ruby (1.3.2)"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00106"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-AttachmentCaption-format: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-AttachmentCaption-format-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "AttachmentCaption.format",
+              "baseline_callable_result": "Attachment: visible-fixture.png",
+              "actual_result": "Attachment: visible-fixture.png",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-AttachmentCaption-format/F01/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00106"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V3",
+        "check": "Fresh gem build from final feature tree, locally verified and never published",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": [
+          "reportportal-cucumber-ruby-1.3.2.gem",
+          "1.3.2",
+          true,
+          "1e136e89eb21276330e5fc9f1769fe9521a83cb9"
+        ],
+        "actual": [
+          "reportportal-cucumber-ruby-1.3.2.gem",
+          "1.3.2",
+          true,
+          "1e136e89eb21276330e5fc9f1769fe9521a83cb9"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00107"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-AttachmentCaption-kind: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-AttachmentCaption-kind-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "AttachmentCaption.kind",
+              "baseline_callable_result": "Attachment: visible-fixture.png",
+              "actual_result": "Attachment: visible-fixture.png",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-AttachmentCaption-kind/F01/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00107"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V4",
+        "check": "CHANGELOG begins with new patch release and owner SemVer rationale",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": true,
+        "actual": true,
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00108"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-AttachmentCaption-slug: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-AttachmentCaption-slug-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "AttachmentCaption.slug",
+              "baseline_callable_result": {
+                "name": "attachment.png",
+                "mime": "image/png",
+                "bytes": {
+                  "binary_bytes": 5421,
+                  "sha256": "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                  "base64": "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"
+                },
+                "auto_name": true,
+                "caption_style": "baseline"
+              },
+              "actual_result": {
+                "name": "attachment.png",
+                "mime": "image/png",
+                "bytes": {
+                  "binary_bytes": 5421,
+                  "sha256": "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                  "base64": "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"
+                },
+                "auto_name": true,
+                "caption_style": "baseline"
+              },
+              "byte_equal": true,
+              "result_class": "Hash"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-AttachmentCaption-slug/F17/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00108"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V5",
+        "check": "Both switches and Presentation section documented at final SHA",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": [
+          true,
+          true,
+          true
+        ],
+        "actual": [
+          true,
+          true,
+          true
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00109"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-FailureCard-format: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-FailureCard-format-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "FailureCard.format",
+              "baseline_callable_result": "INDEPENDENT_FULL_BACKTRACE\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:48:in `inner_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:43:in `deep_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:156:in `block in <top (required)>'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `instance_exec'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `block in cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:50:in `cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:27:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/step_definition.rb:136:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:34:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:27:in `block in activate'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/actions/action.rb:25:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:36:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:30:in `test_step'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:24:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `each'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:31:in `block in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:20:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:56:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/retry.rb:23:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/quit.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/tag_filter.rb:18:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/compiler.rb:32:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/gherkin/parser.rb:36:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:35:in `parse'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:24:in `compile'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/runtime.rb:81:in `run!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/cli/main.rb:29:in `execute!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/bin/cucumber:9:in `<top (required)>'\n-e:8:in `load'\n-e:8:in `<main>'\nfeatures/presentation_ledger/qa_runtime/F04.feature:4:in `ledger deep failure'",
+              "actual_result": "INDEPENDENT_FULL_BACKTRACE\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:48:in `inner_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:43:in `deep_failure'\n/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:156:in `block in <top (required)>'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `instance_exec'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:37:in `block in cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:50:in `cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/invoke_in_world.rb:27:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/glue/step_definition.rb:136:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:34:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/step_match.rb:27:in `block in activate'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/actions/action.rb:25:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:36:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:30:in `test_step'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/step.rb:24:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `each'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:107:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:31:in `block in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/runner.rb:20:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/prepare_world.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:56:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/retry.rb:23:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/quit.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/test/filters/tag_filter.rb:18:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/compiler.rb:32:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core/gherkin/parser.rb:36:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:35:in `parse'\n/bundle/ruby/3.3.0/gems/cucumber-core-13.0.3/lib/cucumber/core.rb:24:in `compile'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/runtime.rb:81:in `run!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/lib/cucumber/cli/main.rb:29:in `execute!'\n/bundle/ruby/3.3.0/gems/cucumber-9.2.1/bin/cucumber:9:in `<top (required)>'\n-e:8:in `load'\n-e:8:in `<main>'\nfeatures/presentation_ledger/qa_runtime/F04.feature:4:in `ledger deep failure'",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          1,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          1,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-FailureCard-format/F04/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00109"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V6",
+        "check": "No Helm/workflow changes against frozen baseline",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": "",
+        "actual": "",
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00110"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-ImageDimensions-jpeg: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-ImageDimensions-jpeg-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "ImageDimensions.jpeg",
+              "baseline_callable_result": "Attachment",
+              "actual_result": "Attachment",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-ImageDimensions-jpeg/F17/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00110"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V6",
+        "check": "Legacy chart remains 1.3.1/app 26.0.7",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": true,
+        "actual": true,
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00111"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-ImageDimensions-png: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-ImageDimensions-png-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "ImageDimensions.png",
+              "baseline_callable_result": "Attachment: visible-fixture.png",
+              "actual_result": "Attachment: visible-fixture.png",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-ImageDimensions-png/F01/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00111"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V7",
+        "check": "Protected heads still equal original independent observations",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": {
+          "refs/heads/main": "75cb090a7852c56285010af17cde9ad55df1284b",
+          "refs/heads/maintenance/1.x": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+          "refs/heads/codex/cucumber-12": "f2e68f112ad28604f4395710f10f595246f6dc00"
+        },
+        "actual": {
+          "refs/heads/main": "75cb090a7852c56285010af17cde9ad55df1284b",
+          "refs/heads/maintenance/1.x": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+          "refs/heads/codex/cucumber-12": "f2e68f112ad28604f4395710f10f595246f6dc00"
+        },
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00112"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-ImageDimensions-read: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-ImageDimensions-read-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "ImageDimensions.read",
+              "baseline_callable_result": "Attachment: visible-fixture.png",
+              "actual_result": "Attachment: visible-fixture.png",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-ImageDimensions-read/F01/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00112"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V7",
+        "check": "Decision 10 historical CI tag names equal fresh remote names (not historical tag-SHA proof)",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {},
+        "expected": [
+          "m3",
+          "milestone1",
+          "v1.0.0",
+          "v1.1.0",
+          "v1.2.0",
+          "v1.3.0",
+          "v1.3.1",
+          "v2.0.0"
+        ],
+        "actual": [
+          "m3",
+          "milestone1",
+          "v1.0.0",
+          "v1.1.0",
+          "v1.2.0",
+          "v1.3.0",
+          "v1.3.1",
+          "v2.0.0"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00113"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-LedgerJson-format: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-LedgerJson-format-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "LedgerJson.format",
+              "baseline_callable_result": "## Assertion: Limits\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"currency\":\"USD\",\"notional\":5000000} | {\"currency\":\"USD\",\"notional\":4000000} |\n\n### Details\n\n{\"key1\":1,\"key2\":2,\"key3\":3,\"key4\":4,\"key5\":5,\"key6\":6,\"key7\":7,\"key8\":8}",
+              "actual_result": "## Assertion: Limits\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"currency\":\"USD\",\"notional\":5000000} | {\"currency\":\"USD\",\"notional\":4000000} |\n\n### Details\n\n{\"key1\":1,\"key2\":2,\"key3\":3,\"key4\":4,\"key5\":5,\"key6\":6,\"key7\":7,\"key8\":8}",
+              "byte_equal": true,
+              "result_class": "String"
+            },
+            {
+              "entry": "LedgerJson.format",
+              "baseline_callable_result": "## Assertion: Limits\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"currency\":\"USD\",\"notional\":5000000} | {\"currency\":\"USD\",\"notional\":4000000} |\n\n### Details\n\n{\"key1\":1,\"key2\":2,\"key3\":3,\"key4\":4,\"key5\":5,\"key6\":6,\"key7\":7,\"key8\":8}",
+              "actual_result": "## Assertion: Limits\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"currency\":\"USD\",\"notional\":5000000} | {\"currency\":\"USD\",\"notional\":4000000} |\n\n### Details\n\n{\"key1\":1,\"key2\":2,\"key3\":3,\"key4\":4,\"key5\":5,\"key6\":6,\"key7\":7,\"key8\":8}",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-LedgerJson-format/F10d/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00113"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V7",
+        "check": "WP5 exit remote observation not yet recorded",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "required_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/after.json"
+        },
+        "expected": "Required final-head proof",
+        "actual": null,
+        "verdict": "BLOCKED",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/after.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00114"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-MarkdownText-cell: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-MarkdownText-cell-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "MarkdownText.cell",
+              "baseline_callable_result": "**Given** ledger records this table:\n\n| account | qty | price | change | pct | code | mixed | blank |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| A | 100 | 1,234.50 | -12 | 12% | 1.2.3 | 10 |  |\n| B | 1,250 | 0.5 | +7 | 0.5% | USD 100 | n/a |  |\n| C | 12,345,678 | 98.10 | 42 | 100% | 1e3 | 30 |  |",
+              "actual_result": "**Given** ledger records this table:\n\n| account | qty | price | change | pct | code | mixed | blank |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| A | 100 | 1,234.50 | -12 | 12% | 1.2.3 | 10 |  |\n| B | 1,250 | 0.5 | +7 | 0.5% | USD 100 | n/a |  |\n| C | 12,345,678 | 98.10 | 42 | 100% | 1e3 | 30 |  |",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-MarkdownText-cell/F13/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00114"
+      }
+    },
+    {
+      "original": {
+        "criterion": "V8",
+        "check": "C0-C8 semantic implementation order, P10 isolated stage retained",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "stages": [
+            "docs\\(design\\).*proposal",
+            "MarkdownText",
+            "failure card",
+            "hook names and step.argument",
+            "attachment captions",
+            "Outline.*assertion",
+            "(?:run context|run.context)",
+            "(?:accent|Tier 2)",
+            "prepare Ledger SDK"
+          ],
+          "positions": [
+            0,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            12
+          ],
+          "history": "eb17e54255ae85a740cc24507b16c82d0fd28aff docs(design): add Ledger presentation proposal and acceptance criteria\n98447677795cce6c2c43fda670fbda2e9de22c78 chore(release): allow independent Helm chart version from SDK 1.3.2\n3513ade6b1cba86fa9146c3467dea7a507f3e5f2 docs(design): record owner-approved Ledger acceptance decisions\nfdcad6163fd0d9f9bfafdc59c43c6947b666f94d docs(design): record legacy compound grammar acceptance decision\n13c6c429460024670a2f8f697308a087dfb45a16 feat(presentation): MarkdownText, Ledger JSON and unit formatting; escape client Markdown\na49e760b0a4edbb37210087bc83cbbc5b31989e9 feat(presentation): failure card with project frames first\n19f12b8a2374485ff3ddb6fd74bdd89c059c6385 feat(presentation): hook names and step-argument logs\n15a49f08629f13a266f4b167af088bab7956ad47 feat(presentation): attachment captions, default names and compact previews\n614a283a5d55ea091639e3ca3799b458f3e9b3f1 feat(presentation): Outline one-liners and assertion/evidence/HTTP cards\n2db6cc0ee3e07434cc507920f13d9d1c94ca2429 feat(launch): opt-in run context attributes and description\n0ac76e89b17f191b30c4991ce6b3bca58f66c70c feat(presentation): opt-in Ledger Tier 2 accent layer (RP_PRESENTATION=rich)\nad7bdddac7e8239cb4d17fb526744d7739b4e535 docs(design): record native global hook naming decision\n24c61e95e95c7c00d01e42d9fc0fe754b9f5ec56 chore(release): prepare Ledger SDK 1.3.2 candidate\n7ecac86531ff92fbcf82b9a70d71091c1e5f4e93 docs(ledger): record target-sync approval and current candidate\nc2e5c9fb3a8c4fa5b1cb14d09941e794130ff36d fix(developer): activate selected SDK dependency contract\nca7d83fe71ed1f6a3e60abf97c6598a0d7f0c104 fix(presentation): preserve literal Markdown in table cells\nf8872fa76c75024da01cc32c9746eb0a243f8389 docs(presentation): reconcile approved goldens with explicit rules\n8daf1b93d05b2e1bf93b7fa9175d388e011d397c docs(qa): record six approved legacy persistence exceptions\n37d289d8ae492fed7f1fffe3fd34dbd7e396d70e fix(presentation): preserve baseline native HTTP and assertion logs\n64be0d50517504784d2ec10752a2244c961e260e test(presentation): pin native HTTP integration baseline\nbf3aa32197adc887dc08edcd89c964a022ea4e48 fix(presentation): preserve native hook names across retries\nc27510547ace0d4baaf964a0575e5bec4344e11a test(presentation): cover hook cache cleanup on reporting failure\n168932ef55ac3166d70f6ecc91f8c860ff628166 docs(qa): record approved text preservation and tag evidence rules\n7761384a682cbaac66e31a09a477342612c0debb docs(design): record owner decisions 11-14\n2916c488943df355e9f8dcb67ae31fa37fd04d5b fix(presentation): cap displayed failure locations at forty characters\n338d41c00778438e973b609b3212c47ba719e2d7 perf(presentation): redact each failure once before rendering\na8218f0e2dd89c74bbdb5945e4a8a5431ee8c9a3 perf(reporting): memoize rendered messages within each flush\nd41f206ebad3c717b2743f44aabb90f1e6230d61 refactor(presentation): isolate failure state to each flush\n7c709797a40ee788c3b4e10f6bab672d3f1437ac fix(reporting): preserve legacy text semantics with immutable cache entries\n1e136e89eb21276330e5fc9f1769fe9521a83cb9 docs(presentation): record attachment fix and legacy verification policy\n"
+        },
+        "expected": true,
+        "actual": true,
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/repository/before.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00115"
+      },
+      "draft_variant": {
+        "criterion": "G9",
+        "check": "Cucumber 9.2.1 fault-MarkdownText-code: baseline fallback bytes, one warning, unchanged native result",
+        "method": "U",
+        "runtime_sha": "1e136e89eb21276330e5fc9f1769fe9521a83cb9",
+        "inputs": {
+          "fallback_source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-MarkdownText-code-fallback.ndjson",
+          "fallback_records": [
+            {
+              "entry": "MarkdownText.code",
+              "baseline_callable_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "actual_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "byte_equal": true,
+              "result_class": "String"
+            },
+            {
+              "entry": "MarkdownText.code",
+              "baseline_callable_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "actual_result": "## Assertion: Order is accepted\n\n**Outcome:** PASS\n\n| Expected | Actual |\n| --- | --- |\n| ACCEPTED | ACCEPTED |",
+              "byte_equal": true,
+              "result_class": "String"
+            }
+          ]
+        },
+        "expected": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "actual": [
+          0,
+          1,
+          1,
+          true,
+          true,
+          "/Users/nick/Documents/crr-1.3.2"
+        ],
+        "verdict": "PASS",
+        "evidence": {
+          "source": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-MarkdownText-code/F10a/process.json",
+          "launch_ids": [],
+          "item_ids": [],
+          "log_ids": []
+        },
+        "check_id": "WP5-00115"
+      }
+    }
+  ],
+  "duplicate_ids": 0,
+  "status": "REPAIR_REQUIRED"
+}

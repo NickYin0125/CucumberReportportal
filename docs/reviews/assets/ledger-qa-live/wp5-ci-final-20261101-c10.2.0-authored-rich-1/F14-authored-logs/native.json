@@ -1,0 +1,52 @@
+[
+  {
+    "id": "independent-authored-log-controls",
+    "uri": "features/presentation_ledger/qa_runtime/F14-authored-logs.feature",
+    "keyword": "Feature",
+    "name": "Independent authored log controls",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "independent-authored-log-controls;literal-user-logs",
+        "keyword": "Scenario",
+        "name": "Literal user logs",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "QA authored raw logger controls",
+            "line": 4,
+            "output": [
+              "AppLog literal *star* _under_ `tick`",
+              "AppLog literal <other> <b>x</b> &amp;",
+              "AppLog literal first line\nsecond line",
+              "AppLog literal CJK 中文 emoji 🟢"
+            ],
+            "match": {
+              "location": "spec/acceptance/ledger_qa/contract_gaps_support.rb:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3735667
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

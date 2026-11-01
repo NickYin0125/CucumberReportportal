@@ -1,0 +1,351 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3513,
+      "uuid": "701cebcb-24f7-47f0-ab32-d321e1686c8f",
+      "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c9.2.1-supplement-rich-2-F16c-adapted",
+      "number": 1,
+      "startTime": 1793506567079,
+      "endTime": 1793506567223,
+      "lastModified": 1793506567237,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [
+
+      ],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 28157,
+      "uuid": "87295225-d97d-4020-9374-f60eed2c0e9a",
+      "name": "Feature: Non-Exception event adapter",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "SUITE",
+      "startTime": 1793506567094,
+      "endTime": 1793506567222,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3513,
+      "uniqueId": "auto:c9f9ccf1b549196c657a043aab19fcfc",
+      "testCaseHash": -1280539226,
+      "patternTemplates": [
+
+      ],
+      "path": "28157",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 28158,
+      "uuid": "216a5892-5631-445a-a203-b21f7d7f9e70",
+      "name": "Scenario: Struct fallback",
+      "codeRef": "features/presentation_ledger/qa_runtime/F16c-adapted.feature:3",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506567095,
+      "endTime": 1793506567194,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 28157,
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": [
+
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3513,
+      "uniqueId": "da1ac9236fc3a8bdcc6b5ccfac5f3e1df890f3d5",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F16c-adapted.feature:3",
+      "testCaseHash": 225002688,
+      "patternTemplates": [
+
+      ],
+      "path": "28157.28158",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 28159,
+      "uuid": "472a64ee-a621-44d5-952e-c1a71f78917b",
+      "name": "Given QA non-Exception fallback failure",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793506567140,
+      "endTime": 1793506567178,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 28158,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3513,
+      "uniqueId": "auto:40114272df79320847f4ac33f2a56ac4",
+      "testCaseHash": 1280631281,
+      "patternTemplates": [
+
+      ],
+      "path": "28157.28158.28159",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 18336,
+      "time": "2026-11-01T04:16:07.163Z",
+      "message": "## ✗ Non-Exception failure",
+      "level": "error",
+      "itemId": 28159
+    }
+  ],
+  "files": [
+
+  ],
+  "queries": [
+    {
+      "launch_id": 3513,
+      "items_by_launch": [
+        {
+          "id": 28157,
+          "uuid": "87295225-d97d-4020-9374-f60eed2c0e9a",
+          "name": "Feature: Non-Exception event adapter",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "SUITE",
+          "startTime": "2026-11-01T04:16:07.094Z",
+          "endTime": "2026-11-01T04:16:07.222Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c9.2.1-supplement-rich-2-F16c-adapted",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3513,
+          "uniqueId": "auto:c9f9ccf1b549196c657a043aab19fcfc",
+          "testCaseHash": -1280539226,
+          "patternTemplates": [
+
+          ],
+          "path": "28157",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 28158,
+          "uuid": "216a5892-5631-445a-a203-b21f7d7f9e70",
+          "name": "Scenario: Struct fallback",
+          "codeRef": "features/presentation_ledger/qa_runtime/F16c-adapted.feature:3",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:16:07.095Z",
+          "endTime": "2026-11-01T04:16:07.194Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "parent": 28157,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c9.2.1-supplement-rich-2-F16c-adapted",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 28157,
+                "name": "Feature: Non-Exception event adapter"
+              }
+            ]
+          },
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": [
+
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3513,
+          "uniqueId": "da1ac9236fc3a8bdcc6b5ccfac5f3e1df890f3d5",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F16c-adapted.feature:3",
+          "testCaseHash": 225002688,
+          "patternTemplates": [
+
+          ],
+          "path": "28157.28158",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 28159,
+          "uuid": "472a64ee-a621-44d5-952e-c1a71f78917b",
+          "name": "Given QA non-Exception fallback failure",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:16:07.140Z",
+          "endTime": "2026-11-01T04:16:07.178Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 28158,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c9.2.1-supplement-rich-2-F16c-adapted",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 28157,
+                "name": "Feature: Non-Exception event adapter"
+              },
+              {
+                "id": 28158,
+                "name": "Scenario: Struct fallback"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3513,
+          "uniqueId": "auto:40114272df79320847f4ac33f2a56ac4",
+          "testCaseHash": 1280631281,
+          "patternTemplates": [
+
+          ],
+          "path": "28157.28158.28159",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

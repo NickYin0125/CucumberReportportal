@@ -1,0 +1,13 @@
+{
+  "id": "F03-legacy-separate",
+  "source": "@reportportal_live @ledger_developer @F03 \nFeature: Ledger developer F03-legacy-separate\n  Scenario Outline: doc-first separate argument companion\n    Given ledger legacy separate document:\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n    Given ledger legacy separate table:\n      | key | value |\n      | combined | <value> |\n    Then ledger verifies separate arguments \"<value>\" in \"doc-first\" order\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER <other> |\n      | TABLE_ONLY_BIRCH <other> |\n\n  Scenario Outline: table-first separate argument companion\n    Given ledger legacy separate table:\n      | key | value |\n      | combined | <value> |\n    Given ledger legacy separate document:\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n    Then ledger verifies separate arguments \"<value>\" in \"table-first\" order\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER <other> |\n      | TABLE_ONLY_BIRCH <other> |\n\n",
+  "negative": false,
+  "scenarios": 4,
+  "failed": 0,
+  "origin": "Owner decision 4: explicitly separate argument steps, not native compound grammar",
+  "limitations": [
+    "Same data and Outline rows, deliberately different step tree; never a replacement for native compound coverage on 2.x."
+  ],
+  "legacy_companion_of": "F03",
+  "source_sha256": "096f2a3f4b02ff47c9744fa23131e2ba14ac43d0682f2429693863ad2391c215"
+}

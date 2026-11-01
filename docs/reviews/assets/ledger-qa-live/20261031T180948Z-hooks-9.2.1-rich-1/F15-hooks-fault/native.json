@@ -1,0 +1,91 @@
+[
+  {
+    "id": "independent-native-named-hooks-fault",
+    "uri": "features/presentation_ledger/qa_runtime/F15-hooks-fault.feature",
+    "keyword": "Feature",
+    "name": "Independent native named hooks fault",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "independent-native-named-hooks-fault;scalar-hook-metadata-fault",
+        "keyword": "Scenario",
+        "name": "Scalar hook metadata fault",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "QA named hook business step",
+            "line": 4,
+            "output": [
+              "QA_NAMED_BUSINESS_PASSED"
+            ],
+            "match": {
+              "location": "spec/acceptance/ledger_qa/native_hooks_support.rb:58"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1141792
+            },
+            "after": [
+              {
+                "output": [
+                  "QA_NAMED_AFTER_STEP"
+                ],
+                "match": {
+                  "location": "spec/acceptance/ledger_qa/native_hooks_support.rb:57"
+                },
+                "result": {
+                  "status": "passed",
+                  "duration": 672291
+                }
+              }
+            ]
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ],
+        "before": [
+          {
+            "output": [
+              "QA_NAMED_BEFORE"
+            ],
+            "match": {
+              "location": "spec/acceptance/ledger_qa/native_hooks_support.rb:55"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 681458
+            }
+          }
+        ],
+        "after": [
+          {
+            "output": [
+              "QA_NAMED_AFTER"
+            ],
+            "match": {
+              "location": "spec/acceptance/ledger_qa/native_hooks_support.rb:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 435334
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

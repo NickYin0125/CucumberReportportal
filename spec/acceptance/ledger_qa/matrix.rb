@@ -70,19 +70,33 @@ module LedgerQAMatrix
       FileUtils.mkdir_p(File.join(ENV["DOCKER_CONFIG"], "cli-plugins"))
       FileUtils.ln_sf("/tools/docker-compose", File.join(ENV["DOCKER_CONFIG"], "cli-plugins/docker-compose"))
       ENV["QA_DEADLINE_EVIDENCE"] = File.join(out, "deadline-observations.ndjson")
-      result[:commands] << command(out, "rspec", "bundle", "exec", "rspec", "--require", "./spec/acceptance/ledger_qa/deadline_probe.rb", "spec", "spec/acceptance/ledger_qa/properties.rb", "--format", "progress", "--format", "json", "--out", File.join(out, "rspec.json"))
+      rspec = ["bundle", "exec", "rspec"]
+      rspec.concat(["--require", "./spec/acceptance/ledger_qa/deadline_probe.rb"]) unless ENV["QA_NO_DIAGNOSTIC_OBSERVER"] == "1"
+      rspec.concat(["spec", "spec/acceptance/ledger_qa/properties.rb", "--format", "progress", "--format", "json", "--out", File.join(out, "rspec.json")])
+      result[:commands] << command(out, "rspec", *rspec)
       result[:commands] << command(out, "cucumber", "bundle", "exec", "cucumber", "--format", "progress", "--format", "json", "--out", File.join(out, "cucumber.json"))
       result[:commands] << command(out, "fixtures", RbConfig.ruby, File.join(ROOT, "spec/acceptance/ledger_qa/isolated.rb"),
         "--transport", "offline", "--mode", "plain", "--fixtures", "all", "--sdk-root", ROOT,
         "--cucumber", ENV.fetch("QA_CUCUMBER"), "--gem-path", "/bundle/ruby/#{RbConfig::CONFIG.fetch('ruby_version')}",
         "--jpeg", "/qa-media/jpeg.jpg", "--output", File.join(out, "fixtures"))
+      if result.fetch(:runtime).fetch("sdk").start_with?("2.")
+        result[:commands] << command(out, "parallel-fixtures", RbConfig.ruby, File.join(ROOT, "spec/acceptance/ledger_qa/parallel.rb"),
+          "--transport", "offline", "--mode", "plain", "--fixtures", "F06", "--sdk-root", ROOT,
+          "--cucumber", ENV.fetch("QA_CUCUMBER"), "--gem-path", "/bundle/ruby/#{RbConfig::CONFIG.fetch('ruby_version')}",
+          "--jpeg", "/qa-media/jpeg.jpg", "--output", File.join(out, "parallel-fixtures"))
+      end
       result[:rspec] = JSON.parse(File.read(File.join(out, "rspec.json"))).fetch("summary") if File.file?(File.join(out, "rspec.json"))
       if File.file?(File.join(out, "cucumber.json"))
         elements = JSON.parse(File.read(File.join(out, "cucumber.json"))).flat_map { |f| f.fetch("elements", []) }
         steps = elements.flat_map { |s| s.fetch("steps", []) }
         result[:cucumber] = { scenarios: elements.length, steps: steps.length, statuses: steps.group_by { |s| s.dig("result", "status") }.transform_values(&:length) }
       end
-      result[:status] = result[:commands].last(3).all? { |r| r[:exit] == 0 } ? "PASS" : "FAIL"
+      required = %w[rspec cucumber fixtures]
+      required << "parallel-fixtures" if result.fetch(:runtime).fetch("sdk").start_with?("2.")
+      result[:required_commands] = required
+      result[:diagnostic_observer_requested] = ENV["QA_NO_DIAGNOSTIC_OBSERVER"] != "1"
+      result[:status] = required.all? { |label| File.file?(File.join(out, "#{label}.log")) } &&
+        result[:commands].last(required.length).all? { |command| command[:exit] == 0 } ? "PASS" : "FAIL"
     rescue StandardError => error
       result[:status] = "BLOCKED"
       result[:reason] = "#{error.class}: #{error.message}"

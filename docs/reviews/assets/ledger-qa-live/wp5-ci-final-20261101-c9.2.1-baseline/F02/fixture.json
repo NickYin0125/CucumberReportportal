@@ -1,0 +1,17 @@
+{
+  "id": "F02",
+  "source": "@reportportal_live @ledger_developer @F02 \nFeature: Ledger developer F02\n  Scenario Outline: doc-first\n    Given ledger combined \"doc-first\":\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n      | key | value |\n      | combined | <value> |\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n\n  Scenario Outline: table-first\n    Given ledger combined \"table-first\":\n      | key | value |\n      | combined | <value> |\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n\n",
+  "negative": false,
+  "scenarios": 4,
+  "failed": 0,
+  "origin": "Launches 72/73; C12 combined native selected DocString",
+  "limitations": [
+    "Generated feature line numbers differ from the historical line-12 golden; original data is unchanged."
+  ],
+  "cucumber12": true,
+  "native_parser_sources": {
+    "doc-first": "@reportportal_live @ledger_developer @F02 \nFeature: Ledger developer F02\n  Scenario Outline: doc-first\n    Given ledger combined \"doc-first\":\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n      | key | value |\n      | combined | <value> |\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n\n",
+    "table-first": "@reportportal_live @ledger_developer @F02 \nFeature: Ledger developer F02\n  Scenario Outline: table-first\n    Given ledger combined \"table-first\":\n      | key | value |\n      | combined | <value> |\n      \"\"\"\n      CONSTANT_DOC\n      \"\"\"\n\n    Examples: Table-only substitution\n      | value |\n      | TABLE_ONLY_AMBER |\n      | TABLE_ONLY_BIRCH |\n\n"
+  },
+  "source_sha256": "c7d29834d0e32a69867e76da1ba121763350b29ff604e9f54c305e8ad20d19c2"
+}

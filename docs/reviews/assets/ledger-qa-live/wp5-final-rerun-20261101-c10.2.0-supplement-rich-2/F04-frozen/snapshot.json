@@ -1,0 +1,518 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 2733,
+      "uuid": "8b0b9975-39cd-4fdd-82e7-cc397c1d7341",
+      "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-supplement-rich-2-F04-frozen",
+      "number": 1,
+      "startTime": 1793505523990,
+      "endTime": 1793505524201,
+      "lastModified": 1793505524230,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [
+
+      ],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 21824,
+      "uuid": "faf5ec20-1333-4963-843c-e62ed97a1dc0",
+      "name": "Feature: Frozen presentation failure",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "SUITE",
+      "startTime": 1793505524017,
+      "endTime": 1793505524200,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 2733,
+      "uniqueId": "auto:f19e57a0d1aee664def3c7cda37a3a27",
+      "testCaseHash": 2136902418,
+      "patternTemplates": [
+
+      ],
+      "path": "21824",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 21825,
+      "uuid": "2afe7a05-e606-4036-b5e5-5b26e5b6af65",
+      "name": "Scenario: Failure and skipped follower",
+      "codeRef": "features/audit.feature:3",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793505524018,
+      "endTime": 1793505524162,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 21824,
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": [
+
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 2733,
+      "uniqueId": "ae3af1746e3a3d41cba8f74d33ca85fb38e4ad99",
+      "testCaseId": "features/audit.feature:3",
+      "testCaseHash": -537576310,
+      "patternTemplates": [
+
+      ],
+      "path": "21824.21825",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 21826,
+      "uuid": "b7348c0a-c985-4e1e-9db2-3a594804aac0",
+      "name": "Given independent fail",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793505524050,
+      "endTime": 1793505524076,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 21825,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2733,
+      "uniqueId": "auto:e844f3b4b925f9c84473b69812c48ecf",
+      "testCaseHash": 1581734198,
+      "patternTemplates": [
+
+      ],
+      "path": "21824.21825.21826",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 21827,
+      "uuid": "35c81e1a-984c-457f-a90b-d9700eea72f1",
+      "name": "Then independent follower stays skipped",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": 1793505524090,
+      "endTime": 1793505524110,
+      "status": "SKIPPED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 21825,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2733,
+      "uniqueId": "auto:f97011d219255295d18d45039e104f63",
+      "testCaseHash": 548203266,
+      "patternTemplates": [
+
+      ],
+      "path": "21824.21825.21827",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 21828,
+      "uuid": "bfc71720-0c06-4f24-a9ed-f7fdc98462a0",
+      "name": "After hook",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "AFTER_METHOD",
+      "startTime": 1793505524118,
+      "endTime": 1793505524141,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 21825,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2733,
+      "uniqueId": "auto:0c0e7a296a727b3fe0439e9a6ef8a76b",
+      "testCaseHash": -284020138,
+      "patternTemplates": [
+
+      ],
+      "path": "21824.21825.21828",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 14272,
+      "time": "2026-11-01T03:58:44.065Z",
+      "message": "## ✗ RuntimeError: INDEPENDENT\\_FULL\\_BACKTRACE\n\n`features/audit.feature:5` → `runtime-support.rb:65`\n\n```text\nruntime-support.rb:65     IndependentCucumber12.inner_failure\nruntime-support.rb:59     IndependentCucumber12.deep_failure\nruntime-support.rb:136    block in <top (required)>\nfeatures/audit.feature:5  independent fail\n```\n\n<details><summary>Full backtrace · 62 frames · 56 framework and 2 runner frames not shown above</summary>\n\n```text\n/Users/nick/Documents/New project/tmp/cucumber12-independent/live/replay-20261031T033405Z/TC10/failed-step-after-artifact/runtime-support.rb:65:in 'IndependentCucumber12.inner_failure'\n/Users/nick/Documents/New project/tmp/cucumber12-independent/live/replay-20261031T033405Z/TC10/failed-step-after-artifact/runtime-support.rb:59:in 'IndependentCucumber12.deep_failure'\n/Users/nick/Documents/New project/tmp/cucumber12-independent/live/replay-20261031T033405Z/TC10/failed-step-after-artifact/runtime-support.rb:136:in 'block in <top (required)>'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'\n-e:1:in 'Kernel#load'\n-e:1:in '<main>'\n/Users/nick/Documents/New project/tmp/cucumber12-independent/runtime/corrected-c6bf0aae/audit-20261031T033149432700-13852/TC10/failed-step-after-artifact/features/audit.feature:5:in `independent fail'\n```\n\n</details>",
+      "level": "error",
+      "itemId": 21826
+    },
+    {
+      "id": 14273,
+      "time": "2026-11-01T03:58:44.129Z",
+      "message": "<span style=\"display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#0F6C7A;background:#E3F4F7\">JPEG</span> `after-failure.jpg` · 754 × 790 · 36 KB",
+      "level": "info",
+      "itemId": 21828
+    }
+  ],
+  "files": [
+
+  ],
+  "queries": [
+    {
+      "launch_id": 2733,
+      "items_by_launch": [
+        {
+          "id": 21824,
+          "uuid": "faf5ec20-1333-4963-843c-e62ed97a1dc0",
+          "name": "Feature: Frozen presentation failure",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "SUITE",
+          "startTime": "2026-11-01T03:58:44.017Z",
+          "endTime": "2026-11-01T03:58:44.200Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-supplement-rich-2-F04-frozen",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 2733,
+          "uniqueId": "auto:f19e57a0d1aee664def3c7cda37a3a27",
+          "testCaseHash": 2136902418,
+          "patternTemplates": [
+
+          ],
+          "path": "21824",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 21825,
+          "uuid": "2afe7a05-e606-4036-b5e5-5b26e5b6af65",
+          "name": "Scenario: Failure and skipped follower",
+          "codeRef": "features/audit.feature:3",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T03:58:44.018Z",
+          "endTime": "2026-11-01T03:58:44.162Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "parent": 21824,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-supplement-rich-2-F04-frozen",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 21824,
+                "name": "Feature: Frozen presentation failure"
+              }
+            ]
+          },
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": [
+
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 2733,
+          "uniqueId": "ae3af1746e3a3d41cba8f74d33ca85fb38e4ad99",
+          "testCaseId": "features/audit.feature:3",
+          "testCaseHash": -537576310,
+          "patternTemplates": [
+
+          ],
+          "path": "21824.21825",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 21826,
+          "uuid": "b7348c0a-c985-4e1e-9db2-3a594804aac0",
+          "name": "Given independent fail",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T03:58:44.050Z",
+          "endTime": "2026-11-01T03:58:44.076Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 21825,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-supplement-rich-2-F04-frozen",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 21824,
+                "name": "Feature: Frozen presentation failure"
+              },
+              {
+                "id": 21825,
+                "name": "Scenario: Failure and skipped follower"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2733,
+          "uniqueId": "auto:e844f3b4b925f9c84473b69812c48ecf",
+          "testCaseHash": 1581734198,
+          "patternTemplates": [
+
+          ],
+          "path": "21824.21825.21826",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 21827,
+          "uuid": "35c81e1a-984c-457f-a90b-d9700eea72f1",
+          "name": "Then independent follower stays skipped",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "STEP",
+          "startTime": "2026-11-01T03:58:44.090Z",
+          "endTime": "2026-11-01T03:58:44.110Z",
+          "status": "SKIPPED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 21825,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-supplement-rich-2-F04-frozen",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 21824,
+                "name": "Feature: Frozen presentation failure"
+              },
+              {
+                "id": 21825,
+                "name": "Scenario: Failure and skipped follower"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2733,
+          "uniqueId": "auto:f97011d219255295d18d45039e104f63",
+          "testCaseHash": 548203266,
+          "patternTemplates": [
+
+          ],
+          "path": "21824.21825.21827",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 21828,
+          "uuid": "bfc71720-0c06-4f24-a9ed-f7fdc98462a0",
+          "name": "After hook",
+          "parameters": [
+
+          ],
+          "attributes": [
+
+          ],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-11-01T03:58:44.118Z",
+          "endTime": "2026-11-01T03:58:44.141Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+            },
+            "defects": {
+            }
+          },
+          "parent": 21825,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c10.2.0-supplement-rich-2-F04-frozen",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 21824,
+                "name": "Feature: Frozen presentation failure"
+              },
+              {
+                "id": 21825,
+                "name": "Scenario: Failure and skipped follower"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2733,
+          "uniqueId": "auto:0c0e7a296a727b3fe0439e9a6ef8a76b",
+          "testCaseHash": -284020138,
+          "patternTemplates": [
+
+          ],
+          "path": "21824.21825.21828",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [
+
+        ],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

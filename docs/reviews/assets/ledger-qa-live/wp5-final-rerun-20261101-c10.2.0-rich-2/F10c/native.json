@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ledger-developer-f10c",
+    "uri": "features/presentation_ledger/qa_runtime/F10c.feature",
+    "keyword": "Feature",
+    "name": "Ledger developer F10c",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      },
+      {
+        "name": "@ledger_developer",
+        "line": 1
+      },
+      {
+        "name": "@F10",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "ledger-developer-f10c;f10c",
+        "keyword": "Scenario",
+        "name": "F10c",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger assertion c",
+            "line": 4,
+            "output": [
+              "## Assertion: Intentionally absent Typewords control can be clicked\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| click succeeds | Timeout 1200ms exceeded. Call log:   - waiting for get_by_role(\"button\", name=\"M2 video intentionally absent control\", exact=True) |\n\n### Details\n\n{\"api_key\":\"[REDACTED]\",\"recording\":\"Playwright viewport recording is still active\"}"
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:186"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1937542
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          },
+          {
+            "name": "@ledger_developer",
+            "line": 1
+          },
+          {
+            "name": "@F10",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "id": "ledger-numeric-table-rendering-inputs",
+    "uri": "features/presentation_ledger/qa_runtime/F13.feature",
+    "keyword": "Feature",
+    "name": "Ledger numeric table rendering inputs",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      },
+      {
+        "name": "@ledger_developer",
+        "line": 1
+      },
+      {
+        "name": "@F13",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "ledger-numeric-table-rendering-inputs;numeric-columns-retain-their-literal-values",
+        "keyword": "Scenario",
+        "name": "Numeric columns retain their literal values",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger records this table:",
+            "line": 4,
+            "rows": [
+              {
+                "cells": [
+                  "account",
+                  "qty",
+                  "price",
+                  "change",
+                  "pct",
+                  "code",
+                  "mixed",
+                  "blank"
+                ]
+              },
+              {
+                "cells": [
+                  "A",
+                  "100",
+                  "1,234.50",
+                  "-12",
+                  "12%",
+                  "1.2.3",
+                  "10",
+                  ""
+                ]
+              },
+              {
+                "cells": [
+                  "B",
+                  "1,250",
+                  "0.5",
+                  "+7",
+                  "0.5%",
+                  "USD 100",
+                  "n/a",
+                  ""
+                ]
+              },
+              {
+                "cells": [
+                  "C",
+                  "12,345,678",
+                  "98.10",
+                  "42",
+                  "100%",
+                  "1e3",
+                  "30",
+                  ""
+                ]
+              }
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:118"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 528542
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "ledger records this table:",
+            "line": 9,
+            "rows": [
+              {
+                "cells": [
+                  "not_numeric",
+                  "also_not_numeric",
+                  "invalid_group",
+                  "unicode_minus"
+                ]
+              },
+              {
+                "cells": [
+                  ".5",
+                  "1e3",
+                  "1,23",
+                  "−12"
+                ]
+              }
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:118"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 649417
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          },
+          {
+            "name": "@ledger_developer",
+            "line": 1
+          },
+          {
+            "name": "@F13",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]
