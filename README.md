@@ -7,14 +7,14 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-This checkout prepares **SDK 2.0.1**, an unpublished Ledger presentation
-candidate. Use a matching maintainer-supplied or locally built archive; no new
+This checkout prepares **SDK 2.0.2**, an unpublished failure-evidence safety
+candidate retaining Ledger presentation. Use a matching maintainer-supplied or locally built archive; no new
 tag, GitHub release or RubyGems publication is implied.
 
 | SDK line | Ruby | Cucumber | Candidate source |
 | --- | --- | --- | --- |
 | 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/presentation-ledger-1.3.2` |
-| 2.x / **2.0.1** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/presentation-ledger-2.0.1` |
+| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/failure-redaction-2.0.2` |
 
 Cucumber 11 remains unsupported. Existing published archives and their dated
 evidence are unchanged. Helm **1.3.1** / ReportPortal **26.0.7** stay independently
@@ -31,7 +31,7 @@ a browser or a ReportPortal server before connecting your real project.
 | --- | --- |
 | Ruby | `>= 3.3` |
 | Cucumber | `>= 12.0.1, ~> 12.0` |
-| Package | `reportportal-cucumber-ruby` **2.0.1**, matching candidate archive |
+| Package | `reportportal-cucumber-ruby` **2.0.2**, matching candidate archive |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -41,17 +41,17 @@ not fail a Scenario.
 
 ## 1. Install the candidate gem
 
-Obtain `reportportal-cucumber-ruby-2.0.1.gem` from the maintainer or use the
+Obtain `reportportal-cucumber-ruby-2.0.2.gem` from the maintainer or use the
 [isolated source-packaging workflow](examples/current_sdk/README.md#source-and-packaging-verification).
 There is no candidate release-download URL or assumed registry publication.
 
 From **your automation project root**, using the verified archive's absolute path:
 
 ```sh
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.1.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.2.gem
 mkdir -p vendor/cache
-cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.1.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.1.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.2.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.2.gem --no-document
 ```
 
 Add these entries to that project's `Gemfile`, then run `bundle install` from the
@@ -60,7 +60,7 @@ same directory:
 ```ruby
 source "https://rubygems.org"
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.1"
+gem "reportportal-cucumber-ruby", "= 2.0.2"
 ```
 
 Verify, still from **your project root**:
@@ -69,7 +69,7 @@ Verify, still from **your project root**:
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected output: `2.0.1`. Installation may download dependencies; offline setup
+Expected output: `2.0.2`. Installation may download dependencies; offline setup
 requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-candidate).
 
 ## Presentation Opt-ins

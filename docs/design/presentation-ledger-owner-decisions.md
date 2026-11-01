@@ -316,3 +316,49 @@ Unreleased or a strictly valid ISO calendar date, with positive and negative
 tests. The updated binding must show exactly CHANGELOG and this spec changed
 from `173c603`; all runtime, dependency, Helm and workflow bytes remain
 unchanged. This does not authorize a release or weaken runtime verification.
+
+## Decision 24: Encoded and Incomplete Cross-Boundary Credentials
+
+Owner-confirmed on 2026-11-01 after a new synthetic security probe.
+
+Question: 新探针发现：不完整 JSON 中的 Unicode 转义凭据名（例如 pass\\u0077ord）跨 message/backtrace 边界时，当前候选守卫未识别，合成凭据值会残留。是否允许进一步加固 Decision 20 的边界识别，覆盖这类编码/不完整输入，并增加回归测试？仍只在检测到跨边界凭据风险时走整体安全路径，正常路径维持两次调用，不放宽脱敏。
+
+Owner answer: 允许安全加固并重新验收（推荐）
+
+Extend only the Decision 20 safety guard to recognize encoded or incomplete
+cross-unit credential syntax. Keep existing redaction policy unchanged and add
+explicit regression probes. Ordinary input retains two redact_text calls;
+per-entry fallback retains 2 + N calls; detected cross-unit credential risk
+uses the separately tested whole-input safety path. Preserve the original
+failed observation. No candidate certification or release is authorized by
+this approval.
+
+## Decision 25: Comparable G11 Timing Boundaries
+
+Owner-confirmed on 2026-11-01.
+
+Question: 核对旧 G11 脚本后发现，它只计时 FailureCard 渲染，未计入 formatter 中的脱敏；本轮要求计入二者。是否同时保留旧口径对照，并在同一语料、同一环境下重测旧版与新版的“脱敏＋渲染”完整链路，对两种可比口径都执行超过 10% 即停止的规则？不会用排除脱敏后的数字冒充完整链路性能。
+
+Owner answer: 同口径重测并保留历史值（推荐）
+
+Retain the historical renderer-only values and raw evidence. Re-measure the
+old and new runtimes on the same corpus and environment for both renderer-only
+and complete redaction-plus-rendering paths. Apply the more-than-10% stop
+rule separately to each comparable timing boundary; never compare a
+renderer-only sample with a complete-pipeline sample or label the former
+as inclusive redaction timing. The required Cucumber 9 alternating wall-time
+comparison remains unchanged.
+
+## Decision 26: Synchronize the WP1 Feature Head into 2.0.2
+
+Owner-confirmed on 2026-11-01.
+
+Question: PR #5 新增了你批准的日期校验测试提交，而 2.0.2 分支建于该提交之前。是否允许用 merge commit 将 #5 功能分支同步进 #8，仅协调包装测试中的日期断言，避免你先合并 #5 后 #8 再出现冲突？不合并任何 PR、不推受保护分支，仍全部保留草稿。
+
+Owner answer: 允许同步功能分支（推荐）
+
+Merge the PR #5 feature branch into the PR #8 feature branch with a merge
+commit, reconciling only the package documentation/date assertions. Preserve
+the dated 2.0.1 history, the Unreleased 2.0.2 section and the strict positive
+and negative date checks. No runtime edits are authorized by this integration
+decision; all four PRs remain draft and protected refs remain untouched.

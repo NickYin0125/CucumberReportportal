@@ -2,5 +2,5 @@
 
 module CurrentSDK
   # Keep the independent consumer's Gemfile and archive/runtime checks in agreement.
-  SDK_VERSION = "2.0.1"
+  SDK_VERSION = "2.0.2"
 end

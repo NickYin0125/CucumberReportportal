@@ -90,7 +90,7 @@ the conflict is rejected. See [shared Launches](ci.md#parallel-workers-and-a-sha
 
 ## Presentation and run context
 
-Available in SDK 2.0.1; both additions are opt-in and off by default.
+Available in SDK 2.0.2 (introduced in 2.0.1); both options remain opt-in and off by default.
 
 | Environment variable | YAML key | Default | Type / use |
 | --- | --- | --- | --- |

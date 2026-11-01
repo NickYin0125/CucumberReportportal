@@ -1,6 +1,6 @@
 # Getting started
 
-**Version scope:** this guide installs the unpublished SDK **2.0.1** candidate
+**Version scope:** this guide installs the unpublished SDK **2.0.2** candidate
 from a matching maintainer-supplied or locally built archive, not an invented
 release URL. Use Ruby `>=3.3` and Cucumber `>=12.0.1, ~>12.0`; see the
 [migration guide](migrating-to-2.0.md) when moving from 1.x.
@@ -15,18 +15,18 @@ not required to consume a supplied archive.
 From **a directory where you keep projects**, create a fresh consumer project.
 Set the archive path to the exact candidate supplied by your maintainer; verify
 its checksum and source provenance before installation. There is no assumed
-2.0.1 tag, release asset or RubyGems publication.
+2.0.2 tag, release asset or RubyGems publication.
 
 ```sh
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.1.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.2.gem
 mkdir -p rp-smoke/vendor/cache rp-smoke/features/support rp-smoke/features/step_definitions
 cd rp-smoke
-cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.1.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.1.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.2.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.2.gem --no-document
 ```
 
 Expected: the candidate archive is in `rp-smoke/vendor/cache`, and RubyGems
-installs `reportportal-cucumber-ruby-2.0.1` plus missing dependencies.
+installs `reportportal-cucumber-ruby-2.0.2` plus missing dependencies.
 
 Create **`rp-smoke/Gemfile`**:
 
@@ -34,7 +34,7 @@ Create **`rp-smoke/Gemfile`**:
 source "https://rubygems.org"
 
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.1"
+gem "reportportal-cucumber-ruby", "= 2.0.2"
 ```
 
 From **`rp-smoke/`**:
@@ -45,7 +45,7 @@ bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber:
 ```
 
 Expected: Bundler resolves supported Cucumber 12 and the installed or cached
-candidate; the version check prints `2.0.1`. Commit `Gemfile.lock` in your
+candidate; the version check prints `2.0.2`. Commit `Gemfile.lock` in your
 real test project. Existing published archives remain unchanged.
 
 First-time installs need network access. `gem install --local` and

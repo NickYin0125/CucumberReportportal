@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+require "digest"
 require "rspec"
 require_relative "../../lib/reportportal_cucumber/version"
 require_relative "../../examples/current_sdk/helpers/sdk_version"
 
 RSpec.describe "Ledger candidate version and documentation" do
   let(:root) { File.expand_path("../..", __dir__) }
-  let(:version) { "2.0.1" }
+  let(:version) { "2.0.2" }
   let(:changelog) { File.binread(File.join(root, "CHANGELOG.md")) }
   let(:rationale) do
     "Released as a patch at the owner's request; the two opt-in switches are additive and off by default."
@@ -45,16 +46,24 @@ RSpec.describe "Ledger candidate version and documentation" do
     expect(source).to include("%w[9.2.1 10.2.0 11.0.0 12.0.0 13.0.0]")
   end
 
-  it "prepends an Unreleased section with the owner's exact patch rationale" do
+  it "prepends an Unreleased section without reusing the Ledger release rationale" do
     expect(changelog).to start_with("# Changelog\n\n## #{version} - Unreleased\n")
-    expect(changelog.split("\n## ", 3)[1]).to include(rationale)
+    expect(changelog.split("\n## ", 3)[1]).not_to include(rationale)
+  end
+
+  it "preserves the exact dated 2.0.1 Ledger section and its original patch rationale" do
+    ledger = changelog[/^## 2\.0\.1 - 2026-11-01\n.*?(?=^## |\z)/m]
+    expect(ledger).not_to be_nil
+    expect(ledger).to include(rationale)
+    expect(Digest::SHA256.hexdigest(ledger)).to eq("46057258ec78a6981f94f6dc385000e846f870b85dc7d34ea89b2d55a6e29924")
   end
 
   it "retains previous release history after the candidate section" do
     # Byte preservation is audited against the frozen branch separately; PR
     # merge checkouts may include legitimate target-branch release prose/dates.
     releases = changelog.scan(/^## (\d+\.\d+\.\d+) - .+$/).flatten
-    expect(releases.first(2)).to eq([version, "2.0.0"])
+    expect(releases.first(3)).to eq([version, "2.0.1", "2.0.0"])
+    expect(releases.count("2.0.1")).to eq(1)
     expect(releases.count("2.0.0")).to eq(1)
   end
 
@@ -99,6 +108,6 @@ RSpec.describe "Ledger candidate version and documentation" do
       expect(text).to match(/candidate/i)
     end
     expect(document("docs/getting-started.md")).to include("SDK_GEM_ARCHIVE", "gem install", version)
-    expect(document("script/release/README.md")).to include(rationale)
+    expect(document("script/release/README.md")).to include("SDK 2.0.1 Ledger rationale (historical):\n\n#{rationale}")
   end
 end

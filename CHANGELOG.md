@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.2 - Unreleased
+
+### Failure Evidence Safety
+
+- Redact the failure message and backtrace independently so an ambiguous message does not discard safe frame evidence. When the backtrace unit is omitted, redact its original entries individually without splitting embedded newlines.
+- Keep the existing whole-input safety path for credentials that cross redaction-unit boundaries. Failure cards render only already-redacted parts; plain and rich ERROR first lines remain identical.
+- Known limitation: when a failure message cannot be redacted safely (for example, it looks like escaped JSON), the message is withheld. The exception class and safe backtrace are still shown.
+
 ## 2.0.1 - 2026-11-01
 
 ### Ledger Presentation

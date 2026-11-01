@@ -5,7 +5,7 @@ both complete offline validation matrices, build gem/Chart/checksums/provenance
 and publish through a draft.
 Only the publish job has contents-write permission. No RubyGems push is performed.
 
-**Preparation only:** SDK 2.0.1 is not released. Do not create/push its tag or run
+**Preparation only:** SDK 2.0.2 is not released. Do not create/push its tag or run
 the publisher before local acceptance and independent review. This change does
 not publish any release, move v1.3.1, or change the server/deployment.
 
@@ -51,8 +51,8 @@ prereleases, moved tags, dirty/untracked source and caller-selected release refs
 fail closed. `RELEASE_SOURCE_ROOT` selects the source directory during recovery;
 it does not change these ancestry rules.
 
-For SDK 2.0.1 the expected packages are
-`reportportal-cucumber-ruby-2.0.1.gem` and
+For SDK 2.0.2 the expected packages are
+`reportportal-cucumber-ruby-2.0.2.gem` and
 `reportportal-rich-experience-1.3.1.tgz`. The manifest's `version` is the SDK
 version; new 2.x and SDK 1.3.2+ manifests additionally contain `chartVersion`.
 Existing 1.x manifests through SDK 1.3.1 remain unchanged for byte-for-byte
@@ -63,6 +63,8 @@ The chart name, stable version, locked bundled dependency, fixed ReportPortal
 checks. A chart version need not equal the SDK version on 2.x or 1.3.2+; each
 artifact still has its own identity checks. No Chart or workflow is changed by
 this version-policy update.
+
+SDK 2.0.1 Ledger rationale (historical):
 
 Released as a patch at the owner's request; the two opt-in switches are additive and off by default.
 

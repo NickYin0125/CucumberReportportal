@@ -7,8 +7,8 @@ minimal Scenario or ordinary PNG/JSON/text reporting.
 
 ## Presentation
 
-SDK 2.0.1 uses Ledger plain cards by default: project-first failures with
-complete backtraces, attachment metadata, compact JSON, argument captions,
+SDK 2.0.2 retains Ledger plain cards by default: project-first failures with
+redacted backtrace evidence, attachment metadata, compact JSON, argument captions,
 numeric table alignment, one-line Outline values, and assertion/HTTP/evidence
 cards. Numeric values, status levels, log counts, ownership, IDs and original
 attachment bytes are unchanged. Argument-free steps do not send descriptions.
@@ -384,7 +384,7 @@ link, and a playable/safely accessible recording are separate checks.
 
 The **separate companion Chart 1.3.1** in this checkout pins ReportPortal `26.0.7`
 and official chart `26.10.26`, requiring Kubernetes `>=1.35`. The historical SDK
-1.3.1 release included that chart; SDK 2.0.1 leaves it unchanged and does not
+1.3.1 release included that chart; SDK 2.0.2 leaves it unchanged and does not
 imply a new published bundle. The SDK, chart and server versions are independent.
 Its version is independent of browser playback behavior. It uses
 Prefix routes with a configurable controller class and dedicated-bucket

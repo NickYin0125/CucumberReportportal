@@ -42,7 +42,9 @@ RSpec.describe "RP-only Ledger accents" do
 
   it "folds the complete failure tail without changing ERROR identity or raw evidence" do
     frames = "/project/step.rb:5:in 'run'\n/gems/cucumber/core.rb:6:in 'call'\n-e:1"
-    arguments = { error: error, message: error.message, backtrace: frames, cwd: "/project" }
+    evidence = Automation::FailureRedactor.new.redact(message: error.message, frames: frames.split("\n"))
+    arguments = { error: error, message: evidence.message, backtrace: evidence.backtrace,
+                  baseline: evidence.baseline, cwd: "/project" }
     plain = ReportportalCucumber::Presentation::FailureCard.format(**arguments)
     rich = ReportportalCucumber::Presentation::FailureCard.format(**arguments, presentation: "rich")
     check_guard(plain, rich, level: :error)
@@ -208,9 +210,11 @@ RSpec.describe "RP-only Ledger accents" do
   %i[details guard].each do |helper|
     it "restores the complete pre-Ledger failure message once on Accent.#{helper} fault" do
       frames = "/project/step.rb:5\n/gems/cucumber/core.rb:6"
+      evidence = Automation::FailureRedactor.new.redact(message: error.message, frames: frames.split("\n"))
       expect(accent).to receive(helper).once.and_raise("SECRET123")
       result = ReportportalCucumber::Presentation::FailureCard.format(
-        error: error, message: error.message, backtrace: frames, presentation: "rich"
+        error: error, message: evidence.message, backtrace: evidence.backtrace,
+        baseline: evidence.baseline, presentation: "rich"
       )
       expect(result).to eq("failure <other> token=[REDACTED]\n#{frames}")
       expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
