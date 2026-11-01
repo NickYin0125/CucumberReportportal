@@ -242,3 +242,24 @@ a guarantee of fixed parameter ordering in the ReportPortal UI. The request and
 response DTOs declare Lists; server persistence uses a Set. Do not describe the
 response contract as an unordered Set. All other acceptance and
 no-merge/no-tag/no-publication requirements remain unchanged.
+
+## Decision 19: Failure-Log Redaction Units
+
+Owner-confirmed on 2026-11-01 after the final release review.
+
+19. Decision 15 is corrected for the 1.x line. Its premise, that the old and
+    new Ledger both return the omission marker for the F14 back\slash input,
+    holds on 2.x, where v2.0.0 already redacts the whole failure log. It does
+    not hold on 1.x: v1.3.1 sends failure text without redaction (Launch 3778
+    shows the message and full backtrace; 1.3.2 Launches 3637 and 3731 show
+    only the marker).
+
+    Failure logs are redacted in two units: the message, and the backtrace.
+    If the backtrace unit is omitted, each frame is redacted on its own. If
+    the message unit is omitted, only the message is withheld; the exception
+    class, locations and frames are still shown. No text receives weaker
+    filtering than before. Where 1.3.2 still withholds a message that v1.3.1
+    showed, this is accepted and documented as a known limitation.
+
+    The P1.2 exception recorded in Decision 15 is withdrawn. The F14
+    back\slash title must render.
