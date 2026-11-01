@@ -206,3 +206,20 @@ including narrowly scoped validation-workflow changes under V6. It does not
 authorize weakening existing assertions, changing Helm, modifying protected
 branches, merging, tagging or publishing. A successful unchanged retry does
 not establish the cause of an earlier failure or demonstrate a runtime fix.
+
+## Decision 17: Scoped Console Renderer Replay
+
+Owner-confirmed on 2026-11-01.
+
+Question: S12 要求查看 F04 的 Console View，但 RP UI 5.15.6 对嵌套步骤隐藏该入口。是否允许在新建的独立 QA Launch 中，对同一条 F04 日志做字节完全一致的平铺回放，仅验证 Console 展示？原始测试拓扑和证据保持不变，补充证据会明确标注其范围。
+
+Owner answer: 允许补充平铺回放（推荐）
+
+S12 may use a new, independently owned flat-log QA Launch containing the exact
+F04 message bytes. Record the original runtime SHA and Launch/item/log IDs,
+message checksum, supplemental IDs and Console screenshot. This is renderer-only
+proof: retain the original F04 topology and observations, and do not use the
+supplement to certify or change the SDK's item hierarchy, ownership or wire
+contract. Markdown-off is not a substitute for Console View. All other
+acceptance and no-merge/no-tag/no-publication requirements remain unchanged.
+
