@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "rspec"
-require "date"
 require_relative "../../lib/reportportal_cucumber/version"
 require_relative "../../examples/current_sdk/helpers/sdk_version"
 
@@ -15,15 +14,6 @@ RSpec.describe "Ledger candidate version and documentation" do
 
   def document(relative)
     File.read(File.join(root, relative))
-  end
-
-  def release_heading_valid?(text)
-    match = text.match(/\A# Changelog\n\n## #{Regexp.escape(version)} - (Unreleased|\d{4}-\d{2}-\d{2})\n/)
-    return false unless match
-
-    match[1] == "Unreleased" || Date.iso8601(match[1]).iso8601 == match[1]
-  rescue Date::Error
-    false
   end
 
   it "sets the SDK identity to the candidate patch version" do
@@ -55,21 +45,9 @@ RSpec.describe "Ledger candidate version and documentation" do
     expect(source).to include("%w[9.2.1 10.2.0 11.0.0 12.0.0 13.0.0]")
   end
 
-  it "prepends an Unreleased or valid dated section with the owner's exact patch rationale" do
-    expect(release_heading_valid?(changelog)).to be(true)
+  it "prepends an Unreleased section with the owner's exact patch rationale" do
+    expect(changelog).to start_with("# Changelog\n\n## #{version} - Unreleased\n")
     expect(changelog.split("\n## ", 3)[1]).to include(rationale)
-  end
-
-  ["Unreleased", "2026-11-01", "2028-02-29"].each do |date|
-    it "accepts the release heading date #{date}" do
-      expect(release_heading_valid?("# Changelog\n\n## #{version} - #{date}\n")).to be(true)
-    end
-  end
-
-  ["2026-02-29", "2026-02-30", "2026-13-01", "2026-1-01", "2026-11-01 trailing", ""].each do |date|
-    it "rejects the invalid release heading date #{date.inspect}" do
-      expect(release_heading_valid?("# Changelog\n\n## #{version} - #{date}\n")).to be(false)
-    end
   end
 
   it "retains previous release history after the candidate section" do
