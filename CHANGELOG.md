@@ -23,7 +23,8 @@
 
 ### Verification
 
-- The local Ruby 3.1/3.3 x Cucumber 9/10 four-cell matrix is the accepted Ruby 3.1 and Cucumber 9 evidence (Decision 12); remote CI covers Ruby 3.3 with Cucumber 10. The final tested commit and results will be recorded after WP5 completes; no final verification is claimed yet.
+- Runtime commit `f41888a9fdd6896630765cbbf350353a7f803e59` passed the full local Ruby 3.1.7/3.3.12 x Cucumber 9.2.1/10.2.0 four-cell matrix: 1,403 product examples per cell, with zero failures or pending examples. Independent QA repeated every full cell with 16 additional acceptance properties (1,419 examples per cell), also with zero failures or pending examples. Offline Cucumber passed one scenario and three steps in each developer and independent cell.
+- The local matrix is the accepted Ruby 3.1 and Cucumber 9 evidence (Decision 12); remote CI covers Ruby 3.3 with Cucumber 10. Presentation/UI acceptance is documented separately on `qa/presentation-ledger-1.3.2`; these matrix results alone are not final release authorization. Later documentation-only heads require explicit runtime fingerprint equivalence to the tested commit.
 
 
 ## 1.3.1 - 2026-10-31
