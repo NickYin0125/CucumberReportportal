@@ -51,11 +51,31 @@ RSpec.describe "Ledger candidate version and documentation" do
     expect(changelog.split("\n## ", 3)[1]).not_to include(rationale)
   end
 
-  it "preserves the exact dated 2.0.1 Ledger section and its original patch rationale" do
-    ledger = changelog[/^## 2\.0\.1 - 2026-11-01\n.*?(?=^## |\z)/m]
+  it "preserves the exact released 2.0.1 Ledger section with its Unreleased heading" do
+    ledger = changelog[/^## 2\.0\.1 - Unreleased\n.*?(?=^## |\z)/m]
     expect(ledger).not_to be_nil
     expect(ledger).to include(rationale)
-    expect(Digest::SHA256.hexdigest(ledger)).to eq("46057258ec78a6981f94f6dc385000e846f870b85dc7d34ea89b2d55a6e29924")
+    expect(Digest::SHA256.hexdigest(ledger)).to eq("b691bb3fa90c79f8d64871dc3bbb5c54cd5c8a841acd6e5f9258eb247335d6d1")
+  end
+
+  it "retains the final Decision 19 verbatim without applying it to 2.x" do
+    expected = <<~'TEXT'
+      ## Decision 19: 1.x Failure-Log Content
+
+      Owner-confirmed on 2026-11-01.
+
+      19. On 1.x, the failure log carries the same text v1.3.1 sent, shown in the
+          Ledger failure card. Failure-log redaction is not added in 1.3.2: the 2.x
+          redactor omits the whole failure for common inputs (any backslash in the
+          message), which hid failures that v1.3.1 showed (Launch 3778 versus
+          Launches 3637 and 3731). Decision 15's P1.2 exception is withdrawn on 1.x,
+          and G8 on 1.x means "nothing is sent that v1.3.1 would not have sent".
+          2.x is unchanged; its whole-failure omission is a separate backlog item.
+    TEXT
+    decisions = document("docs/design/presentation-ledger-owner-decisions.md")
+    expect(decisions[/^## Decision 19:.*?(?=^## |\z)/m]&.strip).to eq(expected.strip)
+    expect(decisions).to include("PR #8 remains an unreleased 2.0.2 draft")
+    expect(decisions).to include("does not certify or publish the split-redaction candidate")
   end
 
   it "retains previous release history after the candidate section" do
