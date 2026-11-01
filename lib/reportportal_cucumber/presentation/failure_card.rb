@@ -13,6 +13,7 @@ module ReportportalCucumber
       TITLE_LIMIT = 200
       PROJECT_LIMIT = 8
       FRAMEWORK_LIMIT = 3
+      LOCATION_LIMIT = 40
       BYTE_LIMIT = Automation::EvidenceRedactor::MAX_INPUT_BYTES
 
       class << self
@@ -109,6 +110,7 @@ module ReportportalCucumber
           path = match ? match[1] : line
           location = display_path(path, cwd)
           location += ":#{match[2]}" if match
+          location = bounded_location(location)
           kind = if line.start_with?("-e:", "<internal:")
                    :runner
                  elsif path.include?("/gems/") || path.start_with?(RbConfig::CONFIG.fetch("rubylibdir"))
@@ -126,6 +128,29 @@ module ReportportalCucumber
 
           features = path.index("/features/")
           features ? path[(features + 1)..] : File.basename(path)
+        end
+
+        def bounded_location(location)
+          return location if location.length <= LOCATION_LIMIT
+
+          filename = File.basename(location)
+          if location.include?("/")
+            shortened = "#{location.split('/', 2).first}/\u2026/#{filename}"
+            return shortened if shortened.length <= LOCATION_LIMIT
+          end
+          return filename if filename.length <= LOCATION_LIMIT
+
+          line = filename[/:\d+\z/].to_s
+          name = filename.delete_suffix(line)
+          extension = File.extname(name)
+          stem = name.delete_suffix(extension)
+          budget = LOCATION_LIMIT - extension.length - line.length - 1
+          # Impossible suffixes fall back to the intact redacted evidence.
+          raise ArgumentError, "Location suffix exceeds display budget" if budget < 1
+
+          left = (budget + 1) / 2
+          right = budget / 2
+          "#{stem[0, left]}\u2026#{right.zero? ? '' : stem[-right, right]}#{extension}#{line}"
         end
 
         def tail_caption(frames, shown)
