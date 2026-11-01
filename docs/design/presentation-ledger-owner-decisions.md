@@ -222,4 +222,3 @@ proof: retain the original F04 topology and observations, and do not use the
 supplement to certify or change the SDK's item hierarchy, ownership or wire
 contract. Markdown-off is not a substitute for Console View. All other
 acceptance and no-merge/no-tag/no-publication requirements remain unchanged.
-
