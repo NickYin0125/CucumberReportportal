@@ -602,7 +602,8 @@ In RP UI 5.15.6, the log renderer's output keeps a `<style>` element and `backgr
 
 ## Decisions
 
-Owner-confirmed on 2026-10-31. The following questions and answers are reproduced
+Decisions 1-8 were owner-confirmed on 2026-10-31; Decisions 9-10 on 2026-11-01.
+The following questions and answers are reproduced
 word for word. These decisions take precedence over conflicting text above;
 the independent tester must assess against them.
 
@@ -637,4 +638,12 @@ the independent tester must assess against them.
 8. Question: 独立 QA 确认：1.x 旧基线有 6 个含 NUL 字符的文本附件未落库，新版则完整保存，且上传字节、MIME 和归属均不变。是否允许仅这 6 项改用旧版实际提交的报文作对照，并要求新版完整读回；其余 G2/G3 仍严格比较 API 基线？另有一条原生 NUL 用户日志在新旧版均未落库，将明确列为既有限制，暂不改变其语义。
 
    Owner answer: 允许这 6 项基线例外，记录既有限制（推荐）
+
+9. Question: 独立 QA 发现 P10.6 的 strip-tags 定义（删除所有 <[^>]+>）会把原始 Ruby 堆栈里的 `<top (required)>` 也删除，与 P1 要求完整保留堆栈冲突。是否改为仅剥离客户端生成的展示 HTML，保留代码块、代码片段和用户原文中的尖括号，再严格检查文字顺序（仅沿用已批准的 Rich 样例差异）？
+
+   Owner answer: 按此澄清规则，保留原始内容（推荐）
+
+10. Question: V7 的“开始前完整 ls-remote Tag 清单”未保存；我找到了本任务开始前 GitHub CI 的完整 Tag 拉取记录，8 个 Tag 与当前远端清单完全一致，三个受保护分支也均未变。是否允许用该历史 CI 记录与当前 ls-remote 对照作为替代证据，并在报告中注明来源？不会改变“禁止创建 Tag”的要求。
+
+    Owner answer: 接受历史 CI 记录作为替代证据（推荐）
 
