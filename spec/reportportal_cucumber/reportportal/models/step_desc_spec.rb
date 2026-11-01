@@ -77,13 +77,13 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
             | literal | <value> |
     FEATURE
 
-    expect(results.first.to_markdown).to include("| literal | <value> |", "PLAIN_DOCUMENT")
+    expect(results.first.to_markdown).to include("| literal | &lt;value&gt; |", "PLAIN_DOCUMENT")
   end
 
   it "preserves native header-order expansion without expanding the compiled table a second time" do
     {
       "| cell | other |\n      | <other> | EXPANDED |" => "EXPANDED",
-      "| other | cell |\n      | EXPANDED | <other> |" => "<other>"
+      "| other | cell |\n      | EXPANDED | <other> |" => "&lt;other&gt;"
     }.each do |examples, expected|
       results = compiled_descriptors(<<~FEATURE)
         Feature: Native interpolation
@@ -106,7 +106,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     source = SourceStep.new("Given ", "combined", nil, nil).freeze
     result = described_class.new(step: source, pickle_table: table)
 
-    expect(result.to_markdown).to include("| <other> |  |")
+    expect(result.to_markdown).to include("| &lt;other&gt; |  |")
     expect(result.to_markdown).to eq(result.to_markdown)
     expect(table.rows).to equal(rows)
     expect(rows.first.cells.map(&:value)).to eq(["<other>", ""])
@@ -118,7 +118,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     compiled = SourceDataTable.new([Row.new([Cell.new("wrong")])])
     result = described_class.new(step: source, multiline_arg: table, pickle_table: compiled)
 
-    expect(result.to_markdown).to include("| <other> |  |")
+    expect(result.to_markdown).to include("| &lt;other&gt; |  |")
     expect(result.to_markdown).not_to include("source", "wrong")
   end
 
@@ -127,7 +127,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     huge_cell = Cell.new(("x" * 1_000_000).freeze).freeze
     table = SourceDataTable.new(Array.new(120) { Row.new([huge_cell]) })
     markdown = described_class.new(step: source, pickle_table: table).to_markdown
-    expect(markdown).to include("x" * described_class::CELL_BYTE_LIMIT + "[truncated]", "DOCUMENT")
+    expect(markdown).to include("x" * described_class::CELL_BYTE_LIMIT + "\\[truncated\\]", "DOCUMENT")
     expect(markdown).not_to include("x" * (described_class::CELL_BYTE_LIMIT + 1))
     expect(markdown.bytesize).to be <= described_class::CONTENT_BYTE_LIMIT
 
@@ -172,7 +172,7 @@ RSpec.describe ReportportalCucumber::ReportPortal::Models::StepDesc do
     result = descriptor(source, native_test_step(text: "the payload for JPM", argument: runtime_doc))
 
     expect(result.to_markdown).to include("**Then** the payload for JPM")
-    expect(result.to_markdown).to include("```json\n{\n  \"buyer\": \"JPM\"")
+    expect(result.to_markdown).to include("```json\n{ \"buyer\": \"JPM\" }\n```")
     expect(result.to_markdown).not_to include("<buyer>")
   end
 

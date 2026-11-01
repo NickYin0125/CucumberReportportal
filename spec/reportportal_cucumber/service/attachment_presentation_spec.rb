@@ -45,14 +45,14 @@ RSpec.describe "Bounded attachment presentation" do
       expect(content.bytesize).to be <= builder::PREVIEW_MAX_BYTES
       expect(content.lines.length).to be <= builder::PREVIEW_MAX_LINES
       expect(content).to be_valid_encoding
-      expect(message).to include("Preview truncated")
+      expect(message).to include("_Preview · first", "full file attached_")
     end
   end
 
   it "does not modify binary attachments or unescape valid JSON NUL sequences" do
     binary = "\0\xFF\0".b.freeze
     payload = batch(name: "data.bin", mime: "application/octet-stream", bytes: binary)
-    expect(payload[:entries].first["message"]).to eq("Evidence")
+    expect(payload[:entries].first["message"]).to eq("Evidence\n\n`data.bin` · File · 3 B")
     expect(payload[:files].first[:bytes]).to eq(binary)
 
     json = '{"text":"before\\u0000after"}'.freeze
@@ -92,7 +92,7 @@ RSpec.describe "Bounded attachment presentation" do
 
       payload = batch(path: path)
       message = payload[:entries].first["message"]
-      expect(message).to include("Preview truncated", "Full log is attached as `large.json`.")
+      expect(message).to include("_Preview · first 16 KB of 98 KB · full file attached_")
       expect(message.bytesize).to be < builder::PREVIEW_MAX_BYTES + 256
       expect(payload[:files].first).to include(path: path)
       expect(File.size(path)).to be > 100_000
@@ -103,7 +103,7 @@ RSpec.describe "Bounded attachment presentation" do
     original = JSON.generate(data: "x" * 100_000).freeze
     payload = batch(name: "large.json", mime: "application/json", bytes: original)
 
-    expect(payload[:entries].first["message"]).to include("Preview truncated")
+    expect(payload[:entries].first["message"]).to include("_Preview · first 16 KB of 98 KB · full file attached_")
     expect(payload[:entries].first["message"].bytesize).to be < builder::PREVIEW_MAX_BYTES + 256
     expect(payload[:files].first[:bytes]).to eq(original)
   end
@@ -114,7 +114,7 @@ RSpec.describe "Bounded attachment presentation" do
       File.write(path, (1..500).map { |index| "line-#{index}" }.join("\n"))
       message = batch(path: path)[:entries].first["message"]
 
-      expect(message).to include("line-100", "Preview truncated")
+      expect(message).to include("line-100", "_Preview · first 100 lines · full file attached_")
       expect(message).not_to include("line-101")
       expect(File.readlines(path).size).to eq(500)
     end
@@ -125,14 +125,14 @@ RSpec.describe "Bounded attachment presentation" do
     message = batch(name: "unicode.txt", mime: "text/plain", bytes: bytes)[:entries].first["message"]
 
     expect(message).to be_valid_encoding
-    expect(message).to include("\u754c", "Preview truncated")
+    expect(message).to include("\u754c", "_Preview · first 16 KB of 29 KB · full file attached_")
     expect(message.bytesize).to be < builder::PREVIEW_MAX_BYTES + 256
   end
 
   it "prevents embedded backticks from prematurely closing a text preview" do
     message = batch(name: "code.txt", mime: "text/plain", bytes: "```\n<script>ignored()</script>")[:entries].first["message"]
 
-    expect(message).to include("~~~text\n```\n<script>ignored()</script>\n~~~")
+    expect(message).to include("````text\n```\n<script>ignored()</script>\n````")
   end
 
   it "includes a normal video link without reading a binary preview" do
@@ -140,7 +140,7 @@ RSpec.describe "Bounded attachment presentation" do
       path = File.join(dir, "video.mp4")
       File.write(path, "binary")
       expect(File).not_to receive(:open)
-      expect(batch(path: path)[:entries].first["message"]).to eq("Evidence")
+      expect(batch(path: path)[:entries].first["message"]).to eq("Evidence\n\n`video.mp4` · MP4 · 6 B")
     end
 
     url = "https://rp.example.test/automation-videos/clip.mp4?part=1&version=2"

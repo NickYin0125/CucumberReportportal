@@ -74,8 +74,26 @@ jobs:
           helm lint "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml"
           helm template release-validation "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml" > /dev/null
 
+      - name: Prepare synthetic RSpec fault diagnostics
+        run: |
+          umask 077
+          mkdir -p "$RUNNER_TEMP/rspec-fault-diagnostics/day2" "$RUNNER_TEMP/rspec-fault-diagnostics/m4d"
+
       - name: Run full RSpec including installed packaging checks
+        env:
+          DAY2_LOCAL_CAPTURE: ${{ runner.temp }}/rspec-fault-diagnostics/day2
+          M4_D_EVIDENCE_DIR: ${{ runner.temp }}/rspec-fault-diagnostics/m4d
         run: bundle exec rspec
+
+      - name: Retain synthetic RSpec fault diagnostics
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: rspec-faults-ruby-${{ matrix.ruby }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/rspec-fault-diagnostics/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Run full offline Cucumber profile
         run: bundle exec cucumber
@@ -154,6 +172,14 @@ jobs:
           helm dependency build ./helm/reportportal-rich-experience
           sha256sum --check "$RUNNER_TEMP/chart-lock.sha256"
 
+      # Keep the immutable driver's exact step env and arguments unchanged.
+      - name: Prepare synthetic RSpec fault diagnostics
+        run: |
+          umask 077
+          mkdir -p "$RUNNER_TEMP/legacy-rspec-fault-diagnostics/day2" "$RUNNER_TEMP/legacy-rspec-fault-diagnostics/m4d"
+          echo "DAY2_LOCAL_CAPTURE=$RUNNER_TEMP/legacy-rspec-fault-diagnostics/day2" >> "$GITHUB_ENV"
+          echo "M4_D_EVIDENCE_DIR=$RUNNER_TEMP/legacy-rspec-fault-diagnostics/m4d" >> "$GITHUB_ENV"
+
       - name: Run the legacy RSpec suite with explicit test-only fixture normalization
         env:
           M4A_CHILD_EVIDENCE_DIR: ${{ runner.temp }}/legacy-m4a
@@ -214,6 +240,16 @@ jobs:
             ${{ runner.temp }}/legacy-m4a/attempt-admissions.ndjson
           include-hidden-files: true
           if-no-files-found: error
+          retention-days: 7
+
+      - name: Retain synthetic RSpec fault diagnostics
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: legacy-rspec-faults-ruby-${{ matrix.ruby }}-cucumber-${{ matrix.cucumber }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/legacy-rspec-fault-diagnostics/
+          include-hidden-files: true
+          if-no-files-found: warn
           retention-days: 7
 
   gate:

@@ -77,13 +77,13 @@ RSpec.describe "Queue spool diagnostic security" do
         end
       end
       injected_faults = 0
-      allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records|
+      allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records, **options, &state|
         if transport_failed
           injected_faults += 1
           raise RuntimeError, "SECURITY_SPOOL_FALLBACK_#{transport_message}"
         end
 
-        original.call(records)
+        original.call(records, **options, &state)
       end
       processor.emit_log(item_uuid: "synthetic-step", launch_uuid: "synthetic-launch",
                          message: "safe short fallback diagnostic".freeze,
@@ -151,13 +151,13 @@ RSpec.describe "Queue spool diagnostic security" do
         end
       end
       injected_faults = 0
-      allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records|
+      allow(ReportportalCucumber::Service::PayloadBuilder).to receive(:build_log_batch).and_wrap_original do |original, records, **options, &state|
         if transport_failed
           injected_faults += 1
           raise RuntimeError, fallback_error
         end
 
-        original.call(records)
+        original.call(records, **options, &state)
       end
       processor.emit_log(item_uuid: "synthetic-step", launch_uuid: "synthetic-launch",
                          message: "safe short fallback diagnostic".freeze,

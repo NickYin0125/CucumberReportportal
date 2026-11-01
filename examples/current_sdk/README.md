@@ -1,16 +1,18 @@
 # Current SDK API/UI example
 
-A small independent Cucumber project targeting **`reportportal-cucumber-ruby` 2.0.0**
+A small independent Cucumber project targeting **`reportportal-cucumber-ruby` 2.0.1**
 and **Cucumber 12**.
 It makes real loopback HTTP requests and optionally drives real Chromium against
 a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-Use this example with the explicitly selected SDK 2.0.0 release archive.
+SDK 2.0.1 is in preparation, not published or approved by this guide. Use this
+example and an explicitly selected 2.0.1 candidate archive from the same source.
 The shared SDK version definition keeps setup/runtime checks aligned. Older
 published archives and their dated verification evidence are retained unchanged;
-use the `maintenance/1.x` / `v1.3.1` example for Cucumber 9/10.
+use the SDK 1.3.2 candidate on `maintenance/presentation-ledger-1.3.2` for
+Cucumber 9/10.
 
 ## Install the consumer
 
@@ -18,9 +20,9 @@ Use Ruby `>=3.3`, Bundler `>=2.6`, and Cucumber `>=12.0.1,<13`. Node/npm and the
 Playwright CLI/browser are needed for UI, not for the API-only run. The sample pins
 Playwright Ruby to 1.62.0; setup derives its CLI version from the installed binding.
 
-Use the `v2.0.0` checkout for the sample files and download
-[reportportal-cucumber-ruby-2.0.0.gem](https://github.com/NickYin0125/CucumberReportportal/releases/download/v2.0.0/reportportal-cucumber-ruby-2.0.0.gem).
-The maintainer workflow below can instead build an explicitly identified candidate.
+Use the `codex/presentation-ledger-2.0.1` checkout for the sample files. Obtain a matching
+candidate archive from your maintainer, or build one with the maintainer workflow
+below. There is intentionally no 2.0.1 release-download URL before approval.
 No root development bundle is required to consume a supplied archive.
 
 From **any working directory**, set the two absolute paths to your checkout and
@@ -29,7 +31,7 @@ gems or changing your Bundler configuration:
 
 ```sh
 sample_source=/absolute/path/to/CucumberReportportal
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.0.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.1.gem
 sample_work=$(mktemp -d "${TMPDIR:-/tmp}/current-sdk-consumer.XXXXXX")
 cp -R "$sample_source/examples/current_sdk" "$sample_work/project"
 cd "$sample_work/project"
@@ -163,6 +165,26 @@ the same PNG twice. A rejected target never silently retargets to another action
 See [best practices](../../docs/best-practices.md) and the
 [CI reporting policy](../../docs/ci.md#choose-the-reporting-policy).
 
+## Presentation opt-ins
+
+The default is `RP_PRESENTATION=plain` and `RP_RUN_CONTEXT=false`. After configuring
+RP as above, run from the external consumer copy to opt in:
+
+```sh
+RP_PRESENTATION=rich RP_RUN_CONTEXT=true bundle exec ruby bin/run api --rp
+```
+
+Only client-built RP log cards gain rich accents/folds. Native HTML/messages,
+terminal output, user AppLog text, item names/descriptions and Launch metadata
+remain free of those accents. Run context separately adds allowlisted metadata;
+explicit attributes and descriptions win. The 2.x worker attribute uses `PARALLEL_TEST_GROUPS` when present.
+
+Invalid presentation values warn once and fall back to plain. ERROR first lines,
+evidence values, ownership and attachment bytes remain unchanged. See the
+[configuration reference](../../docs/configuration.md#presentation-and-run-context)
+and [presentation boundaries](../../docs/advanced-reporting.md#presentation).
+This command is an opt-in usage example, not a claim of live RP validation.
+
 ## What to reuse in your project
 
 | File | Responsibility |
@@ -199,8 +221,8 @@ The deterministic local practice page is not represented as Typewords.
 
 ## Source and packaging verification
 
-This optional **maintainer workflow** builds a current candidate instead of using
-the published archive. From **any directory**, set `sdk_source` to the checkout
+This optional **maintainer workflow** builds a current candidate instead of consuming
+a supplied archive. From **any directory**, set `sdk_source` to the checkout
 whose package you want to verify:
 
 ```sh
@@ -226,12 +248,12 @@ bundle exec ruby bin/verify
 Expected: setup accepts a candidate with the shared consumer version, and runtime
 verification loads that normally installed gem from the isolated GEM_HOME and
 checks its source hashes. This proves the candidate packaging lane when it passes;
-it does not publish 2.0.0, replace legacy releases, or prove real RP/video ingestion.
+it does not publish 2.0.1, replace legacy releases, or prove real RP/video ingestion.
 
 To verify the minimum target runtime, use a fresh external copy/lockfile and set
 `CUCUMBER_VERSION='= 12.0.1'` on both setup and verification commands. The default
 `~> 12.0` can resolve later compatible 12.x releases. Cucumber 9, 10, 11, 12.0.0,
-and 13 are intentionally incompatible with SDK 2.0.0; use the legacy maintenance
+and 13 are intentionally incompatible with SDK 2.0.1; use the legacy maintenance
 checkout for its independent 9/10 lanes. Do not reuse a lockfile across lanes.
 The sample supports a
 `Gemfile.source` for source debugging only; if selected through `BUNDLE_GEMFILE`,
@@ -239,4 +261,4 @@ set `SDK_SOURCE_ROOT` to a gemspec-containing checkout. It is not packaging proo
 
 The [archived 2026-10-12 verification](verification.md) records earlier candidate
 runs, toolchain details, HTML backtrace normalization, and limitations. Its older
-candidate version/results must not be relabeled as fresh 2.0.0 acceptance.
+candidate version/results must not be relabeled as fresh 2.0.1 acceptance.

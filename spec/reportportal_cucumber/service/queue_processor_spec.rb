@@ -89,7 +89,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
       expect(processor.shutdown(timeout: 2)).to be(true)
 
       entries, files = captured.first
-      expect(entries.map { |entry| entry["message"] }.first).to eq("screenshot")
+      expect(entries.map { |entry| entry["message"] }.first).to eq("screenshot\n\n`screen.png` \u00b7 PNG \u00b7 9 B")
       expect(entries.last.fetch("message")).to include("UI Failure Playback:")
       expect(files).to contain_exactly(include(name: "screen.png", mime: "image/png", bytes: "png-bytes"))
       expect(uploader.calls.length).to eq(1)
@@ -121,5 +121,25 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
       expect(entries.first.fetch("message")).to include("Video upload failed for failure.mp4: timeout")
       expect(entries.first.fetch("message")).not_to include("<video")
     end
+  end
+
+  it "preserves the exact legacy video message when caption formatting fails, without retrying helpers" do
+    url = "https://video.example.test/evidence.mp4"
+    uploader = FakeVideoUploader.new(url)
+    captured = []
+    allow(api).to receive(:log_batch) { |entries:, files:| captured << [entries, files] }
+    expect(ReportportalCucumber::Presentation::AttachmentCaption).to receive(:format).once.and_raise("SECRET123")
+    expect(ReportportalCucumber.logger).to receive(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
+    processor = described_class.new(api: api, config: config, video_uploader: uploader)
+    processor.emit_log(item_uuid: "step", launch_uuid: "launch", message: "Caller **text**", level: :info,
+                       timestamp: Time.utc(2026, 5, 31), attachment: { name: "misleading.json", mime: "video/mp4", bytes: "{}" })
+    expect(processor.shutdown(timeout: 2)).to be(true)
+    entries, files = captured.first
+    expect(entries.first["message"]).to eq(ReportportalCucumber::Service::PayloadBuilder.build_video_markdown_message(
+      message: "Caller **text**", url: url
+    ))
+    expect(entries.first).to include("itemUuid" => "step", "launchUuid" => "launch", "level" => "error")
+    expect(files).to be_empty
+    expect(uploader.calls.first).to include(bytes: "{}", content_type: "video/mp4", name: "misleading.json")
   end
 end

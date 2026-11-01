@@ -27,7 +27,9 @@ RSpec.describe ReportportalCucumber::Cucumber::World do
           attachment: {
             name: "failure.mp4",
             mime: "video/mp4",
-            path: video_path
+            path: video_path,
+            auto_name: true,
+            caption_style: "default"
           }
         )
       )
@@ -46,7 +48,8 @@ RSpec.describe ReportportalCucumber::Cucumber::World do
         attachment: {
           name: "trace.log",
           mime: "text/plain",
-          bytes: "trace"
+          bytes: "trace",
+          caption_style: "default"
         }
       )
     )

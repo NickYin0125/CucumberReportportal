@@ -28,6 +28,131 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
   end
 
   describe ".build_log_batch" do
+    context "with a flush-local message cache" do
+      let(:rendered_messages) { {} }
+      let(:record) do
+        ReportportalCucumber::Service::QueueProcessor::LogRecord.new(
+          sequence: 2, item_uuid: "item-2", launch_uuid: "launch-1", timestamp: Time.utc(2026),
+          message: "Caller **text**", level: :info,
+          attachment: { name: "evidence.txt", mime: "text/plain", bytes: "preview\0bytes" }
+        )
+      end
+
+      it "renders once for an unchanged sequence, final filename and mode" do
+        expected = described_class.build_log_batch([record])
+        expect(described_class).to receive(:enrich_log_message).once.and_call_original
+
+        3.times do
+          expect(described_class.build_log_batch([record], rendered_messages: rendered_messages)).to eq(expected)
+        end
+
+        expect(rendered_messages).to eq([2, "evidence.txt", "plain"] => expected[:entries].first["message"])
+        expect(rendered_messages.values).to all(be_a(String))
+        expect(rendered_messages.values).to all(be_frozen)
+      end
+
+      it "keys captions by the final collision-safe filename rather than the explicit filename" do
+        prefix = record.dup
+        prefix.sequence = 1
+        expected = described_class.build_log_batch([prefix, record])
+        expect(described_class).to receive(:enrich_log_message).exactly(3).times.and_call_original
+
+        single = described_class.build_log_batch([record], rendered_messages: rendered_messages)
+        combined = described_class.build_log_batch([prefix, record], rendered_messages: rendered_messages)
+        repeated = described_class.build_log_batch([record], rendered_messages: rendered_messages)
+
+        expect(combined).to eq(expected)
+        expect(repeated).to eq(single)
+        expect(combined[:entries].last["message"]).to include("`evidence-1.txt`")
+        expect(single[:entries].first["message"]).to include("`evidence.txt`")
+        expect(rendered_messages.keys).to contain_exactly(
+          [1, "evidence.txt", "plain"], [2, "evidence.txt", "plain"], [2, "evidence-1.txt", "plain"]
+        )
+      end
+
+      it "does not reuse another presentation mode's rendered message" do
+        expected = %w[plain rich].to_h { |mode| [mode, described_class.build_log_batch([record], presentation: mode)] }
+        expect(described_class).to receive(:enrich_log_message).exactly(2).times.and_call_original
+
+        %w[plain rich plain rich].each do |mode|
+          expect(described_class.build_log_batch([record], presentation: mode, rendered_messages: rendered_messages))
+            .to eq(expected.fetch(mode))
+        end
+
+        expect(expected["plain"][:entries].first["message"]).not_to eq(expected["rich"][:entries].first["message"])
+        expect(rendered_messages.keys).to contain_exactly([2, "evidence.txt", "plain"], [2, "evidence.txt", "rich"])
+      end
+
+      it "does not reuse a different record's message under the same filename and mode" do
+        other = record.dup
+        other.sequence = 3
+        other.message = "Different caller"
+        expect(described_class).to receive(:enrich_log_message).exactly(2).times.and_call_original
+
+        first = described_class.build_log_batch([record], rendered_messages: rendered_messages)
+        second = described_class.build_log_batch([other], rendered_messages: rendered_messages)
+
+        expect(first[:entries].first["message"]).to start_with("Caller **text**")
+        expect(second[:entries].first["message"]).to start_with("Different caller")
+        expect(rendered_messages.keys).to contain_exactly([2, "evidence.txt", "plain"], [3, "evidence.txt", "plain"])
+      end
+
+      it "does not cache records without a sequence or alias them to a preceding sequenced record" do
+        unsequenced = record.to_h.except(:sequence)
+        other = unsequenced.transform_keys(&:to_s).merge("message" => "Unsequenced caller")
+        expect(described_class).to receive(:enrich_log_message).exactly(3).times.and_call_original
+
+        result = described_class.build_log_batch([record, unsequenced, other], rendered_messages: rendered_messages)
+
+        expect(result[:entries].last["message"]).to start_with("Unsequenced caller")
+        expect(rendered_messages.keys).to eq([[2, "evidence.txt", "plain"]])
+      end
+
+      it "rebuilds entry metadata and binary parts, without exposing the cached string to entry mutations" do
+        record.attachment = { name: "evidence.bin", mime: "application/octet-stream", bytes: "a\0\xFFb".b }
+        first = described_class.build_log_batch([record], rendered_messages: rendered_messages)
+        first[:entries].first["message"].replace("mutated outbound entry")
+        first[:files].first[:bytes].replace("mutated outbound file")
+        other = record.dup
+        other.item_uuid = "item-elsewhere"
+        other.launch_uuid = "launch-elsewhere"
+        other.timestamp = Time.utc(2026, 11, 1)
+        other.level = :debug
+        other.attachment = record.attachment.merge(bytes: "c\xFE\0d".b)
+        expected = described_class.build_log_batch([other])
+        expect(described_class).not_to receive(:enrich_log_message)
+
+        result = described_class.build_log_batch([other], rendered_messages: rendered_messages)
+
+        expect(result).to eq(expected)
+        expect(result[:entries].first).not_to equal(first[:entries].first)
+        expect(result[:entries].first).to include("itemUuid" => "item-elsewhere", "launchUuid" => "launch-elsewhere",
+                                                "time" => described_class.unix_ms(other.timestamp), "level" => "debug")
+        expect(result[:files].first).not_to equal(first[:files].first)
+        expect(result[:files].first[:bytes]).to eq("c\xFE\0d".b)
+        expect(result[:files].first[:bytes].encoding).to eq(Encoding::BINARY)
+        expect(record.attachment[:bytes]).to eq("a\0\xFFb".b)
+      end
+
+      it "still validates path-backed attachments on a cache hit and retains their paths rather than bytes" do
+        Dir.mktmpdir do |directory|
+          path = File.join(directory, "evidence.bin")
+          File.binwrite(path, "original\0bytes".b)
+          record.attachment = { name: "evidence.bin", mime: "application/octet-stream", path: path }
+          first = described_class.build_log_batch([record], rendered_messages: rendered_messages)
+          repeated = described_class.build_log_batch([record], rendered_messages: rendered_messages)
+          expect(repeated).to eq(first)
+          expect(repeated[:files].first).to include(path: path)
+          expect(repeated[:files].first).not_to have_key(:bytes)
+          expect(repeated[:files].first).not_to equal(first[:files].first)
+          File.unlink(path)
+
+          expect { described_class.build_log_batch([record], rendered_messages: rendered_messages) }
+            .to raise_error(ArgumentError, /Attachment file does not exist/)
+        end
+      end
+    end
+
     it "escapes literal NUL only in outbound text, without recursively escaping visible sequences" do
       message = "\0actual\0 literal\\u0000 invalid\xFF\0".b.freeze
       expected = '\\u0000actual\\u0000 literal\\u0000 invalid?\\u0000'
@@ -180,7 +305,7 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
 
       expect(message).to include("line-100")
       expect(message).not_to include("line-101")
-      expect(message).to include("Full log is attached as `trace.log`.")
+      expect(message).to include("_Preview · first 100 lines · full file attached_")
     end
 
     it "keeps file path backed mp4 attachments out of in-memory bytes payloads" do

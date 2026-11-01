@@ -54,13 +54,13 @@ module ReleaseTooling
 
       chart = chart_metadata
       raise Error, "Tag and gem versions must match exactly" unless gem.version.to_s == version
-      raise Error, "Legacy tag, gem and chart versions must match exactly" if legacy? && chart.fetch("version") != version
+      raise Error, "Historical tag, gem and chart versions must match exactly" if historical_manifest? && chart.fetch("version") != version
       raise Error, "ReportPortal appVersion must remain #{APP_VERSION}" unless chart.fetch("appVersion") == APP_VERSION
       raise Error, "Unexpected package names" unless gem.name == "reportportal-cucumber-ruby" && chart.fetch("name") == "reportportal-rich-experience"
 
       identity = { "tag" => tag, "commit" => commit, "version" => version, "appVersion" => APP_VERSION }
-      # Keep original 1.x manifests byte-compatible with retained release artifacts.
-      identity["chartVersion"] = chart_version unless legacy?
+      # Retained pre-Ledger artifacts must still verify byte for byte.
+      identity["chartVersion"] = chart_version unless historical_manifest?
       identity
     end
 
@@ -68,12 +68,17 @@ module ReleaseTooling
       version.start_with?("1.")
     end
 
+    # @return [Boolean] Whether this tag uses the retained pre-Ledger bundle format.
+    def historical_manifest?
+      legacy? && Gem::Version.new(version) <= Gem::Version.new("1.3.1")
+    end
+
     def chart_version
       chart_metadata.fetch("version")
     end
 
     def release_title
-      legacy? ? "SDK and Helm #{version}" : "SDK #{version} / Helm #{chart_version}"
+      historical_manifest? ? "SDK and Helm #{version}" : "SDK #{version} / Helm #{chart_version}"
     end
 
     def ancestry_refs

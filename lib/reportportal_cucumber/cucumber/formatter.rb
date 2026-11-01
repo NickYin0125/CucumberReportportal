@@ -38,6 +38,10 @@ module ReportportalCucumber
         @ast_metadata = AstMetadata.new(ast_lookup: @ast_lookup)
         @combined_step_tables = {}
         @combined_step_tables_mutex = Mutex.new
+        @attachment_name_mutex = Mutex.new
+        @attachment_name_counts = Hash.new(0)
+        @hook_names = {}
+        @hook_names_mutex = Mutex.new
         @feature_states = {}
         @rule_states = {}
         @scenario_states = {}
@@ -112,6 +116,8 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         target_item_uuid = runtime_context.current_item_uuid || runtime_context.active_parent_uuid unless @native_run_hook
+        owner = runtime_context.current_item || runtime_context.active_parent unless @native_run_hook
+        attachment = attachment_for_owner(attachment, owner) if attachment
         @log_buffer.emit_log(
           item_uuid: target_item_uuid,
           launch_uuid: @launch_uuid,
@@ -131,6 +137,8 @@ module ReportportalCucumber
         return unless reporting_enabled?
 
         target_item_uuid = runtime_context.active_parent_uuid || runtime_context.current_item_uuid unless @native_run_hook
+        owner = runtime_context.active_parent || runtime_context.current_item unless @native_run_hook
+        attachment = attachment_for_owner(attachment, owner)
         @log_buffer.emit_log(
           item_uuid: target_item_uuid,
           launch_uuid: @launch_uuid,
@@ -250,19 +258,25 @@ module ReportportalCucumber
           ReportportalCucumber.logger.warn("ReportPortal evidence rejected: batch exceeds #{EVIDENCE_MAX_ARTIFACTS} artifacts")
           return false
         end
-        payloads = artifacts.map { |artifact| build_evidence_payload(artifact) }
+        payloads = artifacts.map do |artifact|
+          payload = build_evidence_payload(artifact)
+          attachment_for_owner(payload.merge(caption_style: "evidence"), item).merge(baseline_name: payload[:name])
+        end
         names = payloads.map { |artifact| artifact[:name] }
         rendered = Service::EvidencePresenter.failure(
           action: action,
           error: error,
           url: url,
           details: details,
-          artifact_names: names
+          artifact_names: names,
+          presentation: @config.presentation
         )
         redactor = Automation::EvidenceRedactor.new
         summary = redactor.redact_text(rendered.fetch(:summary, rendered.fetch("summary", "Failure evidence")))
         diagnostic = rendered[:details] || rendered["details"]
         message = [summary, diagnostic && redactor.redact_text(diagnostic)].compact.reject(&:empty?).join("\n\n")
+        # The card is redacted before Markdown is added; retain legacy presenter fallbacks.
+        message = rendered[:card] || message
         admissions = []
         published = runtime_context.publish_capture_target(selected, launch_uuid: @launch_uuid) do |open_item, cancelled|
           admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid, message: message,
@@ -276,8 +290,10 @@ module ReportportalCucumber
                            bytes = payload.fetch(:bytes)
                            { name: name, mime: payload.fetch(:mime), bytes: bytes }
                          end
+            attachment[:caption_style] = payload[:caption_style]
+            attachment[:baseline_name] = payload[:baseline_name] if payload[:auto_name]
             admissions << @log_buffer.emit_log(item_uuid: open_item.uuid, launch_uuid: @launch_uuid,
-                                                message: "Failure evidence: #{name}", level: :error,
+                                                message: "Failure evidence: #{payload.fetch(:baseline_name)}", level: :error,
                                                 timestamp: monotonic_timestamp(Time.now), attachment: attachment,
                                                 deadline: deadline, cancelled: cancelled)
           end
@@ -355,7 +371,9 @@ module ReportportalCucumber
         raise
       ensure
         if item_uuid || local_uuid
-          close_capture_target(capture_target) if capture_target
+          if capture_target && close_capture_target(capture_target)
+            @attachment_name_mutex.synchronize { @attachment_name_counts.delete(item_uuid || local_uuid) }
+          end
           flush_before_finish
           safe_reporting_call(preserve_business_exception: !active_original.nil? || !failure.nil?) do
             finish_item_request(
@@ -383,6 +401,7 @@ module ReportportalCucumber
         raise ArgumentError, "artifact must include path or bytes" if path.nil? && bytes.nil?
 
         filename = options[:name].is_a?(String) ? options[:name] : ""
+        automatic = filename.empty?
         if path
           raise ArgumentError, "evidence path must be a string" unless path.is_a?(String)
 
@@ -397,7 +416,7 @@ module ReportportalCucumber
           mime = Transport::MultipartHelper.content_type_for(
             filename: mime_filename, declared_type: options[:mime]
           )
-          return { name: filename, mime: mime, path: path }
+          return { name: filename, mime: mime, path: path, auto_name: automatic }
         end
 
         bytes = bytes.read(1_048_577) if bytes.respond_to?(:read)
@@ -409,7 +428,7 @@ module ReportportalCucumber
           filename, limit: EVIDENCE_FILENAME_LIMIT
         )
         mime = Transport::MultipartHelper.content_type_for(filename: filename, declared_type: options[:mime])
-        { name: filename, mime: mime, bytes: bytes }
+        { name: filename, mime: mime, bytes: bytes, auto_name: automatic }
       end
 
       # @return [Boolean]
@@ -430,6 +449,7 @@ module ReportportalCucumber
           test_run_started: method(:handle_test_run_started),
           test_suite_started: method(:handle_test_suite_started),
           test_case_started: method(:handle_test_case_started),
+          hook_test_step_created: method(:handle_hook_test_step_created),
           test_step_created: method(:handle_test_step_created),
           test_step_started: method(:handle_test_step_started),
           attach_called: method(:handle_attach_called),
@@ -486,8 +506,8 @@ module ReportportalCucumber
             @api.start_launch(
               name: @config.launch,
               start_time: start_time,
-              description: @config.launch_description,
-              attributes: @config.launch_attributes,
+              description: launch_metadata[:description],
+              attributes: launch_metadata[:attributes],
               mode: @config.launch_mode,
               rerun: @config.rerun?,
               rerun_of: @config.rerun_of,
@@ -505,6 +525,25 @@ module ReportportalCucumber
             creator.call
           end
         debug("Launch ready uuid=#{@launch_uuid}")
+      end
+
+      def launch_metadata
+        baseline = { attributes: @config.launch_attributes, description: @config.launch_description }
+        unless @config.run_context?
+          return baseline
+        end
+
+        # Finish must retain the exact metadata computed at start, even if CI
+        # environment variables change while scenarios are running.
+        @launch_metadata ||= Presentation::Fallback.render(fallback: -> { baseline }) do
+          Presentation::RunContext.build(
+            attributes: @config.launch_attributes,
+            description: @config.launch_description,
+            sdk_version: ReportportalCucumber::VERSION,
+            cucumber_version: Gem.loaded_specs.fetch("cucumber").version.to_s,
+            include_workers: true
+          )
+        end
       end
 
       # @param event [Object]
@@ -651,6 +690,29 @@ module ReportportalCucumber
 
       # @param event [Object]
       # @return [void]
+      def handle_hook_test_step_created(event)
+        return unless reporting_enabled?
+
+        step_id = extract_test_step_id(event)
+        return unless step_id
+
+        name = begin
+          value = fetch_value(event, [:hook, :name])
+          text = String.new(value.to_s) unless value.nil?
+          text.freeze unless text.nil? || text.strip.empty?
+        rescue StandardError
+          :unavailable
+        end
+        # Native retries reuse step IDs. Retain only scalar names until run close.
+        @hook_names_mutex.synchronize do
+          return if @finalized
+
+          name ? @hook_names[step_id] = name : @hook_names.delete(step_id)
+        end
+      end
+
+      # @param event [Cucumber::Events::TestStepStarted]
+      # @return [void]
       def handle_test_step_started(event)
         return unless reporting_enabled?
 
@@ -703,7 +765,7 @@ module ReportportalCucumber
         )
         runtime_context.push_step(item)
         runtime_context.register_capture_target(item, launch_uuid: @launch_uuid, owner: self)
-        emit_step_markdown_log(item_uuid: step_uuid, description: step_description, timestamp: extract_timestamp(event) || Time.now) if step_descriptor&.rich?
+        emit_step_markdown_log(item_uuid: step_uuid, descriptor: step_descriptor, timestamp: extract_timestamp(event) || Time.now) if step_descriptor&.rich?
         if (test_step_id = extract_test_step_id(event))
           runtime_context.associate_test_step(test_step_id, item)
         end
@@ -736,21 +798,28 @@ module ReportportalCucumber
 
         attachment = build_attachment(event)
         if attachment[:mime].to_s.casecmp?("text/x.cucumber.log+plain")
+          message = attachment[:bytes]
+          card = Automation::ReportContext.current[:rp_log_card]
+          if card.is_a?(Automation::ReportContext::LogCard) && card.native.b == message.b
+            message = @config.presentation == "rich" ? card.rich : card.plain
+          end
           @log_buffer.emit_log(
             item_uuid: target_item&.uuid,
             launch_uuid: @launch_uuid,
-            message: attachment[:bytes],
+            message: message,
             level: level,
             timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now)
           )
           return
         end
 
+        message = extract_attachment_message(event, attachment[:name])
+        attachment = attachment_for_owner(attachment, target_item)
         debug("Queueing attachment name=#{attachment[:name].inspect} mime=#{attachment[:mime]} item=#{target_item&.uuid}")
         @log_buffer.emit_log(
           item_uuid: target_item&.uuid,
           launch_uuid: @launch_uuid,
-          message: extract_attachment_message(event, attachment[:name]),
+          message: message,
           level: level,
           timestamp: monotonic_timestamp(extract_timestamp(event) || Time.now),
           attachment: attachment
@@ -790,11 +859,12 @@ module ReportportalCucumber
         level = Automation::ReportContext.current.fetch(:level, :info)
         filename = fetch_value(event, :filename)
         handle_attachment({
-          file_name: filename || default_attachment_name(normalized_type),
+          file_name: filename,
           media_type: normalized_type.empty? ? "application/octet-stream" : normalized_type,
           body: body,
           content_encoding: media_type.match?(/;base64\z/i) ? "base64" : "identity",
-          message: filename ? "Attachment: #{filename}" : "Attachment"
+          message: filename ? "Attachment: #{filename}" : "Attachment",
+          caption_style: "default"
         }, level: level)
       end
 
@@ -953,7 +1023,7 @@ module ReportportalCucumber
               launch_uuid: @launch_uuid,
               end_time: monotonic_timestamp(end_time),
               status: status,
-              attributes: @config.launch_attributes
+              attributes: launch_metadata[:attributes]
             )
           end
         end
@@ -962,6 +1032,8 @@ module ReportportalCucumber
         enforce_complete_reporting
       ensure
         @combined_step_tables_mutex.synchronize { @combined_step_tables.clear } if @finalized
+        @attachment_name_mutex.synchronize { @attachment_name_counts.clear } if @finalized
+        @hook_names_mutex.synchronize { @hook_names.clear } if @finalized
         emit_incomplete_reporting_summary(status) if @finalized
         if @finalized && ReportportalCucumber.current_runtime.equal?(self)
           ReportportalCucumber.current_runtime = nil
@@ -1062,6 +1134,7 @@ module ReportportalCucumber
             finish_item_request(item_uuid: state[:item].uuid, launch_uuid: @launch_uuid,
                                 end_time: monotonic_timestamp(end_time), status: aggregate_status(state[:outcomes].values))
           end
+          @attachment_name_mutex.synchronize { @attachment_name_counts.delete(state[:item].uuid) }
         end
         safe_reporting_call do
           finish_item_request(
@@ -1072,6 +1145,7 @@ module ReportportalCucumber
           )
         end
         runtime_context.finish_feature(feature_key)
+        @attachment_name_mutex.synchronize { @attachment_name_counts.delete(item.uuid) }
       end
 
       # @param status [String, nil]
@@ -1119,6 +1193,7 @@ module ReportportalCucumber
         runtime_context.release_test_case_started(scenario_state[:test_case_started_id]) if scenario_state[:test_case_started_id]
         runtime_context.finish_scenario(expected_uuid: scenario_state[:item].uuid) if runtime_context.current_scenario_key == scenario_key
         @scenario_states.delete(scenario_key)
+        @attachment_name_mutex.synchronize { @attachment_name_counts.delete(scenario_state[:item].uuid) }
       end
 
       # @param status [String, nil]
@@ -1213,6 +1288,7 @@ module ReportportalCucumber
           timeout: remaining_finalization_budget
         )
         warn_capture_close_timeout unless closed
+        @attachment_name_mutex.synchronize { @attachment_name_counts.delete(item.uuid) } if closed
         closed
       end
 
@@ -1305,7 +1381,11 @@ module ReportportalCucumber
             fetch_value(error, :backtrace).to_s
           end
         message = [details, backtrace].reject(&:empty?).join("\n")
-        message = Automation::EvidenceRedactor.new.redact_text(message)
+        baseline = Automation::EvidenceRedactor.new.redact_text(message)
+        message = Presentation::Fallback.render(fallback: -> { baseline.empty? ? "Step failed" : baseline }) do
+          Presentation::FailureCard.format(error: error, message: details, backtrace: backtrace,
+                                          presentation: @config.presentation, baseline: baseline)
+        end
         @log_buffer.emit_log(
           item_uuid: item_uuid,
           launch_uuid: @launch_uuid,
@@ -1316,10 +1396,13 @@ module ReportportalCucumber
       end
 
       # @param item_uuid [String]
-      # @param description [String, nil]
+      # @param descriptor [ReportportalCucumber::ReportPortal::Models::StepDesc]
       # @param timestamp [Time]
       # @return [void]
-      def emit_step_markdown_log(item_uuid:, description:, timestamp:)
+      def emit_step_markdown_log(item_uuid:, descriptor:, timestamp:)
+        description = Presentation::Fallback.render(fallback: -> { descriptor.baseline_markdown }) do
+          descriptor.to_markdown(mode: :log, presentation: @config.presentation)
+        end
         return if description.to_s.strip.empty?
 
         @log_buffer.emit_log(
@@ -1338,11 +1421,38 @@ module ReportportalCucumber
         body = fetch_value(event, :body).to_s
         bytes = encoding == "base64" ? Base64.decode64(body) : body
         media_type = fetch_value(event, :media_type) || "application/octet-stream"
+        filename = fetch_value(event, :file_name)
         {
-          name: fetch_value(event, :file_name) || default_attachment_name(media_type),
+          name: filename || default_attachment_name(media_type),
           mime: media_type,
-          bytes: bytes
+          bytes: bytes,
+          auto_name: filename.nil? || filename == "",
+          caption_style: fetch_value(event, :caption_style) || (fetch_value(event, :message).nil? ? "default" : nil)
         }
+      end
+
+      # Assign default filenames once, at the owner, before queue batching.
+      # Never consume or copy attachment bytes while deriving display metadata.
+      def attachment_for_owner(attachment, owner)
+        return attachment unless attachment.is_a?(Hash)
+
+        name = attachment[:name] || attachment["name"]
+        automatic = attachment[:auto_name] == true || name.nil? || name == ""
+        return attachment unless automatic
+
+        Presentation::Fallback.render(fallback: -> { attachment.merge(caption_style: "baseline") }) do
+          @attachment_name_mutex.synchronize do
+            key = owner&.uuid || @launch_uuid
+            index = @attachment_name_counts[key]
+            generated = Service::PayloadBuilder.default_attachment_name(
+              attachment[:mime] || attachment["mime"], owner_name: owner&.name.to_s, index: index
+            )
+            @attachment_name_counts[key] = index + 1
+            result = attachment.merge(name: generated)
+            result[:baseline_name] = name if name.is_a?(String)
+            result
+          end
+        end
       end
 
       # @param event [Object]
@@ -1652,19 +1762,52 @@ module ReportportalCucumber
         metadata ||= @ast_metadata.scenario(uri: feature_uri, location_line: scenario_line)
         return unless metadata
 
+        Presentation::Fallback.render(fallback: -> { scenario_description(metadata, presentation: false) }) do
+          scenario_description(metadata, presentation: true)
+        end
+      end
+
+      def scenario_description(metadata, presentation:)
         parts = []
         parts << metadata[:description]
         if metadata[:rule_name]
-          parts << "Rule: #{metadata[:rule_name]}"
+          name = metadata[:rule_name]
+          parts << "Rule: #{presentation ? Presentation::MarkdownText.inline(name) : name}"
           parts << metadata[:rule_description]
         end
         if metadata[:examples_name] || metadata[:example_row_line]
-          parts << "Examples: #{metadata[:examples_name]}" if metadata[:examples_name]
-          parts << "Example row: #{metadata[:example_row_line]}" if metadata[:example_row_line]
-          parameters = metadata[:parameters]
-          parts << parameter_description_table(parameters) if parameters
+          if presentation
+            parts << outline_row_description(metadata)
+          else
+            name = metadata[:examples_name]
+            parts << "Examples: #{name}" if name
+            parts << "Example row: #{metadata[:example_row_line]}" if metadata[:example_row_line]
+            parameters = metadata[:parameters]
+            parts << parameter_description_table(parameters, presentation: false) if parameters
+          end
         end
         parts.compact.reject { |part| part.to_s.empty? }.join("\n\n").then { |value| value.empty? ? nil : value }
+      end
+
+      # Display-only; source parameter order and identity values remain untouched.
+      def outline_row_description(metadata)
+        name = metadata[:examples_name]
+        label = name.to_s.empty? ? "Examples" : "Examples: #{Presentation::MarkdownText.inline(name)}"
+        line = metadata[:example_row_line]
+        label += " \u00b7 line #{Presentation::MarkdownText.inline(line)}" if line
+        parameters = metadata[:parameters] || {}
+        short = parameters.length <= 4 && parameters.values.all? do |value|
+          text = value.to_s
+          text.bytesize <= 160 && text.length <= 40 && !text.match?(/[\r\n]/)
+        end
+        if short
+          pairs = parameters.map do |key, value|
+            "#{Presentation::MarkdownText.code(key)} = #{Presentation::MarkdownText.code(value)}"
+          end
+          (pairs + ["_#{label}_"]).join(" \u00b7 ")
+        else
+          [label, parameter_description_table(parameters)].join("\n\n")
+        end
       end
 
       # @param event [Object]
@@ -1687,7 +1830,12 @@ module ReportportalCucumber
       def extract_step_description(event, descriptor: nil)
         return nil if extract_hook?(event)
 
-        (descriptor || build_step_descriptor(event))&.to_markdown
+        descriptor ||= build_step_descriptor(event)
+        return nil unless descriptor&.rich?
+
+        Presentation::Fallback.render(fallback: -> { descriptor.baseline_markdown }) do
+          descriptor.to_markdown(mode: :description, presentation: "plain")
+        end
       end
 
       # @param event [Object]
@@ -1758,6 +1906,28 @@ module ReportportalCucumber
       # @param base_name [String]
       # @return [String]
       def hook_display_name(event, base_name)
+        Presentation::Fallback.render(fallback: -> { baseline_hook_display_name(event, base_name) }) do
+          label = case extract_hook_type(event)
+                  when "before", "before_method" then "Before hook"
+                  when "after", "after_method" then "After hook"
+                  when "after_step" then "AfterStep hook"
+                  when "before_all", "before_class" then "BeforeAll hook"
+                  when "after_all", "after_class" then "AfterAll hook"
+                  else "Hook"
+                  end
+          name = @hook_names_mutex&.synchronize { @hook_names[extract_test_step_id(event)] }
+          raise "Native hook name unavailable" if name == :unavailable
+
+          if name
+            "#{label} \u00b7 #{name}"
+          else
+            unnamed = base_name.match?(/\A\s*(before|after|after\s*step|before\s*all|after\s*all|around)?\s*hook\s*\z/i)
+            unnamed ? label : "#{label} \u00b7 #{base_name}"
+          end
+        end
+      end
+
+      def baseline_hook_display_name(event, base_name)
         case extract_hook_type(event)
         when "before", "before_method"
           "Before Hook: #{base_name}"
@@ -1941,7 +2111,15 @@ module ReportportalCucumber
 
       # @param parameters [Hash<String, String>]
       # @return [String]
-      def parameter_description_table(parameters)
+      def parameter_description_table(parameters, presentation: true)
+        if presentation
+          return Presentation::Fallback.render(fallback: -> { parameter_description_table(parameters, presentation: false) }) do
+            header = parameters.keys.map { |cell| Presentation::MarkdownText.cell(cell) }
+            values = parameters.values.map { |cell| Presentation::MarkdownText.cell(cell) }
+            [header, Array.new(parameters.length, "---"), values].map { |cells| "| #{cells.join(' | ')} |" }.join("\n")
+          end
+        end
+
         rows = [parameters.keys, Array.new(parameters.length, "---"), parameters.values].map do |cells|
           "| #{cells.map do |cell|
             cell.to_s.gsub(/\\|\r\n|[|\r\n]/) do |character|

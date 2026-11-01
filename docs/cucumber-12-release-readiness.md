@@ -1,13 +1,18 @@
 # Cucumber 12 CI and release preparation
 
-This is the release/CI maintainer's historical preparation record, not acceptance
-sign-off. Helm remains **1.3.1**, ReportPortal remains **26.0.7**, and no
-infrastructure changes are part of SDK **2.0.0**.
+This is the release/CI maintainer's historical working record, not acceptance sign-off.
+The current Ledger candidate is **2.0.1**, not published by C8; its final matrix
+is tracked separately. The sections below retain the earlier 2.0.0 migration
+checkpoint and its original evidence, recorded before that version's publication. Helm remains **1.3.1**, ReportPortal remains
+**26.0.7**, and no infrastructure changes are part of this SDK migration.
 The parent-owned architecture and QA-owned acceptance review remain authoritative
 for their respective decisions and test evidence. Existing review files are not
 rewritten or re-labelled as Cucumber 12 evidence.
 
 ## Publication handoff - 2026-10-31
+
+This historical handoff concerns SDK 2.0.0 only. It does not authorize publication
+of the current Ledger candidates, SDK 2.0.1 and SDK 1.3.2.
 
 The earlier pending statuses below are historical. The third preparation CI run,
 [41162160232](https://github.com/NickYin0125/CucumberReportportal/actions/runs/41162160232),

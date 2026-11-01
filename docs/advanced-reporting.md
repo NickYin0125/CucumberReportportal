@@ -5,6 +5,58 @@ Use this reference after [getting started](getting-started.md),
 contracts and optional capabilities; none of these settings is required for the
 minimal Scenario or ordinary PNG/JSON/text reporting.
 
+## Presentation
+
+SDK 2.0.1 uses Ledger plain cards by default: project-first failures with
+complete backtraces, attachment metadata, compact JSON, argument captions,
+numeric table alignment, one-line Outline values, and assertion/HTTP/evidence
+cards. Numeric values, status levels, log counts, ownership, IDs and original
+attachment bytes are unchanged. Argument-free steps do not send descriptions.
+
+Enable the two independent options from your test project:
+
+```sh
+RP_PRESENTATION=rich RP_RUN_CONTEXT=true bundle exec cucumber --profile rp
+```
+
+`RP_PRESENTATION` defaults to `plain`; invalid values warn once and use plain.
+`rich` accents **ReportPortal log messages only**, not native Cucumber
+HTML/messages, terminal summaries, caller AppLog text, names, descriptions or
+Launch metadata. It folds full backtraces, attachment previews over 20 lines,
+DocStrings over 20 lines, HTTP headers and HTTP bodies over 12 lines. Table
+headers are accented only for tables with at most six columns. Existing preview
+bounds still apply, with full original attachment bytes retained separately.
+Client-generated `<br>` is allowed in table cells; user markup is escaped.
+
+Every ERROR first line stays byte-identical. Added markup is limited to 1,024
+bytes per message; exceeding that budget or changing an ERROR first line keeps
+the plain card. Helper exceptions retain the original baseline with one warning,
+not a partially formatted card. Rendering does not change Scenario outcomes.
+
+`RP_RUN_CONTEXT` defaults to `false`. When enabled it adds only the documented
+SDK/runtime/CI attributes and a one-line description if none was supplied;
+explicit values win. The 2.x `workers` attribute is opt-in metadata from `PARALLEL_TEST_GROUPS` when present; the off-mode legacy worker behavior is unchanged.
+`RP_RUN_CONTEXT` has no effect when `RP_LAUNCH_UUID` is supplied, because the
+CI-owned Launch is created outside the SDK. The `workers` attribute appears
+only when the reporting process creates its own Launch; workers joining an
+external Launch do not update its metadata.
+See the [configuration allowlist](configuration.md#presentation-and-run-context).
+
+The owner-approved compatibility exceptions preserve baseline behavior:
+- Cucumber 9 rejects a single native step containing both a DocString and a
+  DataTable. Its compound-syntax check is N/A with parser-failure evidence;
+  separate argument steps still verify both presentations. Cucumber 12 retains
+  native compound-argument coverage.
+- Native `BeforeAll` / `AfterAll` do not gain independent Hook Items. Existing
+  Launch-scoped logs, exceptions and shutdown behavior remain unchanged; only
+  their independent Item-name check is N/A. In 1.x, `BeforeAll` can run before
+  formatter construction. Existing class-hook name mappings remain unit-tested.
+
+These are Decisions 4 and 5 in the
+[owner requirements](design/presentation-ledger-proposal.md#decisions), not waivers
+for ownership, failure propagation, or delivery checks. The opt-ins do not
+change ReportPortal viewer settings or introduce a new deployment requirement.
+
 ## Report structure
 
 | RP node | Wire type | `hasStats` | Purpose |
@@ -19,8 +71,8 @@ Scenario is deliberately a statistical `STEP`, not `TEST`. The previously
 verified RP UI statistics drilldown selected statistical leaves with
 `type=STEP&hasStats=true&hasChildren=false`; nonstatistical children carry evidence
 without becoming additional tests. Background actions retain their `[Background]`
-prefix. Gherkin DataTables/DocStrings become Markdown descriptions and rich Step
-logs; every executed Examples row gets its own UUID. See the
+prefix. Gherkin DataTables/DocStrings become Markdown descriptions and plain Step-argument
+logs (RP log accents are opt-in); every executed Examples row gets its own UUID. See the
 [metadata contract](design/reporting-experience-m3a-implementation.md).
 
 ## Launch ownership and native run hooks
@@ -31,24 +83,21 @@ and never starts/finishes that Launch. CI must collect every actual business exi
 and final reporting receipt, handle deadlines/crashes/late workers, and finish the
 shared Launch. See the [CI sequence](ci.md#parallel-workers-and-a-shared-launch).
 
-Legacy `RP_CLIENT_JOIN=true` remains a compatibility opt-in for same-host files,
-but is deprecated for production shared completion. Its primary can finish before
-secondaries; a later worker can split into another Launch after the primary exits.
-It is not a distributed barrier. Without an external UUID, the default
-`RP_CLIENT_JOIN=false` gives each worker an independent Launch.
+Enabled SDK 2.x `ParallelFormatter` workers require a CI-owned
+`RP_LAUNCH_UUID`; missing UUID is rejected before any server request. Legacy
+file joining is not the Cucumber 12 parallel ownership mechanism. See the
+[migration contract](migrating-to-2.0.md#parallel-launch-ownership).
 
-In native Cucumber 9/10, `BeforeAll` runs before formatter construction. If it
-aborts, the formatter creates no Launch and does not fabricate a class-hook item.
-A per-registry observer waits for genuine `AfterAll` before finalization. An
-`AfterAll` error becomes a credential-sanitized Launch-level ERROR log while its
-original exception retains precedence, including if reporting also fails.
-Native run hooks are not `BEFORE_CLASS`/`AFTER_CLASS` test-step nodes.
+Native Cucumber 12 `BeforeAll` / `AfterAll` preserve their Launch-scoped log and
+exception handling without creating `BEFORE_CLASS` / `AFTER_CLASS` Items. Genuine
+teardown is observed before final reporting checks, and an original run-hook
+exception retains precedence over an incomplete-reporting error. Only the
+independent global-hook Item-name check is N/A under owner Decision 5.
+A complete reporting receipt does not mean the business run/teardown passed.
 
-This native observer uses Cucumber 9/10's private registry/configuration
-association; later major versions need separate compatibility work. A complete
-receipt never means the business run/teardown passed. Implementation and dated
-checks: [M4-B contract](design/reporting-experience-m4b-implementation.md),
-[M4-B verification](design/reporting-experience-m4b-verification.md).
+The [M4-B contract](design/reporting-experience-m4b-implementation.md) and
+[M4-B verification](design/reporting-experience-m4b-verification.md) record the
+historical Cucumber 9/10 implementation, not new Cucumber 12 evidence.
 
 ## Bounded delivery and finalization
 
@@ -334,8 +383,9 @@ in configuration are unsuitable for production. An uploaded object, a browser
 link, and a playable/safely accessible recording are separate checks.
 
 The **separate companion Chart 1.3.1** in this checkout pins ReportPortal `26.0.7`
-and official chart `26.10.26`, requiring Kubernetes `>=1.35`. SDK and Chart 1.3.1
-are distributed together in the GitHub release; the server version is independent.
+and official chart `26.10.26`, requiring Kubernetes `>=1.35`. The historical SDK
+1.3.1 release included that chart; SDK 2.0.1 leaves it unchanged and does not
+imply a new published bundle. The SDK, chart and server versions are independent.
 Its version is independent of browser playback behavior. It uses
 Prefix routes with a configurable controller class and dedicated-bucket
 reconciliation. Its intentional internal-network public mode grants only

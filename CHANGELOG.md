@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.0.1 - Unreleased
+
+### Ledger Presentation
+
+- Failure logs show the exception, feature location and project frames before the full original backtrace.
+- Client-built Markdown escapes user markup; attachment captions show kind, size and available dimensions, unnamed files use step-derived names, and JSON previews are compact.
+- Hook item names are simplified without changing topology. Native global hooks remain Launch-scoped where observed; their independent Item-name checks are N/A, not fabricated hook items.
+- Preserve explicit native Before/After/AfterStep names through Cucumber's hook-created event, retaining retry labels and clearing scalar metadata on finalization.
+- Step-argument logs caption tables and DocStrings, align numeric columns without changing values, and omit the repeated step line. Argument-free steps have no description; Outline descriptions show Examples values on one line.
+- Assertion, failure-evidence and HTTP cards preserve diagnostic values, HTTP severity and existing sanitized bounds.
+- Keep structured HTTP and assertion bodies in their baseline format for native Cucumber and terminal formatters; apply Ledger cards only to the RP route.
+- Opt-in `RP_RUN_CONTEXT=true` adds allowlisted SDK, Cucumber, Ruby and CI metadata plus a default Launch description; explicit attributes and descriptions win.
+- `RP_RUN_CONTEXT` has no effect when `RP_LAUNCH_UUID` is supplied: that CI-owned Launch is created outside the SDK. The `workers` attribute appears only when the reporting process creates its own Launch.
+- Opt-in `RP_PRESENTATION=rich` adds status pills, table-header accents and collapsible evidence to ReportPortal log messages only. Native Cucumber, terminal output, caller text and item metadata remain unchanged.
+- Preserve item hierarchy, identities, statuses, timestamps, ownership, log counts and attachment bytes. Presentation faults retain the original baseline with one warning; rich output preserves ERROR first lines and adds at most 1,024 bytes.
+- Released as a patch at the owner's request; the two opt-in switches are additive and off by default.
+
+
 ## 2.0.0 - 2026-10-31
 
 ### Breaking Changes And Migration

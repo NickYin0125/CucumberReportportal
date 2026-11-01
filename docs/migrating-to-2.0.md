@@ -1,16 +1,17 @@
 # Migrating to SDK 2.0 and Cucumber 12
 
-**Release distribution:** use the Gem asset from
-[GitHub v2.0.0](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0).
-RubyGems.org publication is separate. Keep the released 1.3.1 archive/lockfile
-if you need Cucumber 9 or 10.
+**Status:** SDK 2.0.1 is a source candidate, not a published release. No new tag,
+GitHub release or RubyGems publication is authorized by these instructions.
+SDK 1.3.2 is the separate Ledger candidate for Cucumber 9/10; an existing
+released 1.3.1 archive/lockfile remains a valid rollback baseline.
 
 ## Compatibility and release lines
 
 | Line | Ruby requirement | Cucumber requirement | Dependency family | CI source |
 | --- | --- | --- | --- | --- |
 | SDK 1.x, released 1.3.1 | `>=3.1` | `>=9,<11` | Legacy expressions `>=17,<19` | Immutable v1.3.1 commit; local `maintenance/1.x` is frozen there |
-| SDK 2.x, 2.0.0 | `>=3.3` | `>=12.0.1, ~>12.0` | Core 20 / Query 16 and compatible Cucumber dependencies | Current 2.x source; release pinned by `v2.0.0` |
+| SDK 1.x, candidate 1.3.2 | `>=3.1` | `>=9,<11` | Unchanged legacy expressions `>=17,<19` | `maintenance/presentation-ledger-1.3.2` |
+| SDK 2.x, candidate 2.0.1 | `>=3.3` | `>=12.0.1, ~>12.0` | Core 20 / Query 16 and compatible Cucumber dependencies | `codex/presentation-ledger-2.0.1`; release ancestry/promotion separately approved |
 
 Cucumber 11 is intentionally outside both contracts. The declared dependency
 range does not certify every future release. The current lockfile pins Cucumber
@@ -18,10 +19,16 @@ range does not certify every future release. The current lockfile pins Cucumber
 [release readiness](cucumber-12-release-readiness.md).
 
 The companion chart stays **Helm 1.3.1**, with **ReportPortal 26.0.7** and the
-existing locked upstream chart. SDK 2.0.0 does not require new containers,
+existing locked upstream chart. SDK 2.0.1 does not require new containers,
 Kubernetes changes, storage migrations, a database upgrade or an RP redeployment.
 Historical deployment evidence remains evidence for its original source/version,
 not a fresh Cucumber 12 certification.
+
+SDK 2.0.1 adds Ledger presentation without changing the 2.x dependency contract.
+`RP_PRESENTATION=rich` and `RP_RUN_CONTEXT=true` are independent opt-ins; defaults
+remain `plain` and `false`. See the
+[configuration reference](configuration.md#presentation-and-run-context).
+Historical migration evidence below is not a fresh 2.0.1 regression claim.
 
 ## Update dependencies deliberately
 
@@ -33,29 +40,30 @@ incidental availability as Ruby standard gems or another gem's dependencies.
 Let Cucumber 12 resolve its compatible Core, Query, Expressions and Messages
 family. In particular, do not retain the 1.x expressions `<19` workaround.
 
-Download the archive to `vendor/cache` and install it as described in the
-[getting-started guide](getting-started.md). In your consumer project's Gemfile:
+Until an approved 2.0.1 archive is actually released, a **local source-validation
+Gemfile**, in a separate consumer project, can contain:
 
 ```ruby
 source "https://rubygems.org"
 
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.0"
+gem "reportportal-cucumber-ruby", "= 2.0.1", path: ENV.fetch("SDK_SOURCE")
 ```
 
-From that consumer project's root:
+Set `SDK_SOURCE` to the absolute candidate checkout containing the gemspec, not
+to a `.gem` file. From that consumer project's root:
 
 ```sh
 bundle update cucumber reportportal-cucumber-ruby
 bundle exec ruby -e 'require "reportportal_cucumber"; puts "Ruby=#{RUBY_VERSION} SDK=#{ReportportalCucumber::VERSION} Cucumber=#{Gem.loaded_specs.fetch("cucumber").version}"'
 ```
 
-Expected with the validated resolution: SDK `2.0.0`, Cucumber `12.0.1`, Ruby `>=3.3`.
+Expected for the current candidate: SDK `2.0.1`, Cucumber `12.0.1`, Ruby `>=3.3`.
 Inspect and commit the resulting consumer lockfile only after its own tests pass.
-For local source development only, `path:` must point to the checkout directory
-containing the gemspec, never to a `.gem` file. Source validation is not an
-installed-gem packaging check. Do not assume a registry install can fetch the
-GitHub release without first providing its archive.
+Source validation is not an installed-gem packaging check. To test a matching
+candidate archive, remove `path:` while keeping the exact pin and follow the
+[local archive installation workflow](getting-started.md). Do not assume a
+registry install or a release-download URL can fetch this candidate.
 
 ## Native log and attach
 

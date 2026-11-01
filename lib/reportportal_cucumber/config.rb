@@ -7,6 +7,7 @@ require_relative "service/scenario_attributes"
 module ReportportalCucumber
   # Loads configuration from defaults, YAML profiles, and environment variables.
   class Config
+    PRESENTATION_WARNING = "Invalid RP_PRESENTATION; using plain presentation".freeze
     REQUIRED_REPORTING_OPTIONS = {
       endpoint: "RP_ENDPOINT", project: "RP_PROJECT", api_key: "RP_API_KEY"
     }.freeze
@@ -21,6 +22,8 @@ module ReportportalCucumber
       launch_description: nil,
       launch_mode: "DEFAULT",
       launch_attributes: [],
+      run_context: false,
+      presentation: "plain",
       rerun: false,
       rerun_of: nil,
       reporting_async: false,
@@ -84,6 +87,8 @@ module ReportportalCucumber
       "RP_LAUNCH_DESCRIPTION" => :launch_description,
       "RP_LAUNCH_MODE" => :launch_mode,
       "RP_ATTRIBUTES" => :launch_attributes,
+      "RP_RUN_CONTEXT" => :run_context,
+      "RP_PRESENTATION" => :presentation,
       "RP_RERUN" => :rerun,
       "RP_RERUN_OF" => :rerun_of,
       "RP_REPORTING_ASYNC" => :reporting_async,
@@ -139,6 +144,8 @@ module ReportportalCucumber
 
     # @!attribute [r] launch_uuid
     #   @return [String, nil] Existing launch whose lifecycle is owned by CI.
+    # @!attribute [r] run_context
+    #   @return [Boolean] Opt-in generated Launch metadata.
     # @!attribute [r] require_complete_reporting
     #   @return [Boolean] Opt-in final receipt completeness policy.
     # @!attribute [r] minio_ssl_verify_peer
@@ -236,6 +243,13 @@ module ReportportalCucumber
       @launch_description = strip(config[:launch_description])
       @launch_mode = strip(config[:launch_mode]) || DEFAULTS[:launch_mode]
       @launch_attributes = self.class.normalize_attributes(config[:launch_attributes])
+      @run_context = self.class.strict_boolean(config[:run_context], option: "RP_RUN_CONTEXT")
+      @presentation = config[:presentation]
+      unless %w[plain rich].include?(@presentation)
+        ReportportalCucumber.logger.warn(PRESENTATION_WARNING)
+        @presentation = "plain"
+      end
+      @presentation = @presentation.dup.freeze
       @rerun = truthy?(config[:rerun])
       @rerun_of = strip(config[:rerun_of])
       if @launch_uuid && (@rerun || @rerun_of)
@@ -347,6 +361,11 @@ module ReportportalCucumber
     end
 
     # @return [Boolean]
+    def run_context?
+      @run_context
+    end
+
+    # @return [Boolean]
     def fail_on_reporting_error?
       @fail_on_reporting_error
     end
@@ -419,6 +438,8 @@ module ReportportalCucumber
           !%w[0 false no off].include?(raw.to_s.strip.downcase)
         when :require_complete_reporting
           strict_boolean(raw, option: "RP_REQUIRE_COMPLETE_REPORTING")
+        when :run_context
+          strict_boolean(raw, option: "RP_RUN_CONTEXT")
         when :batch_size_logs, :batch_max_bytes, :queue_max_records, :queue_max_bytes, :spool_max_bytes,
              :queue_admission_timeout_ms
           raw

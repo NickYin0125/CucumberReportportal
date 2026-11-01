@@ -222,6 +222,10 @@ module ReportportalCucumber
             name: attachment[:name] || attachment["name"],
             mime: attachment[:mime] || attachment["mime"]
           }
+          style = attachment[:caption_style] || attachment["caption_style"]
+          attachment_values[:caption_style] = style if %w[default evidence baseline].include?(style)
+          baseline_name = attachment[:baseline_name] || attachment["baseline_name"]
+          attachment_values[:baseline_name] = baseline_name unless baseline_name.nil?
           values.merge!(attachment_values)
         end
         path = values[:path]
@@ -230,6 +234,7 @@ module ReportportalCucumber
         mime = values[:mime]
         return [0, :rejected_unsupported] if path && data
         return [0, :rejected_unsupported] unless valid_optional_string?(name) && valid_optional_string?(mime)
+        return [0, :rejected_unsupported] unless valid_optional_string?(values[:baseline_name])
         return [0, :rejected_unsupported] unless path.nil? || path.instance_of?(String)
         return [0, :rejected_unsupported] unless data.nil? || data.instance_of?(String)
         return [0, :rejected_unsupported] if attachment && data.nil? && path.nil?
@@ -320,6 +325,8 @@ module ReportportalCucumber
           }
           normalized_attachment[:path] = detached[:path] if values[:path]
           normalized_attachment[:bytes] = detached[:bytes] if values[:bytes]
+          normalized_attachment[:caption_style] = detached[:caption_style] if values[:caption_style]
+          normalized_attachment[:baseline_name] = detached[:baseline_name] if values[:baseline_name]
           normalized_attachment.freeze
         end
         actual = RECORD_OVERHEAD_BYTES + detached.sum do |key, value|
@@ -350,7 +357,9 @@ module ReportportalCucumber
           path: attachment[:path] || attachment["path"] || attachment[:file_path] || attachment["file_path"],
           bytes: attachment[:bytes] || attachment["bytes"],
           name: attachment[:name] || attachment["name"],
-          mime: attachment[:mime] || attachment["mime"]
+          mime: attachment[:mime] || attachment["mime"],
+          caption_style: attachment[:caption_style] || attachment["caption_style"],
+          baseline_name: attachment[:baseline_name] || attachment["baseline_name"]
         }
         captured.all? { |key, value| current[key].equal?(value) }
       end
@@ -548,12 +557,14 @@ module ReportportalCucumber
       end
 
       def flush_batch(records)
+        rendered_messages = {}
+        presentation_failures = {}
         unsettled = records.dup
         routed = route_external_video_records(records)
         chunk = []
         routed.each do |record|
           candidate = chunk + [record]
-          payload = build_payload(candidate)
+          payload = build_payload(candidate, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
           size = Transport::MultipartHelper.log_batch_bytes(entries: payload.fetch(:entries), files: payload.fetch(:files))
           if size <= batch_max_bytes
             chunk = candidate
@@ -561,17 +572,17 @@ module ReportportalCucumber
           end
 
           unless chunk.empty?
-            send_chunk(chunk)
+            send_chunk(chunk, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
             sent_sequences = chunk.map(&:sequence)
             unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
           end
           chunk = []
-          single = build_payload([record])
+          single = build_payload([record], rendered_messages: rendered_messages, presentation_failures: presentation_failures)
           single_size = Transport::MultipartHelper.log_batch_bytes(entries: single.fetch(:entries), files: single.fetch(:files))
           if single_size > batch_max_bytes
             warn_diagnostic_once(:oversized_wire, "ReportPortal log exceeded the request byte limit; preserved in local spool best-effort")
             error = Transport::MultipartHelper::SizeLimitError.new
-            spooled = safe_spool([record], error, outcome: :failed)
+            spooled = safe_spool([record], error, outcome: :failed, presentation_failures: presentation_failures)
             record_delivery([record], [:failed], spooled_indexes: spooled ? [0] : [])
             unsettled.delete(record)
           else
@@ -579,30 +590,36 @@ module ReportportalCucumber
           end
         end
         unless chunk.empty?
-          send_chunk(chunk)
+          send_chunk(chunk, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
           sent_sequences = chunk.map(&:sequence)
           unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
         end
       rescue StandardError => error
         unless unsettled.empty?
-          spooled = safe_spool(unsettled, error)
+          spooled = safe_spool(unsettled, error, presentation_failures: presentation_failures)
           record_delivery(unsettled, Array.new(unsettled.length, :ambiguous),
                           spooled_indexes: spooled ? (0...unsettled.length).to_a : [])
         end
         mark_diagnostic(:delivery_failed)
         handle_error(error)
+      ensure
+        rendered_messages.clear
+        presentation_failures.clear
       end
 
-      def build_payload(records)
-        Service::PayloadBuilder.build_log_batch(records)
+      def build_payload(records, rendered_messages: nil, presentation_failures: nil)
+        Service::PayloadBuilder.build_log_batch(records, presentation: @config.presentation,
+                                                rendered_messages: rendered_messages) do |record|
+          presentation_failures && (presentation_failures[record.sequence] ||= {})
+        end
       end
 
       def method_accepts_deadline?(method)
         method.parameters.any? { |kind, name| kind == :key && name == :deadline }
       end
 
-      def send_chunk(records)
-        payload = build_payload(records)
+      def send_chunk(records, rendered_messages: nil, presentation_failures: nil)
+        payload = build_payload(records, rendered_messages: rendered_messages, presentation_failures: presentation_failures)
         deadline = @mutex.synchronize { @work_deadline }
         result = begin
           use_result_api = @api.respond_to?(:log_batch_result) &&
@@ -626,7 +643,7 @@ module ReportportalCucumber
           response = error.respond_to?(:response) ? error.response : nil
           rejected_status = response && response.status >= 400 && response.status < 500 && ![408, 429].include?(response.status)
           category = error.is_a?(Transport::MultipartHelper::SizeLimitError) || rejected_status ? :failed : :ambiguous
-          spooled = safe_spool(records, error, outcome: category)
+          spooled = safe_spool(records, error, outcome: category, presentation_failures: presentation_failures)
           record_delivery(records, Array.new(records.length, category),
                           spooled_indexes: spooled ? (0...records.length).to_a : [])
           if error.is_a?(Transport::MultipartHelper::SizeLimitError)
@@ -647,7 +664,8 @@ module ReportportalCucumber
           next if indexes.empty?
 
           success = safe_spool(indexes.map { |index| records[index] },
-                               ReportingError.new("Log acknowledgement incomplete"), outcome: category)
+                               ReportingError.new("Log acknowledgement incomplete"), outcome: category,
+                               presentation_failures: presentation_failures)
           spooled.concat(indexes) if success
         end
         duplicate_indexes = may_duplicate ? (0...records.length).to_a : []
@@ -671,11 +689,17 @@ module ReportportalCucumber
 
           public_url = @video_uploader.upload_video(path: attachment[:path], bytes: attachment[:bytes],
                                                    name: attachment.fetch(:name), content_type: attachment.fetch(:mime))
+          caption = record.message
+          unless attachment[:caption_style] == "baseline"
+            caption = Presentation::Fallback.render(fallback: -> { record.message }) do
+              Service::PayloadBuilder.enrich_log_message(record.message, attachment, presentation: @config.presentation, level: :error)
+            end
+          end
           message = if video_upload_url?(public_url)
-                      Service::PayloadBuilder.build_video_markdown_message(message: record.message, url: public_url)
+                      Service::PayloadBuilder.build_video_markdown_message(message: caption, url: public_url)
                     else
                       mark_diagnostic(:degraded_evidence)
-                      [record.message, public_url.to_s].reject(&:empty?).join("\n\n")
+                      [caption, public_url.to_s].reject(&:empty?).join("\n\n")
                     end
           LogRecord.new(item_uuid: record.item_uuid, launch_uuid: record.launch_uuid, message: message,
                         level: :error, timestamp: record.timestamp, attachment: nil,
@@ -687,11 +711,11 @@ module ReportportalCucumber
         value.to_s.match?(%r{\Ahttps?://})
       end
 
-      def safe_spool(records, error, outcome: :ambiguous)
+      def safe_spool(records, error, outcome: :ambiguous, presentation_failures: nil)
         deadline = @mutex.synchronize { @work_deadline }
         return false if deadline&.expired?
 
-        spool(records, error, outcome: outcome)
+        spool(records, error, outcome: outcome, presentation_failures: presentation_failures)
         true
       rescue Service::SpoolStore::Error => spool_error
         warn_spool_failure(spool_error.reason)
@@ -747,8 +771,8 @@ module ReportportalCucumber
         end
       end
 
-      def spool(records, error, outcome: :ambiguous)
-        payload = build_payload(records)
+      def spool(records, error, outcome: :ambiguous, presentation_failures: nil)
+        payload = build_payload(records, presentation_failures: presentation_failures)
         deadline = @mutex.synchronize { @work_deadline }
         @spool_store.persist(entries: payload.fetch(:entries), files: payload.fetch(:files), outcome: outcome,
                              diagnostics: { spoolError: safe_exception_text(error) }, deadline: deadline)

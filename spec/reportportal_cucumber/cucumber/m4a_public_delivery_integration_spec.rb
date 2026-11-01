@@ -165,7 +165,7 @@ RSpec.describe "M4-A public bounded delivery integration" do
       expect(step_items.length).to eq(scenario_items.length),
         "expected named action children for attempts #{scenario_uuids.inspect}; items=#{capture.fetch('item_requests').map { |item| item.slice('name', 'parentUuid', 'type', 'responseUuid') }.inspect}"
       step_uuids = step_items.map { |item| item.fetch("responseUuid") }
-      reported_logs = capture.fetch("logs").select { |entry| entry.fetch("message").start_with?("Attachment: public-") }
+      reported_logs = capture.fetch("logs").select { |entry| entry.dig("file", "name")&.start_with?("public-") }
       expect(reported_logs.map { |entry| entry.fetch("itemUuid") }.sort).to eq(step_uuids.sort)
       expect(reported_logs.map { |entry| entry.fetch("file").fetch("name") }.sort)
         .to eq(["public-1.txt", "public-2.txt"])

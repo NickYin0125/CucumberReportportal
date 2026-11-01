@@ -71,7 +71,7 @@ RSpec.describe "Independent M4 Store feedback" do
 
       transaction = store.load_transaction(id: store.transactions.fetch(0))
       logical_name = name == ".attachments-data" ? ".attachments-data.bin" : name
-      message = name.end_with?(".json") ? "original message 0\n\n```json\nowner-0-bytes\n```" : "original message 0"
+      message = "original message 0\n\n`#{logical_name}` \u00b7 File \u00b7 13 B"
       expected_wire = entry(logical_name).merge("level" => "info", "message" => message)
       expect(transaction.fetch(:entries)).to eq([expected_wire])
       file = transaction.fetch(:files).first

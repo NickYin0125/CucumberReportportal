@@ -112,7 +112,7 @@ RSpec.describe "Installed release packaging" do
 
   it "has the release identity and verified-origin metadata without a fabricated email" do
     package = Gem::Package.new(@artifact).spec
-    expect(package.version.to_s).to eq("2.0.0")
+    expect(package.version.to_s).to eq("2.0.1")
     expect(package.version).not_to be_prerelease
     expect(package.homepage).to eq("https://github.com/NickYin0125/CucumberReportportal")
     expect(package.metadata.fetch("source_code_uri")).to eq(package.homepage)
@@ -136,7 +136,7 @@ RSpec.describe "Installed release packaging" do
     ["= 11.0.0", "= 13.0.0"].each_with_index do |requirement, index|
       rejected = File.join(@scratch, "rejected-#{index}")
       FileUtils.mkdir_p(rejected)
-      File.write(File.join(rejected, "Gemfile"), "source 'https://rubygems.org'\ngem 'reportportal-cucumber-ruby', '= 2.0.0'\ngem 'cucumber', '#{requirement}'\n")
+      File.write(File.join(rejected, "Gemfile"), "source 'https://rubygems.org'\ngem 'reportportal-cucumber-ruby', '= 2.0.1'\ngem 'cucumber', '#{requirement}'\n")
       stdout, stderr, status = Open3.capture3(@clean_env.merge("BUNDLE_GEMFILE" => File.join(rejected, "Gemfile"),
                                                               "BUNDLE_IGNORE_CONFIG" => "1"),
                                             Gem.ruby, @bundle, "lock", "--local", chdir: rejected)

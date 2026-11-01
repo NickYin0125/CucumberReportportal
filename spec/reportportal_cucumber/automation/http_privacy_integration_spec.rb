@@ -131,11 +131,15 @@ RSpec.describe "Native AppLog HTTP privacy" do
       expect(omitted_logs.length).to eq(3)
       omitted_logs.each do |entry|
         expect(entry.fetch("level")).to eq("info")
-        expect(entry.fetch("message")).to include("Status: `200`", Automation::EvidenceRedactor::OMITTED)
+        expect(entry.fetch("message")).to include("\u2192 200 \u00b7 7 ms", Automation::EvidenceRedactor::OMITTED)
       end
-      http_logs = result.fetch("logs").select { |entry| entry.fetch("message").start_with?("### Request") }
+      http_logs = result.fetch("logs").select { |entry| entry.fetch("message").match?(/\A(?:\u2713|## [\u2717\u26a0]) (?:GET|POST) /) }
       expect(http_logs.length).to eq(12)
-      http_logs.each { |entry| expect(attachments.map(&:strip)).to include(entry.fetch("message").strip) }
+      native_http = attachments.select { |body| body.start_with?("### Request\n") }
+      expect(native_http.length).to eq(12)
+      expect(native_http).to all(include("### Response\n- Status:"))
+      expect(native_http.map { |body| body[%r{^- `(?:GET|POST)` `(https?://[^`]+)`}, 1] })
+        .to eq(http_logs.map { |entry| entry.fetch("message")[%r{^`(https?://[^`]+)`}, 1] })
     end
   end
 end

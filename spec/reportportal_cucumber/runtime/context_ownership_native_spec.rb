@@ -247,7 +247,8 @@ RSpec.describe "Native per-context log ownership" do
         expect(logs.count { |log| log.fetch("message").include?("OWNED_APPLOG_#{run}") }).to eq(1)
         helper = result.fetch("helpers").find { |entry| entry.fetch("run") == run && entry.fetch("owner") == index }
         expect(helper.fetch("launch_uuid")).to eq(owner.fetch("launch_uuid"))
-        helper_logs = logs.select { |log| log.fetch("message").include?("OWNED_HELPER_#{run}_#{index}") }
+        helper_title = "## \u2717 OWNED\\_HELPER\\_#{run}\\_#{index}"
+        helper_logs = logs.select { |log| log.fetch("message").lines.first.chomp == helper_title }
         expect(helper_logs.length).to eq(1)
         expect(helper_logs.first.fetch("itemUuid")).to eq(helper.fetch("item_uuid"))
         expect(logs.filter_map { |log| log["itemUuid"] }).to all(eq(helper.fetch("item_uuid")))
@@ -258,7 +259,7 @@ RSpec.describe "Native per-context log ownership" do
         expect(owner.dig("receipt", "confirmed")).to eq(logs.length)
       end
     end
-    expect(result.fetch("outgoing").none? { |log| log.fetch("message").include?("FOREIGN_MUST_NOT_PUBLISH") }).to be(true)
+    expect(result.fetch("outgoing").none? { |log| log.fetch("message").match?(/FOREIGN\\?_MUST\\?_NOT\\?_PUBLISH/) }).to be(true)
     files = result.fetch("multipart").flat_map { |part| part.fetch("files") }
     expect(files.count { |file| file.fetch("bytes") == "native-attachment-bytes" }).to eq(count * 2)
     2.times do |run|
@@ -285,7 +286,8 @@ RSpec.describe "Native per-context log ownership" do
     result = native_ownership(duplicate: true, after_failure: true)
     verify_native_owners(result, count: 2)
     expect(result.fetch("statuses").map { |entry| entry.fetch("status") }).to eq([1, 1, 1])
-    diagnostics = result.fetch("outgoing").select { |log| log.fetch("message").include?("OWNERSHIP_ORIGINAL_AFTERALL_FAILURE") }
+    title = "## \u2717 RuntimeError: OWNERSHIP\\_ORIGINAL\\_AFTERALL\\_FAILURE"
+    diagnostics = result.fetch("outgoing").select { |log| log.fetch("message").lines.first&.chomp == title }
     expect(diagnostics.length).to eq(4)
     expect(diagnostics).to all(include("level" => "error"))
     expect(diagnostics.map { |log| log["itemUuid"] }).to all(be_nil)

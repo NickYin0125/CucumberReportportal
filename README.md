@@ -7,27 +7,21 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-**SDK 2.0.0** targets Cucumber 12. Existing Cucumber 9/10 installations stay on
-the independently maintained 1.x line; 2.0.0 does not support both generations.
+This checkout prepares **SDK 2.0.1**, an unpublished Ledger presentation
+candidate. Use a matching maintainer-supplied or locally built archive; no new
+tag, GitHub release or RubyGems publication is implied.
 
-| SDK line | Ruby | Cucumber | Source and status |
+| SDK line | Ruby | Cucumber | Candidate source |
 | --- | --- | --- | --- |
-| 1.x | `>= 3.1` | `>= 9, < 11` | Released **1.3.1**; `maintenance/1.x` frozen at the released commit |
-| 2.x | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | **2.0.0**, distributed through the GitHub release |
+| 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/presentation-ledger-1.3.2` |
+| 2.x / **2.0.1** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/presentation-ledger-2.0.1` |
 
-Cucumber 11 is not supported by either line. CI selects the real released 1.3.1
-source for legacy checks, never the 2.x gemspec. The planned matrix and observed
-local checks are distinguished in [release readiness](docs/cucumber-12-release-readiness.md).
-Helm **1.3.1** and ReportPortal **26.0.7** are unchanged and versioned separately
-from SDK 2.0.0; this SDK migration requires no infrastructure upgrade.
-The frozen maintenance branch still has its historical publisher; future 1.x
-publication requires a separately approved workflow/tooling backport and actual
-maintenance-head validation, not only this 2.x compatibility matrix.
-
-For Cucumber 12, follow the [English 2.0 migration guide](docs/migrating-to-2.0.md)
-for dependencies, native `log`/`attach`, strict-mode removal, and parallel Launch
-ownership. The five-step quick start below uses **2.0.0 / Cucumber 12**. For an
-older project, retain the [v1.3.1 instructions](https://github.com/NickYin0125/CucumberReportportal/tree/v1.3.1).
+Cucumber 11 remains unsupported. Existing published archives and their dated
+evidence are unchanged. Helm **1.3.1** / ReportPortal **26.0.7** stay independently
+versioned; this SDK update requires no infrastructure upgrade.
+For Cucumber 12 migration and CI-owned parallel Launches, see the
+[migration guide](docs/migrating-to-2.0.md). This candidate branch is not an
+approved release ancestry ref; publication remains a separate operation.
 
 **New here?** Follow the five steps below. The
 [complete getting-started guide](docs/getting-started.md) runs one Scenario without
@@ -36,8 +30,8 @@ a browser or a ReportPortal server before connecting your real project.
 | What you need | Requirement |
 | --- | --- |
 | Ruby | `>= 3.3` |
-| Cucumber | `>= 12.0.1`, `~> 12.0` |
-| Package | `reportportal-cucumber-ruby` **2.0.0**, from the GitHub release |
+| Cucumber | `>= 12.0.1, ~> 12.0` |
+| Package | `reportportal-cucumber-ruby` **2.0.1**, matching candidate archive |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -45,19 +39,19 @@ The SDK records tests and evidence. Your framework makes HTTP requests, performs
 assertions, and owns browser/screenshot/video lifecycles. Logging an ERROR does
 not fail a Scenario.
 
-## 1. Install the released gem
+## 1. Install the candidate gem
 
-Download the `.gem` asset from [v2.0.0](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0).
-RubyGems.org publication is separate; use the release archive and an exact version
-pin rather than assuming a registry install selects this release.
+Obtain `reportportal-cucumber-ruby-2.0.1.gem` from the maintainer or use the
+[isolated source-packaging workflow](examples/current_sdk/README.md#source-and-packaging-verification).
+There is no candidate release-download URL or assumed registry publication.
 
-From **your automation project root**:
+From **your automation project root**, using the verified archive's absolute path:
 
 ```sh
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.1.gem
 mkdir -p vendor/cache
-curl -fL -o vendor/cache/reportportal-cucumber-ruby-2.0.0.gem \
-  https://github.com/NickYin0125/CucumberReportportal/releases/download/v2.0.0/reportportal-cucumber-ruby-2.0.0.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.0.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.1.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.1.gem --no-document
 ```
 
 Add these entries to that project's `Gemfile`, then run `bundle install` from the
@@ -66,7 +60,7 @@ same directory:
 ```ruby
 source "https://rubygems.org"
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.0"
+gem "reportportal-cucumber-ruby", "= 2.0.1"
 ```
 
 Verify, still from **your project root**:
@@ -75,8 +69,24 @@ Verify, still from **your project root**:
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected output: `2.0.0`. Installation may download dependencies; offline setup
-requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-release).
+Expected output: `2.0.1`. Installation may download dependencies; offline setup
+requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-candidate).
+
+## Presentation Opt-ins
+
+Ledger's plain cards are the default. Set `RP_PRESENTATION=rich` only for RP log
+accents and folded evidence; the default is `plain`, and an invalid value warns
+once and uses plain. Native Cucumber HTML/messages, terminal output, user AppLog
+text, names and descriptions do not acquire rich markup.
+
+Structured AppLog HTTP and assertion logs retain their existing native Cucumber
+and terminal bodies; only the RP subscriber selects the new plain or rich cards.
+
+`RP_RUN_CONTEXT=true` separately enables allowlisted Launch metadata; it defaults
+to `false` and never overwrites explicit attributes or a non-empty description.
+On 2.x, `workers` is included only when `PARALLEL_TEST_GROUPS` is present.
+See [configuration](docs/configuration.md#presentation-and-run-context) and
+[Presentation](docs/advanced-reporting.md#presentation) for boundaries and examples.
 
 ## 2. Run one minimal Scenario
 
@@ -191,8 +201,8 @@ outcome and receipt, and completes it. Workers do not start or finish that Launc
 ## ReportPortal deployment from source
 
 The companion Chart **1.3.1** pins ReportPortal **26.0.7** and official chart
-**26.10.26**, requiring **Kubernetes >=1.35**. Download SDK **2.0.0** and Chart **1.3.1**
-from the [v2.0.0 Release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.0),
+**26.10.26**, requiring **Kubernetes >=1.35**. The unchanged Chart **1.3.1** is
+available from the [v1.3.1 Release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.1),
 or build the chart from this checkout. The root `docker-compose.yml` provides an isolated
 local alternative with the same read-only video policy and retention.
 See the deployment guides above for credentials, storage, migration constraints
