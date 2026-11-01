@@ -291,3 +291,28 @@ Merge the reviewed `maintenance/release-ancestry-1.x` feature branch into
 release-tooling, release-workflow and related-spec conflicts. The combined
 state must pass verification; protected branches remain unchanged, all four
 PRs remain draft, and no PR merge, tag or publication is authorized.
+
+## Decision 22: Recorded Failure Corpus, Not a Recreated 41-Case Set
+
+Owner-confirmed on 2026-11-01.
+
+The 41-case set doesn't exist as a file; it came from a summary. Don't recreate it. For the no-regression check, use every failure (message plus backtrace) recorded in the committed wp5-ci-final-20261101 captures on the qa/ branches (F01–F20, including all F14 escaping inputs), the frozen F04 62-frame failure, and the WP2 probe corpus. Generate the baseline by running the tested runtime (3f20313 for 2.x, f41888a for 1.x) in its own worktree, and store the outputs with SHA-256. Wherever the baseline didn't return the omission marker, the new output must be byte-identical.
+
+This replaces only the nonexistent 41-case input list. Preserve input
+provenance, original captures and all failures. N1 independently continues to
+compare against actual v1.3.1 at `4ca2f77`.
+
+## Decision 23: Dated Release-Notes Test Compatibility
+
+Owner-confirmed on 2026-11-01.
+
+Question: WP1 的日期变更触发了既有测试：它强制 CHANGELOG 必须写 Unreleased，因此“只改 CHANGELOG”与“PR #5 CI 绿色”无法同时满足。是否允许另加一个仅测试的提交，让该断言严格接受有效发布日期，并将绑定证明范围明确扩展为 CHANGELOG 与该测试文件？运行时代码仍完全不变。
+
+Owner answer: 允许仅测试的兼容修复并更新证明（推荐）
+
+Keep the original WP1 date-only commit and its proof intact. A separate
+test-only commit may make `spec/packaging/presentation_docs_spec.rb` accept
+Unreleased or a strictly valid ISO calendar date, with positive and negative
+tests. The updated binding must show exactly CHANGELOG and this spec changed
+from `173c603`; all runtime, dependency, Helm and workflow bytes remain
+unchanged. This does not authorize a release or weaken runtime verification.
