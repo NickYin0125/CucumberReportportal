@@ -222,3 +222,23 @@ proof: retain the original F04 topology and observations, and do not use the
 supplement to certify or change the SDK's item hierarchy, ownership or wire
 contract. Markdown-off is not a substitute for Console View. All other
 acceptance and no-merge/no-tag/no-publication requirements remain unchanged.
+
+## Decision 18: Scoped F14 API Parameter Ordering
+
+Owner-confirmed on 2026-11-01 after an explanation of the user-visible impact.
+
+Question: 最终审查发现：Cucumber 10 的 F14 基线 API 把参数返回为 e,a,b,c,d，新版为 a,b,c,d,e，但双方发出的参数顺序和值逐字节一致。服务端内部使用无序 Set，API 却声明 List。是否仅对这项 API 读回按完整参数集合（保留重复计数）比较，保留原始差异；所有请求报文仍严格逐字节验收？
+
+Owner answer: 接受这项窄范围调整， 继续
+
+Only the observed Cucumber 10 F14 GET parameter-array ordering difference may be
+compared as a complete multiset, preserving duplicate multiplicities. Retain
+the original API-order FAIL observations and the independently reviewed server
+source explanation. Exact ordered POST parameter bytes must still match.
+No parameter name, value, count, identity, topology or other field is excluded.
+
+This is an acceptance-comparison clarification, not an SDK behavior change or
+a guarantee of fixed parameter ordering in the ReportPortal UI. The request and
+response DTOs declare Lists; server persistence uses a Set. Do not describe the
+response contract as an unordered Set. All other acceptance and
+no-merge/no-tag/no-publication requirements remain unchanged.
