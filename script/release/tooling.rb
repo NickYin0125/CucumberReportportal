@@ -258,7 +258,9 @@ module ReleaseTooling
       raise Error, "Draft asset set mismatch" unless completed.fetch("draft") && uploaded.sort == @source.asset_names.sort
 
       verify_remote!(uploaded)
-      gh("release", "edit", @source.tag, "--draft=false", "--title", "SDK and Helm #{@source.version}", "--notes-file", notes_path)
+      latest_args = @source.tag.start_with?("v1.") ? ["--latest=false"] : []
+      gh("release", "edit", @source.tag, "--draft=false", *latest_args,
+         "--title", "SDK and Helm #{@source.version}", "--notes-file", notes_path)
       puts "Published verified GitHub release #{@source.tag}. RubyGems was not modified."
     end
 

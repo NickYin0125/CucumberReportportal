@@ -255,6 +255,32 @@ RSpec.describe ReleaseTooling do
       expect(gh_commands.flatten).not_to include("--clobber", "delete")
     end
 
+    context "when publishing v1.3.2" do
+      let(:version) { "1.3.2" }
+
+      it "keeps Latest on the 2.x line" do
+        publisher.publish!
+        expect(gh_commands.last).to eq([
+          "gh", "release", "edit", "v1.3.2", "--draft=false", "--latest=false",
+          "--title", "SDK and Helm 1.3.2", "--notes-file", File.join(bundle.directory, "release-notes.md"),
+          "--repo", "owner/repo"
+        ])
+      end
+    end
+
+    context "when publishing v2.0.1" do
+      let(:version) { "2.0.1" }
+
+      it "leaves Latest handling unchanged" do
+        publisher.publish!
+        expect(gh_commands.last).to eq([
+          "gh", "release", "edit", "v2.0.1", "--draft=false",
+          "--title", "SDK and Helm 2.0.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
+          "--repo", "owner/repo"
+        ])
+      end
+    end
+
     context "with the immutable v1.3.1 release" do
       let(:version) { "1.3.1" }
       let(:sha) { "4ca2f770e0a84e83688f165ba04b4db8ef855cf9" }
@@ -265,6 +291,20 @@ RSpec.describe ReleaseTooling do
           arguments = gh_commands.find { |args| args[2] == action }
           expect(arguments[arguments.index("--title") + 1]).to eq("SDK and Helm 1.3.1")
         end
+      end
+
+      it "returns before any edit when the historical release is already published" do
+        remote[:release] = release.merge("draft" => false,
+          "assets" => source.asset_names.map { |name| { "name" => name, "state" => "uploaded" } })
+        source.asset_names.each do |name|
+          remote[name] = File.binread(File.join(bundle.directory, name))
+        end
+
+        publisher.publish!
+
+        expect(gh_commands.count { |args| args[2] == "download" }).to eq(source.asset_names.length)
+        expect(gh_commands.all? { |args| args[1] == "api" || args[2] == "download" }).to be(true)
+        expect(gh_commands.none? { |args| args[2] == "edit" }).to be(true)
       end
     end
 
