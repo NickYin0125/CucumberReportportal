@@ -501,58 +501,21 @@ module LedgerQAAnalysis
           check("P1.3", "#{fixture} native caption equals independently classified raw tail", expected_caption, caption, snapshot: snapshot, inputs: { log_id: log["id"], stdlib_prefix: stdlib })
         end
       end
-      # The literal mandated strip regex destroys fenced Ruby evidence. Keep
-      # this blocked until the owner resolves the already-recorded contradiction.
-      blocked("P10.6", "Literal strip-tags removes <top (required)> and <main> inside byte-frozen F04 fences; owner clarification pending",
-        inputs: "docs/reviews/assets/ledger-qa-p106-strip-conflict-#{version}.json")
+      # Decision 9 is tested independently, including unchanged raw caller
+      # markup and byte-level frozen-frame guards, by legibility_checks.
     end
 
     def legibility_checks(plain, rich)
-      # Provisional implementation of the pending owner clarification. Literal
-      # raw-code bytes survive; only client vocabulary is removed, not user tags.
-      strip = lambda do |text|
-        saved = []
-        protect = lambda { |value| saved << value; "\u0001#{saved.length - 1}\u0002" }
-        output = text.gsub(/^(`{3,})[^\n]*\n.*?^\1(?=\n|\z)/m) { |value| protect.call(value) }
-        output = output.gsub(/(`+)(?!`)[^\n]*?\1(?!`)/) { |value| protect.call(value) }
-        output = output.gsub(/<\/?(?:details|summary)>|<span style="[^"]+">|<\/span>/, "")
-        output.gsub(/\u0001(\d+)\u0002/) { saved.fetch(Regexp.last_match(1).to_i) }
-      end
-      canonical = lambda do |text, is_rich|
-        value = is_rich ? strip.call(text) : text
-        if is_rich
-          value = value.gsub(/^(PNG|JPEG|Text|JSON) (`[^\n]+?`)(.*)$/) { "#{Regexp.last_match(2)} \u00b7 #{Regexp.last_match(1)}#{Regexp.last_match(3)}" }
-          first, rest = value.split("\n", 2)
-          if (match = first.match(/\A(\d{3}) ([A-Z]+) (.*?)(?: \u00b7 (.*))?\z/))
-            first = "\u2713 #{match[2]} #{match[3]} \u2192 #{match[1]}" + (match[4] ? " \u00b7 #{match[4]}" : "")
-            value = [first, rest].compact.join("\n")
-          end
-        else
-          value = value.sub(/\A\u2713 Assertion passed \u00b7 /, "PASS ")
-        end
-        CGI.unescapeHTML(value).scan(/[[:alnum:]]+/)
-      end
-      rich.each do |fixture, r|
-        p = plain.fetch(fixture)
-        group = lambda do |snapshot, accented|
-          owner = paths(snapshot)
-          logs(snapshot).group_by { |log| [owner.fetch(log["itemId"], "Launch"), log["level"]] }
-            .transform_values { |rows| rows.sort_by { |log| canonical.call(log["message"].lines.first, accented).join(" ") } }
-        end
-        left, right = group.call(p, false), group.call(r, true)
-        check("P10.7", "#{fixture} mode log ownership/counts before semantic pairing", left.transform_values(&:length), right.transform_values(&:length), snapshot: r, inputs: refs(p), method: "C")
-        left.each do |key, rows|
-          rows.zip(right.fetch(key, [])).each do |a, b|
-            next unless b
-            words = canonical.call(a["message"], false)
-            actual = canonical.call(b["message"], true)
-            index = 0
-            actual.each { |word| index += 1 if index < words.length && word == words[index] }
-            check("P10.6", "Provisional code-aware legibility #{fixture} log #{b['id']}", words, actual,
-              passed: index == words.length, snapshot: r, inputs: { plain_log: a["id"], rich_log: b["id"], allowed_changes: "Decision 2 kind/PASS/HTTP status positions only" },
-              note: "Not final criterion PASS: literal strip-tags contradiction remains BLOCKED pending owner decision.")
-          end
-        end
+      path = "docs/reviews/assets/ledger-qa-p106-decision9-#{version}.json"
+      proof = read(path)
+      raise "Decision 9 checker did not pass" unless proof["verdict"] == "PASS" && proof["checks"].all? { |row| row["verdict"] == "PASS" }
+      raise "Decision 9 proof used different checker source" unless proof["checker_source_sha256"] == Digest::SHA256.file(file("spec/acceptance/ledger_qa/p106_clarified.rb")).hexdigest
+      proof.fetch("checks").each do |row|
+        evidence_file("P10.6", row.fetch("check"), path, row["expected"], row["actual"], passed: row["verdict"] == "PASS",
+          inputs: row["inputs"], method: row["method"], note: "Decision 9; exact canonical equality, no arbitrary added words. Raw/angle/code bytes retained; expected-negative regressions test the checker, not product defects.")
+        checks.last[:evidence].merge!(row.fetch("evidence", {}).transform_keys(&:to_sym))
+        checks.last[:evidence][:verification_source] = path
+        checks.last[:approved_generated_annotations] = row["approved_generated_annotations"] if row.key?("approved_generated_annotations")
       end
     end
 
@@ -567,7 +530,11 @@ module LedgerQAAnalysis
       previous = version == "1.3.2" ? "1.3.1" : "2.0.0"
       evidence_file("V2", "Lockfile diff changes only own PATH version", path,
         ["-    reportportal-cucumber-ruby (#{previous})", "+    reportportal-cucumber-ruby (#{version})"], changes)
-      evidence_file("V3", "Independent local gem build exact output filename", path, "reportportal-cucumber-ruby-#{version}.gem", data.dig("package", "filename"), inputs: data["package"])
+      package_path = "docs/reviews/assets/ledger-qa-final-doc-package-#{version}.json"
+      package = read(package_path)
+      evidence_file("V3", "Fresh standalone package built from final doc-only FEATURE tree", package_path,
+        ["PASS", "reportportal-cucumber-ruby-#{version}.gem", version, true, true, true],
+        [package["verdict"], package.dig("package", "filename"), package.dig("package", "spec_version"), package["member_paths_exactly_match_spec_files"], package["packaged_runtime_lib_sha256_matches_tested_source"], package["no_qa_evidence_or_package_binaries_in_gem"]], inputs: package)
       evidence_file("V6", "No Helm/workflow delta from baseline", path, "", record.call("V6")["stdout"])
       chart = File.read(file("helm/reportportal-rich-experience/Chart.yaml"))
       evidence_file("V6", "Chart/app versions remain independent", path, true, chart.match?(/^version: 1\.3\.1$/) && chart.match?(/^appVersion: ["']?26\.0\.7["']?$/)) if version == "1.3.2"
@@ -587,7 +554,16 @@ module LedgerQAAnalysis
       refs = record.call("V7")["stdout"].lines.map(&:split).to_h { |sha, name| [name, sha] }
       initial = data.fetch("protected_heads_observed_at_task_start")
       evidence_file("V7", "All three protected heads equal independent initial observation", path, initial, refs.slice(*initial.keys))
-      blocked("V7", "Complete initial remote tag-list artifact needs recovery; current exit-only listing does not prove no tags were created", inputs: path) unless data["initial_remote_tags_artifact"]
+      fresh_path = "docs/reviews/assets/ledger-qa-v7-decision10-#{version}.json"
+      fresh = read(fresh_path)
+      fresh.fetch("checks").each do |row|
+        evidence_file("V7", row["check"], fresh_path, row["expected"], row["actual"], inputs: fresh["inputs"], method: "C", note: fresh["claim_limit"])
+      end
+      binding_path = "docs/reviews/assets/ledger-qa-doc-only-binding-#{version}.json"
+      binding = read(binding_path)
+      %w[G10 V1 V6].each do |id|
+        evidence_file(id, "Final doc-only FEATURE head is fingerprint-bound to actual tested runtime", binding_path, "PASS", binding["verdict"], inputs: binding, method: "C")
+      end
       history = record.call("V8")["stdout"]
       sequence = [/docs\(design\).*proposal/, /MarkdownText/, /failure card/i, /hook names and step.argument/i,
         /attachment captions/i, /Outline.*assertion/i, /(?:run context|run.context)/i, /(?:accent|Tier 2)/i, /prepare Ledger SDK/i]

@@ -1,26 +1,39 @@
 {
   "schema": "qa-publication-selection/1",
   "version": "2.0.1",
-  "verdict": "BLOCKED",
-  "checked_at_utc": "2026-10-31T18:49:56Z",
+  "verdict": "ACCEPT",
+  "checked_at_utc": "2026-11-01T02:15:26Z",
   "criteria": {
-    "PASS": 81,
-    "FAIL": 1,
-    "BLOCKED": 2
+    "PASS": 83,
+    "FAIL": 1
   },
-  "pending_owner": [
-    "P10.6",
-    "V7"
-  ],
-  "owner_decisions_sha256": "6ce748bd7b6be35dae4da289c986ee5b34bd1110cd12964c08e644f76a4b419d",
+  "pending_owner": [],
+  "owner_decisions_sha256": "30adf163bcdb8a873865844cc4962210f794b71e4567fc38941a36387ea43288",
+  "candidate_feature_head": "e906fada5971cb0e5713006506eaad9be52021e6",
+  "tested_runtime_head": "ecf8c5aade5b6982f96083cb21c758db56b81b3f",
   "linked_artifacts_available_after_extraction": true,
   "source_mirrors_or_caches_selected": false,
   "note": "This index and the stage path list are self-describing, not recursively SHA-indexed. Raw entries have separate full SHA manifests. Scratch originals and generated working copies remain local/untracked.",
   "files": [
     {
+      "path": "docs/design/presentation-ledger-acceptance.md",
+      "bytes": 31573,
+      "sha256": "1937ad7595fe818fa1182cbd8332bbff070ce9370e5ef3bfc62d0a244b7ad464"
+    },
+    {
+      "path": "docs/design/presentation-ledger-proposal.md",
+      "bytes": 36041,
+      "sha256": "984e10c581acaa25b3aa54344baac581519da992894e03ca4eaa98b604d7a97f"
+    },
+    {
       "path": "docs/reviews/2026-11-01-presentation-ledger-2.0.1-acceptance.md",
-      "bytes": 36141,
-      "sha256": "0acb13e8e1bce429aa45ba9d504e78e4c13be672ca2665ecc75982215e1adcb8"
+      "bytes": 39425,
+      "sha256": "a8890a329fd3d8fae9e9499f302f90d2a8c0a2fb176c50d1ddc4238a691b5b2d"
+    },
+    {
+      "path": "docs/reviews/assets/ledger-qa-doc-only-binding-2.0.1.json",
+      "bytes": 7265,
+      "sha256": "4d22331013c99435e88c89b182dd48fc95dd75a68e257c0220642da14399ed78"
     },
     {
       "path": "docs/reviews/assets/ledger-qa-dom-2.0.1.json",
@@ -36,6 +49,11 @@
       "path": "docs/reviews/assets/ledger-qa-download-file-2.0.1.json",
       "bytes": 1853,
       "sha256": "f9c39fde5f4bc61e561205b33c805091e4999058546297f01e6396bf6b0e28ca"
+    },
+    {
+      "path": "docs/reviews/assets/ledger-qa-final-doc-package-2.0.1.json",
+      "bytes": 56436,
+      "sha256": "2520b9ea295f76d863d3272aa489bb4b04416dacd6ccd0963793a60db2392f2e"
     },
     {
       "path": "docs/reviews/assets/ledger-qa-frozen-input/launch-76-f04.json",
@@ -78,9 +96,24 @@
       "sha256": "7c2e8eb19e1fc7b0abb13d1ff5e41fca317a1bf5df940c5f5b6cb4595eaf843e"
     },
     {
+      "path": "docs/reviews/assets/ledger-qa-owner-closure-history-2.0.1.json",
+      "bytes": 1447390,
+      "sha256": "f957cde6f2e3a7e36dfe6cad84430c693a15a6271bd15c4695cc4aa5e6d314fa"
+    },
+    {
+      "path": "docs/reviews/assets/ledger-qa-p106-decision9-2.0.1.json",
+      "bytes": 3988003,
+      "sha256": "6239dac26ab0914308b49c2728658a88b6014b7ac0a0b9c4bb2108595d9040c0"
+    },
+    {
       "path": "docs/reviews/assets/ledger-qa-p106-strip-conflict-2.0.1.json",
       "bytes": 524,
       "sha256": "b4f54bd96a3cf7ba00887d5032b1b9f8baa9898ece3a38180259d91d7d8f8643"
+    },
+    {
+      "path": "docs/reviews/assets/ledger-qa-package-harness-attempt1-2.0.1.json",
+      "bytes": 55273,
+      "sha256": "17dc33ebbe737b4c70ce75078bcbc33e1a45ca7d2e4d1fba3f87e092286c4a3f"
     },
     {
       "path": "docs/reviews/assets/ledger-qa-performance-2.0.1.json",
@@ -168,14 +201,24 @@
       "sha256": "57f1c8808ca17a9fb42d0072ef0b65c78ff0a38864b8f914f599635b14762fb6"
     },
     {
+      "path": "docs/reviews/assets/ledger-qa-v7-decision10-2.0.1.json",
+      "bytes": 5313,
+      "sha256": "13fe4cf5691df62b1fc3e88af317ca40ffb817c5be381ad7fedd81b2a5fcb7c2"
+    },
+    {
+      "path": "docs/reviews/assets/ledger-qa-v7-decision10-ci-refresh.json",
+      "bytes": 3430,
+      "sha256": "aa78cb5d1166bb63cf7549c56d4a82c38041f9cdc134a6f1dc7f4550050a0ad2"
+    },
+    {
       "path": "docs/reviews/assets/ledger-qa-v7-public-ci-before.json",
       "bytes": 4396,
       "sha256": "bcacc440f272928320ba26600a5cd9fdf95d98e638d1624178ccd0451c29697d"
     },
     {
       "path": "docs/reviews/assets/presentation-ledger-2.0.1-acceptance.json",
-      "bytes": 21816580,
-      "sha256": "32d13edbcb09e341cb89278888bba48c47f7ab3ac40f66d554a408c4576a8732"
+      "bytes": 24044911,
+      "sha256": "67ba861e5e8344a5fbb89459429ad918da5134d878ef38d0dd6caabfb6d57295"
     },
     {
       "path": "docs/reviews/assets/presentation-ledger-2.0.1-archive-verification.json",
@@ -199,8 +242,8 @@
     },
     {
       "path": "docs/reviews/assets/presentation-ledger-2.0.1-evidence.md",
-      "bytes": 6065,
-      "sha256": "f40a69bdb92fa12030f31020ba12c6f7ece314972b302ce67405fb106e7f5a40"
+      "bytes": 7522,
+      "sha256": "3d469f257cb0008ac8746269cebaa931bd9475dfbc1cc8d49c70d6f89a1b4620"
     },
     {
       "path": "docs/reviews/assets/presentation-ledger-2.0.1-live-raw.files.txt",
@@ -474,8 +517,8 @@
     },
     {
       "path": "spec/acceptance/ledger_qa/adjudicate.rb",
-      "bytes": 48339,
-      "sha256": "9c66962d7068c53675a07b9871eb594b0141640e8f636020b197f2bf4107a61a"
+      "bytes": 47265,
+      "sha256": "3d535c8cb36bd0912f74cb3d0d2d308b16dc2898eaf7efbfed26819feeeeee9d"
     },
     {
       "path": "spec/acceptance/ledger_qa/analyze.rb",
@@ -511,6 +554,11 @@
       "path": "spec/acceptance/ledger_qa/fetch_frozen.rb",
       "bytes": 2793,
       "sha256": "d35b44a0551824b43fd4b3da9cf617f92071599b787b213937c0bb6ca7af0f13"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/final_doc_package.rb",
+      "bytes": 6637,
+      "sha256": "481df68bb649ccb4edb8900866208ffb20b10b62aa4c80fae518f4d7757ba849"
     },
     {
       "path": "spec/acceptance/ledger_qa/framework_shape.rb",
@@ -578,6 +626,16 @@
       "sha256": "17a4f6e6e485b7d47d20da8ad998a9b893e54601c289eda5a29bde04d2c8eec6"
     },
     {
+      "path": "spec/acceptance/ledger_qa/owner_decision_verification.rb",
+      "bytes": 10134,
+      "sha256": "970c7fc9399c065790f3dbbc9a3d33c4456c48fe24ba73d39e289fee4003b66c"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/p106_clarified.rb",
+      "bytes": 21544,
+      "sha256": "369fc8b88adcf2ac644d7ac312f87c52fdfd0e477b485d3028c9ccb02e04513a"
+    },
+    {
       "path": "spec/acceptance/ledger_qa/parallel.rb",
       "bytes": 4226,
       "sha256": "43084eb6f43745784f74223293ac063adfbc6ee8b39a2ecb0ec61969b2508c68"
@@ -609,8 +667,8 @@
     },
     {
       "path": "spec/acceptance/ledger_qa/publication.rb",
-      "bytes": 13324,
-      "sha256": "423c067a2e00f840c27b59d6c95fddbf53f37aa039440f636a0c070e44819ddf"
+      "bytes": 15366,
+      "sha256": "91bf6551af3ff6aa20eeee596157e9752b83b6bc8a0183c3c06609fdd192c6e4"
     },
     {
       "path": "spec/acceptance/ledger_qa/read_audit.rb",
@@ -629,8 +687,8 @@
     },
     {
       "path": "spec/acceptance/ledger_qa/report.rb",
-      "bytes": 17888,
-      "sha256": "c08afc88505b2567dee5d99f1cb5e90c8b19a8e5177467771510875b4d163952"
+      "bytes": 21257,
+      "sha256": "d1f1dbbae049185ae77b4d5adf49959d46abfb2dada06a37b1512bcdb1e5e621"
     },
     {
       "path": "spec/acceptance/ledger_qa/repository_audit.rb",

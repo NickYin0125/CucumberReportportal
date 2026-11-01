@@ -58,7 +58,10 @@ verification = JSON.parse(File.read(verification_path))
 raise "Incomplete restoration verification" unless verification.fetch("results").length == 3 && verification["results"].all? { |row| row["every_restored_file_sha256_matches"] }
 data = JSON.parse(File.read(File.join(assets, "#{prefix}-acceptance.json")))
 raise "Not all criteria adjudicated" unless data.fetch("criteria").length == 84
-raise "Pending decisions were silently changed" unless data["criteria"].select { |row| row["verdict"] == "BLOCKED" }.map { |row| row["id"] }.sort == %w[P10.6 V7]
+raise "Not all MUST criteria passed" unless data["status"] == "ACCEPT" && data["criteria"].select { |row| row["level"] == "MUST" }.all? { |row| %w[PASS N/A].include?(row["verdict"]) }
+%W[ledger-qa-doc-only-binding-#{version}.json ledger-qa-p106-decision9-#{version}.json ledger-qa-v7-decision10-#{version}.json ledger-qa-final-doc-package-#{version}.json].each do |name|
+  raise "Unverified owner-decision closure evidence" unless JSON.parse(File.read(File.join(assets, name)))["verdict"] == "PASS"
+end
 raise "Evidence has an input gap" unless data.fetch("checks").all? { |check| !check["inputs"].nil? }
 report_path = File.join(root, "docs/reviews/2026-11-01-#{prefix}-acceptance.md")
 decisions = File.read(File.join(root, "docs/design/presentation-ledger-acceptance.md")).split(/^## Decisions\s*$/, 2).last
@@ -72,9 +75,9 @@ end
 guide = <<~MD
   # Ledger #{version} Evidence Guide
 
-  Final sign-off date: 2026-11-01 Asia/Shanghai. Status: **BLOCKED**, not ACCEPT.
+  Final sign-off date: 2026-11-01 Asia/Shanghai. Status: **ACCEPT**, with open nonblocking G11/S3 timing and cosmetic findings. This is not release/merge/publication authorization.
   [Acceptance report](../2026-11-01-#{prefix}-acceptance.md) and [84-criterion check index](#{prefix}-acceptance.json).
-  All eight owner Decisions are reproduced verbatim in the report. P10.6 and V7 remain unanswered, not waived.
+  All ten owner Decisions are reproduced verbatim in the report. Decisions 9/10 explicitly close P10.6/V7; the original published BLOCKED checkpoint and exact criterion records remain in [history](ledger-qa-owner-closure-history-#{version}.json).
 
   ## Contents
   Reports, indexed exact expected/actual checks, all S01-S12 PNGs, UI/DOM/download provenance and QA harness are plain files.
@@ -114,7 +117,10 @@ guide = <<~MD
   In the acceptance JSON, each criterion's `check_ids` indexes the full top-level `checks` table. `inputs.captured_source` plus `selection`, SHA256 and native IDs points to exact retained raw input records. No expected/actual assertion values were removed by indexing.
 
   ## Provenance And Limitations
-  Candidate: `#{data['candidate_head']}`. Baseline: `#{data['baseline_head']}`. The final six-cell stamp is `final-hooks-20261101`; product counts are 1345/1402 plus 16 QA properties per cell, not a selected subset.
+  Candidate FEATURE head: `#{data['candidate_head']}`. Actual tested runtime head: `#{data['tested_runtime_head']}`. Baseline: `#{data['baseline_head']}`. [Git fingerprints](ledger-qa-doc-only-binding-#{version}.json) prove the final feature delta is only the two approved design documents; runtime/product tests/dependencies/lock/workflows/Helm are identical. The final six-cell stamp is `final-hooks-20261101`; product counts are 1345/1402 plus 16 QA properties per cell, not a selected subset. No QA commit is represented as the tested feature candidate, and no fresh matrix executions are invented.
+  [Decision 9 checks](ledger-qa-p106-decision9-#{version}.json) use exact canonical word equality, raw/code-byte preservation, mutation negatives, and only source-context/line-count validated P10 fold/status annotations and Decision2 positions. No arbitrary inserted text is accepted.
+  [Decision 10 proof](ledger-qa-v7-decision10-#{version}.json) compares authentic pre-task CI tag NAMES to fresh current remote names and unchanged protected head SHAs. Historical tag object SHAs are not known and equality is not claimed.
+  [Fresh standalone package proof](ledger-qa-final-doc-package-#{version}.json) binds the packaged approved docs to the new feature tree; two pre-existing SDK-shipped review PNGs have explicit unchanged-byte proof. Temporary .gem/source mirrors are not published, and old package/harness attempt records remain labelled historical.
   Earlier `final-fixed-20261031` and `final-p88-20261101` matrices are superseded, not final-head proof. Early setup/recorder failures and the interrupted terminal-repair cell are retained without product-failure or PASS claims.
   Baselines from `20261031T065500Z` are **UNUSABLE** because they loaded candidate source from Cucumber's current-directory load path. Corrected `20261031T072147Z` captures include loaded-source guards.
   F04 uses an API-verified historical 62-frame input replay (Launch 76/item 1365/log 1118), not a naturally generated current stack. No-project, non-Exception and metadata-getter fault shapes are explicitly controlled inputs. Current native stacks are retained separately.
@@ -128,6 +134,7 @@ guide_path = File.join(assets, "#{prefix}-evidence.md")
 File.write(guide_path, guide)
 
 plain = [report_path, guide_path, verification_path]
+plain.concat(%w[presentation-ledger-acceptance.md presentation-ledger-proposal.md].map { |name| File.join(root, "docs/design", name) })
 plain.concat(Dir[File.join(root, "spec/acceptance/ledger_qa/*")].select { |path| File.file?(path) })
 plain << File.join(root, "features/presentation_ledger/f04_frozen.feature")
 plain.concat(Dir[File.join(assets, "ledger-qa-*.json")].reject { |path| File.basename(path).start_with?("ledger-qa-checkpoint") })
@@ -168,9 +175,9 @@ raise "Unresolved published evidence: #{unresolved.uniq.first(10).inspect}" unle
 end
 index_path = File.join(assets, "#{prefix}-publication-manifest.json")
 list_path = File.join(assets, "#{prefix}-stage.files.txt")
-index = { schema: "qa-publication-selection/1", version: version, verdict: "BLOCKED", checked_at_utc: Time.now.utc.iso8601,
+index = { schema: "qa-publication-selection/1", version: version, verdict: "ACCEPT", checked_at_utc: Time.now.utc.iso8601,
   criteria: data["criteria"].group_by { |row| row["verdict"] }.transform_values(&:length),
-  pending_owner: %w[P10.6 V7], owner_decisions_sha256: Digest::SHA256.hexdigest(decisions),
+  pending_owner: [], owner_decisions_sha256: Digest::SHA256.hexdigest(decisions), candidate_feature_head: data["candidate_head"], tested_runtime_head: data["tested_runtime_head"],
   linked_artifacts_available_after_extraction: true, source_mirrors_or_caches_selected: false,
   note: "This index and the stage path list are self-describing, not recursively SHA-indexed. Raw entries have separate full SHA manifests. Scratch originals and generated working copies remain local/untracked.",
   files: plain.map { |path| { path: path.delete_prefix(root + "/"), bytes: File.size(path), sha256: Digest::SHA256.file(path).hexdigest } } }
