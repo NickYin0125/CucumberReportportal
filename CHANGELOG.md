@@ -24,9 +24,10 @@
 
 ### Verification
 
-- The restored v1.3.1 failure-content path requires fresh verification and independent acceptance evidence. The previously tested runtime below is historical and does not certify these changes.
-- Runtime commit `f41888a9fdd6896630765cbbf350353a7f803e59` passed the full local Ruby 3.1.7/3.3.12 x Cucumber 9.2.1/10.2.0 four-cell matrix: 1,403 product examples per cell, with zero failures or pending examples. Independent QA repeated every full cell with 16 additional acceptance properties (1,419 examples per cell), also with zero failures or pending examples. Offline Cucumber passed one scenario and three steps in each developer and independent cell.
-- The local matrix is the accepted Ruby 3.1 and Cucumber 9 evidence (Decision 12); remote CI covers Ruby 3.3 with Cucumber 10. Presentation/UI acceptance is documented separately on `qa/presentation-ledger-1.3.2`; these matrix results alone are not final release authorization. Later documentation-only heads require explicit runtime fingerprint equivalence to the tested commit.
+- Runtime commit `df072ba0e6f603e66ba87e0b29c75fcc334a8e43` passed the full local Ruby 3.1.7/3.3.12 x Cucumber 9.2.1/10.2.0 four-cell matrix: 1,519 examples per cell (6,076 total), with zero failures or pending examples. Offline Cucumber passed one scenario and three steps in every cell. The first attempt's missing-jq environment failure is retained in the evidence; all four cells were rerun in full after correcting the test environment.
+- Live F01, F04, F14 and F14-negative passed reporting acceptance in plain and rich modes on Cucumber 9 and 10 (Launches 3807-3826, including the frozen 62-frame F04). Original-input replays in Launches 3827-3830 preserved all 14 F14-negative messages and complete backtraces from actual v1.3.1 Launch 3778: 56/56 byte-identical comparisons. Intentionally failing fixtures retained their expected failed business status and completed reporting.
+- Independent QA at `qa/presentation-ledger-1.3.2` commit `4abd436e322069a62f5f3a3de355b5c66260b9f8` passed P1.1-P1.10 and G8 under Decision 19: 715/715 checks, with no scoped defects. The report includes API readbacks, UI evidence and additional boundary controls in Launches 3831-3836. These are scoped presentation and failure-content results, not a claim of broader production certification.
+- Both remote CI checks passed at the tested runtime; remote CI covers Ruby 3.3 with Cucumber 10, while the complete local matrix supplies Ruby 3.1 and Cucumber 9 coverage. This release-note correction changes no runtime, dependencies or tests relative to `df072ba0`.
 
 
 ## 1.3.1 - 2026-10-31
