@@ -557,13 +557,14 @@ module ReportportalCucumber
       end
 
       def flush_batch(records)
+        rendered_messages = {}
         @presentation_failures = {}
         unsettled = records.dup
         routed = route_external_video_records(records)
         chunk = []
         routed.each do |record|
           candidate = chunk + [record]
-          payload = build_payload(candidate)
+          payload = build_payload(candidate, rendered_messages: rendered_messages)
           size = Transport::MultipartHelper.log_batch_bytes(entries: payload.fetch(:entries), files: payload.fetch(:files))
           if size <= batch_max_bytes
             chunk = candidate
@@ -571,12 +572,12 @@ module ReportportalCucumber
           end
 
           unless chunk.empty?
-            send_chunk(chunk)
+            send_chunk(chunk, rendered_messages: rendered_messages)
             sent_sequences = chunk.map(&:sequence)
             unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
           end
           chunk = []
-          single = build_payload([record])
+          single = build_payload([record], rendered_messages: rendered_messages)
           single_size = Transport::MultipartHelper.log_batch_bytes(entries: single.fetch(:entries), files: single.fetch(:files))
           if single_size > batch_max_bytes
             warn_diagnostic_once(:oversized_wire, "ReportPortal log exceeded the request byte limit; preserved in local spool best-effort")
@@ -589,7 +590,7 @@ module ReportportalCucumber
           end
         end
         unless chunk.empty?
-          send_chunk(chunk)
+          send_chunk(chunk, rendered_messages: rendered_messages)
           sent_sequences = chunk.map(&:sequence)
           unsettled.reject! { |record| sent_sequences.include?(record.sequence) }
         end
@@ -602,11 +603,13 @@ module ReportportalCucumber
         mark_diagnostic(:delivery_failed)
         handle_error(error)
       ensure
+        rendered_messages.clear
         @presentation_failures = nil
       end
 
-      def build_payload(records)
-        Service::PayloadBuilder.build_log_batch(records, presentation: @config.presentation) do |record|
+      def build_payload(records, rendered_messages: nil)
+        Service::PayloadBuilder.build_log_batch(records, presentation: @config.presentation,
+                                                rendered_messages: rendered_messages) do |record|
           @presentation_failures && (@presentation_failures[record.sequence] ||= {})
         end
       end
@@ -615,8 +618,8 @@ module ReportportalCucumber
         method.parameters.any? { |kind, name| kind == :key && name == :deadline }
       end
 
-      def send_chunk(records)
-        payload = build_payload(records)
+      def send_chunk(records, rendered_messages: nil)
+        payload = build_payload(records, rendered_messages: rendered_messages)
         deadline = @mutex.synchronize { @work_deadline }
         result = begin
           use_result_api = @api.respond_to?(:log_batch_result) &&
