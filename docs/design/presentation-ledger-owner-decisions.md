@@ -192,3 +192,17 @@ Owner answer: 保留安全省略，记录这一项例外（推荐）
 This exception applies only to the P1.2 title check for this exact F14 failure
 input. It does not waive other title, escaping, redaction, wire-equivalence or
 regression requirements, and does not authorize weakening the safety filter.
+
+## Decision 16: Independent CI Stability Investigation
+
+Owner-confirmed on 2026-11-01.
+
+16. 远端 CI 的未改动 1.3.1 基线出现 SIGINT/Spool 和超时失败。是否允许把这些既有 CI 稳定性问题纳入独立排查，必要时另作修复提交？保持全部断言，不推受保护分支、不合并或发布。
+
+Owner answer: 允许独立排查与必要修复（推荐）
+
+This authorizes separately reviewed CI diagnostics and regression coverage,
+including narrowly scoped validation-workflow changes under V6. It does not
+authorize weakening existing assertions, changing Helm, modifying protected
+branches, merging, tagging or publishing. A successful unchanged retry does
+not establish the cause of an earlier failure or demonstrate a runtime fix.
