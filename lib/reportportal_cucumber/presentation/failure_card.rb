@@ -25,21 +25,22 @@ module ReportportalCucumber
         # @param backtrace [String] Original joined backtrace, without normalization.
         # @param cwd [String] Project root used only for displayed locations.
         # @param presentation [String] "plain" or RP-only "rich".
+        # @param baseline [String, nil] Complete evidence already redacted by the formatter.
         # @return [String] Bounded card, or the exact redacted baseline on failure.
-        def format(error:, message:, backtrace:, cwd: Dir.pwd, presentation: "plain")
-          redactor = Automation::EvidenceRedactor.new
+        def format(error:, message:, backtrace:, cwd: Dir.pwd, presentation: "plain", baseline: nil)
           raw = [message, backtrace].reject(&:empty?).join("\n")
-          baseline = redactor.redact_text(raw)
+          baseline = Automation::EvidenceRedactor.new.redact_text(raw) if baseline.nil?
+          empty_redaction = baseline.empty?
           baseline = "Step failed" if baseline.empty?
           Fallback.render(fallback: -> { baseline }) do
             next baseline if baseline == Automation::EvidenceRedactor::OMITTED
+            next baseline if empty_redaction && !raw.empty?
 
-            safe_message = redactor.redact_text(message)
-            safe_backtrace = redactor.redact_text(backtrace)
-            joined = [safe_message, safe_backtrace].reject(&:empty?).join("\n")
-            # If redaction changed structure across the boundary, retain exactly
-            # what the baseline would have sent rather than reconstructing it.
-            next baseline unless joined == (raw.empty? ? "" : baseline)
+            # Split only the already-safe whole input. Re-redacting each part
+            # loses credentials whose syntax spans the message/frame boundary.
+            next baseline unless baseline.count("\n") == raw.count("\n")
+
+            safe_message, safe_backtrace = redacted_parts(baseline, message, backtrace)
 
             card = render(error, safe_message, safe_backtrace, cwd)
             next baseline if card.bytesize > BYTE_LIMIT
@@ -51,6 +52,16 @@ module ReportportalCucumber
         end
 
         private
+
+        def redacted_parts(baseline, message, backtrace)
+          return ["", ""] if message.empty? && backtrace.empty?
+          return ["", baseline] if message.empty?
+          return [baseline, ""] if backtrace.empty?
+
+          lines = baseline.split("\n", -1)
+          boundary = message.count("\n") + 1
+          [lines.take(boundary).join("\n"), lines.drop(boundary).join("\n")]
+        end
 
         def render(error, message, backtrace, cwd, accent: false)
           message_lines = message.lines(chomp: true)
