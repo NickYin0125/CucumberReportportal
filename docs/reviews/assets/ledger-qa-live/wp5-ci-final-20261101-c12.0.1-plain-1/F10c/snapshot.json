@@ -1,0 +1,262 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 2877,
+      "uuid": "b1ce4466-8423-465f-aff0-d2bac2ca2cb6",
+      "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F10c",
+      "number": 1,
+      "startTime": 1793505860357,
+      "endTime": 1793505860459,
+      "lastModified": 1793505860473,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 23193,
+      "uuid": "90a02b79-7a38-4ac2-8575-33b66e409c78",
+      "name": "Feature: Ledger developer F10c",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793505860377,
+      "endTime": 1793505860458,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 2877,
+      "uniqueId": "auto:9f37e259b150866faebc8f2e2e520c74",
+      "testCaseHash": 1958460377,
+      "patternTemplates": [],
+      "path": "23193",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23195,
+      "uuid": "331cb3dc-98e3-4cc9-80cd-5f92c2d396d3",
+      "name": "Scenario: F10c",
+      "codeRef": "features/presentation_ledger/qa_runtime/F10c.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793505860378,
+      "endTime": 1793505860438,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 23193,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 2877,
+      "uniqueId": "071464dde794d96f55bf01a158999a571b147ba0",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F10c.feature:3",
+      "testCaseHash": 461740562,
+      "patternTemplates": [],
+      "path": "23193.23195",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23196,
+      "uuid": "52215640-29de-4c57-9b43-3460ea3073bd",
+      "name": "Given ledger assertion c",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793505860397,
+      "endTime": 1793505860424,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 23195,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2877,
+      "uniqueId": "auto:75b22e7fda7b5e41887b49806b7c80d9",
+      "testCaseHash": -1781056458,
+      "patternTemplates": [],
+      "path": "23193.23195.23196",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 15132,
+      "time": "2026-11-01T04:04:20.410Z",
+      "message": "## ✗ Assertion failed · Intentionally absent Typewords control can be clicked\n\n```text\nexpected  click succeeds\nactual    Timeout 1200ms exceeded.\n          Call log:\n            - waiting for get_by_role(\"button\", name=\"M2 video intentionally absent control\", exact=True)\n```\n\n_Details_ `api_key` = `[REDACTED]` · `recording` = `Playwright viewport recording is still active`",
+      "level": "error",
+      "itemId": 23196
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 2877,
+      "items_by_launch": [
+        {
+          "id": 23193,
+          "uuid": "90a02b79-7a38-4ac2-8575-33b66e409c78",
+          "name": "Feature: Ledger developer F10c",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-01T04:04:20.377Z",
+          "endTime": "2026-11-01T04:04:20.458Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F10c",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 2877,
+          "uniqueId": "auto:9f37e259b150866faebc8f2e2e520c74",
+          "testCaseHash": 1958460377,
+          "patternTemplates": [],
+          "path": "23193",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 23195,
+          "uuid": "331cb3dc-98e3-4cc9-80cd-5f92c2d396d3",
+          "name": "Scenario: F10c",
+          "codeRef": "features/presentation_ledger/qa_runtime/F10c.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:04:20.378Z",
+          "endTime": "2026-11-01T04:04:20.438Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 23193,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F10c",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23193,
+                "name": "Feature: Ledger developer F10c"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 2877,
+          "uniqueId": "071464dde794d96f55bf01a158999a571b147ba0",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F10c.feature:3",
+          "testCaseHash": 461740562,
+          "patternTemplates": [],
+          "path": "23193.23195",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 23196,
+          "uuid": "52215640-29de-4c57-9b43-3460ea3073bd",
+          "name": "Given ledger assertion c",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:04:20.397Z",
+          "endTime": "2026-11-01T04:04:20.424Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 23195,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F10c",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23193,
+                "name": "Feature: Ledger developer F10c"
+              },
+              {
+                "id": 23195,
+                "name": "Scenario: F10c"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2877,
+          "uniqueId": "auto:75b22e7fda7b5e41887b49806b7c80d9",
+          "testCaseHash": -1781056458,
+          "patternTemplates": [],
+          "path": "23193.23195.23196",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

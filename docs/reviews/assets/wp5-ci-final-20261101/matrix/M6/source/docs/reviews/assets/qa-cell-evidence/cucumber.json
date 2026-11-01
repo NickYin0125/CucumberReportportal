@@ -1,0 +1,601 @@
+[
+  {
+    "id": "native-cucumber-12-http-reporting-contract",
+    "uri": "features/cucumber12_native_contract.feature",
+    "keyword": "Feature",
+    "name": "Native Cucumber 12 HTTP reporting contract",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@cucumber12_cli",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "native-cucumber-12-http-reporting-contract;real-cli-business-outcomes-are-not-harness-failures;;2",
+        "keyword": "Scenario Outline",
+        "name": "Real CLI business outcomes are not harness failures",
+        "description": "",
+        "line": 10,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "a native Cucumber 12 process runs the \"qa_pass\" contract case",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 617902334
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "its native exit is 0 and ReportPortal scenario status is \"PASSED\"",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1073375
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "its complete ReportPortal item tree has no wire violations",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4215792
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@cucumber12_cli",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 252666
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 153583
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.26.2/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 82750
+            }
+          }
+        ]
+      },
+      {
+        "id": "native-cucumber-12-http-reporting-contract;real-cli-business-outcomes-are-not-harness-failures;;3",
+        "keyword": "Scenario Outline",
+        "name": "Real CLI business outcomes are not harness failures",
+        "description": "",
+        "line": 11,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "a native Cucumber 12 process runs the \"qa_fail\" contract case",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 504386167
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "its native exit is 1 and ReportPortal scenario status is \"FAILED\"",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 224875
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "its complete ReportPortal item tree has no wire violations",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 306834
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@cucumber12_cli",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 257083
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 112292
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.26.2/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32334
+            }
+          }
+        ]
+      },
+      {
+        "id": "native-cucumber-12-http-reporting-contract;real-cli-business-outcomes-are-not-harness-failures;;4",
+        "keyword": "Scenario Outline",
+        "name": "Real CLI business outcomes are not harness failures",
+        "description": "",
+        "line": 12,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "a native Cucumber 12 process runs the \"qa_undefined\" contract case",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 480311792
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "its native exit is 1 and ReportPortal scenario status is \"FAILED\"",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 120750
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "its complete ReportPortal item tree has no wire violations",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 219833
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@cucumber12_cli",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 178625
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 83667
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.26.2/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 21458
+            }
+          }
+        ]
+      },
+      {
+        "id": "native-cucumber-12-http-reporting-contract;real-cli-business-outcomes-are-not-harness-failures;;5",
+        "keyword": "Scenario Outline",
+        "name": "Real CLI business outcomes are not harness failures",
+        "description": "",
+        "line": 13,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "a native Cucumber 12 process runs the \"qa_pending\" contract case",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 472140167
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "its native exit is 1 and ReportPortal scenario status is \"FAILED\"",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 212750
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "its complete ReportPortal item tree has no wire violations",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 366333
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@cucumber12_cli",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 194292
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 105959
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.26.2/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 42583
+            }
+          }
+        ]
+      },
+      {
+        "id": "native-cucumber-12-http-reporting-contract;real-cli-business-outcomes-are-not-harness-failures;;6",
+        "keyword": "Scenario Outline",
+        "name": "Real CLI business outcomes are not harness failures",
+        "description": "",
+        "line": 14,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "a native Cucumber 12 process runs the \"qa_ambiguous\" contract case",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 457723083
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "its native exit is 1 and ReportPortal scenario status is \"FAILED\"",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 131417
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "its complete ReportPortal item tree has no wire violations",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 242500
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@cucumber12_cli",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 200333
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 119208
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.26.2/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 25333
+            }
+          }
+        ]
+      },
+      {
+        "id": "native-cucumber-12-http-reporting-contract;real-cli-business-outcomes-are-not-harness-failures;;7",
+        "keyword": "Scenario Outline",
+        "name": "Real CLI business outcomes are not harness failures",
+        "description": "",
+        "line": 15,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "a native Cucumber 12 process runs the \"qa_skip\" contract case",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1045571459
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "its native exit is 0 and ReportPortal scenario status is \"SKIPPED\"",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1973625
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "its complete ReportPortal item tree has no wire violations",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2546667
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@cucumber12_cli",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/step_definitions/cucumber12_native_steps.rb:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 291791
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 334500
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.26.2/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 152750
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "formatter-contract",
+    "uri": "features/formatter_contract.feature",
+    "keyword": "Feature",
+    "name": "Formatter contract",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@stubbed",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "formatter-contract;replay-fixture-events-through-the-formatter",
+        "keyword": "Scenario",
+        "name": "Replay fixture events through the formatter",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ReportPortal HTTP is stubbed",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/formatter_steps.rb:3"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 24364000
+            }
+          },
+          {
+            "keyword": "When ",
+            "name": "I replay the NDJSON fixture through the formatter",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/formatter_steps.rb:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 41048375
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "the ReportPortal call sequence is correct",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/formatter_steps.rb:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1514875
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@stubbed",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 87000
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 33000
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.26.2/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20833
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

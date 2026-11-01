@@ -1,0 +1,370 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 2900,
+      "uuid": "9eca4c60-4ec0-4ee9-9b75-52c1dcb177aa",
+      "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F15-negative",
+      "number": 1,
+      "startTime": 1793505880026,
+      "endTime": 1793505880168,
+      "lastModified": 1793505880181,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 23413,
+      "uuid": "c7ad2020-adce-41a3-8ede-40abdf3d14ad",
+      "name": "Feature: Ledger developer F15",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793505880055,
+      "endTime": 1793505880167,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 2900,
+      "uniqueId": "auto:7128c394f5304db233c26f71f8434a5a",
+      "testCaseHash": 63176143,
+      "patternTemplates": [],
+      "path": "23413",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23414,
+      "uuid": "26d25183-1c96-4e20-bdd0-756276a06a7b",
+      "name": "Scenario: F15",
+      "codeRef": "features/presentation_ledger/qa_runtime/F15-negative.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793505880056,
+      "endTime": 1793505880144,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 23413,
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": []
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 2900,
+      "uniqueId": "6841c79a25f9c4b8346d5ca81cc3e6896c1e6cff",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F15-negative.feature:3",
+      "testCaseHash": -205203412,
+      "patternTemplates": [],
+      "path": "23413.23414",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23415,
+      "uuid": "cdd44743-4c88-49e5-baf1-5124d770510e",
+      "name": "Given ledger literal failing After",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793505880075,
+      "endTime": 1793505880095,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 23414,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2900,
+      "uniqueId": "auto:cb1893de0cff38255cb7c995ae9fee17",
+      "testCaseHash": -1381502386,
+      "patternTemplates": [],
+      "path": "23413.23414.23415",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23416,
+      "uuid": "bfd53214-6f3c-4adb-b191-6dbb27729210",
+      "name": "After hook",
+      "parameters": [],
+      "attributes": [],
+      "type": "AFTER_METHOD",
+      "startTime": 1793505880107,
+      "endTime": 1793505880130,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 23414,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2900,
+      "uniqueId": "auto:e98942007788e5044ed729db0f89c0fb",
+      "testCaseHash": -1200852742,
+      "patternTemplates": [],
+      "path": "23413.23414.23416",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 15261,
+      "time": "2026-11-01T04:04:40.088Z",
+      "message": "failing After",
+      "level": "info",
+      "itemId": 23415
+    },
+    {
+      "id": 15262,
+      "time": "2026-11-01T04:04:40.119Z",
+      "message": "## ✗ RuntimeError: LEDGER\\_INTENTIONAL\\_AFTER\\_FAILURE\n\n`script/…/support.rb:96`\n\n```text\nscript/…/support.rb:96  block in <top (required)>\n```\n\n_Full backtrace · 58 frames · 55 framework and 2 runner frames not shown above_\n\n```text\n/Users/nick/Documents/crr-qa-2.0.1/script/acceptance/presentation_ledger_developer/support.rb:96:in 'block in <top (required)>'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/hook.rb:21:in 'Cucumber::Glue::Hook#invoke'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime/after_hooks.rb:21:in 'block (2 levels) in Cucumber::Runtime::AfterHooks#after_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'\n-e:8:in 'Kernel#load'\n-e:8:in '<main>'\n```",
+      "level": "error",
+      "itemId": 23416
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 2900,
+      "items_by_launch": [
+        {
+          "id": 23413,
+          "uuid": "c7ad2020-adce-41a3-8ede-40abdf3d14ad",
+          "name": "Feature: Ledger developer F15",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-01T04:04:40.055Z",
+          "endTime": "2026-11-01T04:04:40.167Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F15-negative",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 2900,
+          "uniqueId": "auto:7128c394f5304db233c26f71f8434a5a",
+          "testCaseHash": 63176143,
+          "patternTemplates": [],
+          "path": "23413",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 23414,
+          "uuid": "26d25183-1c96-4e20-bdd0-756276a06a7b",
+          "name": "Scenario: F15",
+          "codeRef": "features/presentation_ledger/qa_runtime/F15-negative.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:04:40.056Z",
+          "endTime": "2026-11-01T04:04:40.144Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "parent": 23413,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F15-negative",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23413,
+                "name": "Feature: Ledger developer F15"
+              }
+            ]
+          },
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": []
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 2900,
+          "uniqueId": "6841c79a25f9c4b8346d5ca81cc3e6896c1e6cff",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F15-negative.feature:3",
+          "testCaseHash": -205203412,
+          "patternTemplates": [],
+          "path": "23413.23414",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 23415,
+          "uuid": "cdd44743-4c88-49e5-baf1-5124d770510e",
+          "name": "Given ledger literal failing After",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:04:40.075Z",
+          "endTime": "2026-11-01T04:04:40.095Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 23414,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F15-negative",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23413,
+                "name": "Feature: Ledger developer F15"
+              },
+              {
+                "id": 23414,
+                "name": "Scenario: F15"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2900,
+          "uniqueId": "auto:cb1893de0cff38255cb7c995ae9fee17",
+          "testCaseHash": -1381502386,
+          "patternTemplates": [],
+          "path": "23413.23414.23415",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 23416,
+          "uuid": "bfd53214-6f3c-4adb-b191-6dbb27729210",
+          "name": "After hook",
+          "parameters": [],
+          "attributes": [],
+          "type": "AFTER_METHOD",
+          "startTime": "2026-11-01T04:04:40.107Z",
+          "endTime": "2026-11-01T04:04:40.130Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 23414,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F15-negative",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23413,
+                "name": "Feature: Ledger developer F15"
+              },
+              {
+                "id": 23414,
+                "name": "Scenario: F15"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2900,
+          "uniqueId": "auto:e98942007788e5044ed729db0f89c0fb",
+          "testCaseHash": -1200852742,
+          "patternTemplates": [],
+          "path": "23413.23414.23416",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

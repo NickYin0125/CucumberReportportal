@@ -1,0 +1,147 @@
+{
+  "cell": "M6",
+  "ruby": "ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux]",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "config",
+        "--global",
+        "--add",
+        "safe.directory",
+        "/qa/source"
+      ],
+      "exit": 0,
+      "seconds": 0.006054583995137364
+    },
+    {
+      "argv": [
+        "bundle",
+        "_2.6.6_",
+        "install",
+        "--local"
+      ],
+      "exit": 0,
+      "seconds": 0.34596916699956637
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "ruby",
+        "-e",
+        "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+      ],
+      "exit": 0,
+      "seconds": 0.504861167006311
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "rspec",
+        "spec",
+        "spec/acceptance/ledger_qa/properties.rb",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/qa/source/docs/reviews/assets/qa-cell-evidence/rspec.json"
+      ],
+      "exit": 0,
+      "seconds": 166.03117665900209
+    },
+    {
+      "argv": [
+        "bundle",
+        "exec",
+        "cucumber",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/qa/source/docs/reviews/assets/qa-cell-evidence/cucumber.json"
+      ],
+      "exit": 0,
+      "seconds": 4.627007168994169
+    },
+    {
+      "argv": [
+        "/usr/local/bin/ruby",
+        "/qa/source/spec/acceptance/ledger_qa/isolated.rb",
+        "--transport",
+        "offline",
+        "--mode",
+        "plain",
+        "--fixtures",
+        "all",
+        "--sdk-root",
+        "/qa/source",
+        "--cucumber",
+        "12.0.1",
+        "--gem-path",
+        "/bundle/ruby/3.4.0",
+        "--jpeg",
+        "/qa-media/jpeg.jpg",
+        "--output",
+        "/qa/source/docs/reviews/assets/qa-cell-evidence/fixtures"
+      ],
+      "exit": 0,
+      "seconds": 17.809752507993835
+    },
+    {
+      "argv": [
+        "/usr/local/bin/ruby",
+        "/qa/source/spec/acceptance/ledger_qa/parallel.rb",
+        "--transport",
+        "offline",
+        "--mode",
+        "plain",
+        "--fixtures",
+        "F06",
+        "--sdk-root",
+        "/qa/source",
+        "--cucumber",
+        "12.0.1",
+        "--gem-path",
+        "/bundle/ruby/3.4.0",
+        "--jpeg",
+        "/qa-media/jpeg.jpg",
+        "--output",
+        "/qa/source/docs/reviews/assets/qa-cell-evidence/parallel-fixtures"
+      ],
+      "exit": 0,
+      "seconds": 2.3812701260030735
+    }
+  ],
+  "source_head": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "runtime": {
+    "ruby": "ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux]",
+    "cucumber": "12.0.1",
+    "sdk": "2.0.1"
+  },
+  "rspec": {
+    "duration": 165.015880659,
+    "example_count": 1479,
+    "failure_count": 0,
+    "pending_count": 0,
+    "errors_outside_of_examples_count": 0
+  },
+  "cucumber": {
+    "scenarios": 7,
+    "steps": 21,
+    "statuses": {
+      "passed": 21
+    }
+  },
+  "required_commands": [
+    "rspec",
+    "cucumber",
+    "fixtures",
+    "parallel-fixtures"
+  ],
+  "diagnostic_observer_requested": false,
+  "status": "PASS"
+}

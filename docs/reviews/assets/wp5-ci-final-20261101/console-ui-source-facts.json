@@ -1,0 +1,381 @@
+{
+  "schema": "rp-console-blocker-facts/1",
+  "public_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/reportportal/service-ui/5.15.6/app/src/pages/inside/logsPage/logsGridToolbar/logsGridToolbar.jsx",
+      "tag": "5.15.6",
+      "tree_commit": "5ec5e84dc89c1844f4561bfac906ceae7f7d44f8",
+      "sha256": "9ee9ee5e9ce750fd167b2b5e087aa39aacaca53d74745e1df1817bc73db23795",
+      "source": "/*\n * Copyright 2019 EPAM Systems\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\nimport React, { Component, createRef, Fragment } from 'react';\nimport PropTypes from 'prop-types';\nimport { connect } from 'react-redux';\nimport track from 'react-tracking';\nimport classNames from 'classnames/bind';\nimport { defineMessages, injectIntl } from 'react-intl';\nimport Parser from 'html-react-parser';\nimport { MARKDOWN, CONSOLE, DEFAULT } from 'common/constants/logViewModes';\nimport { logsPaginationEnabledSelector, userIdSelector } from 'controllers/user';\nimport {\n  getLogViewMode,\n  setLogViewMode,\n  DETAILED_LOG_VIEW,\n  isLogPageWithNestedSteps,\n} from 'controllers/log';\nimport { InputCheckbox } from 'components/inputs/inputCheckbox';\nimport { LOG_PAGE_EVENTS } from 'components/main/analytics/events';\nimport ConsoleIcon from 'common/img/console-inline.svg';\nimport MarkdownIcon from 'common/img/markdown-inline.svg';\nimport { ErrorLogsControl } from './errorLogsControl';\nimport { Pagination } from './pagination';\nimport { LogsSettings } from './logsSettings';\nimport { LogLevelsSlider } from './logLevelsSlider';\nimport styles from './logsGridToolbar.scss';\n\nconst cx = classNames.bind(styles);\n\nconst messages = defineMessages({\n  withAttachments: {\n    id: 'LogsGridToolbar.withAttachments',\n    defaultMessage: 'Logs with Attachment',\n  },\n  markdownMode: {\n    id: 'LogsGridToolbar.markdownMode',\n    defaultMessage: 'Markdown Mode',\n  },\n  consoleView: {\n    id: 'LogsGridToolbar.consoleView',\n    defaultMessage: 'Console View',\n  },\n  hideEmptySteps: {\n    id: 'LogsGridToolbar.hideEmptySteps',\n    defaultMessage: 'Hide Empty Steps',\n  },\n  hidePassedLogs: {\n    id: 'LogsGridToolbar.hidePassedLogs',\n    defaultMessage: 'Hide All Passed Logs',\n  },\n  errorLogs: {\n    id: 'LogsGridToolbar.errorLogs',\n    defaultMessage:\n      '{count, plural, =0 {No Error Logs} one {{totalItems} Error Log} other {{currentItem} of {totalItems} Error Logs}}',\n  },\n  showErrorLog: {\n    id: 'LogsGridToolbar.showErrorLog',\n    defaultMessage: 'Show',\n  },\n});\n\n@injectIntl\n@track()\n@connect((state) => ({\n  userId: userIdSelector(state),\n  isNestedStepsView: isLogPageWithNestedSteps(state),\n  logsPaginationEnabled: logsPaginationEnabledSelector(state),\n}))\nexport class LogsGridToolbar extends Component {\n  static propTypes = {\n    intl: PropTypes.object.isRequired,\n    activePage: PropTypes.number.isRequired,\n    pageCount: PropTypes.number.isRequired,\n    onChangePage: PropTypes.func.isRequired,\n    userId: PropTypes.string.isRequired,\n    logLevel: PropTypes.shape({\n      id: PropTypes.string.isRequired,\n      label: PropTypes.string.isRequired,\n      name: PropTypes.string.isRequired,\n    }).isRequired,\n    tracking: PropTypes.shape({\n      trackEvent: PropTypes.func,\n      getTrackingData: PropTypes.func,\n    }).isRequired,\n    children: PropTypes.func,\n    onChangeLogLevel: PropTypes.func,\n    onChangeWithAttachments: PropTypes.func,\n    onHideEmptySteps: PropTypes.func,\n    onHidePassedLogs: PropTypes.func,\n    logPageMode: PropTypes.string,\n    isNestedStepsView: PropTypes.bool,\n    withAttachments: PropTypes.bool,\n    isEmptyStepsHidden: PropTypes.bool,\n    isPassedLogsHidden: PropTypes.bool,\n    errorLogs: PropTypes.array,\n    highlightErrorLog: PropTypes.func,\n    errorLogIndex: PropTypes.number,\n    logsPaginationEnabled: PropTypes.bool,\n    logLevels: PropTypes.array,\n  };\n\n  static defaultProps = {\n    children: () => {},\n    onChangeLogLevel: () => {},\n    onChangeWithAttachments: () => {},\n    onHideEmptySteps: () => {},\n    onHidePassedLogs: () => {},\n    logPageMode: DETAILED_LOG_VIEW,\n    isNestedStepsView: false,\n    withAttachments: false,\n    isEmptyStepsHidden: false,\n    isPassedLogsHidden: false,\n    errorLogs: [],\n    highlightErrorLog: () => {},\n    errorLogIndex: null,\n    logsPaginationEnabled: true,\n    logLevels: [],\n  };\n\n  state = {\n    logViewMode: getLogViewMode(this.props.userId),\n  };\n\n  panelRef = createRef();\n\n  toggleLogViewMode = (targetViewMode) => {\n    const { logViewMode } = this.state;\n    const newLogViewMode = logViewMode === targetViewMode ? DEFAULT : targetViewMode;\n\n    this.props.tracking.trackEvent(\n      LOG_PAGE_EVENTS.getClickOnLogViewModeEvent(targetViewMode, newLogViewMode === targetViewMode),\n    );\n    setLogViewMode(this.props.userId, newLogViewMode);\n    this.setState({\n      logViewMode: newLogViewMode,\n    });\n  };\n\n  toggleMarkdownMode = () => this.toggleLogViewMode(MARKDOWN);\n\n  toggleConsoleView = () => this.toggleLogViewMode(CONSOLE);\n\n  toggleWithAttachments = () => {\n    const { onChangeWithAttachments, withAttachments } = this.props;\n\n    this.props.tracking.trackEvent(\n      LOG_PAGE_EVENTS.getClickOnLogsWithAttachmentsCheckboxEvent(!withAttachments),\n    );\n    onChangeWithAttachments(!withAttachments);\n  };\n\n  toggleHidePassedLogs = () => {\n    const { onHidePassedLogs, isPassedLogsHidden } = this.props;\n\n    this.props.tracking.trackEvent(\n      LOG_PAGE_EVENTS.getClickOnHidePassedLogsCheckboxEvent(!isPassedLogsHidden),\n    );\n    onHidePassedLogs(!isPassedLogsHidden);\n  };\n\n  handleContainerPaginationChange = (nextPage) => {\n    this.props.tracking.trackEvent(\n      LOG_PAGE_EVENTS.getClickLogPaginationEvent('container_toolbar'),\n    );\n    this.props.onChangePage(nextPage);\n  };\n\n  toggleHideEmptySteps = () => {\n    const { onHideEmptySteps, isEmptyStepsHidden } = this.props;\n\n    onHideEmptySteps(!isEmptyStepsHidden);\n  };\n\n  isConsoleViewMode = () => {\n    const { isNestedStepsView } = this.props;\n    const { logViewMode } = this.state;\n    return logViewMode === CONSOLE && !isNestedStepsView;\n  };\n\n  render() {\n    const {\n      intl,\n      children,\n      activePage,\n      pageCount,\n      logLevel,\n      logPageMode,\n      isNestedStepsView,\n      withAttachments,\n      isPassedLogsHidden,\n      errorLogs,\n      highlightErrorLog,\n      errorLogIndex,\n      logsPaginationEnabled,\n      logLevels,\n      onChangeLogLevel,\n    } = this.props;\n    const { logViewMode } = this.state;\n    const stickyOffsetTop = this.panelRef.current ? this.panelRef.current.clientHeight : 0;\n\n    return (\n      <div className={cx('container')}>\n        <div ref={this.panelRef} className={cx('panel')}>\n          <div className={cx('aside')}>\n            <LogLevelsSlider\n              logLevel={logLevel}\n              logLevels={logLevels}\n              onChangeLogLevel={onChangeLogLevel}\n            />\n            {logPageMode === DETAILED_LOG_VIEW && (\n              <div className={cx('aside-element')}>\n                <ErrorLogsControl\n                  errorLogs={errorLogs}\n                  highlightErrorLog={highlightErrorLog}\n                  errorLogIndex={errorLogIndex}\n                />\n              </div>\n            )}\n          </div>\n          <div className={cx('aside')}>\n            <div className={cx('aside-element-block')}>\n              <div className={cx('aside-element')}>\n                <InputCheckbox value={withAttachments} onChange={this.toggleWithAttachments}>\n                  {intl.formatMessage(messages.withAttachments)}\n                </InputCheckbox>\n              </div>\n              {logPageMode === DETAILED_LOG_VIEW && (\n                <Fragment>\n                  {isNestedStepsView && (\n                    <div className={cx('aside-element')}>\n                      <InputCheckbox\n                        value={isPassedLogsHidden}\n                        onChange={this.toggleHidePassedLogs}\n                      >\n                        {intl.formatMessage(messages.hidePassedLogs)}\n                      </InputCheckbox>\n                    </div>\n                  )}\n                  {/* <div className={cx('aside-element')}>\n                  <InputCheckbox value={isEmptyStepsHidden} onChange={this.toggleHideEmptySteps}>\n                    {intl.formatMessage(messages.hideEmptySteps)}\n                  </InputCheckbox>\n                </div> */}\n                </Fragment>\n              )}\n            </div>\n            <div className={cx('mode-buttons')}>\n              <button\n                className={cx('mode-button', 'markdown', { active: logViewMode === MARKDOWN })}\n                onClick={this.toggleMarkdownMode}\n                title={intl.formatMessage(messages.markdownMode)}\n              >\n                {Parser(MarkdownIcon)}\n              </button>\n              {!isNestedStepsView && (\n                <button\n                  className={cx('mode-button', 'console', { active: logViewMode === CONSOLE })}\n                  onClick={this.toggleConsoleView}\n                  title={intl.formatMessage(messages.consoleView)}\n                >\n                  {Parser(ConsoleIcon)}\n                </button>\n              )}\n              <div className={cx('logs-settings')}>\n                <LogsSettings isConsoleViewMode={this.isConsoleViewMode()} />\n              </div>\n            </div>\n            {pageCount !== 0 && logsPaginationEnabled && (\n              <div className={cx('pagination')}>\n                <Pagination\n                  activePage={activePage}\n                  pageCount={pageCount}\n                  onChangePage={this.handleContainerPaginationChange}\n                />\n              </div>\n            )}\n          </div>\n        </div>\n        <div className={cx('children')}>\n          {children({\n            markdownMode: logViewMode === MARKDOWN,\n            consoleView: this.isConsoleViewMode(),\n            rawHeaderCellStylesConfig: { top: `${stickyOffsetTop}px` },\n          })}\n        </div>\n      </div>\n    );\n  }\n}\n",
+      "relevant_lines": [
+        {
+          "line": 30,
+          "text": "  isLogPageWithNestedSteps,"
+        },
+        {
+          "line": 53,
+          "text": "  consoleView: {"
+        },
+        {
+          "line": 54,
+          "text": "    id: 'LogsGridToolbar.consoleView',"
+        },
+        {
+          "line": 80,
+          "text": "  isNestedStepsView: isLogPageWithNestedSteps(state),"
+        },
+        {
+          "line": 155,
+          "text": "  toggleConsoleView = () => this.toggleLogViewMode(CONSOLE);"
+        },
+        {
+          "line": 191,
+          "text": "    return logViewMode === CONSOLE && !isNestedStepsView;"
+        },
+        {
+          "line": 269,
+          "text": "              {!isNestedStepsView && ("
+        },
+        {
+          "line": 272,
+          "text": "                  onClick={this.toggleConsoleView}"
+        },
+        {
+          "line": 273,
+          "text": "                  title={intl.formatMessage(messages.consoleView)}"
+        },
+        {
+          "line": 296,
+          "text": "            consoleView: this.isConsoleViewMode(),"
+        }
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/reportportal/service-ui/5.15.6/app/src/controllers/log/selectors.js",
+      "tag": "5.15.6",
+      "tree_commit": "5ec5e84dc89c1844f4561bfac906ceae7f7d44f8",
+      "sha256": "90a7698a0c5db45569e81ebc758a8c2a4523c2189b554db619bce9617ddb6047",
+      "source": "/*\n * Copyright 2019 EPAM Systems\n *\n * Licensed under the Apache License, Version 2.0 (the \"License\");\n * you may not use this file except in compliance with the License.\n * You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing, software\n * distributed under the License is distributed on an \"AS IS\" BASIS,\n * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n * See the License for the specific language governing permissions and\n * limitations under the License.\n */\n\nimport { createSelector } from 'reselect';\nimport {\n  logItemIdSelector,\n  searchStringSelector,\n  pagePropertiesSelector,\n  createQueryParametersSelector,\n  PROJECT_LOG_PAGE,\n  PROJECT_USERDEBUG_LOG_PAGE,\n  payloadSelector,\n  prevPagePropertiesSelector,\n} from 'controllers/pages';\nimport { PAGE_KEY } from 'controllers/pagination';\nimport {\n  itemsSelector,\n  paginationSelector,\n  parentItemSelector,\n  parentItemsSelector,\n  groupItemsByParent,\n} from 'controllers/testItem';\nimport { debugModeSelector } from 'controllers/launch';\nimport { logsPaginationEnabledSelector } from 'controllers/user';\nimport { extractNamespacedQuery, createNamespacedQuery } from 'common/utils/routingUtils';\nimport { getPreviousItem, getNextItem, getUpdatedLogQuery } from './utils';\nimport {\n  NAMESPACE,\n  DEFAULT_SORTING,\n  RETRY_ID,\n  ACTIVE_LOG_ITEM_QUERY_KEY,\n  DETAILED_LOG_VIEW,\n  LAUNCH_LOG_VIEW,\n  LOG_STATUS_FILTER_KEY,\n} from './constants';\n\nconst logSelector = (state) => state.log || {};\n\nexport const logActivitySelector = (state) => logSelector(state).activity || [];\n\nexport const lastLogActivitySelector = createSelector(logActivitySelector, (activity) =>\n  activity.length ? activity[0] : null,\n);\n\nexport const logItemsSelector = (state) => logSelector(state).logItems || [];\nexport const logPaginationSelector = (state) => logSelector(state).pagination;\nexport const loadingSelector = (state) => logSelector(state).loading || false;\nexport const attachmentsSelector = (state) => logSelector(state).attachments || {};\nexport const sauceLabsSelector = (state) => logSelector(state).sauceLabs || {};\n\nexport const logStackTraceSelector = (state) => logSelector(state).stackTrace || {};\nexport const logStackTraceItemsSelector = (state) => logStackTraceSelector(state).content;\nexport const logStackTracePaginationSelector = (state) => logStackTraceSelector(state).pagination;\nexport const logStackTraceLoadingSelector = (state) => logStackTraceSelector(state).loading;\nexport const errorLogsSelector = (state) => logSelector(state).errorLogs || {};\nexport const errorLogsItemsSelector = (state) => errorLogsSelector(state).content;\nexport const pageLoadingSelector = (state) => logSelector(state).pageLoading;\nexport const includeAllLaunchesSelector = (state) => logSelector(state).includeAllLaunches;\nexport const shouldShowLoadMoreSelector = (state) => logSelector(state).shouldShowLoadMore;\nexport const activeTabIdSelector = (state) => logSelector(state).activeTabId;\n\nexport const querySelector = createQueryParametersSelector({\n  defaultSorting: DEFAULT_SORTING,\n});\n\nexport const historyItemsSelector = (state) => logSelector(state).historyItems || [];\n\nconst createActiveLogItemIdSelector = (\n  pageQuerySelector,\n  itemIdSelector = logItemIdSelector,\n  itemQueryKey = ACTIVE_LOG_ITEM_QUERY_KEY,\n) =>\n  createSelector(itemIdSelector, pageQuerySelector, (logItemId, query) => {\n    const namespacedQuery = extractNamespacedQuery(query, NAMESPACE);\n    return parseInt(namespacedQuery[itemQueryKey], 10) || logItemId;\n  });\n\nexport const activeLogIdSelector = createActiveLogItemIdSelector(pagePropertiesSelector);\nexport const prevActiveLogIdSelector = createActiveLogItemIdSelector(prevPagePropertiesSelector);\n\nexport const activeLogSelector = createSelector(\n  historyItemsSelector,\n  activeLogIdSelector,\n  debugModeSelector,\n  parentItemSelector,\n  (historyItems, logItemId, debugMode, parentItem) =>\n    debugMode ? parentItem : historyItems.find((historyItem) => historyItem.id === logItemId),\n);\n\nexport const retriesSelector = createSelector(activeLogSelector, (logItem = {}) => {\n  const { retries = [] } = logItem;\n  return [...retries, logItem];\n});\n\nexport const activeRetryIdSelector = createActiveLogItemIdSelector(\n  pagePropertiesSelector,\n  activeLogIdSelector,\n  RETRY_ID,\n);\nexport const prevActiveRetryIdSelector = createActiveLogItemIdSelector(\n  prevPagePropertiesSelector,\n  activeLogIdSelector,\n  RETRY_ID,\n);\n\nexport const activeRetrySelector = createSelector(\n  retriesSelector,\n  activeRetryIdSelector,\n  (retries, retryId) => retries.filter((retry) => retry.id === retryId)[0],\n);\n\nconst groupedTestItemsSelector = createSelector(\n  itemsSelector,\n  searchStringSelector,\n  (testItems, searchQuery) => {\n    const isListView = searchQuery.indexOf('filter.eq.hasChildren');\n\n    if (isListView) {\n      const groupedItems = groupItemsByParent(testItems);\n\n      return Object.keys(groupedItems).reduce(\n        (acc, groupKey) => acc.concat(groupedItems[groupKey]),\n        [],\n      );\n    }\n\n    return testItems;\n  },\n);\n\nexport const previousLogLinkSelector = createSelector(\n  payloadSelector,\n  pagePropertiesSelector,\n  logItemIdSelector,\n  debugModeSelector,\n  groupedTestItemsSelector,\n  (payload, query, logId, debugMode, testItems) => {\n    const previousItem = getPreviousItem(logId, testItems);\n    if (!previousItem) {\n      return null;\n    }\n    const updatedLogQuery = getUpdatedLogQuery(query, previousItem.id, {\n      [PAGE_KEY]: 1,\n    });\n    const { launchId, path } = previousItem;\n    const testItemIds = [launchId, ...path.split('.')].join('/');\n    return {\n      type: debugMode ? PROJECT_USERDEBUG_LOG_PAGE : PROJECT_LOG_PAGE,\n      payload: {\n        ...payload,\n        testItemIds,\n      },\n      meta: { query: { ...query, ...updatedLogQuery } },\n    };\n  },\n);\n\nexport const nextLogLinkSelector = createSelector(\n  payloadSelector,\n  pagePropertiesSelector,\n  logItemIdSelector,\n  debugModeSelector,\n  groupedTestItemsSelector,\n  (payload, query, logId, debugMode, testItems) => {\n    const nextItem = getNextItem(logId, testItems);\n    if (!nextItem) {\n      return null;\n    }\n    const updatedLogQuery = getUpdatedLogQuery(query, nextItem.id, {\n      [PAGE_KEY]: 1,\n    });\n    const { launchId, path } = nextItem;\n    const testItemIds = [launchId, ...path.split('.')].join('/');\n    return {\n      type: debugMode ? PROJECT_USERDEBUG_LOG_PAGE : PROJECT_LOG_PAGE,\n      payload: {\n        ...payload,\n        testItemIds,\n      },\n      meta: { query: { ...query, ...updatedLogQuery } },\n    };\n  },\n);\n\nexport const previousItemSelector = createSelector(\n  groupedTestItemsSelector,\n  logItemIdSelector,\n  (testItems, logId) => getPreviousItem(logId, testItems),\n);\n\nexport const nextItemSelector = createSelector(\n  groupedTestItemsSelector,\n  logItemIdSelector,\n  (testItems, logId) => getNextItem(logId, testItems),\n);\n\nexport const retryLinkSelector = createSelector(\n  payloadSelector,\n  pagePropertiesSelector,\n  debugModeSelector,\n  (state, props) => props,\n  (payload, query, debugMode, { testItemId, retryId }) => ({\n    type: debugMode ? PROJECT_USERDEBUG_LOG_PAGE : PROJECT_LOG_PAGE,\n    payload: {\n      ...payload,\n      testItemIds: [...`${payload.testItemIds || ''}`.split('/'), testItemId].join('/'),\n    },\n    meta: {\n      query: {\n        ...query,\n        ...createNamespacedQuery({ retryId }, NAMESPACE),\n      },\n    },\n  }),\n);\n\nexport const disablePrevItemLinkSelector = createSelector(\n  paginationSelector,\n  logItemIdSelector,\n  groupedTestItemsSelector,\n  ({ number }, id, items) => {\n    const isNoPreviousItem = getPreviousItem(id, items) === null;\n    const isFirstPage = number ? number === 1 : true;\n    return isNoPreviousItem && isFirstPage;\n  },\n);\n\nexport const disableNextItemLinkSelector = createSelector(\n  paginationSelector,\n  logItemIdSelector,\n  groupedTestItemsSelector,\n  ({ number, totalPages }, id, items) => {\n    const isNoNextItem = getNextItem(id, items) === null;\n    const isLastPage = totalPages ? number === totalPages : true;\n    return isNoNextItem && isLastPage;\n  },\n);\n\nexport const isLoadMoreStackTraceVisible = createSelector(\n  logStackTracePaginationSelector,\n  ({ size, totalElements }) => size < totalElements,\n);\nexport const isLaunchLogSelector = (state) => parentItemsSelector(state).length === 1;\n\nexport const logViewModeSelector = (state) => {\n  const parentTestItem = parentItemSelector(state);\n  const hasChildren = parentTestItem?.hasChildren;\n  const isLaunchLog = isLaunchLogSelector(state);\n  return hasChildren || isLaunchLog ? LAUNCH_LOG_VIEW : DETAILED_LOG_VIEW;\n};\n\nconst isLogPageWithoutNestedSteps = createSelector(\n  logItemsSelector,\n  pagePropertiesSelector,\n  parentItemSelector,\n  logsPaginationEnabledSelector,\n  (items, pageQuery, parentItem, logsPaginationEnabled) => {\n    const query = extractNamespacedQuery(pageQuery, NAMESPACE);\n    const logStatus = query[LOG_STATUS_FILTER_KEY];\n    const hasNestedSteps = items.some((item) => 'hasContent' in item);\n    const parentHasNestedSteps = !logsPaginationEnabled && parentItem?.hasNestedSteps;\n    return !hasNestedSteps && !logStatus && !parentHasNestedSteps;\n  },\n);\nexport const isLogPageWithNestedSteps = createSelector(\n  isLogPageWithoutNestedSteps,\n  (value) => !value,\n);\n\nexport const loadedPagesRangeSelector = (state) =>\n  logSelector(state).pageRange || { start: 1, end: 1 };\n\nexport const loadingDirectionSelector = (state) => logSelector(state).loadingDirection;\n",
+      "relevant_lines": [
+        {
+          "line": 273,
+          "text": "    const hasNestedSteps = items.some((item) => 'hasContent' in item);"
+        },
+        {
+          "line": 274,
+          "text": "    const parentHasNestedSteps = !logsPaginationEnabled && parentItem?.hasNestedSteps;"
+        },
+        {
+          "line": 275,
+          "text": "    return !hasNestedSteps && !logStatus && !parentHasNestedSteps;"
+        },
+        {
+          "line": 278,
+          "text": "export const isLogPageWithNestedSteps = createSelector("
+        }
+      ]
+    }
+  ],
+  "independent_dom_and_screenshot_records": [
+    {
+      "shot": "S12",
+      "slug": "S12-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-console-blocked-nested-ui",
+      "line": "2.0.1",
+      "runtime_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+      "cucumber": "12.0.1",
+      "fixture": "F04-frozen",
+      "actual_fixture": "F04-frozen",
+      "fixture_scope": "Native fixture",
+      "mode": "plain",
+      "criteria": [
+        "P3.4"
+      ],
+      "view": "console",
+      "launch_id": 2924,
+      "item_id": 23502,
+      "log_ids": [
+        15316,
+        15317
+      ],
+      "url": "http://rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/2924/23501/23502/log",
+      "viewport": {
+        "width": 1100,
+        "height": 780
+      },
+      "source_snapshot": "docs/reviews/assets/ledger-qa-live/wp5-ci-final-20261101-c12.0.1-supplement-plain-1/F04-frozen/snapshot.json",
+      "verdict": "CAPTURED_PENDING_INDEPENDENT_JUDGMENT",
+      "planned_path": "docs/reviews/assets/presentation-ledger-2.0.1/S12-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-console.png",
+      "claim_limit": "A target plan is not a screenshot or DOM observation. No visual PASS is inferred from API data.",
+      "subcheck": "console-unavailable-nested-ui",
+      "dom": {
+        "buttons": [
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": "Scenario: F01"
+          },
+          {
+            "text": "Refresh",
+            "title": ""
+          },
+          {
+            "text": "Make decision",
+            "title": ""
+          },
+          {
+            "text": "STACK TRACE",
+            "title": ""
+          },
+          {
+            "text": "LOG\nALL LOGS",
+            "title": ""
+          },
+          {
+            "text": "ATTACHMENTS",
+            "title": ""
+          },
+          {
+            "text": "ITEM DETAILS",
+            "title": ""
+          },
+          {
+            "text": "HISTORY OF ACTIONS",
+            "title": ""
+          },
+          {
+            "text": "Show",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": "Markdown Mode"
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "2026-11-01 12:04:58",
+            "title": ""
+          }
+        ],
+        "consoleControls": 0,
+        "nestedRows": 3
+      },
+      "source_jpg": "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/presentation-ledger-2.0.1/S12-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-console-blocked-nested-ui.jpg",
+      "observed_at_utc": "2026-11-01T11:13:11.231Z"
+    },
+    {
+      "shot": "S12",
+      "slug": "S12-wp5-ci-final-20261101-c9.2.1-f04-frozen-plain-console-blocked-nested-ui",
+      "line": "1.3.2",
+      "runtime_sha": "f41888a9fdd6896630765cbbf350353a7f803e59",
+      "cucumber": "9.2.1",
+      "fixture": "F04-frozen",
+      "actual_fixture": "F04-frozen",
+      "fixture_scope": "Native fixture",
+      "mode": "plain",
+      "criteria": [
+        "P3.4"
+      ],
+      "view": "console",
+      "launch_id": 3301,
+      "item_id": 26547,
+      "log_ids": [
+        17337,
+        17338
+      ],
+      "url": "http://rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3301/26546/26547/log",
+      "viewport": {
+        "width": 1100,
+        "height": 780
+      },
+      "source_snapshot": "docs/reviews/assets/ledger-qa-live/wp5-ci-final-20261101-c9.2.1-supplement-plain-1/F04-frozen/snapshot.json",
+      "verdict": "CAPTURED_PENDING_INDEPENDENT_JUDGMENT",
+      "planned_path": "docs/reviews/assets/presentation-ledger-1.3.2/S12-wp5-ci-final-20261101-c9.2.1-f04-frozen-plain-console.png",
+      "claim_limit": "A target plan is not a screenshot or DOM observation. No visual PASS is inferred from API data.",
+      "subcheck": "console-unavailable-nested-ui",
+      "dom": {
+        "buttons": [
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": "Scenario: F01"
+          },
+          {
+            "text": "Refresh",
+            "title": ""
+          },
+          {
+            "text": "Make decision",
+            "title": ""
+          },
+          {
+            "text": "STACK TRACE",
+            "title": ""
+          },
+          {
+            "text": "LOG\nALL LOGS",
+            "title": ""
+          },
+          {
+            "text": "ATTACHMENTS",
+            "title": ""
+          },
+          {
+            "text": "ITEM DETAILS",
+            "title": ""
+          },
+          {
+            "text": "HISTORY OF ACTIONS",
+            "title": ""
+          },
+          {
+            "text": "Show",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": "Markdown Mode"
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "2026-11-01 12:12:15",
+            "title": ""
+          }
+        ],
+        "consoleControls": 0,
+        "nestedRows": 3
+      },
+      "source_jpg": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/presentation-ledger-1.3.2/S12-wp5-ci-final-20261101-c9.2.1-f04-frozen-plain-console-blocked-nested-ui.jpg",
+      "observed_at_utc": "2026-11-01T11:13:11.742Z"
+    },
+    {
+      "shot": "S12",
+      "slug": "S12-wp5-ci-final-20261101-c10.2.0-f04-frozen-plain-console-blocked-nested-ui",
+      "line": "1.3.2",
+      "runtime_sha": "f41888a9fdd6896630765cbbf350353a7f803e59",
+      "cucumber": "10.2.0",
+      "fixture": "F04-frozen",
+      "actual_fixture": "F04-frozen",
+      "fixture_scope": "Native fixture",
+      "mode": "plain",
+      "criteria": [
+        "P3.4"
+      ],
+      "view": "console",
+      "launch_id": 3608,
+      "item_id": 28900,
+      "log_ids": [
+        18801,
+        18802
+      ],
+      "url": "http://rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3608/28899/28900/log",
+      "viewport": {
+        "width": 1100,
+        "height": 780
+      },
+      "source_snapshot": "docs/reviews/assets/ledger-qa-live/wp5-ci-final-20261101-c10.2.0-supplement-plain-1/F04-frozen/snapshot.json",
+      "verdict": "CAPTURED_PENDING_INDEPENDENT_JUDGMENT",
+      "planned_path": "docs/reviews/assets/presentation-ledger-1.3.2/S12-wp5-ci-final-20261101-c10.2.0-f04-frozen-plain-console.png",
+      "claim_limit": "A target plan is not a screenshot or DOM observation. No visual PASS is inferred from API data.",
+      "subcheck": "console-unavailable-nested-ui",
+      "dom": {
+        "buttons": [
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": "Scenario: F01"
+          },
+          {
+            "text": "Refresh",
+            "title": ""
+          },
+          {
+            "text": "Make decision",
+            "title": ""
+          },
+          {
+            "text": "STACK TRACE",
+            "title": ""
+          },
+          {
+            "text": "LOG\nALL LOGS",
+            "title": ""
+          },
+          {
+            "text": "ATTACHMENTS",
+            "title": ""
+          },
+          {
+            "text": "ITEM DETAILS",
+            "title": ""
+          },
+          {
+            "text": "HISTORY OF ACTIONS",
+            "title": ""
+          },
+          {
+            "text": "Show",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": "Markdown Mode"
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "",
+            "title": ""
+          },
+          {
+            "text": "2026-11-01 12:18:32",
+            "title": ""
+          }
+        ],
+        "consoleControls": 0,
+        "nestedRows": 3
+      },
+      "source_jpg": "/Users/nick/Documents/crr-qa-1.3.2/docs/reviews/assets/presentation-ledger-1.3.2/S12-wp5-ci-final-20261101-c10.2.0-f04-frozen-plain-console-blocked-nested-ui.jpg",
+      "observed_at_utc": "2026-11-01T11:13:12.257Z"
+    }
+  ],
+  "verdict": "BLOCKED",
+  "claim": "The actual nested-step view exposes no Console View control. Upstream version-matched source conditionally hides it for nested steps. Markdown-off and Stack trace are not substituted for Console proof.",
+  "pending_owner_question": "May exact-byte messages be replayed into new flat QA Launches solely to test Console rendering? No exception approved at capture time."
+}

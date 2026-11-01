@@ -1,0 +1,337 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 2890,
+      "uuid": "6c4e5897-5541-4bb2-b0e8-e7808a8446d3",
+      "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F13",
+      "number": 1,
+      "startTime": 1793505868537,
+      "endTime": 1793505868754,
+      "lastModified": 1793505868772,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 23278,
+      "uuid": "c3443f9e-d8dd-4e05-b9ae-5f9f8a034b97",
+      "name": "Feature: Ledger numeric table rendering inputs",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793505868592,
+      "endTime": 1793505868753,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 2890,
+      "uniqueId": "auto:8d8684913b11225cc05eb9d44db115e2",
+      "testCaseHash": 1873322407,
+      "patternTemplates": [],
+      "path": "23278",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23279,
+      "uuid": "162504a7-bde8-4ee7-a673-00f87dc960df",
+      "name": "Scenario: Numeric columns retain their literal values",
+      "codeRef": "features/presentation_ledger/qa_runtime/F13.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793505868593,
+      "endTime": 1793505868727,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 23278,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 2890,
+      "uniqueId": "f64f78c745e6f0166dcd030864c77f32bc43f03e",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F13.feature:3",
+      "testCaseHash": -202333802,
+      "patternTemplates": [],
+      "path": "23278.23279",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23280,
+      "uuid": "fa79b818-3b20-4aab-8625-7b0074d01197",
+      "name": "Given ledger records this table:",
+      "description": "**Given** ledger records this table:\n\n| account | qty | price | change | pct | code | mixed | blank |\n| --- | --: | --: | --: | --: | --- | --- | --- |\n| A | 100 | 1,234.50 | -12 | 12% | 1.2.3 | 10 |  |\n| B | 1,250 | 0.5 | +7 | 0.5% | USD 100 | n/a |  |\n| C | 12,345,678 | 98.10 | 42 | 100% | 1e3 | 30 |  |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793505868635,
+      "endTime": 1793505868660,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 23279,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2890,
+      "uniqueId": "auto:b38cfff44792465a74f8285e3bef1ec3",
+      "testCaseHash": 658247875,
+      "patternTemplates": [],
+      "path": "23278.23279.23280",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 23281,
+      "uuid": "4c157e81-f48d-455c-8ef8-4819fa1a9706",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| not_numeric | also_not_numeric | invalid_group | unicode_minus |\n| --- | --- | --- | --- |\n| .5 | 1e3 | 1,23 | −12 |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793505868683,
+      "endTime": 1793505868713,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 23279,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2890,
+      "uniqueId": "auto:61ba6391ebe72aed40a59728f0403eb5",
+      "testCaseHash": -2128587799,
+      "patternTemplates": [],
+      "path": "23278.23279.23281",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 15183,
+      "time": "2026-11-01T04:04:28.650Z",
+      "message": "_Data table · 8 columns × 3 rows_\n\n| account | qty | price | change | pct | code | mixed | blank |\n| --- | --: | --: | --: | --: | --- | --- | --- |\n| A | 100 | 1,234.50 | -12 | 12% | 1.2.3 | 10 |  |\n| B | 1,250 | 0.5 | +7 | 0.5% | USD 100 | n/a |  |\n| C | 12,345,678 | 98.10 | 42 | 100% | 1e3 | 30 |  |",
+      "level": "info",
+      "itemId": 23280
+    },
+    {
+      "id": 15184,
+      "time": "2026-11-01T04:04:28.702Z",
+      "message": "_Data table · 4 columns × 1 row_\n\n| not_numeric | also_not_numeric | invalid_group | unicode_minus |\n| --- | --- | --- | --- |\n| .5 | 1e3 | 1,23 | −12 |",
+      "level": "info",
+      "itemId": 23281
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 2890,
+      "items_by_launch": [
+        {
+          "id": 23278,
+          "uuid": "c3443f9e-d8dd-4e05-b9ae-5f9f8a034b97",
+          "name": "Feature: Ledger numeric table rendering inputs",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-01T04:04:28.592Z",
+          "endTime": "2026-11-01T04:04:28.753Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F13",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 2890,
+          "uniqueId": "auto:8d8684913b11225cc05eb9d44db115e2",
+          "testCaseHash": 1873322407,
+          "patternTemplates": [],
+          "path": "23278",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 23279,
+          "uuid": "162504a7-bde8-4ee7-a673-00f87dc960df",
+          "name": "Scenario: Numeric columns retain their literal values",
+          "codeRef": "features/presentation_ledger/qa_runtime/F13.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:04:28.593Z",
+          "endTime": "2026-11-01T04:04:28.727Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 23278,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F13",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23278,
+                "name": "Feature: Ledger numeric table rendering inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 2890,
+          "uniqueId": "f64f78c745e6f0166dcd030864c77f32bc43f03e",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F13.feature:3",
+          "testCaseHash": -202333802,
+          "patternTemplates": [],
+          "path": "23278.23279",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 23280,
+          "uuid": "fa79b818-3b20-4aab-8625-7b0074d01197",
+          "name": "Given ledger records this table:",
+          "description": "**Given** ledger records this table:\n\n| account | qty | price | change | pct | code | mixed | blank |\n| --- | --: | --: | --: | --: | --- | --- | --- |\n| A | 100 | 1,234.50 | -12 | 12% | 1.2.3 | 10 |  |\n| B | 1,250 | 0.5 | +7 | 0.5% | USD 100 | n/a |  |\n| C | 12,345,678 | 98.10 | 42 | 100% | 1e3 | 30 |  |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:04:28.635Z",
+          "endTime": "2026-11-01T04:04:28.660Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 23279,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F13",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23278,
+                "name": "Feature: Ledger numeric table rendering inputs"
+              },
+              {
+                "id": 23279,
+                "name": "Scenario: Numeric columns retain their literal values"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2890,
+          "uniqueId": "auto:b38cfff44792465a74f8285e3bef1ec3",
+          "testCaseHash": 658247875,
+          "patternTemplates": [],
+          "path": "23278.23279.23280",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 23281,
+          "uuid": "4c157e81-f48d-455c-8ef8-4819fa1a9706",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| not_numeric | also_not_numeric | invalid_group | unicode_minus |\n| --- | --- | --- | --- |\n| .5 | 1e3 | 1,23 | −12 |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:04:28.683Z",
+          "endTime": "2026-11-01T04:04:28.713Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 23279,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-plain-1-F13",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 23278,
+                "name": "Feature: Ledger numeric table rendering inputs"
+              },
+              {
+                "id": 23279,
+                "name": "Scenario: Numeric columns retain their literal values"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2890,
+          "uniqueId": "auto:61ba6391ebe72aed40a59728f0403eb5",
+          "testCaseHash": -2128587799,
+          "patternTemplates": [],
+          "path": "23278.23279.23281",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

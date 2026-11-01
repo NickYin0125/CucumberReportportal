@@ -1,0 +1,843 @@
+[
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/launch",
+    "content_type": "application/json",
+    "request_bytes": 233,
+    "request_sha256": "a9b23f3f9a8ef72bbcc8fbb9259ef30c23c2c2ece3621a70bef0b26f4253dcee",
+    "body_base64": "eyJuYW1lIjoibGVkZ2VyLWRldmVsb3Blci1pbmRlcGVuZGVudC1RQS0yMDI2MTAzMVQxODA5NDhaLWhvb2tzLTEyLjAuMS1yaWNoLTEtRjE1LWhvb2tzLXJldHJ5Iiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjU2OCIsImRlc2NyaXB0aW9uIjoiIiwiYXR0cmlidXRlcyI6W10sIm1vZGUiOiJERUZBVUxUIiwicmVydW4iOmZhbHNlLCJ1dWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4In0=",
+    "json": {
+      "name": "ledger-developer-independent-QA-20261031T180948Z-hooks-12.0.1-rich-1-F15-hooks-retry",
+      "startTime": "1793470252568",
+      "description": "",
+      "attributes": [],
+      "mode": "DEFAULT",
+      "rerun": false,
+      "uuid": "7dafd696-2d3e-477a-9431-df0874ef8818"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "number": 1
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsIm51bWJlciI6MX0="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item",
+    "content_type": "application/json",
+    "request_bytes": 243,
+    "request_sha256": "75c89f8eece40c31a2d3dc51be5fabf31f3872f3f2aa0bc6dc50b1ea3faf52c6",
+    "body_base64": "eyJuYW1lIjoiRmVhdHVyZTogSW5kZXBlbmRlbnQgbmF0aXZlIG5hbWVkIGhvb2tzIHJldHJ5Iiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjYzMiIsInR5cGUiOiJTVUlURSIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJhdHRyaWJ1dGVzIjpbXSwiaGFzU3RhdHMiOnRydWUsInJldHJ5IjpmYWxzZSwidXVpZCI6IjRkMGRhZGVhLTI1NTgtNDg2OC1iMzc0LThhNmM4ZDE4Y2NlYyJ9",
+    "json": {
+      "name": "Feature: Independent native named hooks retry",
+      "startTime": "1793470252632",
+      "type": "SUITE",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "attributes": [],
+      "hasStats": true,
+      "retry": false,
+      "uuid": "4d0dadea-2558-4868-b374-8a6c8d18ccec"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "4d0dadea-2558-4868-b374-8a6c8d18ccec",
+      "uniqueId": "auto:a7f127d52872424066eb3b42bbb523ce"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjRkMGRhZGVhLTI1NTgtNDg2OC1iMzc0LThhNmM4ZDE4Y2NlYyIsInVuaXF1ZUlkIjoiYXV0bzphN2YxMjdkNTI4NzI0MjQwNjZlYjNiNDJiYmI1MjNjZSJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/4d0dadea-2558-4868-b374-8a6c8d18ccec",
+    "content_type": "application/json",
+    "request_bytes": 498,
+    "request_sha256": "9713d19c71c61c77a817c11601675e437774fe2182bc6f03ab6f57ff68c6486b",
+    "body_base64": "eyJuYW1lIjoiU2NlbmFyaW86IFNjYWxhciBob29rIG1ldGFkYXRhIHJldHJ5Iiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjYzMyIsInR5cGUiOiJTVEVQIiwibGF1bmNoVXVpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsInBhcmVudFV1aWQiOiI0ZDBkYWRlYS0yNTU4LTQ4NjgtYjM3NC04YTZjOGQxOGNjZWMiLCJhdHRyaWJ1dGVzIjpbXSwiY29kZVJlZiI6ImZlYXR1cmVzL3ByZXNlbnRhdGlvbl9sZWRnZXIvcWFfcnVudGltZS9GMTUtaG9va3MtcmV0cnkuZmVhdHVyZTozIiwiaGFzU3RhdHMiOnRydWUsInJldHJ5IjpmYWxzZSwidXVpZCI6ImE3MzFiZWJmLWI1MTMtNDhmOC1hYjdlLTFkZjBjZWE4YTYyMyIsInRlc3RDYXNlSWQiOiJmZWF0dXJlcy9wcmVzZW50YXRpb25fbGVkZ2VyL3FhX3J1bnRpbWUvRjE1LWhvb2tzLXJldHJ5LmZlYXR1cmU6MyIsInVuaXF1ZUlkIjoiM2U1NWM3MGE5MTljNjA3M2Y1ZWNhYzA1MjhkNDIwNmY4NDIyNGZlOSJ9",
+    "json": {
+      "name": "Scenario: Scalar hook metadata retry",
+      "startTime": "1793470252633",
+      "type": "STEP",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "4d0dadea-2558-4868-b374-8a6c8d18ccec",
+      "attributes": [],
+      "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+      "hasStats": true,
+      "retry": false,
+      "uuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+      "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+      "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6ImE3MzFiZWJmLWI1MTMtNDhmOC1hYjdlLTFkZjBjZWE4YTYyMyIsInVuaXF1ZUlkIjoiM2U1NWM3MGE5MTljNjA3M2Y1ZWNhYzA1MjhkNDIwNmY4NDIyNGZlOSJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/a731bebf-b513-48f8-ab7e-1df0cea8a623",
+    "content_type": "application/json",
+    "request_bytes": 286,
+    "request_sha256": "3c5757690ce0eb230dafed42940b90e742d8e58ecef1ff201c13d7c631f3e77d",
+    "body_base64": "eyJuYW1lIjoiQmVmb3JlIGhvb2sgwrcgT3BlbiBicm93c2VyIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjY2NCIsInR5cGUiOiJCRUZPUkVfTUVUSE9EIiwibGF1bmNoVXVpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsInBhcmVudFV1aWQiOiJhNzMxYmViZi1iNTEzLTQ4ZjgtYWI3ZS0xZGYwY2VhOGE2MjMiLCJhdHRyaWJ1dGVzIjpbXSwiaGFzU3RhdHMiOmZhbHNlLCJyZXRyeSI6ZmFsc2UsInV1aWQiOiI4ZTU3YjA1Yy1mMzlkLTQwZTUtOGQzMC03YmVlNDcxNWVmNTYifQ==",
+    "json": {
+      "name": "Before hook · Open browser",
+      "startTime": "1793470252664",
+      "type": "BEFORE_METHOD",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "8e57b05c-f39d-40e5-8d30-7bee4715ef56"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "8e57b05c-f39d-40e5-8d30-7bee4715ef56",
+      "uniqueId": "auto:6dd89e1e5ff5b269e20323e2a80f565e"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjhlNTdiMDVjLWYzOWQtNDBlNS04ZDMwLTdiZWU0NzE1ZWY1NiIsInVuaXF1ZUlkIjoiYXV0bzo2ZGQ4OWUxZTVmZjViMjY5ZTIwMzIzZTJhODBmNTY1ZSJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/log",
+    "content_type": "application/json",
+    "request_bytes": 169,
+    "request_sha256": "12fe0879afbe3bebae8b49216fee248328b16a19e4b62b900f56fbb62df0061e",
+    "body_base64": "eyJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwiaXRlbVV1aWQiOiI4ZTU3YjA1Yy1mMzlkLTQwZTUtOGQzMC03YmVlNDcxNWVmNTYiLCJ0aW1lIjoiMTc5MzQ3MDI1MjY5MCIsIm1lc3NhZ2UiOiJRQV9OQU1FRF9CRUZPUkUiLCJsZXZlbCI6ImluZm8ifQ==",
+    "json": {
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "itemUuid": "8e57b05c-f39d-40e5-8d30-7bee4715ef56",
+      "time": "1793470252690",
+      "message": "QA_NAMED_BEFORE",
+      "level": "info"
+    },
+    "entries": [
+      {
+        "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+        "itemUuid": "8e57b05c-f39d-40e5-8d30-7bee4715ef56",
+        "time": "1793470252690",
+        "message": "QA_NAMED_BEFORE",
+        "level": "info"
+      }
+    ],
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "f7ae7254-a66b-4c80-9b21-4901e296f3d8"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6ImY3YWU3MjU0LWE2NmItNGM4MC05YjIxLTQ5MDFlMjk2ZjNkOCJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/8e57b05c-f39d-40e5-8d30-7bee4715ef56",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "ee776fb6f3fb59fd1da8b24799ed88343a4c02c9780f1c726dc5f68eb6536db1",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MjcxMiIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470252712",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = '8e57b05c-f39d-40e5-8d30-7bee4715ef56' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICc4ZTU3YjA1Yy1mMzlkLTQwZTUtOGQzMC03YmVlNDcxNWVmNTYnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/a731bebf-b513-48f8-ab7e-1df0cea8a623",
+    "content_type": "application/json",
+    "request_bytes": 283,
+    "request_sha256": "3cdbd1f0dbdb7f7b867d2ee5eed8d15039484e9b79a01091bbff9ccc3c155d5d",
+    "body_base64": "eyJuYW1lIjoiR2l2ZW4gUUEgbmFtZWQgaG9vayBidXNpbmVzcyBzdGVwIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjcyNyIsInR5cGUiOiJTVEVQIiwibGF1bmNoVXVpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsInBhcmVudFV1aWQiOiJhNzMxYmViZi1iNTEzLTQ4ZjgtYWI3ZS0xZGYwY2VhOGE2MjMiLCJhdHRyaWJ1dGVzIjpbXSwiaGFzU3RhdHMiOmZhbHNlLCJyZXRyeSI6ZmFsc2UsInV1aWQiOiI2MzdiOTI1MS01YzU5LTQ2ZTgtOWY4OS01MWFkZDI1YTk4YzYifQ==",
+    "json": {
+      "name": "Given QA named hook business step",
+      "startTime": "1793470252727",
+      "type": "STEP",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "637b9251-5c59-46e8-9f89-51add25a98c6"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "637b9251-5c59-46e8-9f89-51add25a98c6",
+      "uniqueId": "auto:17903b268acb1ae56ec23804dd264083"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjYzN2I5MjUxLTVjNTktNDZlOC05Zjg5LTUxYWRkMjVhOThjNiIsInVuaXF1ZUlkIjoiYXV0bzoxNzkwM2IyNjhhY2IxYWU1NmVjMjM4MDRkZDI2NDA4MyJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/log",
+    "content_type": "application/json",
+    "request_bytes": 7749,
+    "request_sha256": "6d03790b96cdef4316de87996cdf9a506958299bf9efa616d6ee89f59752dbfd",
+    "body_base64": "eyJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwiaXRlbVV1aWQiOiI2MzdiOTI1MS01YzU5LTQ2ZTgtOWY4OS01MWFkZDI1YTk4YzYiLCJ0aW1lIjoiMTc5MzQ3MDI1Mjc0OCIsIm1lc3NhZ2UiOiIjIyDinJcgUnVudGltZUVycm9yOiBRQSBpbnRlbnRpb25hbCBmaXJzdCByZXRyeSBmYWlsdXJlXG5cbmBGMTUtaG9va3MtcmV0cnkuZmVhdHVyZTo0YCDihpIgYHNwZWMvYWNjZXB0YW5jZS9sZWRnZXJfcWEvbmF0aXZlX2hvb2tzX3N1cHBvcnQucmI6NjFgXG5cbmBgYHRleHRcbnNwZWMvYWNjZXB0YW5jZS9sZWRnZXJfcWEvbmF0aXZlX2hvb2tzX3N1cHBvcnQucmI6NjEgIGJsb2NrIGluIDx0b3AgKHJlcXVpcmVkKT5cbkYxNS1ob29rcy1yZXRyeS5mZWF0dXJlOjQgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFFBIG5hbWVkIGhvb2sgYnVzaW5lc3Mgc3RlcFxuYGBgXG5cbjxkZXRhaWxzPjxzdW1tYXJ5PkZ1bGwgYmFja3RyYWNlIMK3IDYwIGZyYW1lcyDCtyA1NiBmcmFtZXdvcmsgYW5kIDIgcnVubmVyIGZyYW1lcyBub3Qgc2hvd24gYWJvdmU8L3N1bW1hcnk+XG5cbmBgYHRleHRcbi9Vc2Vycy9uaWNrL0RvY3VtZW50cy9jcnItcWEtMi4wLjEvc3BlYy9hY2NlcHRhbmNlL2xlZGdlcl9xYS9uYXRpdmVfaG9va3Nfc3VwcG9ydC5yYjo2MTppbiAnYmxvY2sgaW4gPHRvcCAocmVxdWlyZWQpPidcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZ2x1ZS9pbnZva2VfaW5fd29ybGQucmI6NDA6aW4gJ0Jhc2ljT2JqZWN0I2luc3RhbmNlX2V4ZWMnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci0xMi4wLjEvbGliL2N1Y3VtYmVyL2dsdWUvaW52b2tlX2luX3dvcmxkLnJiOjQwOmluICdibG9jayBpbiBDdWN1bWJlcjo6R2x1ZTo6SW52b2tlSW5Xb3JsZC5jdWN1bWJlcl9pbnN0YW5jZV9leGVjX2luJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItMTIuMC4xL2xpYi9jdWN1bWJlci9nbHVlL2ludm9rZV9pbl93b3JsZC5yYjo1MzppbiAnQ3VjdW1iZXI6OkdsdWU6Okludm9rZUluV29ybGQuY3VjdW1iZXJfcnVuX3dpdGhfYmFja3RyYWNlX2ZpbHRlcmluZydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZ2x1ZS9pbnZva2VfaW5fd29ybGQucmI6MzA6aW4gJ0N1Y3VtYmVyOjpHbHVlOjpJbnZva2VJbldvcmxkLmN1Y3VtYmVyX2luc3RhbmNlX2V4ZWNfaW4nXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci0xMi4wLjEvbGliL2N1Y3VtYmVyL2dsdWUvc3RlcF9kZWZpbml0aW9uLnJiOjEzNTppbiAnQ3VjdW1iZXI6OkdsdWU6OlN0ZXBEZWZpbml0aW9uI2ludm9rZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvc3RlcF9tYXRjaC5yYjozNDppbiAnQ3VjdW1iZXI6OlN0ZXBNYXRjaCNpbnZva2UnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci0xMi4wLjEvbGliL2N1Y3VtYmVyL3N0ZXBfbWF0Y2gucmI6Mjc6aW4gJ2Jsb2NrIGluIEN1Y3VtYmVyOjpTdGVwTWF0Y2gjYWN0aXZhdGUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L2FjdGlvbi9kZWZpbmVkLnJiOjI0OmluICdDdWN1bWJlcjo6Q29yZTo6VGVzdDo6QWN0aW9uOjpEZWZpbmVkI2V4ZWN1dGUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L3N0ZXAucmI6MzU6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpTdGVwI2V4ZWN1dGUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L3J1bm5lci5yYjoyMjI6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpSdW5uZXI6OlJ1bm5pbmdUZXN0Q2FzZTo6U3RhdHVzOjpCYXNlI2V4ZWN1dGUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L3J1bm5lci5yYjoxNTc6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpSdW5uZXI6OlJ1bm5pbmdUZXN0Q2FzZSNleGVjdXRlJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvdGVzdC9ydW5uZXIucmI6NTA6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpSdW5uZXIjdGVzdF9zdGVwJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvdGVzdC9zdGVwLnJiOjMxOmluICdDdWN1bWJlcjo6Q29yZTo6VGVzdDo6U3RlcCNkZXNjcmliZV90bydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjozNDppbiAnYmxvY2sgKDMgbGV2ZWxzKSBpbiBDdWN1bWJlcjo6Q29yZTo6VGVzdDo6Q2FzZSNkZXNjcmliZV90bydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjozMzppbiAnQXJyYXkjZWFjaCdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjozMzppbiAnYmxvY2sgKDIgbGV2ZWxzKSBpbiBDdWN1bWJlcjo6Q29yZTo6VGVzdDo6Q2FzZSNkZXNjcmliZV90bydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZmlsdGVycy9wcmVwYXJlX3dvcmxkLnJiOjIzOmluICdibG9jayBpbiBDdWN1bWJlcjo6RmlsdGVyczo6UHJlcGFyZVdvcmxkOjpDYXNlRmlsdGVyI3Rlc3RfY2FzZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvYXJvdW5kX2hvb2sucmI6MTg6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpBcm91bmRIb29rI2V4ZWN1dGUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L3J1bm5lci5yYjoyMjI6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpSdW5uZXI6OlJ1bm5pbmdUZXN0Q2FzZTo6U3RhdHVzOjpCYXNlI2V4ZWN1dGUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L3J1bm5lci5yYjoxNTc6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpSdW5uZXI6OlJ1bm5pbmdUZXN0Q2FzZSNleGVjdXRlJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvdGVzdC9ydW5uZXIucmI6NTk6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpSdW5uZXIjYXJvdW5kX2hvb2snXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L2Fyb3VuZF9ob29rLnJiOjEzOmluICdDdWN1bWJlcjo6Q29yZTo6VGVzdDo6QXJvdW5kSG9vayNkZXNjcmliZV90bydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjo5NDppbiAnYmxvY2sgKDIgbGV2ZWxzKSBpbiBDdWN1bWJlcjo6Q29yZTo6VGVzdDo6Q2FzZSNjb21wb3NlX2Fyb3VuZF9ob29rcydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjo5NTppbiAnQ3VjdW1iZXI6OkNvcmU6OlRlc3Q6OkNhc2UjY29tcG9zZV9hcm91bmRfaG9va3MnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L2Nhc2UucmI6MzI6aW4gJ2Jsb2NrIGluIEN1Y3VtYmVyOjpDb3JlOjpUZXN0OjpDYXNlI2Rlc2NyaWJlX3RvJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvdGVzdC9ydW5uZXIucmI6Mzc6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpUZXN0OjpSdW5uZXIjdGVzdF9jYXNlJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvdGVzdC9jYXNlLnJiOjMxOmluICdDdWN1bWJlcjo6Q29yZTo6VGVzdDo6Q2FzZSNkZXNjcmliZV90bydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZmlsdGVycy9wcmVwYXJlX3dvcmxkLnJiOjExOmluICdDdWN1bWJlcjo6RmlsdGVyczo6UHJlcGFyZVdvcmxkI3Rlc3RfY2FzZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjozMTppbiAnQ3VjdW1iZXI6OkNvcmU6OlRlc3Q6OkNhc2UjZGVzY3JpYmVfdG8nXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS9maWx0ZXIucmI6NTY6aW4gJ3Rlc3RfY2FzZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZmlsdGVycy9yZXRyeS5yYjoxODppbiAnQ3VjdW1iZXI6OkZpbHRlcnM6OlJldHJ5I3Rlc3RfY2FzZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjozMTppbiAnQ3VjdW1iZXI6OkNvcmU6OlRlc3Q6OkNhc2UjZGVzY3JpYmVfdG8nXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci0xMi4wLjEvbGliL2N1Y3VtYmVyL2ZpbHRlcnMvYnJvYWRjYXN0X3Rlc3RfY2FzZV9yZWFkeV9ldmVudC5yYjo4OmluICdDdWN1bWJlcjo6RmlsdGVyczo6QnJvYWRjYXN0VGVzdENhc2VSZWFkeUV2ZW50I3Rlc3RfY2FzZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvY2FzZS5yYjozMTppbiAnQ3VjdW1iZXI6OkNvcmU6OlRlc3Q6OkNhc2UjZGVzY3JpYmVfdG8nXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci0xMi4wLjEvbGliL2N1Y3VtYmVyL2ZpbHRlcnMvcXVpdC5yYjoxMTppbiAnQ3VjdW1iZXI6OkZpbHRlcnM6OlF1aXQjdGVzdF9jYXNlJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvdGVzdC9jYXNlLnJiOjMxOmluICdDdWN1bWJlcjo6Q29yZTo6VGVzdDo6Q2FzZSNkZXNjcmliZV90bydcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZmlsdGVycy9maXJlX2JlZm9yZV9hbGxfaG9va3MucmI6MjI6aW4gJ2Jsb2NrIGluIEN1Y3VtYmVyOjpGaWx0ZXJzOjpGaXJlQmVmb3JlQWxsSG9va3MjZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZmlsdGVycy9maXJlX2JlZm9yZV9hbGxfaG9va3MucmI6MjE6aW4gJ0FycmF5I21hcCdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZmlsdGVycy9maXJlX2JlZm9yZV9hbGxfaG9va3MucmI6MjE6aW4gJ0N1Y3VtYmVyOjpGaWx0ZXJzOjpGaXJlQmVmb3JlQWxsSG9va3MjZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL2ZpbHRlci5yYjo2MTppbiAnZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9saWIvY3VjdW1iZXIvZmlsdGVycy9icm9hZGNhc3RfdGVzdF9ydW5fc3RhcnRlZF9ldmVudC5yYjoyMzppbiAnQ3VjdW1iZXI6OkZpbHRlcnM6OkJyb2FkY2FzdFRlc3RSdW5TdGFydGVkRXZlbnQjZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL2ZpbHRlci5yYjo2MTppbiAnZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL2ZpbHRlci5yYjo2MTppbiAnZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL2ZpbHRlci5yYjo2MTppbiAnZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL2ZpbHRlci5yYjo2MTppbiAnZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL2ZpbHRlci5yYjo2MTppbiAnZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlL3Rlc3QvZmlsdGVycy9sb2NhdGlvbnNfZmlsdGVyLnJiOjE5OmluICdDdWN1bWJlcjo6Q29yZTo6VGVzdDo6TG9jYXRpb25zRmlsdGVyI2RvbmUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS9maWx0ZXIucmI6NjE6aW4gJ2RvbmUnXG4vYnVuZGxlL3J1YnkvMy40LjAvZ2Vtcy9jdWN1bWJlci1jb3JlLTIwLjAuMC9saWIvY3VjdW1iZXIvY29yZS90ZXN0L2ZpbHRlcnMvdGFnX2ZpbHRlci5yYjoxNjppbiAnQ3VjdW1iZXI6OkNvcmU6OlRlc3Q6OlRhZ0ZpbHRlciNkb25lJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvY29tcGlsZXIucmI6MzM6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpDb21waWxlciNkb25lJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItY29yZS0yMC4wLjAvbGliL2N1Y3VtYmVyL2NvcmUvZ2hlcmtpbi9wYXJzZXIucmI6MzY6aW4gJ0N1Y3VtYmVyOjpDb3JlOjpHaGVya2luOjpQYXJzZXIjZG9uZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlLnJiOjM2OmluICdDdWN1bWJlcjo6Q29yZSNwYXJzZSdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLWNvcmUtMjAuMC4wL2xpYi9jdWN1bWJlci9jb3JlLnJiOjI1OmluICdDdWN1bWJlcjo6Q29yZSNjb21waWxlJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItMTIuMC4xL2xpYi9jdWN1bWJlci9ydW50aW1lLnJiOjU3OmluICdDdWN1bWJlcjo6UnVudGltZSNydW4hJ1xuL2J1bmRsZS9ydWJ5LzMuNC4wL2dlbXMvY3VjdW1iZXItMTIuMC4xL2xpYi9jdWN1bWJlci9jbGkvbWFpbi5yYjozMDppbiAnQ3VjdW1iZXI6OkNsaTo6TWFpbiNleGVjdXRlISdcbi9idW5kbGUvcnVieS8zLjQuMC9nZW1zL2N1Y3VtYmVyLTEyLjAuMS9iaW4vY3VjdW1iZXI6OTppbiAnPHRvcCAocmVxdWlyZWQpPidcbi1lOjg6aW4gJ0tlcm5lbCNsb2FkJ1xuLWU6ODppbiAnPG1haW4+J1xuZmVhdHVyZXMvcHJlc2VudGF0aW9uX2xlZGdlci9xYV9ydW50aW1lL0YxNS1ob29rcy1yZXRyeS5mZWF0dXJlOjQ6aW4gYFFBIG5hbWVkIGhvb2sgYnVzaW5lc3Mgc3RlcCdcbmBgYFxuXG48L2RldGFpbHM+IiwibGV2ZWwiOiJlcnJvciJ9",
+    "json": {
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "itemUuid": "637b9251-5c59-46e8-9f89-51add25a98c6",
+      "time": "1793470252748",
+      "message": "## ✗ RuntimeError: QA intentional first retry failure\n\n`F15-hooks-retry.feature:4` → `spec/acceptance/ledger_qa/native_hooks_support.rb:61`\n\n```text\nspec/acceptance/ledger_qa/native_hooks_support.rb:61  block in <top (required)>\nF15-hooks-retry.feature:4                             QA named hook business step\n```\n\n<details><summary>Full backtrace · 60 frames · 56 framework and 2 runner frames not shown above</summary>\n\n```text\n/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/native_hooks_support.rb:61:in 'block in <top (required)>'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'\n-e:8:in 'Kernel#load'\n-e:8:in '<main>'\nfeatures/presentation_ledger/qa_runtime/F15-hooks-retry.feature:4:in `QA named hook business step'\n```\n\n</details>",
+      "level": "error"
+    },
+    "entries": [
+      {
+        "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+        "itemUuid": "637b9251-5c59-46e8-9f89-51add25a98c6",
+        "time": "1793470252748",
+        "message": "## ✗ RuntimeError: QA intentional first retry failure\n\n`F15-hooks-retry.feature:4` → `spec/acceptance/ledger_qa/native_hooks_support.rb:61`\n\n```text\nspec/acceptance/ledger_qa/native_hooks_support.rb:61  block in <top (required)>\nF15-hooks-retry.feature:4                             QA named hook business step\n```\n\n<details><summary>Full backtrace · 60 frames · 56 framework and 2 runner frames not shown above</summary>\n\n```text\n/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/native_hooks_support.rb:61:in 'block in <top (required)>'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'\n-e:8:in 'Kernel#load'\n-e:8:in '<main>'\nfeatures/presentation_ledger/qa_runtime/F15-hooks-retry.feature:4:in `QA named hook business step'\n```\n\n</details>",
+        "level": "error"
+      }
+    ],
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "a7e7ac0c-393c-4376-b3db-9318b91c753c"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6ImE3ZTdhYzBjLTM5M2MtNDM3Ni1iM2RiLTkzMThiOTFjNzUzYyJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/637b9251-5c59-46e8-9f89-51add25a98c6",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "641b1e02ec736fb4b54ed2b76eefe55b3962bbd5f69d2a4a481edce44d99b650",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1Mjc3MiIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJmYWlsZWQifQ==",
+    "json": {
+      "endTime": "1793470252772",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "failed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = '637b9251-5c59-46e8-9f89-51add25a98c6' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICc2MzdiOTI1MS01YzU5LTQ2ZTgtOWY4OS01MWFkZDI1YTk4YzYnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/a731bebf-b513-48f8-ab7e-1df0cea8a623",
+    "content_type": "application/json",
+    "request_bytes": 288,
+    "request_sha256": "e684517ca58a41c7d1f2a4357403e0fa10fd9a89ec61c0fb5bf979f65aaed714",
+    "body_base64": "eyJuYW1lIjoiQWZ0ZXJTdGVwIGhvb2sgwrcgSW5zcGVjdCBzdGVwIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1Mjc4OCIsInR5cGUiOiJBRlRFUl9NRVRIT0QiLCJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwicGFyZW50VXVpZCI6ImE3MzFiZWJmLWI1MTMtNDhmOC1hYjdlLTFkZjBjZWE4YTYyMyIsImF0dHJpYnV0ZXMiOltdLCJoYXNTdGF0cyI6ZmFsc2UsInJldHJ5IjpmYWxzZSwidXVpZCI6ImI2MjkzYzBlLTgxYWQtNDNiMC05NTVhLThlYzc3ZWZlZDk5YyJ9",
+    "json": {
+      "name": "AfterStep hook · Inspect step",
+      "startTime": "1793470252788",
+      "type": "AFTER_METHOD",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "b6293c0e-81ad-43b0-955a-8ec77efed99c"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "b6293c0e-81ad-43b0-955a-8ec77efed99c",
+      "uniqueId": "auto:3d2331084e1710c80a9a5702af592fa3"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6ImI2MjkzYzBlLTgxYWQtNDNiMC05NTVhLThlYzc3ZWZlZDk5YyIsInVuaXF1ZUlkIjoiYXV0bzozZDIzMzEwODRlMTcxMGM4MGE5YTU3MDJhZjU5MmZhMyJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/b6293c0e-81ad-43b0-955a-8ec77efed99c",
+    "content_type": "application/json",
+    "request_bytes": 98,
+    "request_sha256": "371e429abb08a2930126dd43f4f2242a0ccb8e624710a505f840fd64ec5b896f",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MjgwNiIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJza2lwcGVkIn0=",
+    "json": {
+      "endTime": "1793470252806",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "skipped"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = 'b6293c0e-81ad-43b0-955a-8ec77efed99c' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICdiNjI5M2MwZS04MWFkLTQzYjAtOTU1YS04ZWM3N2VmZWQ5OWMnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/a731bebf-b513-48f8-ab7e-1df0cea8a623",
+    "content_type": "application/json",
+    "request_bytes": 285,
+    "request_sha256": "c91b2ad2cd0f42244bf326c6ff306d9471f3de8781d2ee606b70a377dade19ef",
+    "body_base64": "eyJuYW1lIjoiQWZ0ZXIgaG9vayDCtyBDbG9zZSBicm93c2VyIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjgxOCIsInR5cGUiOiJBRlRFUl9NRVRIT0QiLCJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwicGFyZW50VXVpZCI6ImE3MzFiZWJmLWI1MTMtNDhmOC1hYjdlLTFkZjBjZWE4YTYyMyIsImF0dHJpYnV0ZXMiOltdLCJoYXNTdGF0cyI6ZmFsc2UsInJldHJ5IjpmYWxzZSwidXVpZCI6IjcyOGZlNmFhLWZmYjItNGRiOC05YWUwLWNkMTM4ODEyNWMwMiJ9",
+    "json": {
+      "name": "After hook · Close browser",
+      "startTime": "1793470252818",
+      "type": "AFTER_METHOD",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "a731bebf-b513-48f8-ab7e-1df0cea8a623",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "728fe6aa-ffb2-4db8-9ae0-cd1388125c02"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "728fe6aa-ffb2-4db8-9ae0-cd1388125c02",
+      "uniqueId": "auto:61ac84631eff0b87637e622fa96d4744"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjcyOGZlNmFhLWZmYjItNGRiOC05YWUwLWNkMTM4ODEyNWMwMiIsInVuaXF1ZUlkIjoiYXV0bzo2MWFjODQ2MzFlZmYwYjg3NjM3ZTYyMmZhOTZkNDc0NCJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/log",
+    "content_type": "application/json",
+    "request_bytes": 168,
+    "request_sha256": "866b368acb138559d16740a0472a230071c7db05ba9580e1913eda56013137b6",
+    "body_base64": "eyJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwiaXRlbVV1aWQiOiI3MjhmZTZhYS1mZmIyLTRkYjgtOWFlMC1jZDEzODgxMjVjMDIiLCJ0aW1lIjoiMTc5MzQ3MDI1MjgzMSIsIm1lc3NhZ2UiOiJRQV9OQU1FRF9BRlRFUiIsImxldmVsIjoiaW5mbyJ9",
+    "json": {
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "itemUuid": "728fe6aa-ffb2-4db8-9ae0-cd1388125c02",
+      "time": "1793470252831",
+      "message": "QA_NAMED_AFTER",
+      "level": "info"
+    },
+    "entries": [
+      {
+        "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+        "itemUuid": "728fe6aa-ffb2-4db8-9ae0-cd1388125c02",
+        "time": "1793470252831",
+        "message": "QA_NAMED_AFTER",
+        "level": "info"
+      }
+    ],
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "9dd11e1d-4bb7-4767-ba32-fcccb3e300c8"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjlkZDExZTFkLTRiYjctNDc2Ny1iYTMyLWZjY2NiM2UzMDBjOCJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/728fe6aa-ffb2-4db8-9ae0-cd1388125c02",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "98f03da58e1466e9bef208990c4ad68883c2301373a7d34e5454148e25fa6e69",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MjgzOCIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470252838",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = '728fe6aa-ffb2-4db8-9ae0-cd1388125c02' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICc3MjhmZTZhYS1mZmIyLTRkYjgtOWFlMC1jZDEzODgxMjVjMDInIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/a731bebf-b513-48f8-ab7e-1df0cea8a623",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "4a33c13cf03fdd12b8556a3ab085e29bcd1217221d5d15fee286720d72a46f1e",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1Mjg5NCIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJmYWlsZWQifQ==",
+    "json": {
+      "endTime": "1793470252894",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "failed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = 'a731bebf-b513-48f8-ab7e-1df0cea8a623' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICdhNzMxYmViZi1iNTEzLTQ4ZjgtYWI3ZS0xZGYwY2VhOGE2MjMnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/4d0dadea-2558-4868-b374-8a6c8d18ccec",
+    "content_type": "application/json",
+    "request_bytes": 497,
+    "request_sha256": "ef4a41e88f29a7abfe7d4b87e23d914e52f8909fee436139fda2ab1e286806cd",
+    "body_base64": "eyJuYW1lIjoiU2NlbmFyaW86IFNjYWxhciBob29rIG1ldGFkYXRhIHJldHJ5Iiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjkwNCIsInR5cGUiOiJTVEVQIiwibGF1bmNoVXVpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsInBhcmVudFV1aWQiOiI0ZDBkYWRlYS0yNTU4LTQ4NjgtYjM3NC04YTZjOGQxOGNjZWMiLCJhdHRyaWJ1dGVzIjpbXSwiY29kZVJlZiI6ImZlYXR1cmVzL3ByZXNlbnRhdGlvbl9sZWRnZXIvcWFfcnVudGltZS9GMTUtaG9va3MtcmV0cnkuZmVhdHVyZTozIiwiaGFzU3RhdHMiOnRydWUsInJldHJ5Ijp0cnVlLCJ1dWlkIjoiMWNjODc4MGUtMzEwMy00NGY4LTljZmItNGZlOTJlNzBlOTk0IiwidGVzdENhc2VJZCI6ImZlYXR1cmVzL3ByZXNlbnRhdGlvbl9sZWRnZXIvcWFfcnVudGltZS9GMTUtaG9va3MtcmV0cnkuZmVhdHVyZTozIiwidW5pcXVlSWQiOiIzZTU1YzcwYTkxOWM2MDczZjVlY2FjMDUyOGQ0MjA2Zjg0MjI0ZmU5In0=",
+    "json": {
+      "name": "Scenario: Scalar hook metadata retry",
+      "startTime": "1793470252904",
+      "type": "STEP",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "4d0dadea-2558-4868-b374-8a6c8d18ccec",
+      "attributes": [],
+      "codeRef": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+      "hasStats": true,
+      "retry": true,
+      "uuid": "1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F15-hooks-retry.feature:3",
+      "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+      "uniqueId": "3e55c70a919c6073f5ecac0528d4206f84224fe9"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjFjYzg3ODBlLTMxMDMtNDRmOC05Y2ZiLTRmZTkyZTcwZTk5NCIsInVuaXF1ZUlkIjoiM2U1NWM3MGE5MTljNjA3M2Y1ZWNhYzA1MjhkNDIwNmY4NDIyNGZlOSJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+    "content_type": "application/json",
+    "request_bytes": 286,
+    "request_sha256": "15f382c53914f9a611269eced4c633d3cf67f512abb8441ccb0384e2a1bb6fed",
+    "body_base64": "eyJuYW1lIjoiQmVmb3JlIGhvb2sgwrcgT3BlbiBicm93c2VyIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MjkyNCIsInR5cGUiOiJCRUZPUkVfTUVUSE9EIiwibGF1bmNoVXVpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsInBhcmVudFV1aWQiOiIxY2M4NzgwZS0zMTAzLTQ0ZjgtOWNmYi00ZmU5MmU3MGU5OTQiLCJhdHRyaWJ1dGVzIjpbXSwiaGFzU3RhdHMiOmZhbHNlLCJyZXRyeSI6ZmFsc2UsInV1aWQiOiJjZDhiZTE4My1iYTM1LTQxYjgtODgzNC01NDcwZGZmNWJiOWUifQ==",
+    "json": {
+      "name": "Before hook · Open browser",
+      "startTime": "1793470252924",
+      "type": "BEFORE_METHOD",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "cd8be183-ba35-41b8-8834-5470dff5bb9e"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "cd8be183-ba35-41b8-8834-5470dff5bb9e",
+      "uniqueId": "auto:6dd89e1e5ff5b269e20323e2a80f565e"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6ImNkOGJlMTgzLWJhMzUtNDFiOC04ODM0LTU0NzBkZmY1YmI5ZSIsInVuaXF1ZUlkIjoiYXV0bzo2ZGQ4OWUxZTVmZjViMjY5ZTIwMzIzZTJhODBmNTY1ZSJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/log",
+    "content_type": "application/json",
+    "request_bytes": 169,
+    "request_sha256": "ccdd08ae671898e9e9a67df3a004a5bcbf7e51bae659383c9b4100ee4a94c9b7",
+    "body_base64": "eyJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwiaXRlbVV1aWQiOiJjZDhiZTE4My1iYTM1LTQxYjgtODgzNC01NDcwZGZmNWJiOWUiLCJ0aW1lIjoiMTc5MzQ3MDI1Mjk0NyIsIm1lc3NhZ2UiOiJRQV9OQU1FRF9CRUZPUkUiLCJsZXZlbCI6ImluZm8ifQ==",
+    "json": {
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "itemUuid": "cd8be183-ba35-41b8-8834-5470dff5bb9e",
+      "time": "1793470252947",
+      "message": "QA_NAMED_BEFORE",
+      "level": "info"
+    },
+    "entries": [
+      {
+        "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+        "itemUuid": "cd8be183-ba35-41b8-8834-5470dff5bb9e",
+        "time": "1793470252947",
+        "message": "QA_NAMED_BEFORE",
+        "level": "info"
+      }
+    ],
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "01b9d9c8-8516-4c7d-84b9-148018774c56"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjAxYjlkOWM4LTg1MTYtNGM3ZC04NGI5LTE0ODAxODc3NGM1NiJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/cd8be183-ba35-41b8-8834-5470dff5bb9e",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "01fb20b146a3fe0ab60ccae04b2ca1ae0db90fa7a740c79902109c627c7e02ba",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1Mjk2NCIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470252964",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = 'cd8be183-ba35-41b8-8834-5470dff5bb9e' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICdjZDhiZTE4My1iYTM1LTQxYjgtODgzNC01NDcwZGZmNWJiOWUnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+    "content_type": "application/json",
+    "request_bytes": 283,
+    "request_sha256": "4c67d569be9a25c998e70e3319f7fc733db4fc242cc4f3cae28816b43c2cbebd",
+    "body_base64": "eyJuYW1lIjoiR2l2ZW4gUUEgbmFtZWQgaG9vayBidXNpbmVzcyBzdGVwIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1Mjk3OCIsInR5cGUiOiJTVEVQIiwibGF1bmNoVXVpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsInBhcmVudFV1aWQiOiIxY2M4NzgwZS0zMTAzLTQ0ZjgtOWNmYi00ZmU5MmU3MGU5OTQiLCJhdHRyaWJ1dGVzIjpbXSwiaGFzU3RhdHMiOmZhbHNlLCJyZXRyeSI6ZmFsc2UsInV1aWQiOiI4ZGJjMjlmYS0yOTExLTRkZTctYmQ5NC1mNmY4ZmNkNzM5NjYifQ==",
+    "json": {
+      "name": "Given QA named hook business step",
+      "startTime": "1793470252978",
+      "type": "STEP",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "8dbc29fa-2911-4de7-bd94-f6f8fcd73966"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "8dbc29fa-2911-4de7-bd94-f6f8fcd73966",
+      "uniqueId": "auto:17903b268acb1ae56ec23804dd264083"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjhkYmMyOWZhLTI5MTEtNGRlNy1iZDk0LWY2ZjhmY2Q3Mzk2NiIsInVuaXF1ZUlkIjoiYXV0bzoxNzkwM2IyNjhhY2IxYWU1NmVjMjM4MDRkZDI2NDA4MyJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/log",
+    "content_type": "application/json",
+    "request_bytes": 178,
+    "request_sha256": "38eb6371a59757c8ee0709e17762cfc92f55cba76a5bec5cb659110721cfb91e",
+    "body_base64": "eyJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwiaXRlbVV1aWQiOiI4ZGJjMjlmYS0yOTExLTRkZTctYmQ5NC1mNmY4ZmNkNzM5NjYiLCJ0aW1lIjoiMTc5MzQ3MDI1Mjk5OSIsIm1lc3NhZ2UiOiJRQV9OQU1FRF9CVVNJTkVTU19QQVNTRUQiLCJsZXZlbCI6ImluZm8ifQ==",
+    "json": {
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "itemUuid": "8dbc29fa-2911-4de7-bd94-f6f8fcd73966",
+      "time": "1793470252999",
+      "message": "QA_NAMED_BUSINESS_PASSED",
+      "level": "info"
+    },
+    "entries": [
+      {
+        "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+        "itemUuid": "8dbc29fa-2911-4de7-bd94-f6f8fcd73966",
+        "time": "1793470252999",
+        "message": "QA_NAMED_BUSINESS_PASSED",
+        "level": "info"
+      }
+    ],
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "4092c516-309a-4541-91d0-1d6fdd199ebc"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjQwOTJjNTE2LTMwOWEtNDU0MS05MWQwLTFkNmZkZDE5OWViYyJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/8dbc29fa-2911-4de7-bd94-f6f8fcd73966",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "3e330d4387371200b275dff3a3ce10eee3d248b445e8566df3dc7c5f571fc44f",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MzAxNCIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470253014",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = '8dbc29fa-2911-4de7-bd94-f6f8fcd73966' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICc4ZGJjMjlmYS0yOTExLTRkZTctYmQ5NC1mNmY4ZmNkNzM5NjYnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+    "content_type": "application/json",
+    "request_bytes": 288,
+    "request_sha256": "5c2d89f4fb249a0015e66c7241f437eafbf12fab4da2126f0f1716f7f10ba571",
+    "body_base64": "eyJuYW1lIjoiQWZ0ZXJTdGVwIGhvb2sgwrcgSW5zcGVjdCBzdGVwIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MzAzMyIsInR5cGUiOiJBRlRFUl9NRVRIT0QiLCJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwicGFyZW50VXVpZCI6IjFjYzg3ODBlLTMxMDMtNDRmOC05Y2ZiLTRmZTkyZTcwZTk5NCIsImF0dHJpYnV0ZXMiOltdLCJoYXNTdGF0cyI6ZmFsc2UsInJldHJ5IjpmYWxzZSwidXVpZCI6ImYyMDNjMDdkLTg4ZTktNDkzOS04M2JkLTM0YTFmMjExMjIzZCJ9",
+    "json": {
+      "name": "AfterStep hook · Inspect step",
+      "startTime": "1793470253033",
+      "type": "AFTER_METHOD",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "f203c07d-88e9-4939-83bd-34a1f211223d"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "f203c07d-88e9-4939-83bd-34a1f211223d",
+      "uniqueId": "auto:3d2331084e1710c80a9a5702af592fa3"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6ImYyMDNjMDdkLTg4ZTktNDkzOS04M2JkLTM0YTFmMjExMjIzZCIsInVuaXF1ZUlkIjoiYXV0bzozZDIzMzEwODRlMTcxMGM4MGE5YTU3MDJhZjU5MmZhMyJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/log",
+    "content_type": "application/json",
+    "request_bytes": 173,
+    "request_sha256": "4bc1e5db622272d187a56ad830969ee49df24908c71b18f630b92b5e7895d3ff",
+    "body_base64": "eyJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwiaXRlbVV1aWQiOiJmMjAzYzA3ZC04OGU5LTQ5MzktODNiZC0zNGExZjIxMTIyM2QiLCJ0aW1lIjoiMTc5MzQ3MDI1MzA0OCIsIm1lc3NhZ2UiOiJRQV9OQU1FRF9BRlRFUl9TVEVQIiwibGV2ZWwiOiJpbmZvIn0=",
+    "json": {
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "itemUuid": "f203c07d-88e9-4939-83bd-34a1f211223d",
+      "time": "1793470253048",
+      "message": "QA_NAMED_AFTER_STEP",
+      "level": "info"
+    },
+    "entries": [
+      {
+        "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+        "itemUuid": "f203c07d-88e9-4939-83bd-34a1f211223d",
+        "time": "1793470253048",
+        "message": "QA_NAMED_AFTER_STEP",
+        "level": "info"
+      }
+    ],
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "194b85e7-8bfa-4f28-a1b7-1bca2cedcd48"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjE5NGI4NWU3LThiZmEtNGYyOC1hMWI3LTFiY2EyY2VkY2Q0OCJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/f203c07d-88e9-4939-83bd-34a1f211223d",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "ceb98d3aca283848a59d3faa2b910fe407b6e3bd70d6f73ab7c01b3c79c4abaa",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MzA2MSIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470253061",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = 'f203c07d-88e9-4939-83bd-34a1f211223d' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICdmMjAzYzA3ZC04OGU5LTQ5MzktODNiZC0zNGExZjIxMTIyM2QnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/item/1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+    "content_type": "application/json",
+    "request_bytes": 285,
+    "request_sha256": "a7d198b54bcb38b34877c421c86bd430debe8539eb96a2597cf0c745669a78a8",
+    "body_base64": "eyJuYW1lIjoiQWZ0ZXIgaG9vayDCtyBDbG9zZSBicm93c2VyIiwic3RhcnRUaW1lIjoiMTc5MzQ3MDI1MzA3MyIsInR5cGUiOiJBRlRFUl9NRVRIT0QiLCJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwicGFyZW50VXVpZCI6IjFjYzg3ODBlLTMxMDMtNDRmOC05Y2ZiLTRmZTkyZTcwZTk5NCIsImF0dHJpYnV0ZXMiOltdLCJoYXNTdGF0cyI6ZmFsc2UsInJldHJ5IjpmYWxzZSwidXVpZCI6IjQ0NjNiMmRiLWE1ZmItNGRiOS1hODM1LWVlY2JmZDgzYWE0OCJ9",
+    "json": {
+      "name": "After hook · Close browser",
+      "startTime": "1793470253073",
+      "type": "AFTER_METHOD",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "parentUuid": "1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+      "attributes": [],
+      "hasStats": false,
+      "retry": false,
+      "uuid": "4463b2db-a5fb-4db9-a835-eecbfd83aa48"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "4463b2db-a5fb-4db9-a835-eecbfd83aa48",
+      "uniqueId": "auto:61ac84631eff0b87637e622fa96d4744"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjQ0NjNiMmRiLWE1ZmItNGRiOS1hODM1LWVlY2JmZDgzYWE0OCIsInVuaXF1ZUlkIjoiYXV0bzo2MWFjODQ2MzFlZmYwYjg3NjM3ZTYyMmZhOTZkNDc0NCJ9"
+  },
+  {
+    "method": "POST",
+    "path": "/api/v1/superadmin_personal/log",
+    "content_type": "application/json",
+    "request_bytes": 168,
+    "request_sha256": "7719400dd3431112ee02d7f704d5a8d2a6b8dd5d2f14c2a227eefeff4a1057b3",
+    "body_base64": "eyJsYXVuY2hVdWlkIjoiN2RhZmQ2OTYtMmQzZS00NzdhLTk0MzEtZGYwODc0ZWY4ODE4IiwiaXRlbVV1aWQiOiI0NDYzYjJkYi1hNWZiLTRkYjktYTgzNS1lZWNiZmQ4M2FhNDgiLCJ0aW1lIjoiMTc5MzQ3MDI1MzA4NCIsIm1lc3NhZ2UiOiJRQV9OQU1FRF9BRlRFUiIsImxldmVsIjoiaW5mbyJ9",
+    "json": {
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "itemUuid": "4463b2db-a5fb-4db9-a835-eecbfd83aa48",
+      "time": "1793470253084",
+      "message": "QA_NAMED_AFTER",
+      "level": "info"
+    },
+    "entries": [
+      {
+        "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+        "itemUuid": "4463b2db-a5fb-4db9-a835-eecbfd83aa48",
+        "time": "1793470253084",
+        "message": "QA_NAMED_AFTER",
+        "level": "info"
+      }
+    ],
+    "files": [],
+    "offline_stub": false,
+    "status": 201,
+    "response": {
+      "id": "78b2bac3-e697-4f11-b34f-6cb2fdfc0bc1"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6Ijc4YjJiYWMzLWU2OTctNGYxMS1iMzRmLTZjYjJmZGZjMGJjMSJ9"
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/4463b2db-a5fb-4db9-a835-eecbfd83aa48",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "948684cf553c8ad773a2223e0fec2af8d635c3def35bf231993a15e98974e393",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MzA5MSIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470253091",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = '4463b2db-a5fb-4db9-a835-eecbfd83aa48' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICc0NDYzYjJkYi1hNWZiLTRkYjktYTgzNS1lZWNiZmQ4M2FhNDgnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/1cc8780e-3103-44f8-9cfb-4fe92e70e994",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "aa5a81821178f9b412248ef600ff07ec9296f48d78e3453521c403b90eaf8593",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MzEwNyIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470253107",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = '1cc8780e-3103-44f8-9cfb-4fe92e70e994' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICcxY2M4NzgwZS0zMTAzLTQ0ZjgtOWNmYi00ZmU5MmU3MGU5OTQnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/item/4d0dadea-2558-4868-b374-8a6c8d18ccec",
+    "content_type": "application/json",
+    "request_bytes": 97,
+    "request_sha256": "9791f5992906f0799311b563dd5234626d0885d0154314fc6b769ee814c90c27",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MzEzNSIsImxhdW5jaFV1aWQiOiI3ZGFmZDY5Ni0yZDNlLTQ3N2EtOTQzMS1kZjA4NzRlZjg4MTgiLCJzdGF0dXMiOiJwYXNzZWQifQ==",
+    "json": {
+      "endTime": "1793470253135",
+      "launchUuid": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "status": "passed"
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "message": "TestItem with ID = '4d0dadea-2558-4868-b374-8a6c8d18ccec' successfully finished."
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJtZXNzYWdlIjoiVGVzdEl0ZW0gd2l0aCBJRCA9ICc0ZDBkYWRlYS0yNTU4LTQ4NjgtYjM3NC04YTZjOGQxOGNjZWMnIHN1Y2Nlc3NmdWxseSBmaW5pc2hlZC4ifQ=="
+  },
+  {
+    "method": "PUT",
+    "path": "/api/v1/superadmin_personal/launch/7dafd696-2d3e-477a-9431-df0874ef8818/finish",
+    "content_type": "application/json",
+    "request_bytes": 61,
+    "request_sha256": "3892198000f304210ae2c80fb9d555cbc07753e6ab048d7ae263b2e12a42d635",
+    "body_base64": "eyJlbmRUaW1lIjoiMTc5MzQ3MDI1MzEzNiIsInN0YXR1cyI6InBhc3NlZCIsImF0dHJpYnV0ZXMiOltdfQ==",
+    "json": {
+      "endTime": "1793470253136",
+      "status": "passed",
+      "attributes": []
+    },
+    "entries": null,
+    "files": [],
+    "offline_stub": false,
+    "status": 200,
+    "response": {
+      "id": "7dafd696-2d3e-477a-9431-df0874ef8818",
+      "number": 1,
+      "link": "http://rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/1123"
+    },
+    "response_content_type": "application/json",
+    "response_base64": "eyJpZCI6IjdkYWZkNjk2LTJkM2UtNDc3YS05NDMxLWRmMDg3NGVmODgxOCIsIm51bWJlciI6MSwibGluayI6Imh0dHA6Ly9ycC0yNjA3LmxvY2FsaG9zdDoxODA4MC91aS8jc3VwZXJhZG1pbl9wZXJzb25hbC9sYXVuY2hlcy9hbGwvMTEyMyJ9"
+  }
+]

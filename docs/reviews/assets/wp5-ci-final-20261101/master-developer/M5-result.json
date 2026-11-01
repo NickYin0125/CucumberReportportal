@@ -1,0 +1,96 @@
+{
+  "cell": "M5",
+  "source_head": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "config",
+        "--global",
+        "--add",
+        "safe.directory",
+        "/tmp/ledger-matrix-source"
+      ],
+      "exit": 0,
+      "seconds": 0.0237851660058368
+    },
+    {
+      "command": [
+        "bundle",
+        "_2.6.6_",
+        "install",
+        "--local"
+      ],
+      "exit": 0,
+      "seconds": 0.35210791700228583
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "ruby",
+        "-e",
+        "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+      ],
+      "exit": 0,
+      "seconds": 0.8263190829893574
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "rspec",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/private/tmp/ledger-finalise-20261101-ci-diagnostics/M5/rspec.json"
+      ],
+      "exit": 0,
+      "seconds": 248.26097728099558
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "cucumber",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/private/tmp/ledger-finalise-20261101-ci-diagnostics/M5/cucumber.json"
+      ],
+      "exit": 0,
+      "seconds": 6.368587128003128
+    }
+  ],
+  "source_storage": {
+    "checkout": "/private/tmp/ledger-finalise-20261101-ci-diagnostics/M5/source",
+    "execution_copy": "/tmp/ledger-matrix-source",
+    "identical_library_bytes": true
+  },
+  "dependency_storage": "Copied /bundle into container-local /tmp/ledger-matrix-bundle; dependency versions still checked below",
+  "runtime": {
+    "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+    "cucumber": "12.0.1",
+    "sdk": "2.0.1"
+  },
+  "rspec": {
+    "duration": 246.936446336,
+    "example_count": 1463,
+    "failure_count": 0,
+    "pending_count": 0,
+    "errors_outside_of_examples_count": 0
+  },
+  "cucumber": {
+    "scenarios": 7,
+    "steps": 21,
+    "statuses": {
+      "passed": 21
+    }
+  },
+  "status": "PASS"
+}

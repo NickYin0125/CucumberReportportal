@@ -1,0 +1,299 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 2259,
+      "uuid": "a8777d94-9b70-41ed-b6f8-03fdcd1aad12",
+      "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c12.0.1-framework-rich-2-F16b-framework-replay",
+      "number": 1,
+      "startTime": 1793504844451,
+      "endTime": 1793504844635,
+      "lastModified": 1793504844657,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 18084,
+      "uuid": "087472e1-f610-45aa-ac02-efa7bc9dd2f1",
+      "name": "Feature: Controlled framework-only error input",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793504844523,
+      "endTime": 1793504844634,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 2259,
+      "uniqueId": "auto:05757c157dde5ec136cbc0cb248b6217",
+      "testCaseHash": -1755596147,
+      "patternTemplates": [],
+      "path": "18084",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 18085,
+      "uuid": "6d038eb3-3f3b-43ed-86d3-05ad9721a09f",
+      "name": "Scenario: Explicit event input replay",
+      "codeRef": "features/presentation_ledger/qa_runtime/F16b-framework-replay.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793504844524,
+      "endTime": 1793504844597,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 18084,
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": []
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 2259,
+      "uniqueId": "e3ef68b3c9deb03d3a1720d2780dad30847d5993",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F16b-framework-replay.feature:3",
+      "testCaseHash": 1268165434,
+      "patternTemplates": [],
+      "path": "18084.18085",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 18086,
+      "uuid": "00d346e6-1959-498c-aaa5-8857cb4aa20e",
+      "name": "Given QA controlled framework-only event failure",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793504844551,
+      "endTime": 1793504844576,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 18085,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 2259,
+      "uniqueId": "auto:baf16e24b887e42744b70f2760f4b06c",
+      "testCaseHash": 771117396,
+      "patternTemplates": [],
+      "path": "18084.18085.18086",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 11883,
+      "time": "2026-11-01T03:47:24.566Z",
+      "message": "## ✗ RuntimeError: Controlled framework-only replay\n\n```text\nfirst.rb:11   Framework.one\nsecond.rb:22  Framework.two\nthird.rb:33   Framework.three\n```\n\n<details><summary>Full backtrace · 6 frames · 1 framework and 2 runner frames not shown above</summary>\n\n```text\n/qa/gems/controlled-one/first.rb:11:in 'Framework.one'\n/qa/gems/controlled-two/second.rb:22:in 'Framework.two'\n/qa/gems/controlled-three/third.rb:33:in 'Framework.three'\n/qa/gems/controlled-four/fourth.rb:44:in 'Framework.four'\n-e:7:in 'runner'\n<internal:kernel>:90:in 'require'\n```\n\n</details>",
+      "level": "error",
+      "itemId": 18086
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 2259,
+      "items_by_launch": [
+        {
+          "id": 18084,
+          "uuid": "087472e1-f610-45aa-ac02-efa7bc9dd2f1",
+          "name": "Feature: Controlled framework-only error input",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-01T03:47:24.523Z",
+          "endTime": "2026-11-01T03:47:24.634Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c12.0.1-framework-rich-2-F16b-framework-replay",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 2259,
+          "uniqueId": "auto:05757c157dde5ec136cbc0cb248b6217",
+          "testCaseHash": -1755596147,
+          "patternTemplates": [],
+          "path": "18084",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 18085,
+          "uuid": "6d038eb3-3f3b-43ed-86d3-05ad9721a09f",
+          "name": "Scenario: Explicit event input replay",
+          "codeRef": "features/presentation_ledger/qa_runtime/F16b-framework-replay.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T03:47:24.524Z",
+          "endTime": "2026-11-01T03:47:24.597Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "parent": 18084,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c12.0.1-framework-rich-2-F16b-framework-replay",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 18084,
+                "name": "Feature: Controlled framework-only error input"
+              }
+            ]
+          },
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": []
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 2259,
+          "uniqueId": "e3ef68b3c9deb03d3a1720d2780dad30847d5993",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F16b-framework-replay.feature:3",
+          "testCaseHash": 1268165434,
+          "patternTemplates": [],
+          "path": "18084.18085",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 18086,
+          "uuid": "00d346e6-1959-498c-aaa5-8857cb4aa20e",
+          "name": "Given QA controlled framework-only event failure",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T03:47:24.551Z",
+          "endTime": "2026-11-01T03:47:24.576Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 18085,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-final-rerun-20261101-c12.0.1-framework-rich-2-F16b-framework-replay",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 18084,
+                "name": "Feature: Controlled framework-only error input"
+              },
+              {
+                "id": 18085,
+                "name": "Scenario: Explicit event input replay"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 2259,
+          "uniqueId": "auto:baf16e24b887e42744b70f2760f4b06c",
+          "testCaseHash": 771117396,
+          "patternTemplates": [],
+          "path": "18084.18085.18086",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

@@ -2,10 +2,11 @@
 
 require_relative "adjudicate"
 require_relative "p106_clarified"
+require_relative "final_wp5_context"
 
 module LedgerQAAnalysis
   class WP5Study < FinalStudy
-    FINAL_HEADS = { "2.0.1" => "06f498cf9fb05352a831fdafc9583b40dced9899", "1.3.2" => "1e136e89eb21276330e5fc9f1769fe9521a83cb9" }.freeze
+    FINAL_HEADS = LedgerWP5Context.heads.freeze
     TARGETS = ((1..12).map { |n| "G#{n}" } + (1..10).map { |n| "P1.#{n}" } +
       (1..8).map { |n| "P5.#{n}" } + (1..9).map { |n| "P8.#{n}" } +
       (1..11).map { |n| "P10.#{n}" } + (1..8).map { |n| "V#{n}" }).freeze
@@ -38,6 +39,30 @@ module LedgerQAAnalysis
 
     def check(id, label, expected, actual, snapshot: nil, passed: expected == actual, method: "L", inputs: nil, note: nil)
       return unless TARGETS.include?(id)
+      no_rp_logs = %w[G1 G12 P8.8 P10.7].include?(id)
+      if inputs.is_a?(Hash) && inputs[:source].to_s.end_with?("/snapshot.json")
+        source = File.join(root, inputs[:source])
+        @reference_snapshots ||= {}
+        referenced = @reference_snapshots[source] ||= JSON.parse(File.read(source))
+        reference_logs = referenced.fetch("logs")
+        reference_logs = [] if no_rp_logs
+        reference_logs = reference_logs.select { |log| log["level"] == "error" } if id.start_with?("P1.")
+        if (id == "G3" || id.start_with?("P5.")) && !label.include?("prefix")
+          reference_logs = reference_logs.select { |log| log["binaryContent"] }
+        end
+        inputs = if no_rp_logs
+                   inputs.merge(log_ids: [])
+                 else
+                   inputs.merge(log_ids: reference_logs.map { |log| log["id"] }, item_ids: reference_logs.map { |log| log["itemId"] }.compact.uniq)
+                 end
+      end
+      if id == "P10.7" && label.end_with?("unchanged Launch metadata plain/rich")
+        raw_expected, raw_actual = expected, actual
+        normalize = ->(rows) { rows.map { |description, attributes| [description, attributes.to_a.sort_by { |entry| JSON.generate(entry.sort.to_h) }] } }
+        expected, actual = normalize.call(expected), normalize.call(actual)
+        passed = expected == actual
+        inputs = { comparison: "Read API attribute sets: order is not identity; duplicates are retained", raw_api_expected: raw_expected, raw_api_actual: raw_actual }
+      end
       super
       entry = checks.last
       entry[:runtime_sha] = FINAL_HEADS.fetch(version)
@@ -45,7 +70,7 @@ module LedgerQAAnalysis
       entry[:inputs] ||= { fixture_capture: entry.dig(:evidence, :source), comparison: label }
       selected = snapshot && logs(snapshot)
       if selected
-        if id == "G1"
+        if no_rp_logs
           entry[:evidence][:log_ids] = []
           return
         end
@@ -75,6 +100,27 @@ module LedgerQAAnalysis
 
     def proposal_golden(section, index = 0)
       super
+    end
+
+    def contract_checks(plain, rich, baseline)
+      normalized = baseline
+      if version == "1.3.2" && (old = baseline["F15-named"])
+        hooks = old.fetch("items").select { |item| item["type"] == "BEFORE_METHOD" }
+        allowed_old = ["Before Hook: Before hook", "Before hook"]
+        if hooks.length == 1 && allowed_old.include?(hooks.first["name"])
+          normalized = baseline.dup
+          normalized["F15-named"] = Marshal.load(Marshal.dump(old))
+          normalized["F15-named"]["items"].find { |item| item["id"] == hooks.first["id"] }["name"] = "Before hook \u00b7 Open browser"
+          [plain, rich].each do |runs|
+            current = runs.fetch("F15-named")
+            names = current.fetch("items").select { |item| item["type"] == "BEFORE_METHOD" }.map { |item| item["name"] }
+            check("G1", "F15-named: only the explicitly permitted P6 native named-hook change is normalized", ["Before hook \u00b7 Open browser"], names,
+              snapshot: current, method: "C", inputs: { baseline: refs(old), raw_baseline_name: hooks.first["name"],
+                fixture_native_declaration: 'Before(name: "Open browser")', scope: "G1 explicitly permits P6 hook-name differences; every other item field and log owner remains strict" })
+          end
+        end
+      end
+      super(plain, rich, normalized)
     end
 
     def coverage
@@ -248,6 +294,12 @@ module LedgerQAAnalysis
           end
         end
         left, right = group.call(plain), group.call(rich)
+        submitted = [plain, rich].map do |snapshot|
+          JSON.parse(File.read(File.join(snapshot["_directory"], "wire.json"))).select { |record| record["method"] == "POST" && record["path"].end_with?("/launch") }
+            .map { |record| record.fetch("json").slice("description", "attributes") }
+        end
+        check("P10.7", "Paired submitted Launch description and ordered attribute JSON bytes are identical before server readback", submitted[0].map { |value| JSON.generate(value) }, submitted[1].map { |value| JSON.generate(value) },
+          snapshot: rich, inputs: refs(plain), method: "C")
         check("P10.6", "Paired log ownership and level counts", left.transform_values(&:length), right.transform_values(&:length), snapshot: rich, inputs: refs(plain))
         left.each do |owner, rows|
           rows.zip(right.fetch(owner, [])).each do |a, b|
@@ -276,7 +328,9 @@ module LedgerQAAnalysis
             html_models = models.map { |model| normalize_envelopes(model[1]) }
             check("G12", "Native HTML template bytes and embedded envelope models equal plain/rich and source NDJSON", true,
               models[0][0] == models[1][0] && html_models[0] == html_models[1] && html_models == [left_native, right_native],
-              snapshot: rich, method: "U", inputs: htmls)
+              snapshot: rich, method: "U", inputs: { files: htmls, file_sha256: htmls.map { |path| Digest::SHA256.file(path).hexdigest },
+                html_template_sha256: models.map { |model| Digest::SHA256.hexdigest(model[0]) },
+                normalized_html_envelopes_sha256: html_models.map { |model| Digest::SHA256.hexdigest(JSON.generate(model)) } })
           else
             blocked("G12", "Native parallel HTML reports require official formatter postprocessing", inputs: htmls)
           end
@@ -294,6 +348,44 @@ module LedgerQAAnalysis
 
     def terminal_business(text)
       text.gsub(/\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2}(?:\.\d+)?/, "<timestamp>").sub(/\n\d+ scenarios? \([^\n]*\).*\z/m, "")
+    end
+
+    def every_candidate_globals
+      all_candidates.each do |snapshot|
+        label = snapshot.fetch("_directory").delete_prefix(File.join(root, "docs/reviews/assets/ledger-qa-live/"))
+        entries = logs(snapshot)
+        queries = snapshot.fetch("queries", [])
+        launch_ids = snapshot.fetch("launches").map { |launch| launch.fetch("id") }.sort
+        %w[G5 G8].each do |id|
+          check(id, "#{label}: API search covers every owned Launch", launch_ids,
+            queries.map { |query| query.fetch("launch_id") }.sort, snapshot: snapshot)
+        end
+        queries.each do |query|
+          check("G5", "#{label}: live API forbidden-prefix count for Launch #{query['launch_id']}", 0,
+            query.dig("forbidden_prefix", "page", "totalElements"), snapshot: snapshot, inputs: query.slice("launch_id", "forbidden_prefix"))
+          check("G8", "#{label}: live API synthetic-secret count for Launch #{query['launch_id']}", 0,
+            query.dig("secret_marker", "page", "totalElements"), snapshot: snapshot, inputs: query.slice("launch_id", "secret_marker"))
+        end
+        check("G7", "#{label}: forbidden tokens in every read-back message", [], entries.filter_map do |log|
+          hits = log.fetch("message").scan(/<style|url\(|position:| class=| id=|<img|<svg|javascript:|\son[a-z]+=/i)
+          { log_id: log["id"], hits: hits } unless hits.empty?
+        end, snapshot: snapshot)
+        metadata = snapshot.fetch("items").map { |item| item.slice("name", "description", "attributes") } +
+          snapshot.fetch("launches").map { |launch| launch.slice("name", "description", "attributes") }
+        check("G8", "#{label}: synthetic secret absent from all messages and complete metadata", false,
+          JSON.generate([entries.map { |log| log.fetch("message") }, metadata]).include?("SECRET123"), snapshot: snapshot)
+        check("G5", "#{label}: no forbidden prefix in any read-back message", [],
+          entries.select { |log| log.fetch("message").include?("!!!MARKDOWN_MODE!!!") }.map { |log| log.fetch("id") }, snapshot: snapshot)
+        check("P8.6", "#{label}: every INFO message avoids heading syntax", [],
+          entries.select { |log| log["level"] == "info" && log.fetch("message").start_with?("## ") }.map { |log| log.fetch("id") }, snapshot: snapshot)
+        owners = snapshot.fetch("items").map { |item| item.fetch("id") }
+        check("G1", "#{label}: all nested log owners belong to the captured item tree", [],
+          entries.filter_map { |log| log["itemId"] unless log["itemId"].nil? || owners.include?(log["itemId"]) }.uniq,
+          snapshot: snapshot, method: "C")
+        check("G1", "#{label}: all candidate items and Launches are closed", [],
+          (snapshot.fetch("items") + snapshot.fetch("launches")).select { |item| item["status"] == "IN_PROGRESS" }.map { |item| item.fetch("id") },
+          snapshot: snapshot, method: "C")
+      end
     end
 
     def normalize_envelopes(rows)
@@ -341,14 +433,32 @@ module LedgerQAAnalysis
       plain, rich, baseline = run("plain"), run("rich"), run("baseline")
       contract_checks(plain, rich, baseline)
       global_checks(plain, rich, baseline)
+      every_candidate_globals
       Study.instance_method(:feature_checks).bind_call(self, plain, rich, baseline)
       supplemental_current(plain, rich, baseline)
       frame_checks(plain)
       closed_vocabulary(plain, rich)
       paired_outputs
       terminal_baseline(plain, rich, baseline)
-      %w[P1.6 P1.8 P1.9 P5.8 P10.8 P10.10 P10.11].each do |id|
-        blocked(id, "Fresh final-head visual/DOM protocol has not been captured and independently judged")
+      visual_sources = {
+        "P1.6" => [plain.fetch("F14-negative")], "P1.8" => [plain.fetch("F04-frozen")],
+        "P1.9" => [plain.fetch("F04-frozen")], "P5.8" => [plain.fetch("F01"), rich.fetch("F01")],
+        "P10.8" => rich.values.select { |snapshot| logs(snapshot).any? { |log| log["message"].include?("<details>") } },
+        "P10.10" => %w[F04-frozen F01 F13 F10a F10c F11a F11b F11c F12].map { |fixture| rich.fetch(fixture) },
+        "P10.11" => %w[F10a F10c F11a F11b].map { |fixture| rich.fetch(fixture) }
+      }
+      visual_sources.each do |id, snapshots|
+        refs_by_snapshot = snapshots.map do |snapshot|
+          reference = refs(snapshot)
+          selected = logs(snapshot)
+          selected = selected.select { |log| log["level"] == "error" } if id.start_with?("P1.")
+          selected = selected.select { |log| log["binaryContent"] } if id == "P5.8"
+          selected = selected.select { |log| log["message"].include?("<details>") } if id == "P10.8"
+          reference.merge(log_ids: selected.map { |log| log["id"] }, item_ids: selected.map { |log| log["itemId"] }.compact.uniq)
+        end
+        blocked(id, "Fresh criterion-specific UI proof is not yet complete: the exact API targets below are not replaced by historical screenshots or inferred DOM results", inputs: refs_by_snapshot)
+        %i[launch_ids item_ids log_ids].each { |key| checks.last[:evidence][key] = refs_by_snapshot.flat_map { |reference| reference.fetch(key) }.uniq }
+        checks.last[:evidence][:source] = refs_by_snapshot.map { |reference| reference.fetch(:source) }
       end
       checks
     rescue KeyError => error
@@ -359,13 +469,13 @@ module LedgerQAAnalysis
 end
 
 if $PROGRAM_NAME == __FILE__
-  stamp = ENV.fetch("QA_WP5_STAMP", "wp5-final-20261101")
+  stamp = LedgerWP5Context.stamp
   { "2.0.1" => ["12.0.1"], "1.3.2" => ["9.2.1", "10.2.0"] }.each do |version, cucumbers|
     root = "/Users/nick/Documents/crr-qa-#{version}"
     checks = cucumbers.flat_map { |cucumber| LedgerQAAnalysis::WP5Study.new(root, stamp, cucumber).execute_live }
     output = File.join(root, "docs/reviews/assets", stamp, "live-checks.json")
     FileUtils.mkdir_p(File.dirname(output))
-    File.write(output, JSON.pretty_generate(schema: "wp5-final-head-live-analysis/1", runtime_sha: LedgerQAAnalysis::WP5Study::FINAL_HEADS.fetch(version), checked_at_utc: Time.now.utc.iso8601, checks: checks) + "\n")
+    File.write(output, JSON.generate(schema: "wp5-final-head-live-analysis/1", runtime_sha: LedgerQAAnalysis::WP5Study::FINAL_HEADS.fetch(version), checked_at_utc: Time.now.utc.iso8601, checks: checks) + "\n")
     puts JSON.generate(version: version, checks: checks.length, verdicts: checks.group_by { |c| c[:verdict] }.transform_values(&:length),
       failures: checks.select { |c| c[:verdict] == "FAIL" }.map { |c| [c[:criterion], c[:check], c[:evidence]] })
   end

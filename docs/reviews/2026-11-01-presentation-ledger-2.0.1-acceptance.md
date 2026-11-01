@@ -1,126 +1,1214 @@
 # Ledger presentation acceptance - 2.0.1
 
-Verdict: REJECT. Date: 2026-11-01 (Asia/Shanghai). Tester: Independent Ledger QA. Branch: `qa/presentation-ledger-2.0.1`. Final runtime head: `06f498cf9fb05352a831fdafc9583b40dced9899`. Baseline: `79e5e9cfde4be6d29ca2293e549460c6c71fe87a`. RP UI 5.15.6 / server 26.0.7.
+Verdict: ACCEPT. Date: 2026-11-01 (Asia/Shanghai). Tester: Independent Ledger QA. Branch: `qa/presentation-ledger-2.0.1`. Candidate feature head: `173c6038b417e86aeb4f268649ce4c81aa30888e`. Actually tested runtime head: `3f20313c20b25071fbc49b31e1c6bc772bd599e4`. Baseline: `79e5e9cfde4be6d29ca2293e549460c6c71fe87a`. RP UI 5.15.6 / server 26.0.7.
+
+Documentation-only binding: [exact path/mode/blob fingerprints and fresh package member proof](assets/wp5-ci-final-20261101/docs-only-final-binding-r2.json) pass. Only the approved documentation delta is newly verified; matrix/live/fault/performance runs retain their original tested SHAs. No release authorization.
 
 WP5 re-scores only G1-G12, P1.1-P1.10, P5.1-P5.8, P8.1-P8.9, P10.1-P10.11 and V1-V8 at the final runtime head. Other criterion states are explicitly historical, not new final-head executions. Every original Q check is preserved in the evidence JSON and prior report commits. Developer Launches are not acceptance evidence. No new waiver is inferred.
 
 ## Runs
 | Run | Ruby | Cucumber | Mode | RSpec (examples/failures/pending) | Cucumber (scenarios/steps) | Launch IDs |
 | --- | --- | --- | --- | --- | --- | --- |
-| M5 | Required final runtime | Required pinned version | offline plain | BLOCKED: not finished | Pending | None claimed |
-| M6 | Required final runtime | Required pinned version | offline plain | BLOCKED: not finished | Pending | None claimed |
-| wp5-final-20261101-c12.0.1-authored-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1364, 1366 |
-| wp5-final-20261101-c12.0.1-authored-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1458, 1460 |
-| wp5-final-20261101-c12.0.1-framework-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1360 |
-| wp5-final-20261101-c12.0.1-framework-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1455 |
-| wp5-final-20261101-c12.0.1-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1279, 1281, 1283, 1285, 1287, 1289, 1293, 1295, 1297, 1298, 1300, 1301, 1303, 1305, 1307, 1309, 1310, 1311, 1313, 1315, 1317, 1318, 1320, 1321, 1322, 1324, 1325, 1327, 1328, 1329, 1330, 1332, 1334, 1336, 1337, 1339, 1340, 1342, 1343, 1345 |
-| wp5-final-20261101-c12.0.1-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1371, 1373, 1375, 1378, 1380, 1382, 1385, 1388, 1389, 1391, 1393, 1395, 1397, 1399, 1400, 1402, 1403, 1404, 1406, 1408, 1410, 1412, 1413, 1415, 1417, 1419, 1420, 1422, 1423, 1424, 1426, 1427, 1428, 1430, 1432, 1434, 1435, 1437, 1438, 1440 |
-| wp5-final-20261101-c12.0.1-rich-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 1467, 1468, 1470, 1472, 1474, 1477, 1480 |
-| wp5-final-20261101-c12.0.1-supplement-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1349, 1351, 1353, 1355, 1357 |
-| wp5-final-20261101-c12.0.1-supplement-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 1443, 1445, 1447, 1449, 1451 |
+| M5 | ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux] | 12.0.1 | offline plain | 1479/0/0 | 7/21 | Offline; PASS |
+| M6 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | offline plain | 1479/0/0 | 7/21 | Offline; PASS |
+| wp5-ci-final-20261101-c12.0.1-authored-baseline | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 3229 |
+| wp5-ci-final-20261101-c12.0.1-authored-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2932, 2933 |
+| wp5-ci-final-20261101-c12.0.1-authored-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2998, 3000 |
+| wp5-ci-final-20261101-c12.0.1-authored-rich-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3078, 3079 |
+| wp5-ci-final-20261101-c12.0.1-authored-rich-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3151, 3152 |
+| wp5-ci-final-20261101-c12.0.1-baseline | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 3159, 3161, 3162, 3164, 3165, 3166, 3168, 3171, 3172, 3174, 3175, 3177, 3178, 3179, 3181, 3182, 3184, 3185, 3187, 3188, 3190, 3191, 3193, 3196, 3198, 3200, 3201, 3203, 3204, 3206, 3207, 3208, 3209, 3210, 3211, 3213, 3214, 3215, 3216, 3217 |
+| wp5-ci-final-20261101-c12.0.1-default-batch1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 3233, 3234, 3236 |
+| wp5-ci-final-20261101-c12.0.1-framework-baseline | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 3227 |
+| wp5-ci-final-20261101-c12.0.1-framework-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2929 |
+| wp5-ci-final-20261101-c12.0.1-framework-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2996 |
+| wp5-ci-final-20261101-c12.0.1-framework-rich-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3077 |
+| wp5-ci-final-20261101-c12.0.1-framework-rich-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3148 |
+| wp5-ci-final-20261101-c12.0.1-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2857, 2859, 2860, 2862, 2863, 2865, 2868, 2871, 2872, 2874, 2875, 2877, 2878, 2880, 2881, 2883, 2884, 2886, 2887, 2888, 2889, 2890, 2892, 2893, 2896, 2897, 2899, 2900, 2902, 2903, 2905, 2906, 2908, 2909, 2911, 2912, 2914, 2915, 2917, 2918 |
+| wp5-ci-final-20261101-c12.0.1-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2938, 2939, 2941, 2942, 2944, 2945, 2947, 2949, 2950, 2952, 2953, 2954, 2955, 2956, 2958, 2959, 2960, 2961, 2962, 2963, 2964, 2965, 2966, 2968, 2969, 2970, 2971, 2973, 2974, 2975, 2976, 2977, 2978, 2979, 2981, 2982, 2984, 2985, 2986, 2988 |
+| wp5-ci-final-20261101-c12.0.1-rich-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3005, 3007, 3008, 3010, 3011, 3013, 3017, 3019, 3021, 3022, 3024, 3025, 3027, 3028, 3029, 3031, 3032, 3033, 3034, 3035, 3037, 3038, 3039, 3042, 3044, 3045, 3047, 3048, 3049, 3051, 3052, 3054, 3055, 3057, 3058, 3060, 3061, 3063, 3064, 3066 |
+| wp5-ci-final-20261101-c12.0.1-rich-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3084, 3086, 3087, 3089, 3090, 3091, 3094, 3096, 3097, 3098, 3099, 3100, 3101, 3102, 3104, 3105, 3106, 3107, 3108, 3109, 3111, 3112, 3113, 3115, 3117, 3118, 3119, 3121, 3122, 3123, 3125, 3126, 3127, 3128, 3129, 3131, 3132, 3133, 3134, 3136 |
+| wp5-ci-final-20261101-c12.0.1-supplement-baseline | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 3219, 3221, 3222, 3224, 3225 |
+| wp5-ci-final-20261101-c12.0.1-supplement-plain-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2921, 2922, 2924, 2925, 2927 |
+| wp5-ci-final-20261101-c12.0.1-supplement-plain-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | plain/default/baseline as named | Not a suite replacement | Fresh fixture outputs retained | 2990, 2991, 2992, 2993, 2994 |
+| wp5-ci-final-20261101-c12.0.1-supplement-rich-1 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3068, 3070, 3072, 3073, 3075 |
+| wp5-ci-final-20261101-c12.0.1-supplement-rich-2 | ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux] | 12.0.1 | rich | Not a suite replacement | Fresh fixture outputs retained | 3138, 3140, 3141, 3143, 3144 |
 
 The early contended timing attempt is retained but is not G11 acceptance proof. Native compound syntax is N/A on legacy only under Decision 4; explicit separate companions remain required. F06 is N/A on 1.x. Decision 8 applies only to the six named legacy NUL-preview files, not to other log/attachment losses.
 
 ## Results by criterion
 | ID | Level | Verdict (PASS/FAIL/N/A/BLOCKED) | Evidence (log/item IDs, file, screenshot) | Note |
 | --- | --- | --- | --- | --- |
-| G1 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G1 compares The item tree is identical to the baseline for every fixture that exists at baseline: type, `hasStats`, parent path, status, `retry`, `testCaseId`, `uniqueId`, `codeRef`, `parameters`, attributes (P9 off), names. The only allowed name differences are P6 hook names; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G2 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G2 compares Per item, the number of logs and each log's level are identical to the baseline; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G3 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G3 compares Attachment count, `contentType` and SHA-256 of bytes are identical to the baseline. File names are identical except for unnamed attachments (P5); Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G4 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G4 compares Determinism: running F01–F18 twice in the same mode gives byte-identical messages, descriptions and names; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G5 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G5 compares No message contains `!!!MARKDOWN_MODE!!!`; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G6 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G6 compares Plain mode adds no HTML tags. The only tags allowed in plain messages are those the baseline already sends (`<br>` in table cells, `<video …>` / `<source …>` in `minio_markdown` video mode); Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G7 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G7 compares No message in any mode contains `<style`, `url(`, `position:`, ` class=`, ` id=`, `<img`, `<svg`, `javascript:`, or `\son[a-z]+=`; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G8 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G8 compares No log message, description, name or attribute in any run contains `SECRET123`; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G9 | MUST | PASS | [24 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G9 compares If any Presentation formatter raises, that message falls back to the baseline format, one warning is logged, and the scenario's status is unchanged; 24 checks agree; representative comparison: Cucumber 12.0.1 fault-Accent-details: baseline fallback bytes, one warning, unchanged native result. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G10 | MUST | BLOCKED | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G10 compares Full RSpec and offline Cucumber pass on M1–M6, with no new skips or pendings beyond those documented at baseline; Required proof missing: M5: final-head complete suite/offline Cucumber has not finished; M6: final-head complete suite/offline Cucumber has not finished. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G11 | SHOULD | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G11 compares F07 wall time is within +10% of the baseline (median of 3 runs); each Presentation call is below 2 ms at p95 in a micro-benchmark of F01–F18 messages; Required proof missing: Cucumber 12.0.1: uncontended F01-F18 performance rerun pending; early contended attempt is NOT acceptance proof. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| G12 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | G12 compares Native Cucumber messages and the HTML report contain no Tier 2 markup in rich mode, and are identical between plain and rich; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.1 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.1 compares F04's ERROR message equals the proposal's P1 golden. Its tail lines are byte-identical to lines 2–63 of the baseline message; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.2 | MUST | FAIL | [31 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 6996, 6997, 6998, 6999, 7000, 7001, 7002, 7003, 7004, 7005, 7006, 7007, 7008, 7009, 7480, 7481, 7482, 7483, 7484, 7485, 7486, 7487, 7488, 7489, 7490, 7491, 7492, 7493; items 10511, 10513, 10515, 10517, 10519, 10521, 10523, 10525, 10527, 10529, 10531, 10533, 10535, 10537, 11255, 11257, 11259, 11261, 11263, 11265, 11267, 11269, 11271, 11273, 11275, 11277, 11279, 11281 | P1.2 compares Titles follow the rules: F16c `## ✗ <message>`; F16d `## ✗ RuntimeError`; F16e cut to 200 characters ending in `…`; F14 markup escaped by `inline`; 2 failed comparison(s): F14 plain/1 input 3: independently escaped exception title; F14 plain/2 input 3: independently escaped exception title. Comparison Launches 1321, 1415; assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.3 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.3 compares The tail caption's counts equal the real number of framework, runner and total frames; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.4 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.4 compares At most 8 project frames, then the feature frame. F16b shows the first 3 framework frames instead; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.5 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.5 compares F16a puts message lines 2–3 in a `text` fence under the meta line, and the frames block is captioned `_Project frames_`. The caption is absent when there is no continuation; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.6 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.6 compares The F14 exception messages render literally: the rendered title contains `x<script>alert(1)</script>` as text, and the DOM has no `<script>` or `<b>` element from it; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.7 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.7 compares On 1.3.2, F16f's message is redacted (G8). On 2.0.1, redaction is unchanged; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.8 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.8 compares Rendered (screenshot S01): the title and meta line show above RP's fold without expanding; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.9 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.9 compares The Stack trace tab shows the card's title first (S02); Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P1.10 | SHOULD | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P1.10 compares Two separate runs of F04 produce identical message text up to the tail caption; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P2.1 | MUST | PASS | [19 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3402, 3404, 3406, 3408, 3410, 3412, 3414, 3416, 3418, 3420, 3422, 3424, 3426, 3428; items 4971, 4974, 4977, 4980, 4983, 4986, 4989, 4992, 4995, 4998, 5001, 5004, 5007, 5010 | Historical-only, not a new execution: P2.1 compares For every F03/F14 value, the rendered DataTable cell `textContent` (whitespace-trimmed) equals the Gherkin value, with an embedded newline shown as a line break; 19 checks agree; representative comparison: Every escaping matrix cell independently inspected. Comparison Launches 554; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P2.2 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3401, 3402, 3403, 3404, 3405, 3406, 3407, 3408, 3409, 3410, 3411, 3412, 3413, 3414, 3415, 3416, 3417, 3418, 3419, 3420, 3421, 3422, 3423, 3424, 3425, 3426, 3427, 3428, 3429, 3430; items 4968, 4969, 4970, 4971, 4972, 4973, 4974, 4975, 4976, 4977, 4978, 4979, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010, 5011, 5012, 5013, 5014 | Historical-only, not a new execution: P2.2 compares In raw messages, `<`, `>` and `&` from data appear as entities outside code spans and fences, and literally inside them; 4 checks agree; representative comparison: Data outside code has entity &lt;other&gt;. Comparison Launches 554; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P2.3 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | Historical-only, not a new execution: P2.3 compares Your own property spec, with at least 1,000 generated strings per method, passes. `cell`, `inline` and `html` contain no raw `<` or `>`; `cell` has no unescaped `\\|` or newline; `code` and `fence` never close early; no method raises; 2 checks agree; representative comparison: M5 focused assertion evidence from the FULL suite. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P2.4 | MUST | PASS | [76 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 4788, 4789, 4790, 4791, 4792, 4793, 4794, 4795, 4796, 4797, 4798, 4799, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4807, 4808, 4814, 4815, 4816, 4817, 4818, 4819, 4820, 4821, 4822, 4823, 4824, 4825, 4826, 4827, 4828, 4829, 4830, 4831, 4832, 4833, 4834, 4835, 4836, 4837, 4838, 4839, 4840, 4841, 4842, 4843, 4844, 4845, 4846, 4847, 4848, 4849, 4850, 4851, 4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4860, 4861, 4862, 4863, 4864, 4865, 4866, 4867, 4868, 4869, 4870, 4871, 4872, 4873, 4874, 4875, 4876, 4877, 4878, 4879, 4880, 4881, 4882, 4883, 4884, 4885, 4886, 4887, 4888, 4889, 4890, 4891, 4892, 4893, 4894, 4895, 4896, 4897, 4898, 4899, 4900, 4901, 4902, 4903, 4904, 4905, 4906, 4907, 4908, 4909, 4910, 4911, 4912, 4913, 4914, 4915, 4916, 4917, 4918, 4919, 4920, 4921, 4922, 4923, 4924, 4925, 4926, 4927, 4964, 4965, 4966, 4967, 4968, 4969, 4970, 4971, 4972, 4973, 4974, 4975, 4976, 4977, 4978, 4979, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010, 5011, 5012, 5013, 5014, 5015, 5016, 5017, 5018, 5019, 5020, 5021, 5022, 5023, 5024, 5025, 5026, 5027, 5028, 5029, 5030, 5031, 5032, 5033, 5034, 5035, 5036, 5037, 5038, 5039, 5040, 5041, 5042, 5043, 5061, 5062, 5063, 5064, 5065, 5066, 5067, 5068, 5069, 5070, 5071, 5072, 5073, 5074, 5075, 5076, 5077, 5078, 5079, 5080, 5081, 5082, 5083, 5084, 5085, 5086, 5087, 5097, 5098, 5099, 5100, 5101, 5102, 5482, 5483, 5484, 5485, 5486, 5487, 5488, 5489, 5490, 5491, 5492, 5493, 5494, 5495, 5496, 5497, 5498, 5499, 5500, 5501, 5502, 5508, 5509, 5510, 5511, 5512, 5513, 5514, 5515, 5516, 5517, 5518, 5519, 5520, 5521, 5522, 5523, 5524, 5525, 5526, 5527, 5528, 5529, 5530, 5531, 5532, 5533, 5534, 5535, 5536, 5537, 5538, 5539, 5540, 5541, 5542, 5543, 5544, 5545, 5546, 5547, 5548, 5549, 5550, 5551, 5552, 5553, 5554, 5555, 5556, 5557, 5558, 5559, 5560, 5561, 5562, 5563, 5564, 5565, 5566, 5567, 5568, 5569, 5570, 5571, 5572, 5573, 5574, 5575, 5576, 5577, 5578, 5579, 5580, 5581, 5582, 5583, 5584, 5585, 5586, 5587, 5588, 5589, 5590, 5591, 5592, 5593, 5594, 5595, 5596, 5597, 5598, 5599, 5600, 5601, 5602, 5603, 5604, 5605, 5606, 5607, 5608, 5609, 5610, 5611, 5612, 5613, 5614, 5615, 5616, 5617, 5618, 5619, 5620, 5621, 5658, 5659, 5660, 5661, 5662, 5663, 5664, 5665, 5666, 5667, 5668, 5669, 5670, 5671, 5672, 5673, 5674, 5675, 5676, 5677, 5678, 5679, 5680, 5681, 5682, 5683, 5684, 5685, 5686, 5687, 5688, 5689, 5690, 5691, 5692, 5693, 5694, 5695, 5696, 5697, 5698, 5699, 5700, 5701, 5702, 5703, 5704, 5705, 5706, 5707, 5708, 5709, 5710, 5711, 5712, 5713, 5714, 5715, 5716, 5717, 5718, 5719, 5720, 5721, 5722, 5723, 5724, 5725, 5726, 5727, 5728, 5729, 5730, 5731, 5732, 5733, 5734, 5735, 5736, 5737, 5755, 5756, 5757, 5758, 5759, 5760, 5761, 5762, 5763, 5764, 5765, 5766, 5767, 5768, 5769, 5770, 5771, 5772, 5773, 5774, 5775, 5776, 5777, 5778, 5779, 5780, 5781, 5791, 5792, 5793, 5794, 5795, 5796, 8435, 8436, 8437, 8438, 8439, 8440, 8441, 8442, 8443, 8444, 8445, 8446, 8447, 8448, 8449, 8450, 8451, 8452, 8453, 8454, 8455, 8456, 8457, 8458, 8459, 8460, 8461, 8462, 8463, 8464, 8465, 8466, 8467, 8468, 8469, 8470, 8513, 8514, 8515, 8516, 8517, 8518, 8519, 8520, 8521, 8522, 8523, 8524, 8525, 8526, 8527, 8528, 8529, 8530, 8531, 8532, 8533, 8534, 8535, 8536, 8537, 8538, 8539, 8540, 8541, 8542, 8543, 8544, 8545, 8546, 8547, 8548, 8845, 8846, 8847, 8848, 8849, 8850, 8851, 8852, 8853, 8854, 8855, 8856, 8857, 8858, 8859, 8860, 8861, 8862, 8863, 8864, 8865, 8866, 8867, 8868, 8869, 8870, 8871, 8872, 8873, 8874, 8875, 8876, 8877, 8878, 8879, 8880, 8881, 8882, 8883, 8884, 8885, 8886, 8887, 8888, 8889, 8890, 8891, 8892, 8893, 8894, 8895, 8896, 8897, 8898, 8999, 9000, 9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010, 9011, 9012, 9013, 9014, 9015, 9016, 9017, 9018, 9019, 9020, 9021, 9022, 9023, 9024, 9025, 9026, 9027, 9028, 9029, 9030, 9031, 9032, 9033, 9034, 9035, 9036, 9037, 9038, 9039, 9040, 9041, 9042, 9043, 9044, 9045, 9046, 9047, 9048, 9049, 9050, 9051, 9052 | Historical-only, not a new execution: P2.4 compares Item names are not escaped: they are byte-identical to the baseline (G1); 76 checks agree; representative comparison: F01 plain raw non-hook names. Comparison Launches 532, 533, 534, 536, 537, 538, 539, 540, 553, 554, 555, 560, 561, 562, 563, 564, 565, 566, 570, 571, 614, 615, 616, 618, 619, 620, 621, 622, 635, 636, 637, 642, 643, 644, 645, 646, 647, 648, 652, 653, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1107, 1108, 1109, 1110, 1111, 1112, 1125, 1126, 1127, 1128, 1129, 1130; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P3.1 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3279, 3280, 3281, 3282, 3283, 3284, 3285, 3286, 3287, 3288, 3289, 3292, 3293, 3294, 3295, 3296, 3297, 3298, 3299, 3300, 3301, 3302, 3303, 3304, 3305, 3306, 3307, 3308, 3309, 3310, 3311, 3312, 3313, 3314, 3315, 3316, 3317, 3318, 3319, 3320, 3321, 3322, 3323, 3324, 3325, 3326, 3327, 3328, 3329, 3330, 3331, 3332, 3333, 3334, 3335, 3336, 3337, 3338, 3339, 3340, 3341, 3342, 3343, 3344, 3345, 3346, 3347, 3348, 3349, 3350, 3351, 3352, 3353, 3354, 3355, 3356, 3357, 3358, 3359, 3360, 3361, 3362, 3363, 3364, 3365, 3366, 3367, 3368, 3369, 3370, 3371, 3372, 3373, 3374, 3375, 3376, 3377, 3378, 3379, 3380, 3381, 3382, 3399, 3400, 3401, 3402, 3403, 3404, 3405, 3406, 3407, 3408, 3409, 3410, 3411, 3412, 3413, 3414, 3415, 3416, 3417, 3418, 3419, 3420, 3421, 3422, 3423, 3424, 3425, 3426, 3427, 3428, 3429, 3430, 3431, 3432, 3433, 3434, 3435, 3436, 3437, 3438, 3439, 3440, 3441, 3442, 3443, 3444, 3456, 3457, 3458, 3459, 3460, 3461, 3462, 3463, 3464, 3465, 3466, 3467, 3468, 3469, 3470, 3471, 3472, 3473, 3474, 3475, 3476, 3477, 3478, 3479, 3480, 3755, 3756, 3757, 3758, 3759, 3760, 3761, 3762, 3763, 3764, 3765, 3768, 3769, 3770, 3771, 3772, 3773, 3774, 3775, 3776, 3777, 3778, 3779, 3780, 3781, 3782, 3783, 3784, 3785, 3786, 3787, 3788, 3789, 3790, 3791, 3792, 3793, 3794, 3795, 3796, 3797, 3798, 3799, 3800, 3801, 3802, 3803, 3804, 3805, 3806, 3807, 3808, 3809, 3810, 3811, 3812, 3813, 3814, 3815, 3816, 3817, 3818, 3819, 3820, 3821, 3822, 3823, 3824, 3825, 3826, 3827, 3828, 3829, 3830, 3831, 3832, 3833, 3834, 3835, 3836, 3837, 3838, 3839, 3840, 3841, 3842, 3843, 3844, 3845, 3846, 3847, 3848, 3849, 3850, 3851, 3852, 3853, 3854, 3855, 3856, 3857, 3858, 3875, 3876, 3877, 3878, 3879, 3880, 3881, 3882, 3883, 3884, 3885, 3886, 3887, 3888, 3889, 3890, 3891, 3892, 3893, 3894, 3895, 3896, 3897, 3898, 3899, 3900, 3901, 3902, 3903, 3904, 3905, 3906, 3907, 3908, 3909, 3910, 3911, 3912, 3913, 3914, 3915, 3916, 3917, 3918, 3919, 3920, 3932, 3933, 3934, 3935, 3936, 3937, 3938, 3939, 3940, 3941, 3942, 3943, 3944, 3945, 3946, 3947, 3948, 3949, 3950, 3951, 3952, 3953, 3954, 3955, 3956, 4469, 4470, 4471, 4472, 4473, 4474, 4475, 4476, 4477, 4478, 5625, 5626, 5627, 5628, 5629, 5630, 5631, 5632, 5633, 5634, 5635, 5636, 5637, 5638, 5639, 5640, 5659, 5660, 5661, 5662, 5663, 5664, 5665, 5666, 5667, 5668, 5669, 5670, 5671, 5672, 5673, 5674, 5855, 5856, 5857, 5858, 5859, 5860, 5861, 5862, 5863, 5864, 5865, 5866, 5867, 5868, 5869, 5870, 5871, 5872, 5873, 5874, 5875, 5876, 5877, 5878, 5879, 5880, 5881, 5882, 5883, 5884, 5885, 5886, 5887, 5888, 5889, 5890, 5891, 5892, 5893, 5894, 5895, 5896, 5897, 5898, 5899, 5900, 5901, 5902, 5903, 5983, 5984, 5985, 5986, 5987, 5988, 5989, 5990, 5991, 5992, 5993, 5994, 5995, 5996, 5997, 5998, 5999, 6000, 6001, 6002, 6003, 6004, 6005, 6006, 6007, 6008, 6009, 6010, 6011, 6012, 6013, 6014, 6015, 6016, 6017, 6018, 6019, 6020, 6021, 6022, 6023, 6024, 6025, 6026, 6027, 6028, 6029, 6030, 6031; items 4788, 4789, 4790, 4791, 4792, 4793, 4794, 4795, 4796, 4797, 4798, 4799, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4807, 4808, 4814, 4815, 4816, 4817, 4818, 4819, 4820, 4821, 4822, 4823, 4824, 4825, 4826, 4827, 4828, 4829, 4830, 4831, 4832, 4833, 4834, 4835, 4836, 4837, 4838, 4839, 4840, 4841, 4842, 4843, 4844, 4845, 4846, 4847, 4848, 4849, 4850, 4851, 4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4860, 4861, 4862, 4863, 4864, 4865, 4866, 4867, 4868, 4869, 4870, 4871, 4872, 4873, 4874, 4875, 4876, 4877, 4878, 4879, 4880, 4881, 4882, 4883, 4884, 4885, 4886, 4887, 4888, 4889, 4890, 4891, 4892, 4893, 4894, 4895, 4896, 4897, 4898, 4899, 4900, 4901, 4902, 4903, 4904, 4905, 4906, 4907, 4908, 4909, 4910, 4911, 4912, 4913, 4914, 4915, 4916, 4917, 4918, 4919, 4920, 4921, 4922, 4923, 4924, 4925, 4926, 4927, 4964, 4965, 4966, 4967, 4968, 4969, 4970, 4971, 4972, 4973, 4974, 4975, 4976, 4977, 4978, 4979, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010, 5011, 5012, 5013, 5014, 5015, 5016, 5017, 5018, 5019, 5020, 5021, 5022, 5023, 5024, 5025, 5026, 5027, 5028, 5029, 5030, 5031, 5032, 5033, 5034, 5035, 5036, 5037, 5038, 5039, 5040, 5041, 5042, 5043, 5061, 5062, 5063, 5064, 5065, 5066, 5067, 5068, 5069, 5070, 5071, 5072, 5073, 5074, 5075, 5076, 5077, 5078, 5079, 5080, 5081, 5082, 5083, 5084, 5085, 5086, 5087, 5088, 5089, 5090, 5091, 5092, 5093, 5094, 5095, 5096, 5097, 5098, 5099, 5100, 5101, 5102, 5482, 5483, 5484, 5485, 5486, 5487, 5488, 5489, 5490, 5491, 5492, 5493, 5494, 5495, 5496, 5497, 5498, 5499, 5500, 5501, 5502, 5508, 5509, 5510, 5511, 5512, 5513, 5514, 5515, 5516, 5517, 5518, 5519, 5520, 5521, 5522, 5523, 5524, 5525, 5526, 5527, 5528, 5529, 5530, 5531, 5532, 5533, 5534, 5535, 5536, 5537, 5538, 5539, 5540, 5541, 5542, 5543, 5544, 5545, 5546, 5547, 5548, 5549, 5550, 5551, 5552, 5553, 5554, 5555, 5556, 5557, 5558, 5559, 5560, 5561, 5562, 5563, 5564, 5565, 5566, 5567, 5568, 5569, 5570, 5571, 5572, 5573, 5574, 5575, 5576, 5577, 5578, 5579, 5580, 5581, 5582, 5583, 5584, 5585, 5586, 5587, 5588, 5589, 5590, 5591, 5592, 5593, 5594, 5595, 5596, 5597, 5598, 5599, 5600, 5601, 5602, 5603, 5604, 5605, 5606, 5607, 5608, 5609, 5610, 5611, 5612, 5613, 5614, 5615, 5616, 5617, 5618, 5619, 5620, 5621, 5658, 5659, 5660, 5661, 5662, 5663, 5664, 5665, 5666, 5667, 5668, 5669, 5670, 5671, 5672, 5673, 5674, 5675, 5676, 5677, 5678, 5679, 5680, 5681, 5682, 5683, 5684, 5685, 5686, 5687, 5688, 5689, 5690, 5691, 5692, 5693, 5694, 5695, 5696, 5697, 5698, 5699, 5700, 5701, 5702, 5703, 5704, 5705, 5706, 5707, 5708, 5709, 5710, 5711, 5712, 5713, 5714, 5715, 5716, 5717, 5718, 5719, 5720, 5721, 5722, 5723, 5724, 5725, 5726, 5727, 5728, 5729, 5730, 5731, 5732, 5733, 5734, 5735, 5736, 5737, 5755, 5756, 5757, 5758, 5759, 5760, 5761, 5762, 5763, 5764, 5765, 5766, 5767, 5768, 5769, 5770, 5771, 5772, 5773, 5774, 5775, 5776, 5777, 5778, 5779, 5780, 5781, 5782, 5783, 5784, 5785, 5786, 5787, 5788, 5789, 5790, 5791, 5792, 5793, 5794, 5795, 5796, 6523, 6524, 6525, 6526, 6527, 6528, 6529, 6530, 6531, 6532, 8435, 8436, 8437, 8438, 8439, 8440, 8441, 8442, 8443, 8444, 8445, 8446, 8447, 8448, 8449, 8450, 8451, 8452, 8453, 8454, 8455, 8456, 8457, 8458, 8459, 8460, 8461, 8462, 8463, 8464, 8465, 8466, 8467, 8468, 8469, 8470, 8513, 8514, 8515, 8516, 8517, 8518, 8519, 8520, 8521, 8522, 8523, 8524, 8525, 8526, 8527, 8528, 8529, 8530, 8531, 8532, 8533, 8534, 8535, 8536, 8537, 8538, 8539, 8540, 8541, 8542, 8543, 8544, 8545, 8546, 8547, 8548, 8845, 8846, 8847, 8848, 8849, 8850, 8851, 8852, 8853, 8854, 8855, 8856, 8857, 8858, 8859, 8860, 8861, 8862, 8863, 8864, 8865, 8866, 8867, 8868, 8869, 8870, 8871, 8872, 8873, 8874, 8875, 8876, 8877, 8878, 8879, 8880, 8881, 8882, 8883, 8884, 8885, 8886, 8887, 8888, 8889, 8890, 8891, 8892, 8893, 8894, 8895, 8896, 8897, 8898, 8999, 9000, 9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010, 9011, 9012, 9013, 9014, 9015, 9016, 9017, 9018, 9019, 9020, 9021, 9022, 9023, 9024, 9025, 9026, 9027, 9028, 9029, 9030, 9031, 9032, 9033, 9034, 9035, 9036, 9037, 9038, 9039, 9040, 9041, 9042, 9043, 9044, 9045, 9046, 9047, 9048, 9049, 9050, 9051, 9052 | Historical-only, not a new execution: P3.1 compares No prefix (G5); 1 checks agree; representative comparison: Complete nested read API evidence covers no-prefix rule. Comparison Launches 532, 533, 534, 536, 537, 538, 539, 540, 553, 554, 555, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 614, 615, 616, 618, 619, 620, 621, 622, 635, 636, 637, 642, 643, 644, 645, 646, 647, 648, 649, 650, 651, 652, 653, 737, 738, 739, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1107, 1108, 1109, 1110, 1111, 1112, 1125, 1126, 1127, 1128, 1129, 1130; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P3.2 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3456, 5636, 5637, 5638, 5639, 5640; items 5061, 5062, 5063, 8468, 8469, 8470 | Historical-only, not a new execution: P3.2 compares Multi-line exception text (P1.5) and evidence error text (P8.5) are inside `text` fences; 2 checks agree; representative comparison: F16a raw continuation fence. Comparison Launches 560, 993; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P3.3 | MUST | PASS | [27 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3401, 3402, 3403, 3404, 3405, 3406, 3407, 3408, 3409, 3410, 3411, 3412, 3413, 3414, 3415, 3416, 3417, 3418, 3419, 3420, 3421, 3422, 3423, 3424, 3425, 3426, 3427, 3428, 3429, 3430, 3476, 3477, 3478, 3479, 3480, 4353, 4354, 4355, 4356, 4357, 4358, 4359, 4360, 4361, 4362, 4363, 4364, 4365, 4366, 4367, 4368, 4369, 4370, 4371, 4372, 4373, 4374, 4375, 4376, 4377, 4378, 4379, 4380, 4381, 4382, 4397, 4398, 4399, 4400, 4401, 4402, 4403, 4404, 4405, 4406, 4407, 4428, 4429, 4430, 4431, 4432, 5761, 5762, 5763, 5764, 5765, 5766, 5767, 5768, 5769, 5770, 5771, 5772, 5773, 5774, 5775, 5776, 5778, 5779, 5780, 5781, 5782, 5783, 5784, 5785, 5857, 5858, 5859, 5860, 5861, 5862, 5863, 5864, 5865, 5866, 5867; items 4968, 4969, 4970, 4971, 4972, 4973, 4974, 4975, 4976, 4977, 4978, 4979, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010, 5011, 5012, 5013, 5014, 5088, 5089, 5090, 5091, 5092, 5093, 5094, 5095, 5096, 5097, 5098, 5099, 5100, 5101, 5102, 6356, 6357, 6358, 6359, 6360, 6361, 6362, 6363, 6364, 6365, 6366, 6367, 6368, 6369, 6370, 6371, 6372, 6373, 6374, 6375, 6376, 6377, 6378, 6379, 6380, 6381, 6382, 6383, 6384, 6385, 6386, 6387, 6388, 6389, 6390, 6391, 6392, 6393, 6394, 6395, 6396, 6397, 6398, 6399, 6400, 6401, 6402, 6432, 6433, 6434, 6435, 6436, 6437, 6438, 6439, 6440, 6441, 6442, 6443, 6444, 6445, 6446, 6447, 6448, 6476, 6477, 6478, 6479, 6480, 6481, 6482, 6483, 6484, 6485, 6486, 6487, 6488, 6489, 6490, 8747, 8748, 8749, 8750, 8751, 8752, 8756, 8757, 8758, 8850, 8851, 8852, 8853, 8854, 8855, 8856, 8857, 8858, 8859, 8860, 8861, 8862, 8863, 8864, 8865, 8866 | Historical-only, not a new execution: P3.3 compares AppLog / `rp_log` user text is byte-identical to the baseline; 27 checks agree; representative comparison: F14 raw authored user log is byte-identical. Comparison Launches 554, 567, 568, 569, 570, 571, 718, 720, 721, 722, 723, 731, 732, 733, 734, 735, 1086, 1087, 1089, 1108, 1109, 1110, 1111; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P3.4 | MUST | PASS | [10 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3279, 3280, 3281, 3383, 3388, 5515, 5516; items 4788, 4789, 4790, 4928, 4929, 4930, 4943, 4944, 4945, 8188, 8189, 8190, 8191, 8192 | Historical-only, not a new execution: P3.4 compares With Markdown mode off (S11) and in Console view (S12), F01, F04, F10 and F11 messages are legible: no tag fragments in plain mode, and fences and chips visible as characters; 10 checks agree; representative comparison: Actual native Console observed for all four required families. Comparison Launches 532, 541, 546, 939; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P4.1 | MUST | PASS | [8 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 8183, 8184, 8185, 8186, 8187, 8201, 8202, 8203, 8204, 8205, 8219, 8220, 8221, 8222, 8223, 8237, 8238, 8239, 8240, 8241 | Historical-only, not a new execution: P4.1 compares F02 row descriptions end with exactly `` `value` = `TABLE_ONLY_AMBER` · _Examples: Table-only substitution · line 12_ `` (and the BIRCH / line 13 equivalent); 8 checks agree; representative comparison: F02 plain/1 exact TABLE_ONLY_AMBER description. Comparison Launches 938, 942, 946, 950; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P4.2 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 4968, 4969, 4970, 4971, 4972, 4973, 4974, 4975, 4976, 4977, 4978, 4979, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010, 5011, 5012, 5013, 5014 | Historical-only, not a new execution: P4.2 compares Fallback to the escaped table with `Examples: <name> · line N` when there are more than 4 parameters, a value over 40 characters, or a value with a newline (cover each with an F14-style fixture); 4 checks agree; representative comparison: All three Outline fallback shapes exercised. Comparison Launches 554; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P4.3 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 8183, 8184, 8185, 8186, 8187 | Historical-only, not a new execution: P4.3 compares Rendered list view (S05): each row's value chip sits directly under the name, on one line at 1100 px; 2 checks agree; representative comparison: Value/key chips each occupy one physical text line at 1100px. Comparison Launches 938; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P4.4 | MUST | PASS | [76 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 4788, 4789, 4790, 4791, 4792, 4793, 4794, 4795, 4796, 4797, 4798, 4799, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4807, 4808, 4814, 4815, 4816, 4817, 4818, 4819, 4820, 4821, 4822, 4823, 4824, 4825, 4826, 4827, 4828, 4829, 4830, 4831, 4832, 4833, 4834, 4835, 4836, 4837, 4838, 4839, 4840, 4841, 4842, 4843, 4844, 4845, 4846, 4847, 4848, 4849, 4850, 4851, 4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4860, 4861, 4862, 4863, 4864, 4865, 4866, 4867, 4868, 4869, 4870, 4871, 4872, 4873, 4874, 4875, 4876, 4877, 4878, 4879, 4880, 4881, 4882, 4883, 4884, 4885, 4886, 4887, 4888, 4889, 4890, 4891, 4892, 4893, 4894, 4895, 4896, 4897, 4898, 4899, 4900, 4901, 4902, 4903, 4904, 4905, 4906, 4907, 4908, 4909, 4910, 4911, 4912, 4913, 4914, 4915, 4916, 4917, 4918, 4919, 4920, 4921, 4922, 4923, 4924, 4925, 4926, 4927, 4964, 4965, 4966, 4967, 4968, 4969, 4970, 4971, 4972, 4973, 4974, 4975, 4976, 4977, 4978, 4979, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010, 5011, 5012, 5013, 5014, 5015, 5016, 5017, 5018, 5019, 5020, 5021, 5022, 5023, 5024, 5025, 5026, 5027, 5028, 5029, 5030, 5031, 5032, 5033, 5034, 5035, 5036, 5037, 5038, 5039, 5040, 5041, 5042, 5043, 5061, 5062, 5063, 5064, 5065, 5066, 5067, 5068, 5069, 5070, 5071, 5072, 5073, 5074, 5075, 5076, 5077, 5078, 5079, 5080, 5081, 5082, 5083, 5084, 5085, 5086, 5087, 5097, 5098, 5099, 5100, 5101, 5102, 5482, 5483, 5484, 5485, 5486, 5487, 5488, 5489, 5490, 5491, 5492, 5493, 5494, 5495, 5496, 5497, 5498, 5499, 5500, 5501, 5502, 5508, 5509, 5510, 5511, 5512, 5513, 5514, 5515, 5516, 5517, 5518, 5519, 5520, 5521, 5522, 5523, 5524, 5525, 5526, 5527, 5528, 5529, 5530, 5531, 5532, 5533, 5534, 5535, 5536, 5537, 5538, 5539, 5540, 5541, 5542, 5543, 5544, 5545, 5546, 5547, 5548, 5549, 5550, 5551, 5552, 5553, 5554, 5555, 5556, 5557, 5558, 5559, 5560, 5561, 5562, 5563, 5564, 5565, 5566, 5567, 5568, 5569, 5570, 5571, 5572, 5573, 5574, 5575, 5576, 5577, 5578, 5579, 5580, 5581, 5582, 5583, 5584, 5585, 5586, 5587, 5588, 5589, 5590, 5591, 5592, 5593, 5594, 5595, 5596, 5597, 5598, 5599, 5600, 5601, 5602, 5603, 5604, 5605, 5606, 5607, 5608, 5609, 5610, 5611, 5612, 5613, 5614, 5615, 5616, 5617, 5618, 5619, 5620, 5621, 5658, 5659, 5660, 5661, 5662, 5663, 5664, 5665, 5666, 5667, 5668, 5669, 5670, 5671, 5672, 5673, 5674, 5675, 5676, 5677, 5678, 5679, 5680, 5681, 5682, 5683, 5684, 5685, 5686, 5687, 5688, 5689, 5690, 5691, 5692, 5693, 5694, 5695, 5696, 5697, 5698, 5699, 5700, 5701, 5702, 5703, 5704, 5705, 5706, 5707, 5708, 5709, 5710, 5711, 5712, 5713, 5714, 5715, 5716, 5717, 5718, 5719, 5720, 5721, 5722, 5723, 5724, 5725, 5726, 5727, 5728, 5729, 5730, 5731, 5732, 5733, 5734, 5735, 5736, 5737, 5755, 5756, 5757, 5758, 5759, 5760, 5761, 5762, 5763, 5764, 5765, 5766, 5767, 5768, 5769, 5770, 5771, 5772, 5773, 5774, 5775, 5776, 5777, 5778, 5779, 5780, 5781, 5791, 5792, 5793, 5794, 5795, 5796, 8435, 8436, 8437, 8438, 8439, 8440, 8441, 8442, 8443, 8444, 8445, 8446, 8447, 8448, 8449, 8450, 8451, 8452, 8453, 8454, 8455, 8456, 8457, 8458, 8459, 8460, 8461, 8462, 8463, 8464, 8465, 8466, 8467, 8468, 8469, 8470, 8513, 8514, 8515, 8516, 8517, 8518, 8519, 8520, 8521, 8522, 8523, 8524, 8525, 8526, 8527, 8528, 8529, 8530, 8531, 8532, 8533, 8534, 8535, 8536, 8537, 8538, 8539, 8540, 8541, 8542, 8543, 8544, 8545, 8546, 8547, 8548, 8845, 8846, 8847, 8848, 8849, 8850, 8851, 8852, 8853, 8854, 8855, 8856, 8857, 8858, 8859, 8860, 8861, 8862, 8863, 8864, 8865, 8866, 8867, 8868, 8869, 8870, 8871, 8872, 8873, 8874, 8875, 8876, 8877, 8878, 8879, 8880, 8881, 8882, 8883, 8884, 8885, 8886, 8887, 8888, 8889, 8890, 8891, 8892, 8893, 8894, 8895, 8896, 8897, 8898, 8999, 9000, 9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010, 9011, 9012, 9013, 9014, 9015, 9016, 9017, 9018, 9019, 9020, 9021, 9022, 9023, 9024, 9025, 9026, 9027, 9028, 9029, 9030, 9031, 9032, 9033, 9034, 9035, 9036, 9037, 9038, 9039, 9040, 9041, 9042, 9043, 9044, 9045, 9046, 9047, 9048, 9049, 9050, 9051, 9052 | Historical-only, not a new execution: P4.4 compares Scenario names and `parameters` are unchanged (G1); 76 checks agree; representative comparison: F01 plain raw scenario names/parameters. Comparison Launches 532, 533, 534, 536, 537, 538, 539, 540, 553, 554, 555, 560, 561, 562, 563, 564, 565, 566, 570, 571, 614, 615, 616, 618, 619, 620, 621, 622, 635, 636, 637, 642, 643, 644, 645, 646, 647, 648, 652, 653, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1107, 1108, 1109, 1110, 1111, 1112, 1125, 1126, 1127, 1128, 1129, 1130; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.1 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.1 compares F01 captions in plain mode are exactly: `` `visible-fixture.png` · PNG · 640 × 360 · 5.3 KB ``; `` `visible-fixture.txt` · Text · 2 lines · 71 B `` followed by its fence; `` `visible-fixture.json` · JSON · 75 B `` followed by the 5-line Ledger JSON golden; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.2 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.2 compares F04's After-hook caption is `` `after-failure.jpg` · JPEG · 754 × 790 · 36 KB ``. F17's progressive JPEG has correct dimensions. F08's `plain_base64` PNG shows kind `PNG` with **no** dimensions, and its bytes are unchanged; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.3 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.3 compares A caller message (F12, `rp_attach(message:)`) comes first, then a blank line, then the meta line. No message starts with `Attachment:`; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.4 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.4 compares `rp_evidence` artifacts end with ` · failure evidence`, and no message starts with `Failure evidence:`; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.5 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.5 compares F18: the 340-line text ends with `_Preview · first 100 lines · full file attached_`; the 48 KiB text ends with `_Preview · first 16 KB of 48 KB · full file attached_`. JSON over the preview limit isn't pretty-printed; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.6 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.6 compares F17 names, numbered per owning item in emission order and independent of batching (run F17 with the smallest and the default log batch size): first PNG `then-the-order-is-confirmed.png`, second PNG `then-the-order-is-confirmed-1.png`, After-hook JPEG `after-hook.jpg`. Explicitly named attachments keep their names; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.7 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.7 compares Bytes unchanged (G3); Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P5.8 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P5.8 compares Rendered (S06): captions visible next to the thumbnails; the preview modal opens; the download file name equals the attachment name; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P6.1 | MUST | PASS | [68 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 8822, 8823, 8824, 8825, 8826, 8827, 8828, 8829, 8830, 8831, 8832, 8833, 8834, 8835, 8836, 8837, 8838, 8839, 8840, 8841, 8842, 8843, 8844, 8850, 8851, 8852, 8853, 8854, 8855, 8859, 8860, 8861, 8862, 8899, 8900, 8901, 8902, 8903, 8904, 8905, 8906, 8907, 8908, 8909, 8910, 8911, 8912, 8913, 8914, 8915, 8916, 8917, 8918, 8919, 8920, 8921, 8936, 8937, 8938, 8939, 8976, 8977, 8978, 8979, 8980, 8981, 8982, 8983, 8984, 8985, 8986, 8987, 8988, 8989, 8990, 8991, 8992, 8993, 8994, 8995, 8996, 8997, 8998, 9004, 9005, 9006, 9007, 9008, 9009, 9013, 9014, 9015, 9016, 9053, 9054, 9055, 9056, 9057, 9058, 9059, 9060, 9061, 9062, 9063, 9064, 9065, 9066, 9067, 9068, 9069, 9070, 9071, 9072, 9073, 9074, 9075, 9090, 9091, 9092, 9093 | Historical-only, not a new execution: P6.1 compares F15 names match the proposal's P6 table on Cucumber 9 and 10 (1.3.2) and 12.0.1 (2.0.1). Named hooks are tested where the version supports them; otherwise mark N/A with the reason; 68 checks agree; representative comparison: M5 focused assertion evidence from the FULL suite. Comparison Launches 1104, 1105, 1106, 1108, 1110, 1113, 1114, 1115, 1119, 1122, 1123, 1124, 1126, 1128, 1131, 1132, 1133, 1137; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P6.2 | MUST | PASS | [76 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 4788, 4789, 4790, 4791, 4792, 4793, 4794, 4795, 4796, 4797, 4798, 4799, 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4807, 4808, 4814, 4815, 4816, 4817, 4818, 4819, 4820, 4821, 4822, 4823, 4824, 4825, 4826, 4827, 4828, 4829, 4830, 4831, 4832, 4833, 4834, 4835, 4836, 4837, 4838, 4839, 4840, 4841, 4842, 4843, 4844, 4845, 4846, 4847, 4848, 4849, 4850, 4851, 4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4860, 4861, 4862, 4863, 4864, 4865, 4866, 4867, 4868, 4869, 4870, 4871, 4872, 4873, 4874, 4875, 4876, 4877, 4878, 4879, 4880, 4881, 4882, 4883, 4884, 4885, 4886, 4887, 4888, 4889, 4890, 4891, 4892, 4893, 4894, 4895, 4896, 4897, 4898, 4899, 4900, 4901, 4902, 4903, 4904, 4905, 4906, 4907, 4908, 4909, 4910, 4911, 4912, 4913, 4914, 4915, 4916, 4917, 4918, 4919, 4920, 4921, 4922, 4923, 4924, 4925, 4926, 4927, 4964, 4965, 4966, 4967, 4968, 4969, 4970, 4971, 4972, 4973, 4974, 4975, 4976, 4977, 4978, 4979, 4980, 4981, 4982, 4983, 4984, 4985, 4986, 4987, 4988, 4989, 4990, 4991, 4992, 4993, 4994, 4995, 4996, 4997, 4998, 4999, 5000, 5001, 5002, 5003, 5004, 5005, 5006, 5007, 5008, 5009, 5010, 5011, 5012, 5013, 5014, 5015, 5016, 5017, 5018, 5019, 5020, 5021, 5022, 5023, 5024, 5025, 5026, 5027, 5028, 5029, 5030, 5031, 5032, 5033, 5034, 5035, 5036, 5037, 5038, 5039, 5040, 5041, 5042, 5043, 5061, 5062, 5063, 5064, 5065, 5066, 5067, 5068, 5069, 5070, 5071, 5072, 5073, 5074, 5075, 5076, 5077, 5078, 5079, 5080, 5081, 5082, 5083, 5084, 5085, 5086, 5087, 5097, 5098, 5099, 5100, 5101, 5102, 5482, 5483, 5484, 5485, 5486, 5487, 5488, 5489, 5490, 5491, 5492, 5493, 5494, 5495, 5496, 5497, 5498, 5499, 5500, 5501, 5502, 5508, 5509, 5510, 5511, 5512, 5513, 5514, 5515, 5516, 5517, 5518, 5519, 5520, 5521, 5522, 5523, 5524, 5525, 5526, 5527, 5528, 5529, 5530, 5531, 5532, 5533, 5534, 5535, 5536, 5537, 5538, 5539, 5540, 5541, 5542, 5543, 5544, 5545, 5546, 5547, 5548, 5549, 5550, 5551, 5552, 5553, 5554, 5555, 5556, 5557, 5558, 5559, 5560, 5561, 5562, 5563, 5564, 5565, 5566, 5567, 5568, 5569, 5570, 5571, 5572, 5573, 5574, 5575, 5576, 5577, 5578, 5579, 5580, 5581, 5582, 5583, 5584, 5585, 5586, 5587, 5588, 5589, 5590, 5591, 5592, 5593, 5594, 5595, 5596, 5597, 5598, 5599, 5600, 5601, 5602, 5603, 5604, 5605, 5606, 5607, 5608, 5609, 5610, 5611, 5612, 5613, 5614, 5615, 5616, 5617, 5618, 5619, 5620, 5621, 5658, 5659, 5660, 5661, 5662, 5663, 5664, 5665, 5666, 5667, 5668, 5669, 5670, 5671, 5672, 5673, 5674, 5675, 5676, 5677, 5678, 5679, 5680, 5681, 5682, 5683, 5684, 5685, 5686, 5687, 5688, 5689, 5690, 5691, 5692, 5693, 5694, 5695, 5696, 5697, 5698, 5699, 5700, 5701, 5702, 5703, 5704, 5705, 5706, 5707, 5708, 5709, 5710, 5711, 5712, 5713, 5714, 5715, 5716, 5717, 5718, 5719, 5720, 5721, 5722, 5723, 5724, 5725, 5726, 5727, 5728, 5729, 5730, 5731, 5732, 5733, 5734, 5735, 5736, 5737, 5755, 5756, 5757, 5758, 5759, 5760, 5761, 5762, 5763, 5764, 5765, 5766, 5767, 5768, 5769, 5770, 5771, 5772, 5773, 5774, 5775, 5776, 5777, 5778, 5779, 5780, 5781, 5791, 5792, 5793, 5794, 5795, 5796, 8435, 8436, 8437, 8438, 8439, 8440, 8441, 8442, 8443, 8444, 8445, 8446, 8447, 8448, 8449, 8450, 8451, 8452, 8453, 8454, 8455, 8456, 8457, 8458, 8459, 8460, 8461, 8462, 8463, 8464, 8465, 8466, 8467, 8468, 8469, 8470, 8513, 8514, 8515, 8516, 8517, 8518, 8519, 8520, 8521, 8522, 8523, 8524, 8525, 8526, 8527, 8528, 8529, 8530, 8531, 8532, 8533, 8534, 8535, 8536, 8537, 8538, 8539, 8540, 8541, 8542, 8543, 8544, 8545, 8546, 8547, 8548, 8845, 8846, 8847, 8848, 8849, 8850, 8851, 8852, 8853, 8854, 8855, 8856, 8857, 8858, 8859, 8860, 8861, 8862, 8863, 8864, 8865, 8866, 8867, 8868, 8869, 8870, 8871, 8872, 8873, 8874, 8875, 8876, 8877, 8878, 8879, 8880, 8881, 8882, 8883, 8884, 8885, 8886, 8887, 8888, 8889, 8890, 8891, 8892, 8893, 8894, 8895, 8896, 8897, 8898, 8999, 9000, 9001, 9002, 9003, 9004, 9005, 9006, 9007, 9008, 9009, 9010, 9011, 9012, 9013, 9014, 9015, 9016, 9017, 9018, 9019, 9020, 9021, 9022, 9023, 9024, 9025, 9026, 9027, 9028, 9029, 9030, 9031, 9032, 9033, 9034, 9035, 9036, 9037, 9038, 9039, 9040, 9041, 9042, 9043, 9044, 9045, 9046, 9047, 9048, 9049, 9050, 9051, 9052 | Historical-only, not a new execution: P6.2 compares Hook item types are unchanged (G1); 76 checks agree; representative comparison: F01 plain hook types. Comparison Launches 532, 533, 534, 536, 537, 538, 539, 540, 553, 554, 555, 560, 561, 562, 563, 564, 565, 566, 570, 571, 614, 615, 616, 618, 619, 620, 621, 622, 635, 636, 637, 642, 643, 644, 645, 646, 647, 648, 652, 653, 982, 983, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015, 1016, 1017, 1018, 1019, 1107, 1108, 1109, 1110, 1111, 1112, 1125, 1126, 1127, 1128, 1129, 1130; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P6.3 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 5855, 5856; items 8845, 8846, 8847, 8848, 8849 | Historical-only, not a new execution: P6.3 compares F04's After-hook JPEG is still a child log of the After hook item, not of any step; 1 checks agree; representative comparison: F04 JPEG belongs to After hook. Comparison Launches 1107; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P6.4 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 5044, 5045, 5046, 5047, 5048, 5049, 8822, 8823, 8824, 8825, 8826, 8827 | Historical-only, not a new execution: P6.4 compares Rendered (S07): hooks read `Before hook` / `After hook`; 1 checks agree; representative comparison: Judged native S07 screenshots. Comparison Launches 556, 1104; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P7.1 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3286, 3287, 3288, 3289; items 4800, 4801, 4802, 4803, 4804, 4805, 4806, 4807, 4808 | Historical-only, not a new execution: P7.1 compares F03's step log equals the proposal's P7 golden (no `**Keyword**` line, both captions); 2 checks agree; representative comparison: AMBER native doc-first/table-first steps each equal exact P7 golden. Comparison Launches 534; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P7.2 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3399, 3400; items 4964, 4965, 4966, 4967 | Historical-only, not a new execution: P7.2 compares F13's alignment row equals `\\| --- \\| --: \\| --: \\| --: \\| --: \\| --- \\| --- \\| --- \\|`. Spot checks: `.5`, `1e3`, `1,23` and the U+2212 minus sign are not numeric; 3 checks agree; representative comparison: F13 eight-column alignment golden. Comparison Launches 553; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P7.3 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 4835, 4836, 4837, 4838, 4839, 4840, 4841, 4842, 4843, 4844, 4845, 4846, 4847, 4848, 4849, 4850, 4851, 4852, 4853, 4854, 4855, 4856, 4857, 4858, 4859, 4860, 4861, 4862, 4863, 4864, 4865, 4866, 4867, 4868, 4869, 4870, 4871, 4872, 4873, 4874, 4875, 4876, 4877, 4878, 4879, 4880, 4881, 4882, 4883, 4884, 4885, 4886 | Historical-only, not a new execution: P7.3 compares Descriptions keep the full form (header line, table, DocString) for argument steps. Steps without arguments have an empty or absent description (all 50 steps of F07); 3 checks agree; representative comparison: F07 all fifty argument-free steps omit descriptions. Comparison Launches 537; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P7.4 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3467, 3468, 3469, 3470, 3471, 3472, 3473, 3474, 3475; items 5080, 5081, 5082, 5083, 5084, 5085, 5086, 5087 | Historical-only, not a new execution: P7.4 compares DocString captions: `_Doc string · JSON_` (detected and declared), `_Doc string · text/markdown_` (declared), `_Doc string_` (none). JSON bodies follow Ledger JSON; 4 checks agree; representative comparison: Declared/detected JSON DocString caption. Comparison Launches 566; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P7.5 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs 3399, 3400, 3875, 3876; items 4964, 4965, 4966, 4967, 5658, 5659, 5660, 5661 | Historical-only, not a new execution: P7.5 compares Rendered (S08): numeric columns are right-aligned; 3 checks agree; representative comparison: plain-1 numeric columns computed right alignment. Comparison Launches 553, 635; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.1 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.1 compares F10c equals the proposal's failed-assertion golden (with `api_key` redacted); F10a equals the passed one-liner golden; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.2 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.2 compares F10b (expected over 60 characters) has no `expected` chip. F10d renders expected and actual as Ledger JSON, and details as a `_Details_` JSON fence (more than 6 keys). F10e renders nested details as a JSON fence; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.3 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.3 compares The multi-line actual keeps every line, with continuation lines indented exactly 10 spaces; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.4 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.4 compares F11a equals the INFO HTTP golden. F11b starts with `## ⚠ GET /words → 404 · 31 ms`. F11c starts with `## ✗` and its meta line contains `` expected `200` ``. F11d's meta line contains `` error `Connection refused` ``; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.5 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.5 compares F12 equals the evidence golden shape: title, meta line (class, URL, evidence names), fenced message, details. The empty action gives `## ✗ Failure evidence`; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.6 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.6 compares No INFO-level message in any fixture starts with `## `; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.7 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.7 compares F11f's URL is redacted in both the title path and the meta chip; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.8 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.8 compares Terminal output (stdout) of F10–F12 is byte-identical to the baseline, ignoring timestamps; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P8.9 | MUST | BLOCKED | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P8.9 compares Oversized details still yield today's omission marker, and the size bounds are unchanged; Required proof missing: M5: final-head omission/bounds spec evidence unavailable; M6: final-head omission/bounds spec evidence unavailable. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P9.1 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 5097, 5098, 5099 | Historical-only, not a new execution: P9.1 compares F19d: no new attributes and no generated description (G1); 1 checks agree; representative comparison: F19d no generated context. Comparison Launches 570; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P9.2 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 5088, 5089, 5090, 5094, 5095, 5096, 8753, 8754, 8755, 8759, 8760, 8761 | Historical-only, not a new execution: P9.2 compares F19a attributes are exactly: `sdk:<version>`, `cucumber:<version>`, `ruby:<RUBY_VERSION>`, `git.branch:feature/ledger`, `git.sha:e7dae2b`, `ci.build:42`, plus `workers:4` on **2.0.1 only**; 4 checks agree; representative comparison: F19a exact context attributes. Comparison Launches 567, 569, 1088, 1090; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P9.3 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 5091, 5092, 5093 | Historical-only, not a new execution: P9.3 compares F19b: `sdk:custom` wins, and there is no duplicate `sdk` key; 1 checks agree; representative comparison: F19b exact context attributes. Comparison Launches 568; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P9.4 | MUST | PASS | [7 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 5088, 5089, 5090, 5091, 5092, 5093, 5094, 5095, 5096, 8753, 8754, 8755, 8759, 8760, 8761 | Historical-only, not a new execution: P9.4 compares F19c's description is `Given description`. F19a's description equals the template, with missing parts omitted; 7 checks agree; representative comparison: F19a context description. Comparison Launches 567, 568, 569, 1088, 1090; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P9.5 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items 5088, 5089, 5090 | Historical-only, not a new execution: P9.5 compares Rendered (S10): chips appear in the Launch list; 1 checks agree; representative comparison: Judged native S10 screenshots. Comparison Launches 567; assessed candidate runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.1 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.1 compares The default is plain: with no env var, no message contains `<details`, `<summary` or `<span style`; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.2 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.2 compares F20 logs exactly one warning and produces plain output; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.3 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.3 compares Closed vocabulary in rich runs: the only tags are `<details>`, `</details>`, `<summary>`, `</summary>`, `<span style="…">`, `</span>`, and plain mode's allowed tags (G6). Every `style` value equals exactly `PILL;<TONE>`, `TITLE` or `TH` from the proposal; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.4 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.4 compares For every ERROR-level log, the first line is byte-identical between the plain and rich runs of the same fixture; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.5 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.5 compares Byte budget: rich message ≤ plain message + 1,024 bytes, for every log; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.6 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.6 compares strip-tags(rich) contains every word of the plain message in the same order, and no `<` or `>` remains outside text that was already in plain; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.7 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.7 compares Descriptions, names, Launch description and attributes, native Cucumber messages and terminal output are identical between plain and rich; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.8 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.8 compares Inside every `<details>`, a blank line precedes and follows each fence, and the rendered DOM shows `details > pre > code` for those fences; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.9 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.9 compares `TH` spans appear only on tables with at most 6 columns. F13 (8 columns) has none; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.10 | MUST | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.10 compares Rendered rich (S03, S06, S08, S09): pills, sans titles and folds are visible; summaries readable; expanding a fold shows its content; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| P10.11 | SHOULD | BLOCKED | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | P10.11 compares Rendered pill contrast (from `getComputedStyle`) is at least 4.5:1 for every tone; Required proof missing: Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline. Comparison Launch N/A (; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V1 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V1 compares `ReportportalCucumber::VERSION` is `1.3.2` / `2.0.1`; 1 checks agree; representative comparison: Final source version constant and freshly built package version. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V2 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V2 compares The `Gemfile.lock` diff against the baseline touches only the gem's own `PATH` entry; 1 checks agree; representative comparison: Frozen-baseline lock diff contains only the gem's own PATH version. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V3 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V3 compares `gem build` produces `reportportal-cucumber-ruby-1.3.2.gem` / `-2.0.1.gem`; 1 checks agree; representative comparison: Fresh gem build from final feature tree, locally verified and never published. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V4 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V4 compares `CHANGELOG.md` starts with the new section, including the SemVer rationale line. On 2.x, the `2.0.0 - Unreleased` section is unchanged below it; 2 checks agree; representative comparison: CHANGELOG begins with new patch release and owner SemVer rationale. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V5 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V5 compares `docs/configuration.md` documents `RP_PRESENTATION` and `RP_RUN_CONTEXT`, and `docs/advanced-reporting.md` has a Presentation section; 1 checks agree; representative comparison: Both switches and Presentation section documented at final SHA. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V6 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V6 compares No changes under `helm/` or `.github/workflows/`. The 1.x chart is still `1.3.1` / appVersion `26.0.7`; 1 checks agree; representative comparison: No Helm/workflow changes against frozen baseline. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V7 | MUST | BLOCKED | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V7 compares `main`, `maintenance/1.x` and `codex/cucumber-12` heads are unchanged; no tags were created; Required proof missing: WP5 exit remote observation not yet recorded. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
-| V8 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); logs N/A; items N/A | V8 compares Commits follow the C0–C8 sequence, and P10 is isolated in its own commit; 1 checks agree; representative comparison: C0-C8 semantic implementation order, P10 isolated stage retained. Comparison Launch N/A (U; no live proof claimed); assessed candidate runtime SHA 06f498cf9fb05352a831fdafc9583b40dced9899; individual sources distinguish candidate and frozen-baseline Launches. |
+| G1 | MUST | PASS | [668 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 1883 item IDs](#g1-id-ranges) | Compared F01 recursive parent graph is complete and acyclic: expected 3, actual 3; 668 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3159, 3161-3162, 3164-3166, 3168, 3171-3172, 3174-3175, 3177-3179, 3181-3182, 3184-3185, 3187-3188, 3190-3191, 3193, 3196, 3198, 3200-3201, 3203-3204, 3206-3211, 3216-3217, 3219, 3221-3222, 3224-3225, 3227, 3229, 3231, 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G2 | MUST | PASS | [90 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 762 log / 618 item IDs](#g2-id-ranges) | Compared F01 plain per-item levels/counts: expected Hash with 3 entries; SHA256 df97528031a28ffa (full value in JSON), actual Hash with 3 entries; SHA256 df97528031a28ffa (full value in JSON); 90 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081, 3159, 3161-3162, 3164-3166, 3168, 3171-3172, 3174-3175, 3177-3179, 3181-3182, 3184-3185, 3187-3188, 3190-3191, 3193, 3196, 3198, 3200-3201, 3203-3204, 3206-3211, 3216-3217, 3219, 3221-3222, 3224-3225, 3227, 3229, 3231; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G3 | MUST | PASS | [268 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 192 log / 529 item IDs](#g3-id-ranges) | Compared F01 plain downloaded attachment bytes/MIME/count: expected Array with 3 entries; SHA256 12d08726472edd3c (full value in JSON), actual Array with 3 entries; SHA256 12d08726472edd3c (full value in JSON); 268 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081, 3159, 3161-3162, 3164-3166, 3168, 3171-3172, 3174-3175, 3177-3179, 3181-3182, 3184-3185, 3187-3188, 3190-3191, 3193, 3196, 3198, 3200-3201, 3203-3204, 3206-3211, 3216-3217, 3219, 3221-3222, 3224-3225, 3227, 3229, 3231; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G4 | MUST | PASS | [86 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1008 log / 816 item IDs](#g4-id-ranges) | Compared F01 plain messages and metadata repeat: expected Array with 2 entries; SHA256 3aad1a4c0343ec47 (full value in JSON), actual Array with 2 entries; SHA256 3aad1a4c0343ec47 (full value in JSON); 86 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981, 2990-2994, 2996, 2998, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3138, 3140-3141, 3143-3144, 3148, 3151, 3155; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G5 | MUST | PASS | [799 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1042 log / 844 item IDs](#g5-id-ranges) | Compared F01 API forbidden-prefix filter: expected 0, actual 0; 799 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G6 | MUST | PASS | [48 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 257 log / 209 item IDs](#g6-id-ranges) | Compared F01 every plain HTML hit classified: expected [], actual []; 48 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G7 | MUST | PASS | [300 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1042 log / 844 item IDs](#g7-id-ranges) | Compared F01 forbidden-token scan: expected [], actual []; 300 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G8 | MUST | PASS | [900 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1042 log / 844 item IDs](#g8-id-ranges) | Compared F01 API secret-marker filter: expected 0, actual 0; 900 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G9 | MUST | PASS | [24 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#g9-id-ranges) | Compared Cucumber 12.0.1 fault-Accent-details: baseline fallback bytes, one warning, unchanged native result: expected [1,1,1,true,true,"/Users/nick/Documents/crr-2.0.1"], actual [1,1,1,true,true,"/Users/nick/Documents/crr-2.0.1"]; 24 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G10 | MUST | PASS | [6 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#g10-id-ranges) | Compared M5: exact final runtime full suite plus offline Cucumber, no failures/pending: expected ["3f20313c20b25071fbc49b31e1c6bc772bd599e4","PASS",0,0], actual ["3f20313c20b25071fbc49b31e1c6bc772bd599e4","PASS",0,0]; 6 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G11 | SHOULD | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#g11-id-ranges) | Compared F07 median-of-three wall time against baseline +10% and every F01-F18 Presentation p95 against <2 ms; Cucumber 12.0.1 baseline 1.429304 s, plain median 1.375825 s, -3.7417%, rich median 1.404972 s, -1.7024%, FailureCard p95 1.612124994 ms (2100 samples); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| G12 | MUST | PASS | [384 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 690 item IDs](#g12-id-ranges) | Compared F01 native NDJSON diff (generated IDs and clocks normalized): expected Array with 35 entries; SHA256 06e2cc72b5d56a2a (full value in JSON), actual Array with 35 entries; SHA256 06e2cc72b5d56a2a (full value in JSON); 384 criterion-specific checks (PASS); Launches 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.1 | MUST | PASS | [8 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 7 log / 7 item IDs](#p1-1-id-ranges) | Compared F04 raw baseline tail preserved: expected String with 7334 entries; SHA256 53bb9bbf3614517f (full value in JSON), actual String with 7334 entries; SHA256 53bb9bbf3614517f (full value in JSON); 8 criterion-specific checks (PASS); Launches 2862, 2924, 2992, 3072, 3141, 3164, 3222; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.2 | MUST | PASS | [36 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 34 log / 34 item IDs](#p1-2-id-ranges) | Compared all escaped exception titles, with only F14 back\slash full omission excepted by Decision15; Launches 2893, 2905-2906, 2925, 2968, 2993, 3073, 3143; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.3 | MUST | PASS | [23 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 22 log / 22 item IDs](#p1-3-id-ranges) | Compared F04 tail frame total: expected 62, actual 62; 23 criterion-specific checks (PASS); Launches 2862, 2893, 2900, 2902-2903, 2905-2906, 2908, 2924, 2929; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.4 | MUST | PASS | [48 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 25 log / 25 item IDs](#p1-4-id-ranges) | Compared Explicit framework-only input: first three framework frames, in input order: expected "first.rb:11   Framework.one\nsecond.rb:22  Framework.two\nthird.rb:33   Framework.three", actual "first.rb:11   Framework.one\nsecond.rb:22  Framework.two\nthird.rb:33   Framework.three"; 48 criterion-specific checks (PASS); Launches 2862, 2893, 2900, 2902-2903, 2905-2906, 2908, 2924, 2929, 2996, 3077, 3148; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.5 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p1-5-id-ranges) | Compared F16a continuation fenced before labelled project frames: expected true, actual true; 1 criterion-specific checks (PASS); Launches 2902; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.6 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 2 log / 2 item IDs](#p1-6-id-ranges) | Compared 12.0.1: literal title text and no data-created script/b elements: expected {"title":"✗ RuntimeError: <b>x</b>","script":0,"bold":0}, actual {"bold":0,"script":0,"title":"✗ RuntimeError: <b>x</b>"}; 2 criterion-specific checks (PASS); Launches 2893; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.7 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p1-7-id-ranges) | Compared F16f redacted error: expected false, actual false; 1 criterion-specific checks (PASS); Launches 2908; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.8 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p1-8-id-ranges) | Compared 12.0.1 S01-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-outer-fold-untouched: independently judged fresh screenshot: expected "PASS", actual "PASS"; 1 criterion-specific checks (PASS); Launches 2924; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.9 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p1-9-id-ranges) | Compared 12.0.1 S02-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-stack-trace: independently judged fresh screenshot: expected "PASS", actual "PASS"; 1 criterion-specific checks (PASS); Launches 2924; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P1.10 | SHOULD | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p1-10-id-ranges) | Compared F04 stable card before tail caption: expected String with 325 entries; SHA256 bee20d609d30790f (full value in JSON), actual String with 325 entries; SHA256 bee20d609d30790f (full value in JSON); 1 criterion-specific checks (PASS); Launches 2862; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P2.1 | MUST | PASS | [19 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 14 log / 14 item IDs](#p2-1-id-ranges) | Historical-only, not a new execution: Compared Every escaping matrix cell independently inspected: expected 14, actual 14; 19 criterion-specific checks (PASS); Launches 554; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P2.2 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 30 log / 47 item IDs](#p2-2-id-ranges) | Historical-only, not a new execution: Compared Data outside code has entity &lt;other&gt;: expected true, actual true; 4 criterion-specific checks (PASS); Launches 554; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P2.3 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#p2-3-id-ranges) | Historical-only, not a new execution: Compared M5 focused assertion evidence from the FULL suite: expected "At least 5 matching examples, all passed", actual Array with 9 entries; SHA256 93d6dc9b2876e934 (full value in JSON); 2 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P2.4 | MUST | PASS | [76 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 676 item IDs](#p2-4-id-ranges) | Historical-only, not a new execution: Compared F01 plain raw non-hook names: expected Array with 3 entries; SHA256 4f10eb6d07afd55d (full value in JSON), actual Array with 3 entries; SHA256 4f10eb6d07afd55d (full value in JSON); 76 criterion-specific checks (PASS); Launches 532-534, 536-540, 553-555, 560-566, 570-571, 614-616, 618-622, 635-637, 642-648, 652-653, 982-993, 1008-1019, 1107-1112, 1125-1130; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P3.1 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 486 log / 704 item IDs](#p3-1-id-ranges) | Historical-only, not a new execution: Compared Complete nested read API evidence covers no-prefix rule: expected 0, actual 0; 1 criterion-specific checks (PASS); Launches 532-534, 536-540, 553-555, 560-571, 614-616, 618-622, 635-637, 642-653, 737-739, 982-993, 1008-1019, 1107-1112, 1125-1130; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P3.2 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 6 log / 6 item IDs](#p3-2-id-ranges) | Historical-only, not a new execution: Compared F16a raw continuation fence: expected true, actual true; 2 criterion-specific checks (PASS); Launches 560, 993; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P3.3 | MUST | PASS | [27 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 116 log / 167 item IDs](#p3-3-id-ranges) | Historical-only, not a new execution: Compared F14 raw authored user log is byte-identical: expected 1, actual 1; 27 criterion-specific checks (PASS); Launches 554, 567-571, 718, 720-723, 731-735, 1086-1087, 1089, 1108-1111; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P3.4 | MUST | PASS | [10 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 7 log / 14 item IDs](#p3-4-id-ranges) | Historical-only, not a new execution: Compared Actual native Console observed for all four required families: expected ["F01","F04","F10a","F11a"], actual ["F01","F04","F10a","F11a"]; 10 criterion-specific checks (PASS); Launches 532, 541, 546, 939; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P4.1 | MUST | PASS | [8 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 20 item IDs](#p4-1-id-ranges) | Historical-only, not a new execution: Compared F02 plain/1 exact TABLE_ONLY_AMBER description: expected "`value` = `TABLE_ONLY_AMBER` · _Examples: Table-only substitution · line 12_", actual "`value` = `TABLE_ONLY_AMBER` · _Examples: Table-only substitution · line 12_"; 8 criterion-specific checks (PASS); Launches 938, 942, 946, 950; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P4.2 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 47 item IDs](#p4-2-id-ranges) | Historical-only, not a new execution: Compared All three Outline fallback shapes exercised: expected 3, actual 3; 4 criterion-specific checks (PASS); Launches 554; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P4.3 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 5 item IDs](#p4-3-id-ranges) | Historical-only, not a new execution: Compared Value/key chips each occupy one physical text line at 1100px: expected true, actual true; 2 criterion-specific checks (PASS); Launches 938; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P4.4 | MUST | PASS | [76 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 676 item IDs](#p4-4-id-ranges) | Historical-only, not a new execution: Compared F01 plain raw scenario names/parameters: expected [["features/presentation_ledger/qa_runtime/F01.feature:3","Scenario: F01",[]]], actual [["features/presentation_ledger/qa_runtime/F01.feature:3","Scenario: F01",[]]]; 76 criterion-specific checks (PASS); Launches 532-534, 536-540, 553-555, 560-566, 570-571, 614-616, 618-622, 635-637, 642-648, 652-653, 982-993, 1008-1019, 1107-1112, 1125-1130; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P5.1 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 3 log / 1 item IDs](#p5-1-id-ranges) | Compared F01 exact three caption/preview goldens: expected Array with 3 entries; SHA256 1b3d36d177c40565 (full value in JSON), actual Array with 3 entries; SHA256 1b3d36d177c40565 (full value in JSON); 1 criterion-specific checks (PASS); Launches 2857; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P5.2 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 10 log / 6 item IDs](#p5-2-id-ranges) | Compared F04 exact JPEG caption: expected "`after-failure.jpg` · JPEG · 754 × 790 · 36 KB", actual "`after-failure.jpg` · JPEG · 754 × 790 · 36 KB"; 3 criterion-specific checks (PASS); Launches 2862, 2871, 2909; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P5.3 | MUST | PASS | [200 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1042 log / 844 item IDs](#p5-3-id-ranges) | Compared F12 caller message precedes meta line: expected true, actual true; 200 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P5.4 | MUST | PASS | [200 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1042 log / 844 item IDs](#p5-4-id-ranges) | Compared F12 failure-evidence suffix: expected true, actual true; 200 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P5.5 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 4 log / 1 item IDs](#p5-5-id-ranges) | Compared F18 line truncation caption: expected true, actual true; 3 criterion-specific checks (PASS); Launches 2911; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P5.6 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 12 log / 4 item IDs](#p5-6-id-ranges) | Compared F17: batch size 1 and default emit identical owner-local filenames: expected Array with 6 entries; SHA256 83c883badfcabb5d (full value in JSON), actual Array with 6 entries; SHA256 83c883badfcabb5d (full value in JSON); 2 criterion-specific checks (PASS); Launches 2909, 3234; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P5.7 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 128 log / 478 item IDs](#p5-7-id-ranges) | Compared Owned API downloads match baseline count, MIME, filenames and SHA256: expected 0, actual 0; 1 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P5.8 | MUST | PASS | [7 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 6 log / 2 item IDs](#p5-8-id-ranges) | Compared 12.0.1 S06-wp5-ci-final-20261101-c12.0.1-f01-plain-captions-preview-download: actual caption/preview visual observation: expected "PASS", actual "PASS"; 7 criterion-specific checks (PASS); Launches 2857, 3005; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P6.1 | MUST | PASS | [68 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 120 item IDs](#p6-1-id-ranges) | Historical-only, not a new execution: Compared M5 focused assertion evidence from the FULL suite: expected "At least 1 matching examples, all passed", actual Array with 18 entries; SHA256 1842699a2573eb56 (full value in JSON); 68 criterion-specific checks (PASS); Launches 1104-1106, 1108, 1110, 1113-1115, 1119, 1122-1124, 1126, 1128, 1131-1133, 1137; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P6.2 | MUST | PASS | [76 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 676 item IDs](#p6-2-id-ranges) | Historical-only, not a new execution: Compared F01 plain hook types: expected [], actual []; 76 criterion-specific checks (PASS); Launches 532-534, 536-540, 553-555, 560-566, 570-571, 614-616, 618-622, 635-637, 642-648, 652-653, 982-993, 1008-1019, 1107-1112, 1125-1130; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P6.3 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 2 log / 5 item IDs](#p6-3-id-ranges) | Historical-only, not a new execution: Compared F04 JPEG belongs to After hook: expected ["AFTER_METHOD","After hook"], actual ["AFTER_METHOD","After hook"]; 1 criterion-specific checks (PASS); Launches 1107; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P6.4 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 12 item IDs](#p6-4-id-ranges) | Historical-only, not a new execution: Compared Judged native S07 screenshots: expected "At least one retained native image, all judged PASS", actual Array with 2 entries; SHA256 340a7d8f9a9f7792 (full value in JSON); 1 criterion-specific checks (PASS); Launches 556, 1104; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P7.1 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 4 log / 9 item IDs](#p7-1-id-ranges) | Historical-only, not a new execution: Compared AMBER native doc-first/table-first steps each equal exact P7 golden: expected Array with 2 entries; SHA256 07fe9ec18c682b44 (full value in JSON), actual Array with 2 entries; SHA256 07fe9ec18c682b44 (full value in JSON); 2 criterion-specific checks (PASS); Launches 534; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P7.2 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 2 log / 4 item IDs](#p7-2-id-ranges) | Historical-only, not a new execution: Compared F13 eight-column alignment golden: expected true, actual true; 3 criterion-specific checks (PASS); Launches 553; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P7.3 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 52 item IDs](#p7-3-id-ranges) | Historical-only, not a new execution: Compared F07 all fifty argument-free steps omit descriptions: expected [50,[]], actual [50,[]]; 3 criterion-specific checks (PASS); Launches 537; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P7.4 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 9 log / 8 item IDs](#p7-4-id-ranges) | Historical-only, not a new execution: Compared Declared/detected JSON DocString caption: expected true, actual true; 4 criterion-specific checks (PASS); Launches 566; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P7.5 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 4 log / 8 item IDs](#p7-5-id-ranges) | Historical-only, not a new execution: Compared plain-1 numeric columns computed right alignment: expected true, actual true; 3 criterion-specific checks (PASS); Launches 553, 635; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P8.1 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 2 log / 2 item IDs](#p8-1-id-ranges) | Compared F10a exact passed assertion: expected ["✓ Assertion passed · Order is accepted · expected `ACCEPTED`"], actual ["✓ Assertion passed · Order is accepted · expected `ACCEPTED`"]; 2 criterion-specific checks (PASS); Launches 2874, 2877; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.2 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 3 log / 3 item IDs](#p8-2-id-ranges) | Compared F10b long expected omitted from chip: expected false, actual false; 4 criterion-specific checks (PASS); Launches 2875, 2878, 2880; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.3 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p8-3-id-ranges) | Compared F10c multiline actual continuation: expected true, actual true; 1 criterion-specific checks (PASS); Launches 2877; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.4 | MUST | PASS | [5 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 4 log / 4 item IDs](#p8-4-id-ranges) | Compared F11b HTTP title: expected "## ⚠ GET /words → 404 · 31 ms", actual "## ⚠ GET /words → 404 · 31 ms"; 5 criterion-specific checks (PASS); Launches 2881, 2883-2884, 2886; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.5 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 5 log / 1 item IDs](#p8-5-id-ranges) | Compared F12 empty action card title: expected true, actual true; 2 criterion-specific checks (PASS); Launches 2889; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.6 | MUST | PASS | [300 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 906 log / 996 item IDs](#p8-6-id-ranges) | Compared F01 INFO headings: expected [], actual []; 300 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.7 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p8-7-id-ranges) | Compared F11f secret removed from title and URL chip: expected [false,true], actual [false,true]; 1 criterion-specific checks (PASS); Launches 2888; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.8 | MUST | PASS | [48 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 144 item IDs](#p8-8-id-ranges) | Compared F10a plain/1: baseline native/logger stdout bytes, excluding only Cucumber summary/stopwatch: expected String with 202 entries; SHA256 b72adc74b67a3429 (full value in JSON), actual String with 202 entries; SHA256 b72adc74b67a3429 (full value in JSON); 48 criterion-specific checks (PASS); Launches 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2889, 2952-2956, 2958-2964, 3022, 3024-3025, 3027-3029, 3031-3035, 3037, 3098-3102, 3104-3109, 3111; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P8.9 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#p8-9-id-ranges) | Compared M5: unchanged omission marker and public bounds verified by product and independent specs: expected "At least 2 matching examples, all passed", actual Array with 2 entries; SHA256 1d458e837c6a4ae3 (full value in JSON); 2 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P9.1 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 3 item IDs](#p9-1-id-ranges) | Historical-only, not a new execution: Compared F19d no generated context: expected ["",[]], actual ["",[]]; 1 criterion-specific checks (PASS); Launches 570; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P9.2 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 12 item IDs](#p9-2-id-ranges) | Historical-only, not a new execution: Compared F19a exact context attributes: expected [["ci.build","42"],["cucumber","12.0.1"],["git.branch","feature/ledger"],["git.sha","e7dae2b"],["ruby","3.4.12"],["sdk","2.0.1"],["workers","4"]], actual [["ci.build","42"],["cucumber","12.0.1"],["git.branch","feature/ledger"],["git.sha","e7dae2b"],["ruby","3.4.12"],["sdk","2.0.1"],["workers","4"]]; 4 criterion-specific checks (PASS); Launches 567, 569, 1088, 1090; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P9.3 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 3 item IDs](#p9-3-id-ranges) | Historical-only, not a new execution: Compared F19b exact context attributes: expected [["ci.build","42"],["cucumber","12.0.1"],["git.branch","feature/ledger"],["git.sha","e7dae2b"],["ruby","3.4.12"],["sdk","custom"],["workers","4"]], actual [["ci.build","42"],["cucumber","12.0.1"],["git.branch","feature/ledger"],["git.sha","e7dae2b"],["ruby","3.4.12"],["sdk","custom"],["workers","4"]]; 1 criterion-specific checks (PASS); Launches 568; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P9.4 | MUST | PASS | [7 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 15 item IDs](#p9-4-id-ranges) | Historical-only, not a new execution: Compared F19a context description: expected "Cucumber 12.0.1 · Ruby 3.4.12 · 4 workers · feature/ledger@e7dae2b", actual "Cucumber 12.0.1 · Ruby 3.4.12 · 4 workers · feature/ledger@e7dae2b"; 7 criterion-specific checks (PASS); Launches 567-569, 1088, 1090; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P9.5 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 3 item IDs](#p9-5-id-ranges) | Historical-only, not a new execution: Compared Judged native S10 screenshots: expected "At least one retained native image, all judged PASS", actual Array with 1 entries; SHA256 2ee69171ae7db78c (full value in JSON); 1 criterion-specific checks (PASS); Launches 567; runtime SHA ecf8c5aade5b6982f96083cb21c758db56b81b3f. |
+| P10.1 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 10 log / 4 item IDs](#p10-1-id-ranges) | Compared F01: unset presentation adds no Tier 2 tags: expected [], actual []; 3 criterion-specific checks (PASS); Launches 3233-3234, 3236; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.2 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 1 log / 1 item IDs](#p10-2-id-ranges) | Compared F20 fancy: exactly one presentation warning: expected 1, actual 1; 2 criterion-specific checks (PASS); Launches 2918; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.3 | MUST | PASS | [258 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 258 log / 210 item IDs](#p10-3-id-ranges) | Compared F01 log 15804 exact tag/style vocabulary: expected [], actual []; 258 criterion-specific checks (PASS); Launches 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.4 | MUST | PASS | [33 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 33 log / 30 item IDs](#p10-4-id-ranges) | Compared F04 ERROR 0 first line: expected "## ✗ RuntimeError: INDEPENDENT\\_FULL\\_BACKTRACE\n", actual "## ✗ RuntimeError: INDEPENDENT\\_FULL\\_BACKTRACE\n"; 33 criterion-specific checks (PASS); Launches 3010, 3025, 3027-3028, 3032-3033, 3037, 3042, 3048-3049, 3051-3052, 3054-3055, 3072-3073, 3077; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.5 | MUST | PASS | [258 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 258 log / 210 item IDs](#p10-5-id-ranges) | Compared F01 log 0 rich byte budget: expected "<= 1076 bytes", actual 241; 258 criterion-specific checks (PASS); Launches 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.6 | MUST | PASS | [540 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 888 log / 744 item IDs](#p10-6-id-ranges) | Compared Paired log ownership and level counts: expected Hash with 1 entries; SHA256 aed9e705ae1289aa (full value in JSON), actual Hash with 1 entries; SHA256 aed9e705ae1289aa (full value in JSON); 540 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2933, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.7 | MUST | PASS | [290 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 1444 item IDs](#p10-7-id-ranges) | Compared F01 unchanged item metadata plain/rich: expected Array with 3 entries; SHA256 402d550fe0229c49 (full value in JSON), actual Array with 3 entries; SHA256 402d550fe0229c49 (full value in JSON); 290 criterion-specific checks (PASS); Launches 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.8 | MUST | PASS | [54 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 27 log / 51 item IDs](#p10-8-id-ranges) | Compared F04 log 15817 fence blank lines in details: expected true, actual true; 54 criterion-specific checks (PASS); Launches 3010, 3029, 3034, 3042, 3048-3049, 3051-3052, 3054-3055, 3058, 3072, 3077; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.9 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 2 log / 2 item IDs](#p10-9-id-ranges) | Compared F13 eight-column table has no TH span: expected false, actual false; 1 criterion-specific checks (PASS); Launches 3038; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.10 | MUST | PASS | [10 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 16 log / 9 item IDs](#p10-10-id-ranges) | Compared 12.0.1 S03-wp5-ci-final-20261101-c12.0.1-f04-frozen-rich-both-folds-expanded: visible rich pills/titles/folds, independently inspected: expected "PASS", actual "PASS"; 10 criterion-specific checks (PASS); Launches 3005, 3022, 3025, 3029, 3031-3032, 3037-3038, 3072; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| P10.11 | SHOULD | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 6 log / 4 item IDs](#p10-11-id-ranges) | Compared 12.0.1: computed info pill contrast, WCAG sRGB relative luminance: expected ">= 4.5:1", actual 5.38234760973427; 4 criterion-specific checks (PASS); Launches 3005, 3022, 3025, 3031; runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V1 | MUST | PASS | [4 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v1-id-ranges) | Compared Every actual loaded SDK byte hash matches the exact final/baseline Git revision, not the QA branch: expected true, actual true; 4 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V2 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v2-id-ranges) | Compared Frozen-baseline lock diff contains only the gem's own PATH version: expected ["-    reportportal-cucumber-ruby (2.0.0)","+    reportportal-cucumber-ruby (2.0.1)"], actual ["-    reportportal-cucumber-ruby (2.0.0)","+    reportportal-cucumber-ruby (2.0.1)"]; 1 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V3 | MUST | PASS | [2 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v3-id-ranges) | Compared Fresh gem build from final feature tree, locally verified and never published: expected ["reportportal-cucumber-ruby-2.0.1.gem","2.0.1",true,"3f20313c20b25071fbc49b31e1c6bc772bd599e4"], actual ["reportportal-cucumber-ruby-2.0.1.gem","2.0.1",true,"3f20313c20b25071fbc49b31e1c6bc772bd599e4"]; 2 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V4 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v4-id-ranges) | Compared CHANGELOG begins with new patch release and owner SemVer rationale: expected true, actual true; 3 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V5 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v5-id-ranges) | Compared Both switches and Presentation section documented at final SHA: expected [true,true,true], actual [true,true,true]; 1 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V6 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v6-id-ranges) | Compared Decision16: baseline-to-final Helm is untouched and only the exactly audited validation workflow differs: expected ["3f20313c20b25071fbc49b31e1c6bc772bd599e4","PASS",[".github/workflows/validate.yml"]], actual ["3f20313c20b25071fbc49b31e1c6bc772bd599e4","PASS",[".github/workflows/validate.yml"]]; 1 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V7 | MUST | PASS | [3 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v7-id-ranges) | Compared Protected heads still equal original independent observations: expected Hash with 3 entries; SHA256 0dc182c26f5fbe8c (full value in JSON), actual Hash with 3 entries; SHA256 0dc182c26f5fbe8c (full value in JSON); 3 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
+| V8 | MUST | PASS | [1 checks](assets/presentation-ledger-2.0.1-acceptance.json); [all 0 log / 0 item IDs](#v8-id-ranges) | Compared C0-C8 semantic implementation order, P10 isolated stage retained: expected true, actual true; 1 criterion-specific checks (PASS); Launch N/A (U; no live proof claimed); runtime SHA 3f20313c20b25071fbc49b31e1c6bc772bd599e4. |
 
 ## Defects
+Decision15 explicitly excepts only the named F14 backslash failure title while retaining complete fail-closed omission. Original title-comparison mismatches remain in the evidence; no golden/redaction change or broader exception is applied.
+
 | # | Severity | Criterion | Fixture | Expected | Actual | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| WP5-D001 | S2 | P1.2 | F14 plain/1 input 3: independently escaped exception title | "## ✗ RuntimeError: back\\\\slash" | "[REDACTED] [evidence omitted: unsafe or oversized input]"; full values in JSON | WP5-00005 |
-| WP5-D002 | S2 | P1.2 | F14 plain/2 input 3: independently escaped exception title | "## ✗ RuntimeError: back\\\\slash" | "[REDACTED] [evidence omitted: unsafe or oversized input]"; full values in JSON | WP5-00020 |
+No demonstrated fresh product failure so far; BLOCKED criteria are missing proof, not PASS.
+
+Retained earlier failures are not waived: the independent Ruby 3.1 focused run observed 0.1342089579993626 s against the unchanged <0.12 s assertion, without the handle_error diagnostic observer. Its original result and command provenance remain in `docs/reviews/assets/wp5-final-20261101/spec-repair-ruby31-focused.json` and `.provenance.json` on the 1.x QA branch. The original RSpec keyword-wrapper failures remain in their original matrix evidence. Fresh all-six-cell evidence is required for G10.
+
+Original remote CI attempt-1 failures (2x SIGINT spooled=0 and frozen 1.3.1 SIGINT/HTTP-400 receipt failures) remain separately recorded in `docs/reviews/assets/wp5-ci-final-20261101/ci-attempt1-independent-review.json`. Unchanged attempt-2 success does not establish their cause or waive an assertion. Independent classification: the legacy failures predate Ledger; budget/scheduling sensitivity is a supported explanation, not proof of runner-only causation or a demonstrated repaired SDK defect.
+
+Evidence-integrity findings, separate from SDK defects: the independent publication review found three S2 packaging gaps (quiet G11 root omitted, historical raw references not selected, and portable reproduction setup missing). The bounded curator/reproduction-guide correction passed 35 synthetic assertions and Master review; original findings remain in the publication-audit sidecar. Final selection and secret/size/path audit remain a publication gate, not an SDK waiver.
+
+QA harness observations are retained separately: an initial package-binding helper rejected comma-formatted counts despite identical package/runtime bytes; its failed result remains on 1.x. Console replay attempt 1 performed only GET and stopped because list severity `error` differs from direct GET `ERROR`; identical 10,492-byte messages were independently hash-verified before attempt 2. Only severity casing is canonicalized, not message content.
+
+Historical-index repair preserves every committed Q and WP5 object at its original ID; 17 later in-progress legacy variants are retained inline under unique `DRAFT-HISTORY-*` IDs with full original draft objects and explicit mappings. The Master before-repair witness is unchanged. No old failure, input, expected/actual value or verdict is discarded.
+
+The fixture-only containment test correction additionally passes 37 unchanged-security assertions with a QA-local TMPDIR; the earlier host failure and separate unchanged-test container pass remain retained. Production curator source is unchanged by that fixture correction.
 
 ## Screenshots
 Historical screenshots remain at their original Launches/runtime and are not relabelled final. Fresh final-head captures and DOM observations are indexed separately below.
-Fresh S01-S12 set: BLOCKED until final-run criteria analysis and visual protocol are complete. No screenshot PASS is claimed.
+- S01-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-outer-fold-untouched: Launch 2924; item 23502; log 15316; PASS; [image](assets/presentation-ledger-2.0.1/S01-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-outer-fold-untouched.png).
+- S02-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-stack-trace: Launch 2924; item 23502; log 15316; PASS; [image](assets/presentation-ledger-2.0.1/S02-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-stack-trace.png).
+- S03-wp5-ci-final-20261101-c12.0.1-f04-frozen-rich-both-folds-expanded: Launch 3072; item 24666; log 16101; PASS; [image](assets/presentation-ledger-2.0.1/S03-wp5-ci-final-20261101-c12.0.1-f04-frozen-rich-both-folds-expanded.png).
+- S06-wp5-ci-final-20261101-c12.0.1-f01-plain-captions-preview-download: Launch 2857; item 23022; log 15017, 15018, 15019; PASS; [image](assets/presentation-ledger-2.0.1/S06-wp5-ci-final-20261101-c12.0.1-f01-plain-captions-preview-download.png).
+- S06-wp5-ci-final-20261101-c12.0.1-f01-plain-captions-preview-download-preview-modal: Launch 2857; item 23022; log 15017, 15018, 15019; PASS; [image](assets/presentation-ledger-2.0.1/S06-wp5-ci-final-20261101-c12.0.1-f01-plain-captions-preview-download-preview-modal.png).
+- S06-wp5-ci-final-20261101-c12.0.1-f01-rich-captions-preview-download: Launch 3005; item 24186; log 15804, 15805, 15806; PASS; [image](assets/presentation-ledger-2.0.1/S06-wp5-ci-final-20261101-c12.0.1-f01-rich-captions-preview-download.png).
+- S08-wp5-ci-final-20261101-c12.0.1-f13-plain-numeric-table: Launch 2890; item 23279; log 15183, 15184; PASS; [image](assets/presentation-ledger-2.0.1/S08-wp5-ci-final-20261101-c12.0.1-f13-plain-numeric-table.png).
+- S08-wp5-ci-final-20261101-c12.0.1-f13-rich-numeric-table: Launch 3038; item 24469; log 15983, 15984; PASS; [image](assets/presentation-ledger-2.0.1/S08-wp5-ci-final-20261101-c12.0.1-f13-rich-numeric-table.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f10a-plain-cards-expanded: Launch 2874; item 23186; log 15129; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f10a-plain-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f10a-rich-cards-expanded: Launch 3022; item 24350; log 15916; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f10a-rich-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f10c-plain-cards-expanded: Launch 2877; item 23195; log 15132; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f10c-plain-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f10c-rich-cards-expanded: Launch 3025; item 24359; log 15923; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f10c-rich-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f11a-plain-cards-expanded: Launch 2881; item 23207; log 15140; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f11a-plain-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f11a-rich-cards-expanded: Launch 3029; item 24372; log 15928; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f11a-rich-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f11a-rich-cards-expanded-headers-open: Launch 3029; item 24372; log 15928; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f11a-rich-cards-expanded-headers-open.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f11b-plain-cards-expanded: Launch 2883; item 23214; log 15143; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f11b-plain-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f11b-rich-cards-expanded: Launch 3031; item 24395; log 15942; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f11b-rich-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f11c-plain-cards-expanded: Launch 2884; item 23217; log 15144; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f11c-plain-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f11c-rich-cards-expanded: Launch 3032; item 24419; log 15957; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f11c-rich-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f12-plain-cards-expanded: Launch 2889; item 23276; log 15178, 15180, 15179, 15181, 15182; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f12-plain-cards-expanded.png).
+- S09-wp5-ci-final-20261101-c12.0.1-f12-rich-cards-expanded: Launch 3037; item 24452; log 15971, 15972, 15975, 15973, 15974; PASS; [image](assets/presentation-ledger-2.0.1/S09-wp5-ci-final-20261101-c12.0.1-f12-rich-cards-expanded.png).
+- S04-wp5-ci-final-20261101-c12.0.1-f03-plain-escaped-table: Launch 2860; item 23037; log 15025, 15026, 15027, 15028; PASS; [image](assets/presentation-ledger-2.0.1/S04-wp5-ci-final-20261101-c12.0.1-f03-plain-escaped-table.png).
+- S04-wp5-ci-final-20261101-c12.0.1-f14-plain-escaped-table: Launch 2892; item 23286; log 15186, 15188, 15190, 15191, 15193, 15194, 15196, 15198, 15200, 15201, 15203, 15205, 15206, 15208, 15210, 15211, 15213, 15214, 15216, 15218, 15219, 15220, 15221, 15222, 15223, 15224, 15225, 15226, 15227, 15228; PASS; [image](assets/presentation-ledger-2.0.1/S04-wp5-ci-final-20261101-c12.0.1-f14-plain-escaped-table.png).
+- S05-wp5-ci-final-20261101-c12.0.1-f02-golden-plain-suite-list: Launch 2922; item 23493; log 15313, 15314; PASS; [image](assets/presentation-ledger-2.0.1/S05-wp5-ci-final-20261101-c12.0.1-f02-golden-plain-suite-list.png).
+- S07-wp5-ci-final-20261101-c12.0.1-f15-plain-hook-rows: Launch 2896; item 23397; log 15250, 15251, 15252, 15253; PASS; [image](assets/presentation-ledger-2.0.1/S07-wp5-ci-final-20261101-c12.0.1-f15-plain-hook-rows.png).
+- S10-wp5-ci-final-20261101-c12.0.1-f19a-plain-launch-list: Launch 2912; item 23458; log 15288; PASS; [image](assets/presentation-ledger-2.0.1/S10-wp5-ci-final-20261101-c12.0.1-f19a-plain-launch-list.png).
+- S11-wp5-ci-final-20261101-c12.0.1-f01-plain-markdown-off-then-restored: Launch 2857; item 23022; log 15017, 15018, 15019; PASS; [image](assets/presentation-ledger-2.0.1/S11-wp5-ci-final-20261101-c12.0.1-f01-plain-markdown-off-then-restored.png).
+- S11-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-markdown-off-then-restored: Launch 2924; item 23502; log 15316, 15317; PASS; [image](assets/presentation-ledger-2.0.1/S11-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-markdown-off-then-restored.png).
+- S11-wp5-ci-final-20261101-c12.0.1-f10a-plain-markdown-off-then-restored: Launch 2874; item 23186; log 15129; PASS; [image](assets/presentation-ledger-2.0.1/S11-wp5-ci-final-20261101-c12.0.1-f10a-plain-markdown-off-then-restored.png).
+- S11-wp5-ci-final-20261101-c12.0.1-f11a-plain-markdown-off-then-restored: Launch 2881; item 23207; log 15140; PASS; [image](assets/presentation-ledger-2.0.1/S11-wp5-ci-final-20261101-c12.0.1-f11a-plain-markdown-off-then-restored.png).
+- S12-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-console-blocked-nested-ui: Launch 2924; item 23502; log 15316, 15317; BLOCKED; [image](assets/presentation-ledger-2.0.1/S12-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-console-blocked-nested-ui.png).
+- S12-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-console-flat-Decision17: Launch 3804; item 30408; log 19747; PASS; [image](assets/presentation-ledger-2.0.1/S12-wp5-ci-final-20261101-c12.0.1-f04-frozen-plain-console-flat-Decision17.png).
+
+## Exact ID Ranges
+Every range below is inclusive and round-trip checked; gaps and singletons are preserved, and the complete uncompressed arrays remain in the evidence JSON.
+
+<a id="g1-id-ranges"></a>
+<details>
+<summary>G1: 244 Launch, 1883 item, 0 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3159, 3161-3162, 3164-3166, 3168, 3171-3172, 3174-3175, 3177-3179, 3181-3182, 3184-3185, 3187-3188, 3190-3191, 3193, 3196, 3198, 3200-3201, 3203-3204, 3206-3211, 3216-3217, 3219, 3221-3222, 3224-3225, 3227, 3229, 3231, 3233-3234, 3236
+
+Items: 23021-23023, 23027-23044, 23048-23065, 23068, 23070-23086, 23089, 23091-23131, 23135-23141, 23144-23145, 23147-23168, 23172-23181, 23185-23190, 23193, 23195-23199, 23203-23208, 23212, 23214-23219, 23221-23222, 23244-23245, 23247, 23268-23270, 23275-23281, 23285-23286, 23288, 23290, 23293-23295, 23298-23299, 23302, 23304-23305, 23307, 23310-23312, 23315-23316, 23319-23320, 23322, 23324, 23327-23329, 23332-23333, 23336-23338, 23341-23362, 23367-23368, 23371-23392, 23396-23404, 23409-23416, 23421-23426, 23430-23435, 23439-23445, 23449-23459, 23463-23468, 23471, 23473-23477, 23490-23497, 23501-23508, 23512-23516, 23520-23522, 23529-23558, 23562-23569, 23578-23580, 23583-23591, 23595-23608, 23614-23686, 23693-23723, 23735-23744, 23751-23774, 23787-23789, 23810-23869, 23872-23873, 23875-23914, 23923, 23925-23926, 23929, 23936-23954, 23971-23973, 23975-23982, 23985, 23987-23988, 23991-23996, 24006, 24008, 24010, 24036-24037, 24039, 24060, 24062-24063, 24065, 24067, 24081-24093, 24125-24127, 24135-24137, 24139, 24141-24142, 24147-24178, 24185-24187, 24191-24207, 24209, 24212-24221, 24224-24225, 24227-24242, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24302-24332, 24336-24342, 24346-24351, 24355-24360, 24364, 24366-24373, 24393, 24395, 24397, 24417, 24419, 24421, 24427-24435, 24451-24453, 24468-24502, 24505-24507, 24509-24510, 24512, 24514, 24516-24524, 24528-24530, 24532-24557, 24562-24570, 24573-24576, 24578-24584, 24588-24593, 24597-24602, 24606-24617, 24621-24626, 24631-24636, 24645-24647, 24651-24652, 24654, 24657-24661, 24665-24672, 24676-24680, 24684-24689, 24691, 24693-24694, 24696-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24750-24752, 24756-24765, 24768-24770, 24772, 24774, 24776-24850, 24853-24855, 24857, 24859, 24862, 24865-24866, 24868, 24870, 24872, 24874-24875, 24877-24878, 24881-24882, 24885-24904, 24911-24935, 24939-24954, 24956, 24958, 24974-25027, 25045-25073, 25079-25091, 25113-25122, 25133, 25135-25136, 25155-25156, 25158, 25179, 25181-25182, 25184-25195, 25204, 25206-25207, 25230-25238, 25246-25248, 25252-25254, 25258-25267, 25271-25278, 25288-25290, 25297-25302, 25309-25328, 25331-25333, 25335-25343, 25350-25352, 25354, 25356-25357, 25359-25360, 25362-25374, 25389, 25391-25392, 25394-25395, 25419-25421, 25423, 25425, 25428-25429, 25432-25433, 25436-25471, 25474-25475, 25477-25478, 25481-25482, 25485, 25487, 25489, 25491, 25493-25494, 25497-25498, 25501-25502, 25505-25506, 25509-25510, 25513-25514, 25517-25518, 25521-25522, 25525-25526, 25529-25542, 25544, 25546-25547, 25549, 25551, 25553-25554, 25556-25565, 25570-25579, 25584-25589, 25592-25594, 25596-25599, 25601-25602, 25605-25610, 25614-25619, 25623-25625, 25627, 25629-25630, 25632-25634, 25637-25640, 25643-25669, 25672-25673, 25675-25676, 25678, 25680, 25682, 25684-25685, 25687-25697, 25701-25729, 25733-25738, 25742-25748, 25752-25758, 25762-25785, 25798-25803, 25821-25823, 25829-25838, 25842-25849, 25855-25857, 25864-25866, 25878-25888, 25890, 25892, 25894-25896, 25900-25922, 25926-25928
+
+Logs: N/A
+
+</details>
+
+<a id="g2-id-ranges"></a>
+<details>
+<summary>G2: 135 Launch, 618 item, 762 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081, 3159, 3161-3162, 3164-3166, 3168, 3171-3172, 3174-3175, 3177-3179, 3181-3182, 3184-3185, 3187-3188, 3190-3191, 3193, 3196, 3198, 3200-3201, 3203-3204, 3206-3211, 3216-3217, 3219, 3221-3222, 3224-3225, 3227, 3229, 3231
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23541, 23544-23558, 23562-23569, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 25352, 25357, 25360, 25363, 25365, 25368, 25370, 25372, 25374, 25392, 25395, 25421, 25425, 25429, 25433, 25437, 25439, 25441, 25443, 25445, 25447, 25450-25471, 25474-25475, 25477-25478, 25481-25482, 25485, 25487, 25489, 25491, 25493-25494, 25497-25498, 25501-25502, 25505-25506, 25509-25510, 25513-25514, 25517-25518, 25521-25522, 25525-25526, 25531, 25533, 25535, 25537, 25539, 25541, 25544, 25547, 25551, 25554, 25557, 25559, 25561, 25563, 25565, 25572, 25574, 25576, 25579, 25586, 25589, 25594, 25598, 25602, 25607, 25610, 25616, 25619, 25625, 25630, 25634, 25639-25640, 25645-25646, 25648-25649, 25651-25652, 25654-25655, 25657-25658, 25660-25661, 25663-25664, 25666-25667, 25669, 25672, 25675-25676, 25680, 25682, 25685, 25687, 25689-25690, 25692-25693, 25695, 25697, 25703, 25705, 25707, 25709, 25711, 25713, 25715, 25717, 25719, 25721, 25723, 25725, 25727, 25729, 25735-25738, 25744, 25747-25748, 25754-25755, 25758, 25764, 25767, 25770, 25773, 25776-25777, 25780-25785, 25800, 25803, 25823, 25831, 25833, 25836, 25838, 25844, 25847, 25849, 25857, 25866, 25885, 25887-25888, 25890, 25892, 25894-25896, 25900-25915
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15287, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15333, 15335-15358, 15362-15373, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16116, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16570-16573, 16575, 16577-16582, 16592, 16594, 16610, 16612, 16615, 16617, 16619-16658, 16660-16661, 16663-16664, 16666-16667, 16669-16670, 16672-16673, 16675-16676, 16678-16679, 16681-16683, 16685, 16687-16689, 16691, 16693-16695, 16697, 16699-16706, 16709, 16711, 16713-16717, 16720-16725, 16728-16730, 16732-16733, 16735-16736, 16738-16739, 16741-16742, 16744-16750, 16757-16775, 16780, 16783, 16785, 16787, 16789-16795, 16797-16810, 16812-16815, 16817-16821, 16823-16825, 16827-16845, 16852-16853, 16862-16864, 16867-16870, 16872-16874, 16877, 16882-16889, 16897-16904, 16906-16909, 16911-16914, 16917-16936
+
+</details>
+
+<a id="g3-id-ranges"></a>
+<details>
+<summary>G3: 135 Launch, 529 item, 192 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081, 3159, 3161-3162, 3164-3166, 3168, 3171-3172, 3174-3175, 3177-3179, 3181-3182, 3184-3185, 3187-3188, 3190-3191, 3193, 3196, 3198, 3200-3201, 3203-3204, 3206-3211, 3216-3217, 3219, 3221-3222, 3224-3225, 3227, 3229, 3231
+
+Items: 23023, 23027-23044, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23185-23190, 23193, 23195-23199, 23203-23208, 23212, 23214-23219, 23221-23222, 23244-23245, 23247, 23268-23270, 23277-23281, 23285-23286, 23288, 23290, 23293-23295, 23298-23299, 23302, 23304-23305, 23307, 23310-23312, 23315-23316, 23319-23320, 23322, 23324, 23327-23329, 23332-23333, 23336-23338, 23341-23362, 23367-23368, 23371-23392, 23396-23404, 23409-23416, 23421-23426, 23430-23435, 23439-23441, 23444-23445, 23451, 23471, 23473-23477, 23492-23497, 23505-23508, 23512-23516, 23520-23522, 23529-23531, 23547-23550, 24187, 24191-24207, 24209, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24255, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348-24351, 24355-24360, 24364, 24366-24373, 24393, 24395, 24397, 24417, 24419, 24421, 24427-24435, 24453, 24468-24502, 24505-24507, 24509-24510, 24512, 24514, 24516-24524, 24528-24530, 24532-24557, 24562-24570, 24573-24576, 24578-24584, 24588-24593, 24597-24602, 24608-24609, 24612, 24634-24636, 24645-24647, 24654, 24657-24661, 24669-24672, 24676-24680, 24684-24689, 24708-24711, 25352, 25395, 25421, 25425, 25429, 25433, 25437, 25439, 25441, 25443, 25445, 25447, 25450-25459, 25531, 25533, 25535, 25537, 25539, 25541, 25544, 25547, 25551, 25554, 25557, 25559, 25561, 25563, 25565, 25572, 25574, 25576, 25579, 25634, 25776-25777, 25780, 25823, 25838, 25892, 25894-25896
+
+Logs: 15017-15019, 15031-15037, 15039-15042, 15044, 15046, 15048, 15050, 15052, 15054, 15056, 15058, 15060, 15063, 15105-15108, 15110-15120, 15122-15125, 15179-15180, 15182, 15272-15277, 15279-15282, 15310-15312, 15317, 15344, 15346, 15348, 15350, 15804-15806, 15818-15821, 15823-15829, 15831, 15833, 15835, 15838, 15840, 15842-15843, 15846, 15848, 15850, 15893-15907, 15909-15911, 15913, 15972, 15974-15975, 16057-16066, 16094-16096, 16102, 16130, 16132, 16134, 16136, 16570-16572, 16594, 16610, 16612, 16615, 16617, 16619-16624, 16626, 16628, 16630-16631, 16634, 16636, 16638, 16640, 16642, 16644, 16699-16706, 16709, 16711, 16713-16717, 16720-16723, 16745-16746, 16748, 16831-16840, 16862-16864, 16870, 16907, 16909, 16912, 16914
+
+</details>
+
+<a id="g4-id-ranges"></a>
+<details>
+<summary>G4: 172 Launch, 816 item, 1008 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981, 2990-2994, 2996, 2998, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3138, 3140-3141, 3143-3144, 3148, 3151, 3155
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23541, 23544-23558, 23562-23569, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23606, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756, 23759, 23762, 23765, 23768, 23771, 23774, 23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 23904-23907, 23910, 23913-23914, 23926, 23929, 23938, 23941, 23944, 23947, 23950, 23953-23954, 23973, 23975-23979, 24039, 24063, 24067, 24083, 24085, 24088, 24091, 24093, 24127, 24137, 24155-24178, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24781, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926, 24929, 24932, 24935, 24941, 24944, 24947, 24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25047, 25049, 25051, 25053, 25055, 25057, 25059, 25061, 25063, 25065, 25067, 25069, 25071, 25073, 25081-25084, 25087, 25090-25091, 25115-25116, 25119, 25122, 25136, 25158, 25182, 25186-25187, 25190-25195, 25254, 25260, 25262, 25265, 25267, 25273, 25276, 25278, 25290, 25299, 25311, 25314, 25317, 25320-25328, 25331-25333, 25335-25343
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15287, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15333, 15335-15358, 15362-15373, 15377-15379, 15381-15384, 15386-15391, 15394-15463, 15468-15482, 15490-15495, 15500-15507, 15510, 15545-15584, 15588-15609, 15614, 15616, 15620-15630, 15639-15647, 15689-15691, 15713, 15716, 15730-15734, 15750, 15754-15761, 15766-15801, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16116, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16167-16169, 16171-16175, 16177, 16179-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16293, 16297-16302, 16311-16347, 16356-16369, 16372-16380, 16391-16394, 16413, 16434, 16456, 16458-16472, 16498-16500, 16502-16505, 16507-16509, 16513, 16516-16523, 16527-16547, 16549-16563
+
+</details>
+
+<a id="g5-id-ranges"></a>
+<details>
+<summary>G5: 199 Launch, 844 item, 1042 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23534, 23541, 23544-23558, 23562-23569, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23606, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756, 23759, 23762, 23765, 23768, 23771, 23774, 23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 23904-23907, 23910, 23913-23914, 23926, 23929, 23938, 23941, 23944, 23947, 23950, 23953-23954, 23973, 23975-23979, 23982, 23988, 23993, 23996, 24010, 24039, 24063, 24067, 24083, 24085, 24088, 24091, 24093, 24127, 24137, 24142, 24155-24178, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24781, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926, 24929, 24932, 24935, 24941, 24944, 24947, 24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25047, 25049, 25051, 25053, 25055, 25057, 25059, 25061, 25063, 25065, 25067, 25069, 25071, 25073, 25081-25084, 25087, 25090-25091, 25115-25116, 25119, 25122, 25136, 25158, 25182, 25186-25187, 25190-25195, 25207, 25232, 25235, 25238, 25248, 25254, 25260, 25262, 25265, 25267, 25273, 25276, 25278, 25290, 25299, 25302, 25311, 25314, 25317, 25320-25328, 25331-25333, 25335-25343, 25918, 25921-25922, 25928
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15358, 15362-15373, 15377-15379, 15381-15384, 15386-15391, 15394-15463, 15468-15482, 15490-15495, 15500-15507, 15510, 15545-15584, 15588-15609, 15614, 15616, 15620-15630, 15639-15648, 15650, 15652-15653, 15658, 15689-15691, 15713, 15716, 15730-15734, 15750, 15754-15762, 15766-15801, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16167-16169, 16171-16175, 16177, 16179-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16293, 16297-16302, 16311-16347, 16356-16369, 16372-16380, 16391-16394, 16413, 16434, 16456, 16458-16472, 16477, 16489-16491, 16495, 16498-16500, 16502-16505, 16507-16509, 16513, 16516-16524, 16527-16547, 16549-16563, 16937-16945, 16949
+
+</details>
+
+<a id="g6-id-ranges"></a>
+<details>
+<summary>G6: 48 Launch, 209 item, 257 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23541, 23544-23558, 23562-23569
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15333, 15335-15358, 15362-15373
+
+</details>
+
+<a id="g7-id-ranges"></a>
+<details>
+<summary>G7: 199 Launch, 844 item, 1042 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23534, 23541, 23544-23558, 23562-23569, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23606, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756, 23759, 23762, 23765, 23768, 23771, 23774, 23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 23904-23907, 23910, 23913-23914, 23926, 23929, 23938, 23941, 23944, 23947, 23950, 23953-23954, 23973, 23975-23979, 23982, 23988, 23993, 23996, 24010, 24039, 24063, 24067, 24083, 24085, 24088, 24091, 24093, 24127, 24137, 24142, 24155-24178, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24781, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926, 24929, 24932, 24935, 24941, 24944, 24947, 24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25047, 25049, 25051, 25053, 25055, 25057, 25059, 25061, 25063, 25065, 25067, 25069, 25071, 25073, 25081-25084, 25087, 25090-25091, 25115-25116, 25119, 25122, 25136, 25158, 25182, 25186-25187, 25190-25195, 25207, 25232, 25235, 25238, 25248, 25254, 25260, 25262, 25265, 25267, 25273, 25276, 25278, 25290, 25299, 25302, 25311, 25314, 25317, 25320-25328, 25331-25333, 25335-25343, 25918, 25921-25922, 25928
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15358, 15362-15373, 15377-15379, 15381-15384, 15386-15391, 15394-15463, 15468-15482, 15490-15495, 15500-15507, 15510, 15545-15584, 15588-15609, 15614, 15616, 15620-15630, 15639-15648, 15650, 15652-15653, 15658, 15689-15691, 15713, 15716, 15730-15734, 15750, 15754-15762, 15766-15801, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16167-16169, 16171-16175, 16177, 16179-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16293, 16297-16302, 16311-16347, 16356-16369, 16372-16380, 16391-16394, 16413, 16434, 16456, 16458-16472, 16477, 16489-16491, 16495, 16498-16500, 16502-16505, 16507-16509, 16513, 16516-16524, 16527-16547, 16549-16563, 16937-16945, 16949
+
+</details>
+
+<a id="g8-id-ranges"></a>
+<details>
+<summary>G8: 199 Launch, 844 item, 1042 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23534, 23541, 23544-23558, 23562-23569, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23606, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756, 23759, 23762, 23765, 23768, 23771, 23774, 23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 23904-23907, 23910, 23913-23914, 23926, 23929, 23938, 23941, 23944, 23947, 23950, 23953-23954, 23973, 23975-23979, 23982, 23988, 23993, 23996, 24010, 24039, 24063, 24067, 24083, 24085, 24088, 24091, 24093, 24127, 24137, 24142, 24155-24178, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24781, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926, 24929, 24932, 24935, 24941, 24944, 24947, 24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25047, 25049, 25051, 25053, 25055, 25057, 25059, 25061, 25063, 25065, 25067, 25069, 25071, 25073, 25081-25084, 25087, 25090-25091, 25115-25116, 25119, 25122, 25136, 25158, 25182, 25186-25187, 25190-25195, 25207, 25232, 25235, 25238, 25248, 25254, 25260, 25262, 25265, 25267, 25273, 25276, 25278, 25290, 25299, 25302, 25311, 25314, 25317, 25320-25328, 25331-25333, 25335-25343, 25918, 25921-25922, 25928
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15358, 15362-15373, 15377-15379, 15381-15384, 15386-15391, 15394-15463, 15468-15482, 15490-15495, 15500-15507, 15510, 15545-15584, 15588-15609, 15614, 15616, 15620-15630, 15639-15648, 15650, 15652-15653, 15658, 15689-15691, 15713, 15716, 15730-15734, 15750, 15754-15762, 15766-15801, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16167-16169, 16171-16175, 16177, 16179-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16293, 16297-16302, 16311-16347, 16356-16369, 16372-16380, 16391-16394, 16413, 16434, 16456, 16458-16472, 16477, 16489-16491, 16495, 16498-16500, 16502-16505, 16507-16509, 16513, 16516-16524, 16527-16547, 16549-16563, 16937-16945, 16949
+
+</details>
+
+<a id="g9-id-ranges"></a>
+<details>
+<summary>G9: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="g10-id-ranges"></a>
+<details>
+<summary>G10: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="g11-id-ranges"></a>
+<details>
+<summary>G11: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="g12-id-ranges"></a>
+<details>
+<summary>G12: 96 Launch, 690 item, 0 log IDs</summary>
+
+Launches: 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152
+
+Items: 24185-24187, 24191-24207, 24209, 24212-24221, 24224-24225, 24227-24242, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24302-24332, 24336-24342, 24346-24351, 24355-24360, 24364, 24366-24373, 24393, 24395, 24397, 24417, 24419, 24421, 24427-24435, 24451-24453, 24468-24502, 24505-24507, 24509-24510, 24512, 24514, 24516-24524, 24528-24530, 24532-24557, 24562-24570, 24573-24576, 24578-24584, 24588-24593, 24597-24602, 24606-24617, 24621-24626, 24631-24636, 24645-24647, 24651-24652, 24654, 24657-24661, 24665-24672, 24676-24680, 24684-24689, 24691, 24693-24694, 24750-24752, 24756-24765, 24768-24770, 24772, 24774, 24776-24850, 24853-24855, 24857, 24859, 24862, 24865-24866, 24868, 24870, 24872, 24874-24875, 24877-24878, 24881-24882, 24885-24904, 24911-24935, 24939-24954, 24956, 24958, 24974-25027, 25045-25073, 25079-25091, 25113-25122, 25133, 25135-25136, 25155-25156, 25158, 25179, 25181-25182, 25184-25195, 25204, 25206-25207, 25230-25238, 25246-25248, 25252-25254, 25258-25267, 25271-25278, 25288-25290, 25297-25302
+
+Logs: N/A
+
+</details>
+
+<a id="p1-1-id-ranges"></a>
+<details>
+<summary>P1.1: 7 Launch, 7 item, 7 log IDs</summary>
+
+Launches: 2862, 2924, 2992, 3072, 3141, 3164, 3222
+
+Items: 23050, 23503, 24083, 24667, 25265, 25392, 25836
+
+Logs: 15030, 15316, 15730, 16101, 16504, 16592, 16869
+
+</details>
+
+<a id="p1-2-id-ranges"></a>
+<details>
+<summary>P1.2: 8 Launch, 34 item, 34 log IDs</summary>
+
+Launches: 2893, 2905-2906, 2925, 2968, 2993, 3073, 3143
+
+Items: 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23432, 23435, 23508, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 24088, 24672, 25273
+
+Logs: 15229-15230, 15233, 15236-15246, 15268-15269, 15318, 15584, 15588-15600, 15732, 16103, 16507
+
+</details>
+
+<a id="p1-3-id-ranges"></a>
+<details>
+<summary>P1.3: 10 Launch, 22 item, 22 log IDs</summary>
+
+Launches: 2862, 2893, 2900, 2902-2903, 2905-2906, 2908, 2924, 2929
+
+Items: 23050, 23360, 23362, 23368, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23416, 23423, 23426, 23432, 23435, 23441, 23503, 23522
+
+Logs: 15030, 15229-15230, 15233, 15237-15246, 15262, 15265-15266, 15268-15269, 15271, 15316, 15323
+
+</details>
+
+<a id="p1-4-id-ranges"></a>
+<details>
+<summary>P1.4: 13 Launch, 25 item, 25 log IDs</summary>
+
+Launches: 2862, 2893, 2900, 2902-2903, 2905-2906, 2908, 2924, 2929, 2996, 3077, 3148
+
+Items: 23050, 23360, 23362, 23368, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23416, 23423, 23426, 23432, 23435, 23441, 23503, 23522, 24127, 24686, 25290
+
+Logs: 15030, 15229-15230, 15233, 15237-15246, 15262, 15265-15266, 15268-15269, 15271, 15316, 15323, 15750, 16108, 16513
+
+</details>
+
+<a id="p1-5-id-ranges"></a>
+<details>
+<summary>P1.5: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2902
+
+Items: 23423
+
+Logs: 15265
+
+</details>
+
+<a id="p1-6-id-ranges"></a>
+<details>
+<summary>P1.6: 1 Launch, 2 item, 2 log IDs</summary>
+
+Launches: 2893
+
+Items: 23361, 23385
+
+Logs: 15230, 15243
+
+</details>
+
+<a id="p1-7-id-ranges"></a>
+<details>
+<summary>P1.7: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2908
+
+Items: 23441
+
+Logs: 15271
+
+</details>
+
+<a id="p1-8-id-ranges"></a>
+<details>
+<summary>P1.8: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2924
+
+Items: 23502
+
+Logs: 15316
+
+</details>
+
+<a id="p1-9-id-ranges"></a>
+<details>
+<summary>P1.9: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2924
+
+Items: 23502
+
+Logs: 15316
+
+</details>
+
+<a id="p1-10-id-ranges"></a>
+<details>
+<summary>P1.10: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2862
+
+Items: 23050
+
+Logs: 15030
+
+</details>
+
+<a id="p2-1-id-ranges"></a>
+<details>
+<summary>P2.1: 1 Launch, 14 item, 14 log IDs</summary>
+
+Launches: 554
+
+Items: 4971, 4974, 4977, 4980, 4983, 4986, 4989, 4992, 4995, 4998, 5001, 5004, 5007, 5010
+
+Logs: 3402, 3404, 3406, 3408, 3410, 3412, 3414, 3416, 3418, 3420, 3422, 3424, 3426, 3428
+
+</details>
+
+<a id="p2-2-id-ranges"></a>
+<details>
+<summary>P2.2: 1 Launch, 47 item, 30 log IDs</summary>
+
+Launches: 554
+
+Items: 4968-5014
+
+Logs: 3401-3430
+
+</details>
+
+<a id="p2-3-id-ranges"></a>
+<details>
+<summary>P2.3: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="p2-4-id-ranges"></a>
+<details>
+<summary>P2.4: 76 Launch, 676 item, 0 log IDs</summary>
+
+Launches: 532-534, 536-540, 553-555, 560-566, 570-571, 614-616, 618-622, 635-637, 642-648, 652-653, 982-993, 1008-1019, 1107-1112, 1125-1130
+
+Items: 4788-4808, 4814-4927, 4964-5043, 5061-5087, 5097-5102, 5482-5502, 5508-5621, 5658-5737, 5755-5781, 5791-5796, 8435-8470, 8513-8548, 8845-8898, 8999-9052
+
+Logs: N/A
+
+</details>
+
+<a id="p3-1-id-ranges"></a>
+<details>
+<summary>P3.1: 85 Launch, 704 item, 486 log IDs</summary>
+
+Launches: 532-534, 536-540, 553-555, 560-571, 614-616, 618-622, 635-637, 642-653, 737-739, 982-993, 1008-1019, 1107-1112, 1125-1130
+
+Items: 4788-4808, 4814-4927, 4964-5043, 5061-5102, 5482-5502, 5508-5621, 5658-5737, 5755-5796, 6523-6532, 8435-8470, 8513-8548, 8845-8898, 8999-9052
+
+Logs: 3279-3289, 3292-3382, 3399-3444, 3456-3480, 3755-3765, 3768-3858, 3875-3920, 3932-3956, 4469-4478, 5625-5640, 5659-5674, 5855-5903, 5983-6031
+
+</details>
+
+<a id="p3-2-id-ranges"></a>
+<details>
+<summary>P3.2: 2 Launch, 6 item, 6 log IDs</summary>
+
+Launches: 560, 993
+
+Items: 5061-5063, 8468-8470
+
+Logs: 3456, 5636-5640
+
+</details>
+
+<a id="p3-3-id-ranges"></a>
+<details>
+<summary>P3.3: 23 Launch, 167 item, 116 log IDs</summary>
+
+Launches: 554, 567-571, 718, 720-723, 731-735, 1086-1087, 1089, 1108-1111
+
+Items: 4968-5014, 5088-5102, 6356-6402, 6432-6448, 6476-6490, 8747-8752, 8756-8758, 8850-8866
+
+Logs: 3401-3430, 3476-3480, 4353-4382, 4397-4407, 4428-4432, 5761-5776, 5778-5785, 5857-5867
+
+</details>
+
+<a id="p3-4-id-ranges"></a>
+<details>
+<summary>P3.4: 4 Launch, 14 item, 7 log IDs</summary>
+
+Launches: 532, 541, 546, 939
+
+Items: 4788-4790, 4928-4930, 4943-4945, 8188-8192
+
+Logs: 3279-3281, 3383, 3388, 5515-5516
+
+</details>
+
+<a id="p4-1-id-ranges"></a>
+<details>
+<summary>P4.1: 4 Launch, 20 item, 0 log IDs</summary>
+
+Launches: 938, 942, 946, 950
+
+Items: 8183-8187, 8201-8205, 8219-8223, 8237-8241
+
+Logs: N/A
+
+</details>
+
+<a id="p4-2-id-ranges"></a>
+<details>
+<summary>P4.2: 1 Launch, 47 item, 0 log IDs</summary>
+
+Launches: 554
+
+Items: 4968-5014
+
+Logs: N/A
+
+</details>
+
+<a id="p4-3-id-ranges"></a>
+<details>
+<summary>P4.3: 1 Launch, 5 item, 0 log IDs</summary>
+
+Launches: 938
+
+Items: 8183-8187
+
+Logs: N/A
+
+</details>
+
+<a id="p4-4-id-ranges"></a>
+<details>
+<summary>P4.4: 76 Launch, 676 item, 0 log IDs</summary>
+
+Launches: 532-534, 536-540, 553-555, 560-566, 570-571, 614-616, 618-622, 635-637, 642-648, 652-653, 982-993, 1008-1019, 1107-1112, 1125-1130
+
+Items: 4788-4808, 4814-4927, 4964-5043, 5061-5087, 5097-5102, 5482-5502, 5508-5621, 5658-5737, 5755-5781, 5791-5796, 8435-8470, 8513-8548, 8845-8898, 8999-9052
+
+Logs: N/A
+
+</details>
+
+<a id="p5-1-id-ranges"></a>
+<details>
+<summary>P5.1: 1 Launch, 1 item, 3 log IDs</summary>
+
+Launches: 2857
+
+Items: 23023
+
+Logs: 15017-15019
+
+</details>
+
+<a id="p5-2-id-ranges"></a>
+<details>
+<summary>P5.2: 3 Launch, 6 item, 10 log IDs</summary>
+
+Launches: 2862, 2871, 2909
+
+Items: 23052, 23174, 23176, 23178, 23444-23445
+
+Logs: 15031, 15122-15124, 15272-15277
+
+</details>
+
+<a id="p5-3-id-ranges"></a>
+<details>
+<summary>P5.3: 199 Launch, 844 item, 1042 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23534, 23541, 23544-23558, 23562-23569, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23606, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756, 23759, 23762, 23765, 23768, 23771, 23774, 23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 23904-23907, 23910, 23913-23914, 23926, 23929, 23938, 23941, 23944, 23947, 23950, 23953-23954, 23973, 23975-23979, 23982, 23988, 23993, 23996, 24010, 24039, 24063, 24067, 24083, 24085, 24088, 24091, 24093, 24127, 24137, 24142, 24155-24178, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24781, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926, 24929, 24932, 24935, 24941, 24944, 24947, 24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25047, 25049, 25051, 25053, 25055, 25057, 25059, 25061, 25063, 25065, 25067, 25069, 25071, 25073, 25081-25084, 25087, 25090-25091, 25115-25116, 25119, 25122, 25136, 25158, 25182, 25186-25187, 25190-25195, 25207, 25232, 25235, 25238, 25248, 25254, 25260, 25262, 25265, 25267, 25273, 25276, 25278, 25290, 25299, 25302, 25311, 25314, 25317, 25320-25328, 25331-25333, 25335-25343, 25918, 25921-25922, 25928
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15358, 15362-15373, 15377-15379, 15381-15384, 15386-15391, 15394-15463, 15468-15482, 15490-15495, 15500-15507, 15510, 15545-15584, 15588-15609, 15614, 15616, 15620-15630, 15639-15648, 15650, 15652-15653, 15658, 15689-15691, 15713, 15716, 15730-15734, 15750, 15754-15762, 15766-15801, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16167-16169, 16171-16175, 16177, 16179-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16293, 16297-16302, 16311-16347, 16356-16369, 16372-16380, 16391-16394, 16413, 16434, 16456, 16458-16472, 16477, 16489-16491, 16495, 16498-16500, 16502-16505, 16507-16509, 16513, 16516-16524, 16527-16547, 16549-16563, 16937-16945, 16949
+
+</details>
+
+<a id="p5-4-id-ranges"></a>
+<details>
+<summary>P5.4: 199 Launch, 844 item, 1042 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23534, 23541, 23544-23558, 23562-23569, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23606, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756, 23759, 23762, 23765, 23768, 23771, 23774, 23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 23904-23907, 23910, 23913-23914, 23926, 23929, 23938, 23941, 23944, 23947, 23950, 23953-23954, 23973, 23975-23979, 23982, 23988, 23993, 23996, 24010, 24039, 24063, 24067, 24083, 24085, 24088, 24091, 24093, 24127, 24137, 24142, 24155-24178, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24781, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926, 24929, 24932, 24935, 24941, 24944, 24947, 24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25047, 25049, 25051, 25053, 25055, 25057, 25059, 25061, 25063, 25065, 25067, 25069, 25071, 25073, 25081-25084, 25087, 25090-25091, 25115-25116, 25119, 25122, 25136, 25158, 25182, 25186-25187, 25190-25195, 25207, 25232, 25235, 25238, 25248, 25254, 25260, 25262, 25265, 25267, 25273, 25276, 25278, 25290, 25299, 25302, 25311, 25314, 25317, 25320-25328, 25331-25333, 25335-25343, 25918, 25921-25922, 25928
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15358, 15362-15373, 15377-15379, 15381-15384, 15386-15391, 15394-15463, 15468-15482, 15490-15495, 15500-15507, 15510, 15545-15584, 15588-15609, 15614, 15616, 15620-15630, 15639-15648, 15650, 15652-15653, 15658, 15689-15691, 15713, 15716, 15730-15734, 15750, 15754-15762, 15766-15801, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16167-16169, 16171-16175, 16177, 16179-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16293, 16297-16302, 16311-16347, 16356-16369, 16372-16380, 16391-16394, 16413, 16434, 16456, 16458-16472, 16477, 16489-16491, 16495, 16498-16500, 16502-16505, 16507-16509, 16513, 16516-16524, 16527-16547, 16549-16563, 16937-16945, 16949
+
+</details>
+
+<a id="p5-5-id-ranges"></a>
+<details>
+<summary>P5.5: 1 Launch, 1 item, 4 log IDs</summary>
+
+Launches: 2911
+
+Items: 23451
+
+Logs: 15279-15282
+
+</details>
+
+<a id="p5-6-id-ranges"></a>
+<details>
+<summary>P5.6: 2 Launch, 4 item, 12 log IDs</summary>
+
+Launches: 2909, 3234
+
+Items: 23444-23445, 25921-25922
+
+Logs: 15272-15277, 16940-16945
+
+</details>
+
+<a id="p5-7-id-ranges"></a>
+<details>
+<summary>P5.7: 90 Launch, 478 item, 128 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932, 2934, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3078, 3081
+
+Items: 23023, 23027-23044, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23185-23190, 23193, 23195-23199, 23203-23208, 23212, 23214-23219, 23221-23222, 23244-23245, 23247, 23268-23270, 23277-23281, 23285-23286, 23288, 23290, 23293-23295, 23298-23299, 23302, 23304-23305, 23307, 23310-23312, 23315-23316, 23319-23320, 23322, 23324, 23327-23329, 23332-23333, 23336-23338, 23341-23362, 23367-23368, 23371-23392, 23396-23404, 23409-23416, 23421-23426, 23430-23435, 23439-23441, 23444-23445, 23451, 23471, 23473-23477, 23492-23497, 23505-23508, 23512-23516, 23520-23522, 23529-23531, 23547-23550, 24187, 24191-24207, 24209, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24255, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348-24351, 24355-24360, 24364, 24366-24373, 24393, 24395, 24397, 24417, 24419, 24421, 24427-24435, 24453, 24468-24502, 24505-24507, 24509-24510, 24512, 24514, 24516-24524, 24528-24530, 24532-24557, 24562-24570, 24573-24576, 24578-24584, 24588-24593, 24597-24602, 24608-24609, 24612, 24634-24636, 24645-24647, 24654, 24657-24661, 24669-24672, 24676-24680, 24684-24689, 24708-24711
+
+Logs: 15017-15019, 15031-15037, 15039-15042, 15044, 15046, 15048, 15050, 15052, 15054, 15056, 15058, 15060, 15063, 15105-15108, 15110-15120, 15122-15125, 15179-15180, 15182, 15272-15277, 15279-15282, 15310-15312, 15317, 15344, 15346, 15348, 15350, 15804-15806, 15818-15821, 15823-15829, 15831, 15833, 15835, 15838, 15840, 15842-15843, 15846, 15848, 15850, 15893-15907, 15909-15911, 15913, 15972, 15974-15975, 16057-16066, 16094-16096, 16102, 16130, 16132, 16134, 16136
+
+</details>
+
+<a id="p5-8-id-ranges"></a>
+<details>
+<summary>P5.8: 2 Launch, 2 item, 6 log IDs</summary>
+
+Launches: 2857, 3005
+
+Items: 23022, 24186
+
+Logs: 15017-15019, 15804-15806
+
+</details>
+
+<a id="p6-1-id-ranges"></a>
+<details>
+<summary>P6.1: 18 Launch, 120 item, 0 log IDs</summary>
+
+Launches: 1104-1106, 1108, 1110, 1113-1115, 1119, 1122-1124, 1126, 1128, 1131-1133, 1137
+
+Items: 8822-8844, 8850-8855, 8859-8862, 8899-8921, 8936-8939, 8976-8998, 9004-9009, 9013-9016, 9053-9075, 9090-9093
+
+Logs: N/A
+
+</details>
+
+<a id="p6-2-id-ranges"></a>
+<details>
+<summary>P6.2: 76 Launch, 676 item, 0 log IDs</summary>
+
+Launches: 532-534, 536-540, 553-555, 560-566, 570-571, 614-616, 618-622, 635-637, 642-648, 652-653, 982-993, 1008-1019, 1107-1112, 1125-1130
+
+Items: 4788-4808, 4814-4927, 4964-5043, 5061-5087, 5097-5102, 5482-5502, 5508-5621, 5658-5737, 5755-5781, 5791-5796, 8435-8470, 8513-8548, 8845-8898, 8999-9052
+
+Logs: N/A
+
+</details>
+
+<a id="p6-3-id-ranges"></a>
+<details>
+<summary>P6.3: 1 Launch, 5 item, 2 log IDs</summary>
+
+Launches: 1107
+
+Items: 8845-8849
+
+Logs: 5855-5856
+
+</details>
+
+<a id="p6-4-id-ranges"></a>
+<details>
+<summary>P6.4: 2 Launch, 12 item, 0 log IDs</summary>
+
+Launches: 556, 1104
+
+Items: 5044-5049, 8822-8827
+
+Logs: N/A
+
+</details>
+
+<a id="p7-1-id-ranges"></a>
+<details>
+<summary>P7.1: 1 Launch, 9 item, 4 log IDs</summary>
+
+Launches: 534
+
+Items: 4800-4808
+
+Logs: 3286-3289
+
+</details>
+
+<a id="p7-2-id-ranges"></a>
+<details>
+<summary>P7.2: 1 Launch, 4 item, 2 log IDs</summary>
+
+Launches: 553
+
+Items: 4964-4967
+
+Logs: 3399-3400
+
+</details>
+
+<a id="p7-3-id-ranges"></a>
+<details>
+<summary>P7.3: 1 Launch, 52 item, 0 log IDs</summary>
+
+Launches: 537
+
+Items: 4835-4886
+
+Logs: N/A
+
+</details>
+
+<a id="p7-4-id-ranges"></a>
+<details>
+<summary>P7.4: 1 Launch, 8 item, 9 log IDs</summary>
+
+Launches: 566
+
+Items: 5080-5087
+
+Logs: 3467-3475
+
+</details>
+
+<a id="p7-5-id-ranges"></a>
+<details>
+<summary>P7.5: 2 Launch, 8 item, 4 log IDs</summary>
+
+Launches: 553, 635
+
+Items: 4964-4967, 5658-5661
+
+Logs: 3399-3400, 3875-3876
+
+</details>
+
+<a id="p8-1-id-ranges"></a>
+<details>
+<summary>P8.1: 2 Launch, 2 item, 2 log IDs</summary>
+
+Launches: 2874, 2877
+
+Items: 23187, 23196
+
+Logs: 15129, 15132
+
+</details>
+
+<a id="p8-2-id-ranges"></a>
+<details>
+<summary>P8.2: 3 Launch, 3 item, 3 log IDs</summary>
+
+Launches: 2875, 2878, 2880
+
+Items: 23190, 23199, 23205
+
+Logs: 15130, 15133, 15139
+
+</details>
+
+<a id="p8-3-id-ranges"></a>
+<details>
+<summary>P8.3: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2877
+
+Items: 23196
+
+Logs: 15132
+
+</details>
+
+<a id="p8-4-id-ranges"></a>
+<details>
+<summary>P8.4: 4 Launch, 4 item, 4 log IDs</summary>
+
+Launches: 2881, 2883-2884, 2886
+
+Items: 23208, 23215, 23218, 23222
+
+Logs: 15140, 15143-15145
+
+</details>
+
+<a id="p8-5-id-ranges"></a>
+<details>
+<summary>P8.5: 1 Launch, 1 item, 5 log IDs</summary>
+
+Launches: 2889
+
+Items: 23277
+
+Logs: 15178-15182
+
+</details>
+
+<a id="p8-6-id-ranges"></a>
+<details>
+<summary>P8.6: 199 Launch, 996 item, 906 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3002, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152, 3155, 3233-3234, 3236
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23193, 23195-23199, 23203-23205, 23208, 23212, 23214-23219, 23221-23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357-23362, 23367-23368, 23371-23392, 23398-23401, 23404, 23411-23412, 23415, 23421-23426, 23430-23435, 23439-23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23505-23508, 23514, 23516, 23520-23522, 23531, 23534, 23541, 23544-23558, 23562-23569, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756-23765, 23768-23774, 23787-23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23872-23873, 23875-23901, 23904-23907, 23910, 23913-23914, 23926, 23936-23950, 23953-23954, 23973, 23975-23979, 23982, 23988, 23993, 23996, 24010, 24039, 24063, 24067, 24085-24088, 24091, 24093, 24125-24127, 24137, 24142, 24155-24178, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357-24360, 24364, 24366-24370, 24373, 24393, 24395, 24397, 24417, 24419, 24421, 24427-24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24528-24530, 24532-24557, 24564-24567, 24570, 24575-24576, 24580, 24582-24584, 24588-24593, 24597-24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24669-24672, 24678, 24680, 24684-24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926-24935, 24941-24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25045-25073, 25081-25084, 25087, 25090-25091, 25115, 25117-25122, 25133, 25135-25136, 25155-25156, 25158, 25179, 25181-25182, 25186-25187, 25190-25195, 25207, 25232, 25235, 25238, 25248, 25254, 25260, 25262, 25267, 25271-25273, 25276, 25278, 25288-25290, 25299, 25302, 25311, 25314, 25317, 25320-25328, 25331-25333, 25335-25343, 25918, 25921-25922, 25928
+
+Logs: 15017-15019, 15021-15028, 15031-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15140, 15161, 15175, 15182-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15228, 15250-15256, 15259-15261, 15272-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15317, 15320-15321, 15326-15358, 15362-15373, 15377-15379, 15381-15384, 15386-15389, 15391, 15394-15463, 15468-15482, 15490-15495, 15500-15501, 15505, 15545-15546, 15550, 15552-15583, 15601-15609, 15614, 15625-15630, 15639-15648, 15650, 15652-15653, 15658, 15689-15691, 15713, 15716, 15731, 15733-15734, 15754-15762, 15766-15801, 15804-15806, 15808-15815, 15818-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922, 15928, 15962-15963, 15974, 15983-16006, 16008, 16010, 16013-16018, 16037-16045, 16047, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16102, 16105-16106, 16109-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161, 16167-16169, 16171-16175, 16177, 16179-16180, 16182-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16290, 16297, 16301-16302, 16315-16347, 16372-16380, 16391, 16458-16472, 16477, 16489-16491, 16495, 16498-16500, 16502-16503, 16505, 16508-16509, 16516-16524, 16527-16547, 16549-16563, 16937-16945, 16949
+
+</details>
+
+<a id="p8-7-id-ranges"></a>
+<details>
+<summary>P8.7: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2888
+
+Items: 23270
+
+Logs: 15175
+
+</details>
+
+<a id="p8-8-id-ranges"></a>
+<details>
+<summary>P8.8: 48 Launch, 144 item, 0 log IDs</summary>
+
+Launches: 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2889, 2952-2956, 2958-2964, 3022, 3024-3025, 3027-3029, 3031-3035, 3037, 3098-3102, 3104-3109, 3111
+
+Items: 23185-23190, 23193, 23195-23199, 23203-23208, 23212, 23214-23219, 23221-23222, 23244-23245, 23247, 23268-23270, 23275-23277, 23751-23774, 23787-23789, 23810-23818, 24349-24351, 24355-24360, 24364, 24366-24373, 24393, 24395, 24397, 24417, 24419, 24421, 24427-24435, 24451-24453, 24921-24935, 24939-24954, 24956, 24958, 24974-24976
+
+Logs: N/A
+
+</details>
+
+<a id="p8-9-id-ranges"></a>
+<details>
+<summary>P8.9: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="p9-1-id-ranges"></a>
+<details>
+<summary>P9.1: 1 Launch, 3 item, 0 log IDs</summary>
+
+Launches: 570
+
+Items: 5097-5099
+
+Logs: N/A
+
+</details>
+
+<a id="p9-2-id-ranges"></a>
+<details>
+<summary>P9.2: 4 Launch, 12 item, 0 log IDs</summary>
+
+Launches: 567, 569, 1088, 1090
+
+Items: 5088-5090, 5094-5096, 8753-8755, 8759-8761
+
+Logs: N/A
+
+</details>
+
+<a id="p9-3-id-ranges"></a>
+<details>
+<summary>P9.3: 1 Launch, 3 item, 0 log IDs</summary>
+
+Launches: 568
+
+Items: 5091-5093
+
+Logs: N/A
+
+</details>
+
+<a id="p9-4-id-ranges"></a>
+<details>
+<summary>P9.4: 5 Launch, 15 item, 0 log IDs</summary>
+
+Launches: 567-569, 1088, 1090
+
+Items: 5088-5096, 8753-8755, 8759-8761
+
+Logs: N/A
+
+</details>
+
+<a id="p9-5-id-ranges"></a>
+<details>
+<summary>P9.5: 1 Launch, 3 item, 0 log IDs</summary>
+
+Launches: 567
+
+Items: 5088-5090
+
+Logs: N/A
+
+</details>
+
+<a id="p10-1-id-ranges"></a>
+<details>
+<summary>P10.1: 3 Launch, 4 item, 10 log IDs</summary>
+
+Launches: 3233-3234, 3236
+
+Items: 25918, 25921-25922, 25928
+
+Logs: 16937-16945, 16949
+
+</details>
+
+<a id="p10-2-id-ranges"></a>
+<details>
+<summary>P10.2: 1 Launch, 1 item, 1 log IDs</summary>
+
+Launches: 2918
+
+Items: 23477
+
+Logs: 15294
+
+</details>
+
+<a id="p10-3-id-ranges"></a>
+<details>
+<summary>P10.3: 49 Launch, 210 item, 258 log IDs</summary>
+
+Launches: 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081
+
+Items: 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733
+
+Logs: 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161
+
+</details>
+
+<a id="p10-4-id-ranges"></a>
+<details>
+<summary>P10.4: 17 Launch, 30 item, 33 log IDs</summary>
+
+Launches: 3010, 3025, 3027-3028, 3032-3033, 3037, 3042, 3048-3049, 3051-3052, 3054-3055, 3072-3073, 3077
+
+Items: 24214, 24360, 24367, 24370, 24421, 24429, 24453, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24581, 24584, 24590, 24593, 24599, 24602, 24667, 24672, 24686
+
+Logs: 15817, 15923, 15926-15927, 15957, 15961, 15971-15973, 15975, 16020, 16022-16034, 16048-16049, 16051-16052, 16054-16055, 16101, 16103, 16108
+
+</details>
+
+<a id="p10-5-id-ranges"></a>
+<details>
+<summary>P10.5: 49 Launch, 210 item, 258 log IDs</summary>
+
+Launches: 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081
+
+Items: 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24698, 24703-24704, 24707-24715, 24718-24721, 24723-24726, 24729-24731, 24733
+
+Logs: 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16121-16144, 16146-16149, 16151, 16153-16155, 16157-16159, 16161
+
+</details>
+
+<a id="p10-6-id-ranges"></a>
+<details>
+<summary>P10.6: 192 Launch, 744 item, 888 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2933, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152
+
+Items: 23023, 23029, 23031, 23033, 23035, 23038, 23040, 23042, 23044, 23050, 23052, 23055, 23057, 23059, 23061, 23063, 23065, 23070, 23072, 23074, 23076, 23079-23086, 23089, 23091-23131, 23137, 23139, 23141, 23145, 23148, 23150, 23152, 23154, 23156, 23158, 23160, 23162, 23164, 23166, 23168, 23174, 23176, 23178, 23181, 23187, 23190, 23196, 23199, 23205, 23208, 23215, 23218, 23222, 23247, 23270, 23277, 23280-23281, 23288, 23290, 23294-23295, 23299, 23302, 23305, 23307, 23311-23312, 23316, 23319, 23322, 23324, 23328-23329, 23333, 23336, 23338, 23341, 23343-23344, 23346-23347, 23349-23350, 23352-23353, 23355, 23357, 23360, 23362, 23368, 23372, 23374, 23376, 23378, 23380, 23382, 23384, 23386, 23388, 23390, 23392, 23398-23401, 23404, 23411-23412, 23415-23416, 23423, 23426, 23432, 23435, 23441, 23444-23445, 23451-23456, 23459, 23465, 23468, 23474, 23477, 23492, 23495, 23497, 23503, 23505, 23508, 23514, 23516, 23522, 23531, 23534, 23580, 23585, 23587, 23589, 23591, 23597, 23599, 23601, 23603, 23606, 23608, 23616, 23618, 23620, 23622, 23624, 23626, 23628, 23630, 23632, 23634, 23637-23686, 23695, 23697, 23699, 23701, 23703, 23705, 23707, 23709, 23711, 23713, 23715, 23717, 23719, 23721, 23723, 23737, 23739, 23741, 23744, 23753, 23756, 23759, 23762, 23765, 23768, 23771, 23774, 23789, 23812, 23815, 23818, 23821-23822, 23825-23826, 23828-23829, 23831-23832, 23834-23835, 23837-23838, 23840-23841, 23843-23844, 23846-23847, 23849-23850, 23852-23853, 23855-23856, 23858-23859, 23861-23862, 23864-23865, 23867, 23869, 23875, 23877, 23879, 23881, 23883, 23885, 23887, 23889, 23891, 23893, 23895, 23897, 23899, 23901, 23904-23907, 23910, 23913-23914, 23926, 23929, 23938, 23941, 23944, 23947, 23950, 23953-23954, 23973, 23975-23979, 23982, 23988, 23993, 23996, 24010, 24039, 24063, 24067, 24083, 24085, 24088, 24091, 24093, 24127, 24137, 24142, 24187, 24193, 24195, 24197, 24199, 24202, 24204, 24206, 24209, 24214, 24216, 24219, 24221, 24225, 24228, 24230, 24232, 24234, 24236, 24238, 24240, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24304, 24306, 24308, 24310, 24312, 24314, 24316, 24318, 24320, 24322, 24324, 24326, 24328, 24330, 24332, 24338, 24340, 24342, 24348, 24351, 24357, 24360, 24367, 24370, 24373, 24397, 24421, 24429, 24432, 24435, 24453, 24470-24471, 24474-24475, 24477-24478, 24480-24481, 24483-24484, 24486-24487, 24489-24490, 24492-24493, 24495-24496, 24498-24499, 24501-24502, 24506-24507, 24510, 24512, 24516-24517, 24519-24520, 24522, 24524, 24530, 24533, 24535, 24537, 24539, 24541, 24543, 24545, 24547, 24549, 24551, 24553, 24555, 24557, 24564-24567, 24570, 24575-24576, 24580-24581, 24584, 24590, 24593, 24599, 24602, 24608-24609, 24612-24617, 24623, 24626, 24633, 24636, 24647, 24654, 24659, 24661, 24667, 24669, 24672, 24678, 24680, 24686, 24689, 24694, 24752, 24758, 24760, 24762, 24764, 24769, 24772, 24776, 24778, 24781, 24783, 24786, 24788, 24790, 24792, 24794, 24796, 24798, 24800, 24802, 24804, 24807-24850, 24853-24855, 24857, 24859, 24862, 24868, 24872, 24875, 24878, 24882, 24886, 24888, 24890, 24892, 24894, 24896, 24898, 24900, 24902, 24904, 24913, 24915, 24917, 24920, 24923, 24926, 24929, 24932, 24935, 24941, 24944, 24947, 24950, 24953, 24958, 24976, 24979-24980, 24983-24984, 24986-24987, 24989-24990, 24992-24993, 24995-24996, 24998-24999, 25001-25002, 25004-25005, 25007-25008, 25010-25011, 25013-25014, 25016-25017, 25019-25020, 25022-25023, 25025, 25027, 25047, 25049, 25051, 25053, 25055, 25057, 25059, 25061, 25063, 25065, 25067, 25069, 25071, 25073, 25081-25084, 25087, 25090-25091, 25115-25116, 25119, 25122, 25136, 25158, 25182, 25186-25187, 25190-25195, 25207, 25232, 25235, 25238, 25248, 25254, 25260, 25262, 25265, 25267, 25273, 25276, 25278, 25290, 25299, 25302
+
+Logs: 15017-15019, 15021-15028, 15030-15037, 15039-15060, 15062-15103, 15105-15108, 15110-15120, 15122-15127, 15129-15130, 15132-15133, 15139-15140, 15143-15145, 15161, 15175, 15178-15184, 15186, 15188, 15190-15191, 15193-15194, 15196, 15198, 15200-15201, 15203, 15205-15206, 15208, 15210-15211, 15213-15214, 15216, 15218-15230, 15233, 15236-15246, 15250-15256, 15259-15262, 15265-15266, 15268-15269, 15271-15277, 15279-15288, 15290-15291, 15293-15294, 15310-15314, 15316-15318, 15320-15321, 15323, 15326-15334, 15377-15379, 15381-15384, 15386-15391, 15394-15463, 15468-15482, 15490-15495, 15500-15507, 15510, 15545-15584, 15588-15609, 15614, 15616, 15620-15630, 15639-15648, 15650, 15652-15653, 15658, 15689-15691, 15713, 15716, 15730-15734, 15750, 15754-15762, 15804-15806, 15808-15815, 15817-15821, 15823-15835, 15837-15885, 15887-15891, 15893-15907, 15909-15911, 15913-15916, 15922-15923, 15926-15928, 15942, 15957, 15961-15963, 15971-15975, 15983-16006, 16008, 16010, 16013-16018, 16020, 16022-16034, 16037-16045, 16047-16049, 16051-16052, 16054-16055, 16057-16071, 16073-16074, 16081-16082, 16092, 16094-16096, 16098-16099, 16101-16103, 16105-16106, 16108-16117, 16167-16169, 16171-16175, 16177, 16179-16249, 16251, 16254, 16256, 16258, 16260, 16262-16263, 16266, 16269-16278, 16283-16293, 16297-16302, 16311-16347, 16356-16369, 16372-16380, 16391-16394, 16413, 16434, 16456, 16458-16472, 16477, 16489-16491, 16495, 16498-16500, 16502-16505, 16507-16509, 16513, 16516-16524
+
+</details>
+
+<a id="p10-7-id-ranges"></a>
+<details>
+<summary>P10.7: 194 Launch, 1444 item, 0 log IDs</summary>
+
+Launches: 2857, 2859-2860, 2862-2863, 2865, 2868, 2871-2872, 2874-2875, 2877-2878, 2880-2881, 2883-2884, 2886-2890, 2892-2893, 2896-2897, 2899-2900, 2902-2903, 2905-2906, 2908-2909, 2911-2912, 2914-2915, 2917-2918, 2921-2922, 2924-2925, 2927, 2929, 2932-2934, 2938-2939, 2941-2942, 2944-2945, 2947, 2949-2950, 2952-2956, 2958-2966, 2968-2971, 2973-2979, 2981-2982, 2984-2986, 2988, 2990-2994, 2996, 2998, 3000, 3005, 3007-3008, 3010-3011, 3013, 3017, 3019, 3021-3022, 3024-3025, 3027-3029, 3031-3035, 3037-3039, 3042, 3044-3045, 3047-3049, 3051-3052, 3054-3055, 3057-3058, 3060-3061, 3063-3064, 3066, 3068, 3070, 3072-3073, 3075, 3077-3079, 3081, 3084, 3086-3087, 3089-3091, 3094, 3096-3102, 3104-3109, 3111-3113, 3115, 3117-3119, 3121-3123, 3125-3129, 3131-3134, 3136, 3138, 3140-3141, 3143-3144, 3148, 3151-3152
+
+Items: 23021-23023, 23027-23044, 23048-23065, 23068, 23070-23086, 23089, 23091-23131, 23135-23141, 23144-23145, 23147-23168, 23172-23181, 23185-23190, 23193, 23195-23199, 23203-23208, 23212, 23214-23219, 23221-23222, 23244-23245, 23247, 23268-23270, 23275-23281, 23285-23286, 23288, 23290, 23293-23295, 23298-23299, 23302, 23304-23305, 23307, 23310-23312, 23315-23316, 23319-23320, 23322, 23324, 23327-23329, 23332-23333, 23336-23338, 23341-23362, 23367-23368, 23371-23392, 23396-23404, 23409-23416, 23421-23426, 23430-23435, 23439-23445, 23449-23459, 23463-23468, 23471, 23473-23477, 23490-23497, 23501-23508, 23512-23516, 23520-23522, 23529-23558, 23562-23569, 23578-23580, 23583-23591, 23595-23608, 23614-23686, 23693-23723, 23735-23744, 23751-23774, 23787-23789, 23810-23869, 23872-23873, 23875-23914, 23923, 23925-23926, 23929, 23936-23954, 23971-23973, 23975-23982, 23985, 23987-23988, 23991-23996, 24006, 24008, 24010, 24036-24037, 24039, 24060, 24062-24063, 24065, 24067, 24081-24093, 24125-24127, 24135-24137, 24139, 24141-24142, 24185-24187, 24191-24207, 24209, 24212-24221, 24224-24225, 24227-24242, 24244, 24246-24247, 24249-24288, 24291-24292, 24294-24298, 24302-24332, 24336-24342, 24346-24351, 24355-24360, 24364, 24366-24373, 24393, 24395, 24397, 24417, 24419, 24421, 24427-24435, 24451-24453, 24468-24502, 24505-24507, 24509-24510, 24512, 24514, 24516-24524, 24528-24530, 24532-24557, 24562-24570, 24573-24576, 24578-24584, 24588-24593, 24597-24602, 24606-24617, 24621-24626, 24631-24636, 24645-24647, 24651-24652, 24654, 24657-24661, 24665-24672, 24676-24680, 24684-24689, 24691, 24693-24694, 24696-24715, 24718-24721, 24723-24726, 24729-24731, 24733, 24750-24752, 24756-24765, 24768-24770, 24772, 24774, 24776-24850, 24853-24855, 24857, 24859, 24862, 24865-24866, 24868, 24870, 24872, 24874-24875, 24877-24878, 24881-24882, 24885-24904, 24911-24935, 24939-24954, 24956, 24958, 24974-25027, 25045-25073, 25079-25091, 25113-25122, 25133, 25135-25136, 25155-25156, 25158, 25179, 25181-25182, 25184-25195, 25204, 25206-25207, 25230-25238, 25246-25248, 25252-25254, 25258-25267, 25271-25278, 25288-25290, 25297-25302
+
+Logs: N/A
+
+</details>
+
+<a id="p10-8-id-ranges"></a>
+<details>
+<summary>P10.8: 13 Launch, 51 item, 27 log IDs</summary>
+
+Launches: 3010, 3029, 3034, 3042, 3048-3049, 3051-3052, 3054-3055, 3058, 3072, 3077
+
+Items: 24213-24214, 24372-24373, 24431-24432, 24529-24530, 24532-24535, 24538-24557, 24579, 24581, 24583-24584, 24589-24590, 24592-24593, 24598-24599, 24601-24602, 24611-24612, 24617, 24666-24667, 24685-24686
+
+Logs: 15817, 15928, 15962, 16020, 16022-16023, 16025-16034, 16048-16049, 16051-16052, 16054-16055, 16063-16064, 16071, 16101, 16108
+
+</details>
+
+<a id="p10-9-id-ranges"></a>
+<details>
+<summary>P10.9: 1 Launch, 2 item, 2 log IDs</summary>
+
+Launches: 3038
+
+Items: 24470-24471
+
+Logs: 15983-15984
+
+</details>
+
+<a id="p10-10-id-ranges"></a>
+<details>
+<summary>P10.10: 9 Launch, 9 item, 16 log IDs</summary>
+
+Launches: 3005, 3022, 3025, 3029, 3031-3032, 3037-3038, 3072
+
+Items: 24186, 24350, 24359, 24372, 24395, 24419, 24452, 24469, 24666
+
+Logs: 15804-15806, 15916, 15923, 15928, 15942, 15957, 15971-15975, 15983-15984, 16101
+
+</details>
+
+<a id="p10-11-id-ranges"></a>
+<details>
+<summary>P10.11: 4 Launch, 4 item, 6 log IDs</summary>
+
+Launches: 3005, 3022, 3025, 3031
+
+Items: 24186, 24350, 24359, 24395
+
+Logs: 15804-15806, 15916, 15923, 15942
+
+</details>
+
+<a id="v1-id-ranges"></a>
+<details>
+<summary>V1: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="v2-id-ranges"></a>
+<details>
+<summary>V2: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="v3-id-ranges"></a>
+<details>
+<summary>V3: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="v4-id-ranges"></a>
+<details>
+<summary>V4: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="v5-id-ranges"></a>
+<details>
+<summary>V5: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="v6-id-ranges"></a>
+<details>
+<summary>V6: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="v7-id-ranges"></a>
+<details>
+<summary>V7: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
+
+<a id="v8-id-ranges"></a>
+<details>
+<summary>V8: 0 Launch, 0 item, 0 log IDs</summary>
+
+Launches: N/A
+
+Items: N/A
+
+Logs: N/A
+
+</details>
 
 ## Waivers
-Only the supplied owner Decisions 1-14 and recorded clarifications apply. No additional waiver is requested or applied by this report. The source below is quoted without changing historical evidence.
+Owner Decisions 1-18 and recorded clarifications apply only within their explicit scopes; Decision15's title-only exception and Decisions16-18 are detailed below.
+
+Decision15, received 2026-11-01: F14 `back\slash` failure title only; retain the exact complete fail-closed omission. All other title/escaping checks remain strict.
+
+> 保留安全省略，记录这一项例外（推荐）
+
+The following supplied Decisions 1-14 are quoted from the original final-runtime documents. Decision15's product-doc append and docs-only binding are separate follow-up evidence.
+
+Decision16, received 2026-11-01: only bounded, independently reviewed test/CI diagnostics are authorized; Helm, runtime budgets and existing assertions remain protected. V6 still needs an exact new-head diff audit, and G10 is not waived.
+
+> Question: 远端 CI 的未改动 1.3.1 基线出现 SIGINT/Spool 和超时失败。是否允许把这些既有 CI 稳定性问题纳入独立排查，必要时另作修复提交？保持全部断言，不推受保护分支、不合并或发布。
+> Owner answer: 允许独立排查与必要修复（推荐）
+
+Decision17: the owner explicitly approved an exact-byte F04 flat replay in new independent QA Launches solely for Console rendering. Original runtime logs and topology remain unchanged. S12 source/replay mappings and active Console screenshots are labelled renderer-only; this is not a replacement runtime or wire-contract run.
+
+> Owner answer: 允许补充平铺回放（推荐）
+
+Decision18: [pinned protocol review](assets/wp5-ci-final-20261101/parameter-order-protocol-review.json) records Set persistence but List request/response DTOs; no unordered API contract is inferred. Only C10/F14 GET parameter order uses a complete multiset, retaining duplicate multiplicity and raw FAILs; ordered POST bytes and every other field remain strict.
+
+> Owner answer: 接受这项窄范围调整， 继续
 
 > # Ledger presentation: owner decisions and implementation checkpoint
 >
@@ -304,3 +1392,65 @@ Only the supplied owner Decisions 1-14 and recorded clarifications apply. No add
 > Question: F1 要求显示位置不超过 40 字符；若无目录的 file:line 本身已超过 40，是否允许仅对显示文件名做中间省略，保留扩展名和行号，原始堆栈不变？
 >
 > Owner answer: 允许显示文件名中间省略（推荐）
+>
+> ## Decision 15: Existing F14 Safety Omission
+>
+> Owner-confirmed on 2026-11-01.
+>
+> 15. 是否仅对 F14 的 `back\slash` 故障输入保留既有的整条安全省略行为，并将 P1.2 的标题检查记录为明确例外？旧、新 Ledger 对同一真实输入都返回 `[REDACTED] [evidence omitted: unsafe or oversized input]`。其他标题及转义要求仍严格验收，不放宽脱敏。
+>
+> Owner answer: 保留安全省略，记录这一项例外（推荐）
+>
+> This exception applies only to the P1.2 title check for this exact F14 failure
+> input. It does not waive other title, escaping, redaction, wire-equivalence or
+> regression requirements, and does not authorize weakening the safety filter.
+>
+> ## Decision 16: Independent CI Stability Investigation
+>
+> Owner-confirmed on 2026-11-01.
+>
+> 16. 远端 CI 的未改动 1.3.1 基线出现 SIGINT/Spool 和超时失败。是否允许把这些既有 CI 稳定性问题纳入独立排查，必要时另作修复提交？保持全部断言，不推受保护分支、不合并或发布。
+>
+> Owner answer: 允许独立排查与必要修复（推荐）
+>
+> This authorizes separately reviewed CI diagnostics and regression coverage,
+> including narrowly scoped validation-workflow changes under V6. It does not
+> authorize weakening existing assertions, changing Helm, modifying protected
+> branches, merging, tagging or publishing. A successful unchanged retry does
+> not establish the cause of an earlier failure or demonstrate a runtime fix.
+>
+> ## Decision 17: Scoped Console Renderer Replay
+>
+> Owner-confirmed on 2026-11-01.
+>
+> Question: S12 要求查看 F04 的 Console View，但 RP UI 5.15.6 对嵌套步骤隐藏该入口。是否允许在新建的独立 QA Launch 中，对同一条 F04 日志做字节完全一致的平铺回放，仅验证 Console 展示？原始测试拓扑和证据保持不变，补充证据会明确标注其范围。
+>
+> Owner answer: 允许补充平铺回放（推荐）
+>
+> S12 may use a new, independently owned flat-log QA Launch containing the exact
+> F04 message bytes. Record the original runtime SHA and Launch/item/log IDs,
+> message checksum, supplemental IDs and Console screenshot. This is renderer-only
+> proof: retain the original F04 topology and observations, and do not use the
+> supplement to certify or change the SDK's item hierarchy, ownership or wire
+> contract. Markdown-off is not a substitute for Console View. All other
+> acceptance and no-merge/no-tag/no-publication requirements remain unchanged.
+>
+> ## Decision 18: Scoped F14 API Parameter Ordering
+>
+> Owner-confirmed on 2026-11-01 after an explanation of the user-visible impact.
+>
+> Question: 最终审查发现：Cucumber 10 的 F14 基线 API 把参数返回为 e,a,b,c,d，新版为 a,b,c,d,e，但双方发出的参数顺序和值逐字节一致。服务端内部使用无序 Set，API 却声明 List。是否仅对这项 API 读回按完整参数集合（保留重复计数）比较，保留原始差异；所有请求报文仍严格逐字节验收？
+>
+> Owner answer: 接受这项窄范围调整， 继续
+>
+> Only the observed Cucumber 10 F14 GET parameter-array ordering difference may be
+> compared as a complete multiset, preserving duplicate multiplicities. Retain
+> the original API-order FAIL observations and the independently reviewed server
+> source explanation. Exact ordered POST parameter bytes must still match.
+> No parameter name, value, count, identity, topology or other field is excluded.
+>
+> This is an acceptance-comparison clarification, not an SDK behavior change or
+> a guarantee of fixed parameter ordering in the ReportPortal UI. The request and
+> response DTOs declare Lists; server persistence uses a Set. Do not describe the
+> response contract as an unordered Set. All other acceptance and
+> no-merge/no-tag/no-publication requirements remain unchanged.

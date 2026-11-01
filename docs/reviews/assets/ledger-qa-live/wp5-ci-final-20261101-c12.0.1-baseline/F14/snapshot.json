@@ -1,0 +1,3653 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3193,
+      "uuid": "489f8384-f054-43b7-a719-6689b42bee8d",
+      "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+      "number": 1,
+      "startTime": 1793506210667,
+      "endTime": 1793506212615,
+      "lastModified": 1793506212636,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 16,
+          "passed": 16
+        },
+        "defects": {}
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 25643,
+      "uuid": "0b69f8a7-eea6-44c0-bba9-2a10277c45d7",
+      "name": "Feature: Ledger literal markup and outline fallback inputs",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793506210694,
+      "endTime": 1793506212614,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 16,
+          "passed": 16
+        },
+        "defects": {}
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "auto:0f8fabc656f793479b5707d664f6a8db",
+      "testCaseHash": -342215554,
+      "patternTemplates": [],
+      "path": "25643",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25644,
+      "uuid": "37afb481-ce2b-4b66-93b7-c17d622269aa",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 10\n\n| value |\n| --- |\n| <other> |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "<other>"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210695,
+      "endTime": 1793506210831,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "7764a96751aa50eacd2e054b097caf5cd09afaba",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=<other>]",
+      "testCaseHash": 436129795,
+      "patternTemplates": [],
+      "path": "25643.25644",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25645,
+      "uuid": "a6d55f97-b084-48d0-9fe3-b03655d1f140",
+      "name": "Given ledger literal <other>",
+      "description": "**Given** ledger literal <other>",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210719,
+      "endTime": 1793506210752,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25644,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:2b0160d22f011e70bfeb8ee260b9005e",
+      "testCaseHash": 2054920336,
+      "patternTemplates": [],
+      "path": "25643.25644.25645",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25646,
+      "uuid": "7fcdef33-075f-43a2-95f8-8352b7348043",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| <other> |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210773,
+      "endTime": 1793506210803,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25644,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25644.25646",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25647,
+      "uuid": "9ada85e1-04b6-4272-8030-fd5a1c0e1206",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 11\n\n| value |\n| --- |\n| <b>x</b> |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "<b>x</b>"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210850,
+      "endTime": 1793506210934,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "a855e1bd24ab2c7a2af56b976ce843da23628a75",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=<b>x</b>]",
+      "testCaseHash": -808894850,
+      "patternTemplates": [],
+      "path": "25643.25647",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25648,
+      "uuid": "de92831e-2b88-4d11-98a4-2aa385489143",
+      "name": "Given ledger literal <b>x</b>",
+      "description": "**Given** ledger literal <b>x</b>",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210863,
+      "endTime": 1793506210886,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25647,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:c85b379da836b51fce18bc13c3bffcee",
+      "testCaseHash": -907107447,
+      "patternTemplates": [],
+      "path": "25643.25647.25648",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25649,
+      "uuid": "d57d8297-3abd-424d-83d1-2f83a7671d78",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| <b>x</b> |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210899,
+      "endTime": 1793506210922,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25647,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25647.25649",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25650,
+      "uuid": "83a47a69-0fe3-4f1f-8ca3-b89f64e1a62e",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 12\n\n| value |\n| --- |\n| a \\| b |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "a | b"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210945,
+      "endTime": 1793506211044,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "d284556d62eb68b4463872e3cedecf7ddb97723c",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=a | b]",
+      "testCaseHash": -1855511666,
+      "patternTemplates": [],
+      "path": "25643.25650",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25651,
+      "uuid": "579e3935-4fd4-46eb-8795-14584c449cf3",
+      "name": "Given ledger literal a | b",
+      "description": "**Given** ledger literal a | b",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506210957,
+      "endTime": 1793506211000,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25650,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:dd4d450acb517d1f26663570cd31da9d",
+      "testCaseHash": 1946807589,
+      "patternTemplates": [],
+      "path": "25643.25650.25651",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25652,
+      "uuid": "98fc7134-b29e-4c19-89f0-a489c5cb5822",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| a \\| b |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211010,
+      "endTime": 1793506211030,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25650,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25650.25652",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25653,
+      "uuid": "2d7a7472-b618-4aea-a630-fdb44635ddaa",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 13\n\n| value |\n| --- |\n| back\\\\slash |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "back\\slash"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211056,
+      "endTime": 1793506211137,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "8d162ba89e3f31874686a166383e982391926f47",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=back\\slash]",
+      "testCaseHash": 1627363397,
+      "patternTemplates": [],
+      "path": "25643.25653",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25654,
+      "uuid": "895bee9f-7460-414e-971c-212889d6c0f8",
+      "name": "Given ledger literal back\\slash",
+      "description": "**Given** ledger literal back\\slash",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211071,
+      "endTime": 1793506211090,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25653,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:bb116f9bd9c97a95e7074ed0d4454c13",
+      "testCaseHash": 1169107554,
+      "patternTemplates": [],
+      "path": "25643.25653.25654",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25655,
+      "uuid": "4db99d9a-bb37-4a74-a194-ab790c4769d4",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| back\\\\slash |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211100,
+      "endTime": 1793506211123,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25653,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25653.25655",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25656,
+      "uuid": "a504338a-2088-4869-b4a9-169521658aa0",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 14\n\n| value |\n| --- |\n| *star* |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "*star*"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211146,
+      "endTime": 1793506211227,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "349376d401f99f98a567a56728da79e40db7919e",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=*star*]",
+      "testCaseHash": -883567329,
+      "patternTemplates": [],
+      "path": "25643.25656",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25657,
+      "uuid": "4d2b92d4-b6de-4ca7-bee5-438a60740784",
+      "name": "Given ledger literal *star*",
+      "description": "**Given** ledger literal *star*",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211156,
+      "endTime": 1793506211176,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25656,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:3f8e232b7ee2fd8b998a40f43fc560c9",
+      "testCaseHash": -1276633272,
+      "patternTemplates": [],
+      "path": "25643.25656.25657",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25658,
+      "uuid": "d16cd487-5f5d-4bc6-9fd3-db9c3a46a934",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| *star* |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211188,
+      "endTime": 1793506211211,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25656,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25656.25658",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25659,
+      "uuid": "9788b2d7-205c-41c0-bdf9-769569f997e0",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 15\n\n| value |\n| --- |\n| _under_ |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "_under_"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211238,
+      "endTime": 1793506211340,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "1546cdc494e057e02ee19e7f010e26de26c77330",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=_under_]",
+      "testCaseHash": -2135431097,
+      "patternTemplates": [],
+      "path": "25643.25659",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25660,
+      "uuid": "70ea790d-f680-44ab-b437-f853e1927443",
+      "name": "Given ledger literal _under_",
+      "description": "**Given** ledger literal _under_",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211253,
+      "endTime": 1793506211294,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25659,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:b9418ea85bfa93001ef091a388a59c2d",
+      "testCaseHash": -1076074548,
+      "patternTemplates": [],
+      "path": "25643.25659.25660",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25661,
+      "uuid": "641f7a1f-ccd1-4c9b-abeb-66381508a88a",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| _under_ |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211306,
+      "endTime": 1793506211329,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25659,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25659.25661",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25662,
+      "uuid": "84f7bea8-23fa-44b0-bfb7-88a044457d11",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 16\n\n| value |\n| --- |\n| `tick` |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "`tick`"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211354,
+      "endTime": 1793506211438,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "fc31c99d71580e0ad446c9c3e0caed535eaf96c3",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=`tick`]",
+      "testCaseHash": -184483862,
+      "patternTemplates": [],
+      "path": "25643.25662",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25663,
+      "uuid": "1c81f44b-2f77-4e94-af07-82dd30dc1805",
+      "name": "Given ledger literal `tick`",
+      "description": "**Given** ledger literal `tick`",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211367,
+      "endTime": 1793506211393,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25662,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:701d0a045fb12392b5e71beeb8fb02b5",
+      "testCaseHash": 269938461,
+      "patternTemplates": [],
+      "path": "25643.25662.25663",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25664,
+      "uuid": "4c28d413-5af7-40c3-9540-b6e292d1ac66",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| `tick` |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211405,
+      "endTime": 1793506211425,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25662,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25662.25664",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25665,
+      "uuid": "66fb1d20-d6a3-486a-84bc-bfc820bb17e5",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 17\n\n| value |\n| --- |\n| &amp; |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "&amp;"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211451,
+      "endTime": 1793506211536,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "52a22554336811cb72e43ba951b58f0cc58281a4",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=&amp;]",
+      "testCaseHash": 809993392,
+      "patternTemplates": [],
+      "path": "25643.25665",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25666,
+      "uuid": "db60ce12-f7f5-4c00-9767-1d5f8dd84f46",
+      "name": "Given ledger literal &amp;",
+      "description": "**Given** ledger literal &amp;",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211463,
+      "endTime": 1793506211487,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25665,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:795aa949f0db01865a764a141d968964",
+      "testCaseHash": 1894244291,
+      "patternTemplates": [],
+      "path": "25643.25665.25666",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25667,
+      "uuid": "8774f297-fac6-4016-b1c5-94253c52a7e5",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| &amp; |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211499,
+      "endTime": 1793506211522,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25665,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25665.25667",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25668,
+      "uuid": "89f49567-ad44-4da4-a78b-e8b8df45258f",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 18\n\n| value |\n| --- |\n| # heading |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "# heading"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211545,
+      "endTime": 1793506211611,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "d5944ed7248040c843746d8dc0213e24462b6d32",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=# heading]",
+      "testCaseHash": 1954213576,
+      "patternTemplates": [],
+      "path": "25643.25668",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25669,
+      "uuid": "4627f4b2-6ca7-4982-94ec-82f89919447a",
+      "name": "Given ledger literal # heading",
+      "description": "**Given** ledger literal # heading",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211556,
+      "endTime": 1793506211573,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25668,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:bf65906a11f3cfa5b56f9c42803e230e",
+      "testCaseHash": -1062950997,
+      "patternTemplates": [],
+      "path": "25643.25668.25669",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25672,
+      "uuid": "1480db8d-3d87-432b-bdfa-5c1238734872",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| # heading |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211582,
+      "endTime": 1793506211599,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25668,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25668.25672",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25673,
+      "uuid": "ea35e546-d5a9-4ec7-baef-8360b2b64c82",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 19\n\n| value |\n| --- |\n| 1. item |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "1. item"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211622,
+      "endTime": 1793506211704,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "1133755c536043a5ebc9d0bdf9ee10fa8a6710b5",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=1. item]",
+      "testCaseHash": -1516601161,
+      "patternTemplates": [],
+      "path": "25643.25673",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25675,
+      "uuid": "79268a1e-085d-4bb5-840b-44b41829b3f9",
+      "name": "Given ledger literal 1. item",
+      "description": "**Given** ledger literal 1. item",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211632,
+      "endTime": 1793506211657,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25673,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:dad39c03c18c01c0b9286bc73a550605",
+      "testCaseHash": -1056112292,
+      "patternTemplates": [],
+      "path": "25643.25673.25675",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25676,
+      "uuid": "26acf757-109d-40a8-83a5-51223c9595c2",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| 1. item |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211669,
+      "endTime": 1793506211690,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25673,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25673.25676",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25678,
+      "uuid": "87975448-0a3f-4e38-b26d-fd099321f2aa",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 20\n\n| value |\n| --- |\n| x<script>alert(1)</script> |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "x<script>alert(1)</script>"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211714,
+      "endTime": 1793506211794,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "f87ea6c19b35e4857f5098ddb0b3761db716b828",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=x<script>alert(1)</script>]",
+      "testCaseHash": -1030249536,
+      "patternTemplates": [],
+      "path": "25643.25678",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25680,
+      "uuid": "9e95db8f-c141-4e5c-97f4-8e298708cbdc",
+      "name": "Given ledger literal x<script>alert(1)</script>",
+      "description": "**Given** ledger literal x<script>alert(1)</script>",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211724,
+      "endTime": 1793506211741,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25678,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:d50f6d7bd364f99de1c65ec224345710",
+      "testCaseHash": -1376358521,
+      "patternTemplates": [],
+      "path": "25643.25678.25680",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25682,
+      "uuid": "b08dce88-31f7-476f-bd41-e5580a150d14",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| x<script>alert(1)</script> |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211752,
+      "endTime": 1793506211773,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25678,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25678.25682",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25684,
+      "uuid": "7c1d3e14-4e90-4537-86d2-6a451608a922",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 21\n\n| value |\n| --- |\n| emoji 🟢 |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "emoji 🟢"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506211841,
+      "endTime": 1793506212187,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "9c55efade1540c088dbc14879c27199bceb4b4fa",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=emoji 🟢]",
+      "testCaseHash": 324150286,
+      "patternTemplates": [],
+      "path": "25643.25684",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25685,
+      "uuid": "cfbb73ea-bb96-46f5-bbb1-ab9aae1ca7af",
+      "name": "Given ledger literal emoji 🟢",
+      "description": "**Given** ledger literal emoji 🟢",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212036,
+      "endTime": 1793506212090,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25684,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:0e7d4c4f6c32c6f23f427f70df2d731f",
+      "testCaseHash": 99273721,
+      "patternTemplates": [],
+      "path": "25643.25684.25685",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25687,
+      "uuid": "2e97921d-f095-49f7-a555-8cfd0d6f6ac6",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| emoji 🟢 |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212110,
+      "endTime": 1793506212164,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25684,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25684.25687",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25688,
+      "uuid": "e8ef4d0c-99eb-438c-bb36-cb88ccb7d590",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 22\n\n| value |\n| --- |\n| CJK 中文 |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "CJK 中文"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212213,
+      "endTime": 1793506212329,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "653dfbae35b491cbdf3fb48c776cb6243677cc71",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=CJK 中文]",
+      "testCaseHash": -1364480393,
+      "patternTemplates": [],
+      "path": "25643.25688",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25689,
+      "uuid": "62c618e5-4de4-4b94-9692-34d638b58233",
+      "name": "Given ledger literal CJK 中文",
+      "description": "**Given** ledger literal CJK 中文",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212243,
+      "endTime": 1793506212275,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25688,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:b75eca7d574850d31d47622ffbe2bf4b",
+      "testCaseHash": -599409936,
+      "patternTemplates": [],
+      "path": "25643.25688.25689",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25690,
+      "uuid": "43c17196-bf67-4217-b3f4-4eeaf505d4ca",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| CJK 中文 |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212291,
+      "endTime": 1793506212316,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25688,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25688.25690",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25691,
+      "uuid": "5be93be5-1f3b-488f-88e1-986f10809a8e",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values\n\nExample row: 23\n\n| value |\n| --- |\n| first<br>second |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "first\nsecond"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212338,
+      "endTime": 1793506212426,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "98beaf32cb4ffec110cb6437e75a22e8cd0f5a9c",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=first\nsecond]",
+      "testCaseHash": 907405055,
+      "patternTemplates": [],
+      "path": "25643.25691",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25692,
+      "uuid": "a5b18473-25ea-43ac-b354-875a83c4f4d8",
+      "name": "Given ledger literal first\nsecond",
+      "description": "**Given** ledger literal first\nsecond",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212348,
+      "endTime": 1793506212370,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25691,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:34e794d431fb54dc850e5ed4f68cdfeb",
+      "testCaseHash": 1706848744,
+      "patternTemplates": [],
+      "path": "25643.25691.25692",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25693,
+      "uuid": "4585c0b1-f9cf-4d2e-97fb-1854c010d713",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| first<br>second |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212385,
+      "endTime": 1793506212409,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25691,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "25643.25691.25693",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25694,
+      "uuid": "1b4bc16e-c96b-4cdd-9e7f-86c69ed040cd",
+      "name": "Scenario: Five parameters force description fallback",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:25",
+      "description": "Examples: \n\nExample row: 29\n\n| a | b | c | d | e |\n| --- | --- | --- | --- | --- |\n| 1 | 2 | 3 | 4 | 5 |",
+      "parameters": [
+        {
+          "key": "a",
+          "value": "1"
+        },
+        {
+          "key": "b",
+          "value": "2"
+        },
+        {
+          "key": "c",
+          "value": "3"
+        },
+        {
+          "key": "d",
+          "value": "4"
+        },
+        {
+          "key": "e",
+          "value": "5"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212440,
+      "endTime": 1793506212518,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "5ece20c2712487002a6b466448c93e664f472594",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:25[a=1,b=2,c=3,d=4,e=5]",
+      "testCaseHash": -657122516,
+      "patternTemplates": [],
+      "path": "25643.25694",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25695,
+      "uuid": "5a7e5d68-3363-418b-a1cd-b8cb4e62ed01",
+      "name": "Given ledger literal 12345",
+      "description": "**Given** ledger literal 12345",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212461,
+      "endTime": 1793506212498,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25694,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:bd53144b62dbc46779e54a32b39f9f7c",
+      "testCaseHash": -866306413,
+      "patternTemplates": [],
+      "path": "25643.25694.25695",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25696,
+      "uuid": "391e2c9d-cbdc-4baf-97c2-a509cf392166",
+      "name": "Scenario: Long parameter forces description fallback",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:31",
+      "description": "Examples: Long value\n\nExample row: 35\n\n| value |\n| --- |\n| 12345678901234567890123456789012345678901 |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "12345678901234567890123456789012345678901"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212535,
+      "endTime": 1793506212591,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25643,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3193,
+      "uniqueId": "c9b03da98eb3147ab048b963d20ae324e8ae2e4a",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:31[value=12345678901234567890123456789012345678901]",
+      "testCaseHash": -319200251,
+      "patternTemplates": [],
+      "path": "25643.25696",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25697,
+      "uuid": "ac967fe0-3df6-4872-a750-1729d061a75b",
+      "name": "Given ledger literal 12345678901234567890123456789012345678901",
+      "description": "**Given** ledger literal 12345678901234567890123456789012345678901",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506212554,
+      "endTime": 1793506212580,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25696,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3193,
+      "uniqueId": "auto:ba02fdbf8828c10d0fdff7bd7cc5fd1e",
+      "testCaseHash": -139442267,
+      "patternTemplates": [],
+      "path": "25643.25696.25697",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 16757,
+      "time": "2026-11-01T04:10:10.732Z",
+      "message": "<other>",
+      "level": "info",
+      "itemId": 25645
+    },
+    {
+      "id": 16758,
+      "time": "2026-11-01T04:10:10.790Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| <other> |",
+      "level": "info",
+      "itemId": 25646
+    },
+    {
+      "id": 16759,
+      "time": "2026-11-01T04:10:10.878Z",
+      "message": "<b>x</b>",
+      "level": "info",
+      "itemId": 25648
+    },
+    {
+      "id": 16760,
+      "time": "2026-11-01T04:10:10.910Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| <b>x</b> |",
+      "level": "info",
+      "itemId": 25649
+    },
+    {
+      "id": 16761,
+      "time": "2026-11-01T04:10:10.990Z",
+      "message": "a | b",
+      "level": "info",
+      "itemId": 25651
+    },
+    {
+      "id": 16762,
+      "time": "2026-11-01T04:10:11.021Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| a \\| b |",
+      "level": "info",
+      "itemId": 25652
+    },
+    {
+      "id": 16763,
+      "time": "2026-11-01T04:10:11.083Z",
+      "message": "back\\slash",
+      "level": "info",
+      "itemId": 25654
+    },
+    {
+      "id": 16764,
+      "time": "2026-11-01T04:10:11.112Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| back\\\\slash |",
+      "level": "info",
+      "itemId": 25655
+    },
+    {
+      "id": 16765,
+      "time": "2026-11-01T04:10:11.169Z",
+      "message": "*star*",
+      "level": "info",
+      "itemId": 25657
+    },
+    {
+      "id": 16766,
+      "time": "2026-11-01T04:10:11.202Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| *star* |",
+      "level": "info",
+      "itemId": 25658
+    },
+    {
+      "id": 16767,
+      "time": "2026-11-01T04:10:11.270Z",
+      "message": "_under_",
+      "level": "info",
+      "itemId": 25660
+    },
+    {
+      "id": 16768,
+      "time": "2026-11-01T04:10:11.320Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| _under_ |",
+      "level": "info",
+      "itemId": 25661
+    },
+    {
+      "id": 16769,
+      "time": "2026-11-01T04:10:11.385Z",
+      "message": "`tick`",
+      "level": "info",
+      "itemId": 25663
+    },
+    {
+      "id": 16770,
+      "time": "2026-11-01T04:10:11.417Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| `tick` |",
+      "level": "info",
+      "itemId": 25664
+    },
+    {
+      "id": 16771,
+      "time": "2026-11-01T04:10:11.477Z",
+      "message": "&amp;",
+      "level": "info",
+      "itemId": 25666
+    },
+    {
+      "id": 16772,
+      "time": "2026-11-01T04:10:11.515Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| &amp; |",
+      "level": "info",
+      "itemId": 25667
+    },
+    {
+      "id": 16773,
+      "time": "2026-11-01T04:10:11.567Z",
+      "message": "# heading",
+      "level": "info",
+      "itemId": 25669
+    },
+    {
+      "id": 16774,
+      "time": "2026-11-01T04:10:11.592Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| # heading |",
+      "level": "info",
+      "itemId": 25672
+    },
+    {
+      "id": 16775,
+      "time": "2026-11-01T04:10:11.648Z",
+      "message": "1. item",
+      "level": "info",
+      "itemId": 25675
+    },
+    {
+      "id": 16780,
+      "time": "2026-11-01T04:10:11.680Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| 1. item |",
+      "level": "info",
+      "itemId": 25676
+    },
+    {
+      "id": 16783,
+      "time": "2026-11-01T04:10:11.734Z",
+      "message": "x<script>alert(1)</script>",
+      "level": "info",
+      "itemId": 25680
+    },
+    {
+      "id": 16785,
+      "time": "2026-11-01T04:10:11.762Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| x<script>alert(1)</script> |",
+      "level": "info",
+      "itemId": 25682
+    },
+    {
+      "id": 16787,
+      "time": "2026-11-01T04:10:12.075Z",
+      "message": "emoji 🟢",
+      "level": "info",
+      "itemId": 25685
+    },
+    {
+      "id": 16789,
+      "time": "2026-11-01T04:10:12.148Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| emoji 🟢 |",
+      "level": "info",
+      "itemId": 25687
+    },
+    {
+      "id": 16790,
+      "time": "2026-11-01T04:10:12.263Z",
+      "message": "CJK 中文",
+      "level": "info",
+      "itemId": 25689
+    },
+    {
+      "id": 16791,
+      "time": "2026-11-01T04:10:12.307Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| CJK 中文 |",
+      "level": "info",
+      "itemId": 25690
+    },
+    {
+      "id": 16792,
+      "time": "2026-11-01T04:10:12.362Z",
+      "message": "first\nsecond",
+      "level": "info",
+      "itemId": 25692
+    },
+    {
+      "id": 16793,
+      "time": "2026-11-01T04:10:12.398Z",
+      "message": "**And** ledger records this table:\n\n| value |\n| --- |\n| first<br>second |",
+      "level": "info",
+      "itemId": 25693
+    },
+    {
+      "id": 16794,
+      "time": "2026-11-01T04:10:12.483Z",
+      "message": "12345",
+      "level": "info",
+      "itemId": 25695
+    },
+    {
+      "id": 16795,
+      "time": "2026-11-01T04:10:12.572Z",
+      "message": "12345678901234567890123456789012345678901",
+      "level": "info",
+      "itemId": 25697
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 3193,
+      "items_by_launch": [
+        {
+          "id": 25643,
+          "uuid": "0b69f8a7-eea6-44c0-bba9-2a10277c45d7",
+          "name": "Feature: Ledger literal markup and outline fallback inputs",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-01T04:10:10.694Z",
+          "endTime": "2026-11-01T04:10:12.614Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 16,
+              "passed": 16
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "auto:0f8fabc656f793479b5707d664f6a8db",
+          "testCaseHash": -342215554,
+          "patternTemplates": [],
+          "path": "25643",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25644,
+          "uuid": "37afb481-ce2b-4b66-93b7-c17d622269aa",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 10\n\n| value |\n| --- |\n| <other> |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "<other>"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.695Z",
+          "endTime": "2026-11-01T04:10:10.831Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "7764a96751aa50eacd2e054b097caf5cd09afaba",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=<other>]",
+          "testCaseHash": 436129795,
+          "patternTemplates": [],
+          "path": "25643.25644",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25645,
+          "uuid": "a6d55f97-b084-48d0-9fe3-b03655d1f140",
+          "name": "Given ledger literal <other>",
+          "description": "**Given** ledger literal <other>",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.719Z",
+          "endTime": "2026-11-01T04:10:10.752Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25644,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25644,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:2b0160d22f011e70bfeb8ee260b9005e",
+          "testCaseHash": 2054920336,
+          "patternTemplates": [],
+          "path": "25643.25644.25645",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25646,
+          "uuid": "7fcdef33-075f-43a2-95f8-8352b7348043",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| <other> |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.773Z",
+          "endTime": "2026-11-01T04:10:10.803Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25644,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25644,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25644.25646",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25647,
+          "uuid": "9ada85e1-04b6-4272-8030-fd5a1c0e1206",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 11\n\n| value |\n| --- |\n| <b>x</b> |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "<b>x</b>"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.850Z",
+          "endTime": "2026-11-01T04:10:10.934Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "a855e1bd24ab2c7a2af56b976ce843da23628a75",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=<b>x</b>]",
+          "testCaseHash": -808894850,
+          "patternTemplates": [],
+          "path": "25643.25647",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25648,
+          "uuid": "de92831e-2b88-4d11-98a4-2aa385489143",
+          "name": "Given ledger literal <b>x</b>",
+          "description": "**Given** ledger literal <b>x</b>",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.863Z",
+          "endTime": "2026-11-01T04:10:10.886Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25647,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25647,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:c85b379da836b51fce18bc13c3bffcee",
+          "testCaseHash": -907107447,
+          "patternTemplates": [],
+          "path": "25643.25647.25648",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25649,
+          "uuid": "d57d8297-3abd-424d-83d1-2f83a7671d78",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| <b>x</b> |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.899Z",
+          "endTime": "2026-11-01T04:10:10.922Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25647,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25647,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25647.25649",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25650,
+          "uuid": "83a47a69-0fe3-4f1f-8ca3-b89f64e1a62e",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 12\n\n| value |\n| --- |\n| a \\| b |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "a | b"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.945Z",
+          "endTime": "2026-11-01T04:10:11.044Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "d284556d62eb68b4463872e3cedecf7ddb97723c",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=a | b]",
+          "testCaseHash": -1855511666,
+          "patternTemplates": [],
+          "path": "25643.25650",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25651,
+          "uuid": "579e3935-4fd4-46eb-8795-14584c449cf3",
+          "name": "Given ledger literal a | b",
+          "description": "**Given** ledger literal a | b",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:10.957Z",
+          "endTime": "2026-11-01T04:10:11Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25650,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25650,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:dd4d450acb517d1f26663570cd31da9d",
+          "testCaseHash": 1946807589,
+          "patternTemplates": [],
+          "path": "25643.25650.25651",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25652,
+          "uuid": "98fc7134-b29e-4c19-89f0-a489c5cb5822",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| a \\| b |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.010Z",
+          "endTime": "2026-11-01T04:10:11.030Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25650,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25650,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25650.25652",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25653,
+          "uuid": "2d7a7472-b618-4aea-a630-fdb44635ddaa",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 13\n\n| value |\n| --- |\n| back\\\\slash |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "back\\slash"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.056Z",
+          "endTime": "2026-11-01T04:10:11.137Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "8d162ba89e3f31874686a166383e982391926f47",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=back\\slash]",
+          "testCaseHash": 1627363397,
+          "patternTemplates": [],
+          "path": "25643.25653",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25654,
+          "uuid": "895bee9f-7460-414e-971c-212889d6c0f8",
+          "name": "Given ledger literal back\\slash",
+          "description": "**Given** ledger literal back\\slash",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.071Z",
+          "endTime": "2026-11-01T04:10:11.090Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25653,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25653,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:bb116f9bd9c97a95e7074ed0d4454c13",
+          "testCaseHash": 1169107554,
+          "patternTemplates": [],
+          "path": "25643.25653.25654",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25655,
+          "uuid": "4db99d9a-bb37-4a74-a194-ab790c4769d4",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| back\\\\slash |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.100Z",
+          "endTime": "2026-11-01T04:10:11.123Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25653,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25653,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25653.25655",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25656,
+          "uuid": "a504338a-2088-4869-b4a9-169521658aa0",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 14\n\n| value |\n| --- |\n| *star* |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "*star*"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.146Z",
+          "endTime": "2026-11-01T04:10:11.227Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "349376d401f99f98a567a56728da79e40db7919e",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=*star*]",
+          "testCaseHash": -883567329,
+          "patternTemplates": [],
+          "path": "25643.25656",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25657,
+          "uuid": "4d2b92d4-b6de-4ca7-bee5-438a60740784",
+          "name": "Given ledger literal *star*",
+          "description": "**Given** ledger literal *star*",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.156Z",
+          "endTime": "2026-11-01T04:10:11.176Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25656,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25656,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:3f8e232b7ee2fd8b998a40f43fc560c9",
+          "testCaseHash": -1276633272,
+          "patternTemplates": [],
+          "path": "25643.25656.25657",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25658,
+          "uuid": "d16cd487-5f5d-4bc6-9fd3-db9c3a46a934",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| *star* |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.188Z",
+          "endTime": "2026-11-01T04:10:11.211Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25656,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25656,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25656.25658",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25659,
+          "uuid": "9788b2d7-205c-41c0-bdf9-769569f997e0",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 15\n\n| value |\n| --- |\n| _under_ |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "_under_"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.238Z",
+          "endTime": "2026-11-01T04:10:11.340Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "1546cdc494e057e02ee19e7f010e26de26c77330",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=_under_]",
+          "testCaseHash": -2135431097,
+          "patternTemplates": [],
+          "path": "25643.25659",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25660,
+          "uuid": "70ea790d-f680-44ab-b437-f853e1927443",
+          "name": "Given ledger literal _under_",
+          "description": "**Given** ledger literal _under_",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.253Z",
+          "endTime": "2026-11-01T04:10:11.294Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25659,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25659,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:b9418ea85bfa93001ef091a388a59c2d",
+          "testCaseHash": -1076074548,
+          "patternTemplates": [],
+          "path": "25643.25659.25660",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25661,
+          "uuid": "641f7a1f-ccd1-4c9b-abeb-66381508a88a",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| _under_ |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.306Z",
+          "endTime": "2026-11-01T04:10:11.329Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25659,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25659,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25659.25661",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25662,
+          "uuid": "84f7bea8-23fa-44b0-bfb7-88a044457d11",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 16\n\n| value |\n| --- |\n| `tick` |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "`tick`"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.354Z",
+          "endTime": "2026-11-01T04:10:11.438Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "fc31c99d71580e0ad446c9c3e0caed535eaf96c3",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=`tick`]",
+          "testCaseHash": -184483862,
+          "patternTemplates": [],
+          "path": "25643.25662",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25663,
+          "uuid": "1c81f44b-2f77-4e94-af07-82dd30dc1805",
+          "name": "Given ledger literal `tick`",
+          "description": "**Given** ledger literal `tick`",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.367Z",
+          "endTime": "2026-11-01T04:10:11.393Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25662,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25662,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:701d0a045fb12392b5e71beeb8fb02b5",
+          "testCaseHash": 269938461,
+          "patternTemplates": [],
+          "path": "25643.25662.25663",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25664,
+          "uuid": "4c28d413-5af7-40c3-9540-b6e292d1ac66",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| `tick` |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.405Z",
+          "endTime": "2026-11-01T04:10:11.425Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25662,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25662,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25662.25664",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25665,
+          "uuid": "66fb1d20-d6a3-486a-84bc-bfc820bb17e5",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 17\n\n| value |\n| --- |\n| &amp; |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "&amp;"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.451Z",
+          "endTime": "2026-11-01T04:10:11.536Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "52a22554336811cb72e43ba951b58f0cc58281a4",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=&amp;]",
+          "testCaseHash": 809993392,
+          "patternTemplates": [],
+          "path": "25643.25665",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25666,
+          "uuid": "db60ce12-f7f5-4c00-9767-1d5f8dd84f46",
+          "name": "Given ledger literal &amp;",
+          "description": "**Given** ledger literal &amp;",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.463Z",
+          "endTime": "2026-11-01T04:10:11.487Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25665,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25665,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:795aa949f0db01865a764a141d968964",
+          "testCaseHash": 1894244291,
+          "patternTemplates": [],
+          "path": "25643.25665.25666",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25667,
+          "uuid": "8774f297-fac6-4016-b1c5-94253c52a7e5",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| &amp; |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.499Z",
+          "endTime": "2026-11-01T04:10:11.522Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25665,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25665,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25665.25667",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25668,
+          "uuid": "89f49567-ad44-4da4-a78b-e8b8df45258f",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 18\n\n| value |\n| --- |\n| # heading |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "# heading"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.545Z",
+          "endTime": "2026-11-01T04:10:11.611Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "d5944ed7248040c843746d8dc0213e24462b6d32",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=# heading]",
+          "testCaseHash": 1954213576,
+          "patternTemplates": [],
+          "path": "25643.25668",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25669,
+          "uuid": "4627f4b2-6ca7-4982-94ec-82f89919447a",
+          "name": "Given ledger literal # heading",
+          "description": "**Given** ledger literal # heading",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.556Z",
+          "endTime": "2026-11-01T04:10:11.573Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25668,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25668,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:bf65906a11f3cfa5b56f9c42803e230e",
+          "testCaseHash": -1062950997,
+          "patternTemplates": [],
+          "path": "25643.25668.25669",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25672,
+          "uuid": "1480db8d-3d87-432b-bdfa-5c1238734872",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| # heading |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.582Z",
+          "endTime": "2026-11-01T04:10:11.599Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25668,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25668,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25668.25672",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25673,
+          "uuid": "ea35e546-d5a9-4ec7-baef-8360b2b64c82",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 19\n\n| value |\n| --- |\n| 1. item |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "1. item"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.622Z",
+          "endTime": "2026-11-01T04:10:11.704Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "1133755c536043a5ebc9d0bdf9ee10fa8a6710b5",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=1. item]",
+          "testCaseHash": -1516601161,
+          "patternTemplates": [],
+          "path": "25643.25673",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25675,
+          "uuid": "79268a1e-085d-4bb5-840b-44b41829b3f9",
+          "name": "Given ledger literal 1. item",
+          "description": "**Given** ledger literal 1. item",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.632Z",
+          "endTime": "2026-11-01T04:10:11.657Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25673,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25673,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:dad39c03c18c01c0b9286bc73a550605",
+          "testCaseHash": -1056112292,
+          "patternTemplates": [],
+          "path": "25643.25673.25675",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25676,
+          "uuid": "26acf757-109d-40a8-83a5-51223c9595c2",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| 1. item |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.669Z",
+          "endTime": "2026-11-01T04:10:11.690Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25673,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25673,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25673.25676",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25678,
+          "uuid": "87975448-0a3f-4e38-b26d-fd099321f2aa",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 20\n\n| value |\n| --- |\n| x<script>alert(1)</script> |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "x<script>alert(1)</script>"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.714Z",
+          "endTime": "2026-11-01T04:10:11.794Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "f87ea6c19b35e4857f5098ddb0b3761db716b828",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=x<script>alert(1)</script>]",
+          "testCaseHash": -1030249536,
+          "patternTemplates": [],
+          "path": "25643.25678",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25680,
+          "uuid": "9e95db8f-c141-4e5c-97f4-8e298708cbdc",
+          "name": "Given ledger literal x<script>alert(1)</script>",
+          "description": "**Given** ledger literal x<script>alert(1)</script>",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.724Z",
+          "endTime": "2026-11-01T04:10:11.741Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25678,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25678,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:d50f6d7bd364f99de1c65ec224345710",
+          "testCaseHash": -1376358521,
+          "patternTemplates": [],
+          "path": "25643.25678.25680",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25682,
+          "uuid": "b08dce88-31f7-476f-bd41-e5580a150d14",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| x<script>alert(1)</script> |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.752Z",
+          "endTime": "2026-11-01T04:10:11.773Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25678,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25678,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25678.25682",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25684,
+          "uuid": "7c1d3e14-4e90-4537-86d2-6a451608a922",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 21\n\n| value |\n| --- |\n| emoji 🟢 |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "emoji 🟢"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:11.841Z",
+          "endTime": "2026-11-01T04:10:12.187Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "9c55efade1540c088dbc14879c27199bceb4b4fa",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=emoji 🟢]",
+          "testCaseHash": 324150286,
+          "patternTemplates": [],
+          "path": "25643.25684",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25685,
+          "uuid": "cfbb73ea-bb96-46f5-bbb1-ab9aae1ca7af",
+          "name": "Given ledger literal emoji 🟢",
+          "description": "**Given** ledger literal emoji 🟢",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.036Z",
+          "endTime": "2026-11-01T04:10:12.090Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25684,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25684,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:0e7d4c4f6c32c6f23f427f70df2d731f",
+          "testCaseHash": 99273721,
+          "patternTemplates": [],
+          "path": "25643.25684.25685",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25687,
+          "uuid": "2e97921d-f095-49f7-a555-8cfd0d6f6ac6",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| emoji 🟢 |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.110Z",
+          "endTime": "2026-11-01T04:10:12.164Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25684,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25684,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25684.25687",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25688,
+          "uuid": "e8ef4d0c-99eb-438c-bb36-cb88ccb7d590",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 22\n\n| value |\n| --- |\n| CJK 中文 |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "CJK 中文"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.213Z",
+          "endTime": "2026-11-01T04:10:12.329Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "653dfbae35b491cbdf3fb48c776cb6243677cc71",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=CJK 中文]",
+          "testCaseHash": -1364480393,
+          "patternTemplates": [],
+          "path": "25643.25688",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25689,
+          "uuid": "62c618e5-4de4-4b94-9692-34d638b58233",
+          "name": "Given ledger literal CJK 中文",
+          "description": "**Given** ledger literal CJK 中文",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.243Z",
+          "endTime": "2026-11-01T04:10:12.275Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25688,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25688,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:b75eca7d574850d31d47622ffbe2bf4b",
+          "testCaseHash": -599409936,
+          "patternTemplates": [],
+          "path": "25643.25688.25689",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25690,
+          "uuid": "43c17196-bf67-4217-b3f4-4eeaf505d4ca",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| CJK 中文 |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.291Z",
+          "endTime": "2026-11-01T04:10:12.316Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25688,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25688,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25688.25690",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25691,
+          "uuid": "5be93be5-1f3b-488f-88e1-986f10809a8e",
+          "name": "Scenario: Escaping matrix",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+          "description": "Examples: Literal values\n\nExample row: 23\n\n| value |\n| --- |\n| first<br>second |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "first\nsecond"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.338Z",
+          "endTime": "2026-11-01T04:10:12.426Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "98beaf32cb4ffec110cb6437e75a22e8cd0f5a9c",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=first\nsecond]",
+          "testCaseHash": 907405055,
+          "patternTemplates": [],
+          "path": "25643.25691",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25692,
+          "uuid": "a5b18473-25ea-43ac-b354-875a83c4f4d8",
+          "name": "Given ledger literal first\nsecond",
+          "description": "**Given** ledger literal first\nsecond",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.348Z",
+          "endTime": "2026-11-01T04:10:12.370Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25691,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25691,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:34e794d431fb54dc850e5ed4f68cdfeb",
+          "testCaseHash": 1706848744,
+          "patternTemplates": [],
+          "path": "25643.25691.25692",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25693,
+          "uuid": "4585c0b1-f9cf-4d2e-97fb-1854c010d713",
+          "name": "And ledger records this table:",
+          "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| first<br>second |",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.385Z",
+          "endTime": "2026-11-01T04:10:12.409Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25691,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25691,
+                "name": "Scenario: Escaping matrix"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:6a3a221d79582054544e64ed8464ff50",
+          "testCaseHash": -1095590323,
+          "patternTemplates": [],
+          "path": "25643.25691.25693",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25694,
+          "uuid": "1b4bc16e-c96b-4cdd-9e7f-86c69ed040cd",
+          "name": "Scenario: Five parameters force description fallback",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:25",
+          "description": "Examples: \n\nExample row: 29\n\n| a | b | c | d | e |\n| --- | --- | --- | --- | --- |\n| 1 | 2 | 3 | 4 | 5 |",
+          "parameters": [
+            {
+              "key": "b",
+              "value": "2"
+            },
+            {
+              "key": "d",
+              "value": "4"
+            },
+            {
+              "key": "a",
+              "value": "1"
+            },
+            {
+              "key": "e",
+              "value": "5"
+            },
+            {
+              "key": "c",
+              "value": "3"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.440Z",
+          "endTime": "2026-11-01T04:10:12.518Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "5ece20c2712487002a6b466448c93e664f472594",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:25[a=1,b=2,c=3,d=4,e=5]",
+          "testCaseHash": -657122516,
+          "patternTemplates": [],
+          "path": "25643.25694",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25695,
+          "uuid": "5a7e5d68-3363-418b-a1cd-b8cb4e62ed01",
+          "name": "Given ledger literal 12345",
+          "description": "**Given** ledger literal 12345",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.461Z",
+          "endTime": "2026-11-01T04:10:12.498Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25694,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25694,
+                "name": "Scenario: Five parameters force description fallback"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:bd53144b62dbc46779e54a32b39f9f7c",
+          "testCaseHash": -866306413,
+          "patternTemplates": [],
+          "path": "25643.25694.25695",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25696,
+          "uuid": "391e2c9d-cbdc-4baf-97c2-a509cf392166",
+          "name": "Scenario: Long parameter forces description fallback",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:31",
+          "description": "Examples: Long value\n\nExample row: 35\n\n| value |\n| --- |\n| 12345678901234567890123456789012345678901 |",
+          "parameters": [
+            {
+              "key": "value",
+              "value": "12345678901234567890123456789012345678901"
+            }
+          ],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.535Z",
+          "endTime": "2026-11-01T04:10:12.591Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25643,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3193,
+          "uniqueId": "c9b03da98eb3147ab048b963d20ae324e8ae2e4a",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:31[value=12345678901234567890123456789012345678901]",
+          "testCaseHash": -319200251,
+          "patternTemplates": [],
+          "path": "25643.25696",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25697,
+          "uuid": "ac967fe0-3df6-4872-a750-1729d061a75b",
+          "name": "Given ledger literal 12345678901234567890123456789012345678901",
+          "description": "**Given** ledger literal 12345678901234567890123456789012345678901",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:10:12.554Z",
+          "endTime": "2026-11-01T04:10:12.580Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25696,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-baseline-F14",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25643,
+                "name": "Feature: Ledger literal markup and outline fallback inputs"
+              },
+              {
+                "id": 25696,
+                "name": "Scenario: Long parameter forces description fallback"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3193,
+          "uniqueId": "auto:ba02fdbf8828c10d0fdff7bd7cc5fd1e",
+          "testCaseHash": -139442267,
+          "patternTemplates": [],
+          "path": "25643.25696.25697",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

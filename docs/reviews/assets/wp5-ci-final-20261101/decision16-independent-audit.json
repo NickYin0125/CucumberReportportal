@@ -1,0 +1,94 @@
+{
+  "schema": "decision16-independent-exact-diff-audit/1",
+  "assessed_at_utc": "2026-11-01T04:03:08Z",
+  "version": "2.0.1",
+  "previous_sha": "ff3268b945ab4fe4080be063567ea9b49c458def",
+  "runtime_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "owner_exact_question": "远端 CI 的未改动 1.3.1 基线出现 SIGINT/Spool 和超时失败。是否允许把这些既有 CI 稳定性问题纳入独立排查，必要时另作修复提交？保持全部断言，不推受保护分支、不合并或发布。",
+  "owner_exact_answer": "允许独立排查与必要修复（推荐）",
+  "changed_files": [
+    [
+      "M",
+      ".github/workflows/validate.yml"
+    ],
+    [
+      "M",
+      "docs/design/presentation-ledger-owner-decisions.md"
+    ],
+    [
+      "A",
+      "spec/release/rspec_fault_observability_spec.rb"
+    ],
+    [
+      "A",
+      "spec/reportportal_cucumber/service/spool_deadline_semantics_spec.rb"
+    ]
+  ],
+  "protected_path_diff": "",
+  "workflow_diff": "diff --git a/.github/workflows/validate.yml b/.github/workflows/validate.yml\nindex d532512..a425898 100644\n--- a/.github/workflows/validate.yml\n+++ b/.github/workflows/validate.yml\n@@ -74,9 +74,27 @@ jobs:\n           helm lint \"$chart\" --kube-version 1.35.0 -f \"$chart/values-production.example.yaml\" -f \"$chart/values-huawei.example.yaml\"\n           helm template release-validation \"$chart\" --kube-version 1.35.0 -f \"$chart/values-production.example.yaml\" -f \"$chart/values-huawei.example.yaml\" > /dev/null\n \n+      - name: Prepare synthetic RSpec fault diagnostics\n+        run: |\n+          umask 077\n+          mkdir -p \"$RUNNER_TEMP/rspec-fault-diagnostics/day2\" \"$RUNNER_TEMP/rspec-fault-diagnostics/m4d\"\n+\n       - name: Run full RSpec including installed packaging checks\n+        env:\n+          DAY2_LOCAL_CAPTURE: ${{ runner.temp }}/rspec-fault-diagnostics/day2\n+          M4_D_EVIDENCE_DIR: ${{ runner.temp }}/rspec-fault-diagnostics/m4d\n         run: bundle exec rspec\n \n+      - name: Retain synthetic RSpec fault diagnostics\n+        if: always()\n+        uses: actions/upload-artifact@v6\n+        with:\n+          name: rspec-faults-ruby-${{ matrix.ruby }}-${{ github.run_attempt }}\n+          path: ${{ runner.temp }}/rspec-fault-diagnostics/\n+          include-hidden-files: true\n+          if-no-files-found: warn\n+          retention-days: 7\n+\n       - name: Run full offline Cucumber profile\n         run: bundle exec cucumber\n \n@@ -154,6 +172,14 @@ jobs:\n           helm dependency build ./helm/reportportal-rich-experience\n           sha256sum --check \"$RUNNER_TEMP/chart-lock.sha256\"\n \n+      # Keep the immutable driver's exact step env and arguments unchanged.\n+      - name: Prepare synthetic RSpec fault diagnostics\n+        run: |\n+          umask 077\n+          mkdir -p \"$RUNNER_TEMP/legacy-rspec-fault-diagnostics/day2\" \"$RUNNER_TEMP/legacy-rspec-fault-diagnostics/m4d\"\n+          echo \"DAY2_LOCAL_CAPTURE=$RUNNER_TEMP/legacy-rspec-fault-diagnostics/day2\" >> \"$GITHUB_ENV\"\n+          echo \"M4_D_EVIDENCE_DIR=$RUNNER_TEMP/legacy-rspec-fault-diagnostics/m4d\" >> \"$GITHUB_ENV\"\n+\n       - name: Run the legacy RSpec suite with explicit test-only fixture normalization\n         env:\n           M4A_CHILD_EVIDENCE_DIR: ${{ runner.temp }}/legacy-m4a\n@@ -216,6 +242,16 @@ jobs:\n           if-no-files-found: error\n           retention-days: 7\n \n+      - name: Retain synthetic RSpec fault diagnostics\n+        if: always()\n+        uses: actions/upload-artifact@v6\n+        with:\n+          name: legacy-rspec-faults-ruby-${{ matrix.ruby }}-cucumber-${{ matrix.cucumber }}-${{ github.run_attempt }}\n+          path: ${{ runner.temp }}/legacy-rspec-fault-diagnostics/\n+          include-hidden-files: true\n+          if-no-files-found: warn\n+          retention-days: 7\n+\n   gate:\n     needs: [test, legacy]\n     if: always()\n",
+  "workflow_before_sha256": "16994d4ae41bd6e80a78ebc279a8c05b3ce672132c18b09b01b7cfef3e1d2b3c",
+  "workflow_after_sha256": "2ac5de99e1b18bfc1e40e1aa628330a12e6fadf43b7f3aa9b5d52d54c7961f72",
+  "diagnostic_steps": [
+    {
+      "job": "test",
+      "step": {
+        "name": "Prepare synthetic RSpec fault diagnostics",
+        "run": "umask 077\nmkdir -p \"$RUNNER_TEMP/rspec-fault-diagnostics/day2\" \"$RUNNER_TEMP/rspec-fault-diagnostics/m4d\"\n"
+      }
+    },
+    {
+      "job": "test",
+      "step": {
+        "name": "Retain synthetic RSpec fault diagnostics",
+        "if": "always()",
+        "uses": "actions/upload-artifact@v6",
+        "with": {
+          "name": "rspec-faults-ruby-${{ matrix.ruby }}-${{ github.run_attempt }}",
+          "path": "${{ runner.temp }}/rspec-fault-diagnostics/",
+          "include-hidden-files": true,
+          "if-no-files-found": "warn",
+          "retention-days": 7
+        }
+      }
+    },
+    {
+      "job": "legacy",
+      "step": {
+        "name": "Prepare synthetic RSpec fault diagnostics",
+        "run": "umask 077\nmkdir -p \"$RUNNER_TEMP/legacy-rspec-fault-diagnostics/day2\" \"$RUNNER_TEMP/legacy-rspec-fault-diagnostics/m4d\"\necho \"DAY2_LOCAL_CAPTURE=$RUNNER_TEMP/legacy-rspec-fault-diagnostics/day2\" >> \"$GITHUB_ENV\"\necho \"M4_D_EVIDENCE_DIR=$RUNNER_TEMP/legacy-rspec-fault-diagnostics/m4d\" >> \"$GITHUB_ENV\"\n"
+      }
+    },
+    {
+      "job": "legacy",
+      "step": {
+        "name": "Retain synthetic RSpec fault diagnostics",
+        "if": "always()",
+        "uses": "actions/upload-artifact@v6",
+        "with": {
+          "name": "legacy-rspec-faults-ruby-${{ matrix.ruby }}-cucumber-${{ matrix.cucumber }}-${{ github.run_attempt }}",
+          "path": "${{ runner.temp }}/legacy-rspec-fault-diagnostics/",
+          "include-hidden-files": true,
+          "if-no-files-found": "warn",
+          "retention-days": 7
+        }
+      }
+    }
+  ],
+  "current_suite_step_environment": [
+    {
+      "DAY2_LOCAL_CAPTURE": "${{ runner.temp }}/rspec-fault-diagnostics/day2",
+      "M4_D_EVIDENCE_DIR": "${{ runner.temp }}/rspec-fault-diagnostics/m4d"
+    }
+  ],
+  "checks": {
+    "exact_changed_file_allowlist": true,
+    "runtime_dependencies_and_helm_unchanged": true,
+    "no_existing_spec_modified": true,
+    "existing_workflow_semantics_identical_after_removing_only_allowed_capture_additions": true,
+    "only_expected_diagnostic_steps_added": true,
+    "bounded_synthetic_capture_scopes": true,
+    "exact_owner_question_and_answer_recorded_at_new_head": true
+  },
+  "verdict": "PASS",
+  "claim_limit": "V6's owner-approved bounded CI exception only. Not a G10 waiver, runner-cause conclusion, product repair, or overall acceptance."
+}

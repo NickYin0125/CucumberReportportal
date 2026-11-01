@@ -1,0 +1,96 @@
+{
+  "cell": "M6",
+  "source_head": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "ruby": "ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux]",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "config",
+        "--global",
+        "--add",
+        "safe.directory",
+        "/tmp/ledger-matrix-source"
+      ],
+      "exit": 0,
+      "seconds": 0.009587749998900108
+    },
+    {
+      "command": [
+        "bundle",
+        "_2.6.6_",
+        "install",
+        "--local"
+      ],
+      "exit": 0,
+      "seconds": 0.4114558339933865
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "ruby",
+        "-e",
+        "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+      ],
+      "exit": 0,
+      "seconds": 0.6125332500087097
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "rspec",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/private/tmp/ledger-finalise-20261101-ci-diagnostics/M6/rspec.json"
+      ],
+      "exit": 0,
+      "seconds": 265.663417578995
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "cucumber",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/private/tmp/ledger-finalise-20261101-ci-diagnostics/M6/cucumber.json"
+      ],
+      "exit": 0,
+      "seconds": 6.64068779500667
+    }
+  ],
+  "source_storage": {
+    "checkout": "/private/tmp/ledger-finalise-20261101-ci-diagnostics/M6/source",
+    "execution_copy": "/tmp/ledger-matrix-source",
+    "identical_library_bytes": true
+  },
+  "dependency_storage": "Copied /bundle into container-local /tmp/ledger-matrix-bundle; dependency versions still checked below",
+  "runtime": {
+    "ruby": "ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux]",
+    "cucumber": "12.0.1",
+    "sdk": "2.0.1"
+  },
+  "rspec": {
+    "duration": 264.042047497,
+    "example_count": 1463,
+    "failure_count": 0,
+    "pending_count": 0,
+    "errors_outside_of_examples_count": 0
+  },
+  "cucumber": {
+    "scenarios": 7,
+    "steps": 21,
+    "statuses": {
+      "passed": 21
+    }
+  },
+  "status": "PASS"
+}

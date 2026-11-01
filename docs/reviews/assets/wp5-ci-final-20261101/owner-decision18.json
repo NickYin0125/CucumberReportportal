@@ -1,0 +1,10 @@
+{
+  "decision": 18,
+  "cucumber": "10.2.0",
+  "fixture": "F14",
+  "owner_exact_question": "最终审查发现：Cucumber 10 的 F14 基线 API 把参数返回为 e,a,b,c,d，新版为 a,b,c,d,e，但双方发出的参数顺序和值逐字节一致。服务端内部使用无序 Set，API 却声明 List。是否仅对这项 API 读回按完整参数集合（保留重复计数）比较，保留原始差异；所有请求报文仍严格逐字节验收？",
+  "owner_exact_answer": "接受这项窄范围调整， 继续",
+  "duplicate_multiplicity_retained": true,
+  "ordered_post_bytes_still_strict": true,
+  "scope": "Only the C10/F14 GET parameter-array ordering adjudication; no value/key/identity/owner changes and no response-wide unordered contract or request normalization"
+}

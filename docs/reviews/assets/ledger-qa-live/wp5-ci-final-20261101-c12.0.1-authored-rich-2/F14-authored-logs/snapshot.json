@@ -1,0 +1,311 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3151,
+      "uuid": "3050f6ee-66bf-4f69-b3cd-7815a2ec6384",
+      "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-authored-rich-2-F14-authored-logs",
+      "number": 1,
+      "startTime": 1793506171044,
+      "endTime": 1793506171203,
+      "lastModified": 1793506171220,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 25297,
+      "uuid": "0179f59e-c3e5-48ec-947c-8f2e3584125b",
+      "name": "Feature: Independent authored log controls",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793506171079,
+      "endTime": 1793506171202,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3151,
+      "uniqueId": "auto:ef5416cdfff9e00966aa24b5184d5aae",
+      "testCaseHash": 64695664,
+      "patternTemplates": [],
+      "path": "25297",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25298,
+      "uuid": "4c5caf54-086d-4007-b192-2a8b06197029",
+      "name": "Scenario: Literal user logs",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14-authored-logs.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506171080,
+      "endTime": 1793506171167,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 25297,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3151,
+      "uniqueId": "2b2a71c492bb1468cf3a0642e44ba2af20f205be",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14-authored-logs.feature:3",
+      "testCaseHash": 372113084,
+      "patternTemplates": [],
+      "path": "25297.25298",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 25299,
+      "uuid": "8637dfeb-b499-4866-a8b3-fa1c63019695",
+      "name": "Given QA authored raw logger controls",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793506171104,
+      "endTime": 1793506171145,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 25298,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3151,
+      "uniqueId": "auto:19cb89eec6806d86a1fe06f64e651896",
+      "testCaseHash": 779472604,
+      "patternTemplates": [],
+      "path": "25297.25298.25299",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 16516,
+      "time": "2026-11-01T04:09:31.117Z",
+      "message": "rp_log literal *star* _under_ `tick`",
+      "level": "info",
+      "itemId": 25299
+    },
+    {
+      "id": 16517,
+      "time": "2026-11-01T04:09:31.120Z",
+      "message": "AppLog literal *star* _under_ `tick`",
+      "level": "info",
+      "itemId": 25299
+    },
+    {
+      "id": 16518,
+      "time": "2026-11-01T04:09:31.122Z",
+      "message": "rp_log literal <other> <b>x</b> &amp;",
+      "level": "info",
+      "itemId": 25299
+    },
+    {
+      "id": 16519,
+      "time": "2026-11-01T04:09:31.123Z",
+      "message": "AppLog literal <other> <b>x</b> &amp;",
+      "level": "info",
+      "itemId": 25299
+    },
+    {
+      "id": 16520,
+      "time": "2026-11-01T04:09:31.124Z",
+      "message": "rp_log literal first line\nsecond line",
+      "level": "info",
+      "itemId": 25299
+    },
+    {
+      "id": 16521,
+      "time": "2026-11-01T04:09:31.125Z",
+      "message": "AppLog literal first line\nsecond line",
+      "level": "info",
+      "itemId": 25299
+    },
+    {
+      "id": 16522,
+      "time": "2026-11-01T04:09:31.126Z",
+      "message": "rp_log literal CJK 中文 emoji 🟢",
+      "level": "info",
+      "itemId": 25299
+    },
+    {
+      "id": 16523,
+      "time": "2026-11-01T04:09:31.127Z",
+      "message": "AppLog literal CJK 中文 emoji 🟢",
+      "level": "info",
+      "itemId": 25299
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 3151,
+      "items_by_launch": [
+        {
+          "id": 25297,
+          "uuid": "0179f59e-c3e5-48ec-947c-8f2e3584125b",
+          "name": "Feature: Independent authored log controls",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-01T04:09:31.079Z",
+          "endTime": "2026-11-01T04:09:31.202Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-authored-rich-2-F14-authored-logs",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3151,
+          "uniqueId": "auto:ef5416cdfff9e00966aa24b5184d5aae",
+          "testCaseHash": 64695664,
+          "patternTemplates": [],
+          "path": "25297",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 25298,
+          "uuid": "4c5caf54-086d-4007-b192-2a8b06197029",
+          "name": "Scenario: Literal user logs",
+          "codeRef": "features/presentation_ledger/qa_runtime/F14-authored-logs.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:09:31.080Z",
+          "endTime": "2026-11-01T04:09:31.167Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 25297,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-authored-rich-2-F14-authored-logs",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25297,
+                "name": "Feature: Independent authored log controls"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3151,
+          "uniqueId": "2b2a71c492bb1468cf3a0642e44ba2af20f205be",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F14-authored-logs.feature:3",
+          "testCaseHash": 372113084,
+          "patternTemplates": [],
+          "path": "25297.25298",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 25299,
+          "uuid": "8637dfeb-b499-4866-a8b3-fa1c63019695",
+          "name": "Given QA authored raw logger controls",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-01T04:09:31.104Z",
+          "endTime": "2026-11-01T04:09:31.145Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 25298,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-independent-QA-wp5-ci-final-20261101-c12.0.1-authored-rich-2-F14-authored-logs",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 25297,
+                "name": "Feature: Independent authored log controls"
+              },
+              {
+                "id": 25298,
+                "name": "Scenario: Literal user logs"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3151,
+          "uniqueId": "auto:19cb89eec6806d86a1fe06f64e651896",
+          "testCaseHash": 779472604,
+          "patternTemplates": [],
+          "path": "25297.25298.25299",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "role": "Independent protocol review, recorded by Master without changing its conclusion",
+  "reviewer": "Galileo",
+  "reviewer_thread": "01a196c2-4a30-73e3-ac80-8783fa0e1ca2",
+  "date": "2026-11-01",
+  "scope": "Cucumber 10 F14 G1 persisted API parameter ordering only",
+  "wire_evidence": "docs/reviews/assets/wp5-ci-final-20261101/f14-parameter-order-investigation.json",
+  "source_chain": [
+    {
+      "fact": "ReportPortal 26.0.7 ships service-api 5.15.6.",
+      "url": "https://reportportal.io/docs/releases/Version26.0.7/"
+    },
+    {
+      "fact": "commons-reporting 5.15.3 response parameters are declared as List<ParameterResource>, not Set.",
+      "url": "https://github.com/reportportal/commons-reporting/blob/25465c7930f9d93acce9457a7248952665e98d54/src/main/java/com/epam/ta/reportportal/ws/reporting/TestItemResource.java#L57"
+    },
+    {
+      "fact": "The server converts incoming parameters with Collectors.toSet().",
+      "url": "https://github.com/reportportal/service-api/blob/3fdd3cccc2b7b2a3040e90d8d6f1c23fcb8d7b70/src/main/java/com/epam/ta/reportportal/ws/converter/builders/TestItemBuilder.java#L172"
+    },
+    {
+      "fact": "commons-dao 5.15.8 persists HashSet-backed Set<Parameter> without parameter ordering annotations.",
+      "url": "https://github.com/reportportal/commons-dao/blob/8f8d4a7989b6fe839d205b3994f24e0057be4029/src/main/java/com/epam/ta/reportportal/entity/item/TestItem.java#L99"
+    },
+    {
+      "fact": "GET conversion streams the persisted Set into a List without sorting.",
+      "url": "https://github.com/reportportal/service-api/blob/3fdd3cccc2b7b2a3040e90d8d6f1c23fcb8d7b70/src/main/java/com/epam/ta/reportportal/ws/converter/converters/TestItemConverter.java#L65"
+    }
+  ],
+  "finding": "Server-side reordering is supported by the implementation, but the API response model is not declared an unordered Set. All five investigated ordered wire arrays are identical and persisted multisets match; no client reordering or parameter loss is demonstrated.",
+  "adjudication": "Owner clarification is needed because frozen G1 does not explicitly authorize parameter-array canonicalization. Do not waive this gate independently.",
+  "proposed_narrow_scope": "Only the observed Cucumber 10 F14 GET parameter-array order may be compared as a complete multiset, retaining duplicate multiplicities. Ordered POST arrays remain byte-identical; original raw FAIL observations remain unchanged.",
+  "product_changes": false,
+  "owner_approval_in_this_record": false
+}

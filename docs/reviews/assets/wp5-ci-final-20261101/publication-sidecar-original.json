@@ -1,0 +1,133 @@
+{
+  "schema": "ledger-qa-publication-sidecar-audit/1",
+  "observation_date": "2026-11-01",
+  "scope": "Evidence publication integrity only; not product implementation, suite execution, primary QA certification, or a product verdict.",
+  "status": "THREE_S2_PACKAGING_FINDINGS_FINAL_FILES_PENDING",
+  "human_review": [
+    "No observed S1 packaging defect or current file over 100 MiB. Keep every Q, historical WP5, and current check inline and use the existing JSON.generate writer; do not introduce history shards unless exact final serialized bytes actually require them.",
+    "S2: the curator omits the separate quiet-performance tree used by the scorer.",
+    "S2: retained historical check references are not closed by the proposed selection plus already tracked files and historical archive indexes.",
+    "S2: published runners require workstation-specific roots, caches, tools, chart inputs and JPEG media without a portable bootstrap.",
+    "Final current-head reports, combined checks and a current-stamp manifest are pending. Preliminary manifests and prior-head reports are not final publication proof.",
+    "Only this sidecar artifact was written. No suites, browser, credentials, remote-ref scan, product edits, primary QA edits, Git staging or Git publication operations were performed."
+  ],
+  "worktrees": [
+    {
+      "root": "/Users/nick/Documents/crr-qa-2.0.1",
+      "requested_product_head": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+      "observed_qa_head": "6fd86e189b6c6023de07d188e9a9968267f143f9",
+      "current_report_runtime_head": "ff3268b945ab4fe4080be063567ea9b49c458def",
+      "current_report_stamp": "wp5-final-rerun-20261101",
+      "proposed_current_selection_file_count": 4641,
+      "proposed_current_selection_bytes": 145844253,
+      "acceptance_json_disk_bytes": 54160653,
+      "acceptance_json_compact_bytes": 34282922,
+      "new_live_checks_file_bytes": 19116003,
+      "compact_current_plus_new_live_check_rows_bytes": 53597877,
+      "structured_historical_existing_references_unavailable_after_publication": 533,
+      "quiet_tree_observed_files": 259,
+      "quiet_tree_observed_bytes": 13627100,
+      "current_screenshot_rows_checked": 21
+    },
+    {
+      "root": "/Users/nick/Documents/crr-qa-1.3.2",
+      "requested_product_head": "f41888a9fdd6896630765cbbf350353a7f803e59",
+      "observed_qa_head": "2fb71187a1a6b4a45056050eaaeac6629139c342",
+      "current_report_runtime_head": "4ddb466f4f04ffe04f82042d9b1429faff74ffcc",
+      "current_report_stamp": "wp5-final-rerun-20261101",
+      "proposed_current_selection_file_count": 8694,
+      "proposed_current_selection_bytes": 238284919,
+      "acceptance_json_disk_bytes": 77848045,
+      "acceptance_json_compact_bytes": 49739266,
+      "new_live_checks_file_bytes": 35153938,
+      "compact_current_plus_new_live_check_rows_bytes": 85276708,
+      "structured_historical_existing_references_unavailable_after_publication": 992,
+      "quiet_tree_observed_files": 0,
+      "quiet_tree_state": "PENDING_PRIMARY_WORK_NOT_A_MISSING_COMPLETED_RESULT_FINDING",
+      "current_screenshot_rows_checked": 6
+    }
+  ],
+  "findings": [
+    {
+      "id": "PUB-01",
+      "severity": "S2",
+      "title": "Quiet-performance evidence is outside the curator's roots",
+      "locations": [
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_curate.rb:43",
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_score.rb:98"
+      ],
+      "evidence": "The scorer defaults QA_WP5_PERF_STAMP to the current stamp plus -quiet. The curator includes only the exact main stamp and matching live directories. The observed 2.0.1 quiet tree already has 259 files / 13,627,100 bytes, none selected by those rules. The 1.3.2 quiet tree is still pending.",
+      "impact": "Final timing summaries can be selected while the actual wall/process and micro timing inputs needed to reproduce their calculations remain local-only.",
+      "bounded_remedy": "Add the scorer's exact resolved performance stamp as an additional explicitly bounded evidence root, applying the same source/cache/archive/native-HTML exclusions. Require each final G11 source directory to resolve to selected process, timing and provenance files. Do not rerun performance for packaging."
+    },
+    {
+      "id": "PUB-02",
+      "severity": "S2",
+      "title": "Historical checks retain references to unselected raw observations",
+      "locations": [
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_curate.rb:43",
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_report.rb:54",
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_report.rb:61"
+      ],
+      "evidence": "The report preserves original Q checks and older WP5/WP5R1 check objects, but curation includes only current-stamp trees plus a small historical allowlist. Even after allowing already tracked paths and all entries in the three tracked historical raw-archive indexes, 533 existing structured evidence/source references on 2.0.1 and 992 on 1.3.2 remain outside the proposed package. These counts exclude directories and nonexistent pending sources.",
+      "examples": [
+        "2.0.1 check WP5-00001 references docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json",
+        "1.3.2 check WP5-00095 references docs/reviews/assets/wp5-final-20261101-localcache/matrix/M2/result.json",
+        "1.3.2 check WP5-00101 references docs/reviews/assets/wp5-final-20261101/probes/c9.2.1/fault-Accent-details/F04/process.json"
+      ],
+      "impact": "An intact check object and native IDs are not a substitute for its promised raw input. Historical failures remain visible but cannot all be independently inspected from the proposed published package.",
+      "bounded_remedy": "Close final JSON references over the existing raw observation leaves and their necessary wire/runtime/provenance/download companions. Retain approved historical failure inputs unchanged. Satisfy each reference through a selected file, a verified tracked archive entry, or an explicit provenance-only mapping to pinned Git source. Keep original Q and current check objects inline. Do not blanket-select source mirrors, bundles, package binaries or native HTML copies. For deliberately excluded intermediate JPEG pointers, document their provenance-only status or include the small referenced originals if downloadable source captures are promised."
+    },
+    {
+      "id": "PUB-03",
+      "severity": "S2",
+      "title": "Selected runners do not provide portable reproduction setup",
+      "locations": [
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_driver.rb:17",
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_driver.rb:76",
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_driver.rb:110",
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_driver.rb:178",
+        "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_context.rb:4"
+      ],
+      "evidence": "Roots are fixed under /Users/nick/Documents; matrix/live staging expects pre-existing /private/tmp/ledger-matrix-bundles, linux-arm64 tools, an old scratch chart directory and developer JPEG media. The legacy QA root has no final_wp5_* control scripts and relies on the 2.0.1 harness. Context pins match the requested product heads, but root/cache relocation and dependency/tool/media bootstrap are not supplied by the selection. The tracked older evidence guide addresses archive restoration, not current WP5 runner setup.",
+      "impact": "Published script bytes and process arguments describe the original workstation but do not by themselves let a fresh checkout reconstruct the selected runs.",
+      "bounded_remedy": "Supply a small current-stamp reproduction guide or new portable launcher covering both QA roots and the central 2.0.1 harness, candidate/baseline SHAs, root mappings, exact Ruby/Cucumber and tool/image pins, dependency reconstruction, chart input retrieval and one canonical checksummed JPEG. Preserve historical recorded paths and assertions. Explain offline evidence recalculation separately from live execution, which needs Master-provided credentials. Do not publish whole caches or change product/primary verdict logic."
+    }
+  ],
+  "sizing_recommendation_to_primary_qa": {
+    "decision": "RETAIN_ALL_CHECKS_INLINE_AND_MINIFY_FIRST",
+    "basis": "The final writer already uses JSON.generate(data) plus one newline at final_wp5_report.rb:145. The measured compact current report plus new live rows is 85,276,708 bytes for 1.3.2 and 53,597,877 for 2.0.1. These are sizing probes, not final report sizes: UI/probes/repository checks, criterion updates and superseded-attempt snapshots are not fully included.",
+    "hard_limit_bytes": 104857600,
+    "warning_threshold_bytes": 52428800,
+    "warning_policy": "50 MiB is a warning, not the 100 MiB hard publication limit. Aggregate selected bytes may exceed either threshold; the hard gate is per Git blob.",
+    "bounded_steps": [
+      "Let primary QA finish the existing final report calculation using JSON.generate, retaining every original Q object, all historical WP5/WP5R1 objects, approved raw failure records, current check objects, check IDs and criterion references. Do not pretty-print the final JSON.",
+      "Before any commit, measure every exact final selected file and conservatively reject any blob at or above 104,857,600 bytes. After Master stages the approved selection, recheck the exact index blobs with git cat-file -s :PATH and verify that they match the finalized selected hashes. Do not commit an oversized blob and try to repair it in a later commit.",
+      "Compare original and compacted parsed check objects keyed by check_id, including the full original Q group, and resolve every criterion check_id plus historical references. Minification must change serialization only, not payloads, expected/actual values, criterion states or failure history.",
+      "Generate a new immutable current-stamp manifest only after final reports and raw-evidence selection are stable; recheck SHA256, byte counts, path containment and reference closure. Master then performs the separate actual-credential and current-remote-ref reviews."
+    ],
+    "history_shards_only_if_exact_final_size_fails": {
+      "default": "NOT_RECOMMENDED_NOW; compact inline serialization is likely sufficient and avoids an unnecessary acceptance-format change.",
+      "format_implications": "Moving obsolete WP5 bodies out of checks is a schema/consumer change, not transparent compression. Existing report.rb and final_wp5_report.rb construct a by_id map from inline checks and fetch criterion check_ids; historical criterion snapshots can also reference older IDs. An unversioned pointer substitution breaks those readers and historical-reference resolution.",
+      "bounded_fallback": "Only with explicit primary QA/format approval: keep every original Q and every current check inline; put only obsolete WP5 attempt bodies into lossless compressed history shards; version the format; retain all check IDs and attempt metadata; provide repository-relative shard paths, compressed and uncompressed SHA256/byte counts and an ID-to-shard index; hydrate before existing by_id lookups; verify parsed historical object equality and all criterion/history references. Preserve approved raw failure assets. Keep each resulting Git blob below the hard ceiling. No assertion, waiver or product verdict change is justified by packaging."
+    }
+  },
+  "integrity_observations": {
+    "selected_path_escapes_observed": 0,
+    "selected_oversized_files_observed": 0,
+    "accidentally_selected_source_bundle_archive_native_html_paths_observed": 0,
+    "symlinks": "No selected path resolved outside its QA root. Six broken docker-compose links were observed only under excluded matrix docker-config trees. No symlink was followed to read target content.",
+    "screenshots": "All checked path/source_snapshot/source_jpg targets for 21 current 2.0.1 rows and 6 current 1.3.2 rows existed locally and remained inside their QA roots; final PNG path patterns matched the curator. This is path integrity only, not UI coverage or quality certification.",
+    "preliminary_manifest_2x": "wp5-final-rerun-20261101/curated-manifest-preliminary-1.json: 3,525 entries, no missing or escaping entries, six fingerprints now differ (live-checks.json plus five evolving final_wp5 scripts).",
+    "preliminary_manifest_legacy": "wp5-final-rerun-20261101/curated-manifest-preliminary-1.json: 6,626 entries, no missing or escaping entries, one fingerprint now differs (live-checks.json).",
+    "draft_interpretation": "The manifests explicitly identify preliminary draft selections. Their changed fingerprints and older stamp require a fresh final manifest, not an accusation of corrupted final evidence.",
+    "path_guard_followup": "The curator's prefix check is lexical, not a realpath/ancestor-symlink guarantee. No actual escape was found. Recheck realpath containment and all path ancestors on the final selected set immediately before staging."
+  },
+  "pending_not_packaging_failure_by_itself": [
+    "Current-stamp combined checks.json, repository/after.json and curated-manifest-*.json were absent in both roots at inspection.",
+    "Acceptance reports/JSON still name wp5-final-rerun-20261101 and its earlier runtime heads; primary QA is still completing current-head finalization.",
+    "Current-stamp ci-attempt1-independent-review.json was absent; the final report generator names that artifact. Ensure it resolves in the final package if the generated report retains that reference.",
+    "Legacy quiet-performance outputs and additional final screenshot work were still pending. No suites or UI work were repeated and no conclusion about their eventual results is made."
+  ],
+  "method_and_limits": "Read QA curation/report/context and bounded related runner code; independently emulated file-selection rules read-only; inspected file sizes, realpaths, local report/screenshot references and manifest fingerprints; considered existing tracked files and tracked raw-archive indexes when checking historical reference coverage. Archives were not decompressed, QA programs were not loaded/executed, credentials were not inspected, and remote refs were not queried. Counts are observations during concurrent primary work, not a frozen final selection or product certification."
+}

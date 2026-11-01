@@ -6,10 +6,10 @@ require "digest"
 require "fileutils"
 require "rubygems/package"
 require "time"
+require_relative "final_wp5_context"
 
-stamp = ENV.fetch("QA_WP5_STAMP", "wp5-final-20261101")
-heads = { "2.0.1" => ["06f498cf9fb05352a831fdafc9583b40dced9899", "79e5e9cfde4be6d29ca2293e549460c6c71fe87a"],
-          "1.3.2" => ["1e136e89eb21276330e5fc9f1769fe9521a83cb9", "4ca2f770e0a84e83688f165ba04b4db8ef855cf9"] }
+stamp = LedgerWP5Context.stamp
+heads = LedgerWP5Context.heads.to_h { |version, head| [version, [head, version == "2.0.1" ? "79e5e9cfde4be6d29ca2293e549460c6c71fe87a" : "4ca2f770e0a84e83688f165ba04b4db8ef855cf9"]] }
 heads.each do |version, (head, baseline)|
   qa = "/Users/nick/Documents/crr-qa-#{version}"
   sdk = "/Users/nick/Documents/crr-#{version}"
@@ -27,6 +27,7 @@ heads.each do |version, (head, baseline)|
   raise "Runtime head changed" unless capture.call("V1", "git", "rev-parse", "HEAD").strip == head
   capture.call("V2", "git", "diff", baseline, head, "--", "Gemfile.lock")
   capture.call("V6", "git", "diff", "--stat", baseline, head, "--", "helm/", ".github/workflows/")
+  capture.call("V6", "git", "diff", "--name-only", baseline, head, "--", "helm/", ".github/workflows/")
   capture.call("V8", "git", "log", "--reverse", "--format=%H %s", "#{baseline}..#{head}")
   capture.call("V4", "git", "diff", baseline, head, "--", "CHANGELOG.md")
   capture.call("V5", "git", "diff", baseline, head, "--", "docs/configuration.md", "docs/advanced-reporting.md")

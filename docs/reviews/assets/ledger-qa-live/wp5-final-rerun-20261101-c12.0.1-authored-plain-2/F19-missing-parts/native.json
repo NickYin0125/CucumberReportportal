@@ -1,0 +1,49 @@
+[
+  {
+    "id": "independent-missing-run-context-parts",
+    "uri": "features/presentation_ledger/qa_runtime/F19-missing-parts.feature",
+    "keyword": "Feature",
+    "name": "Independent missing run-context parts",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "independent-missing-run-context-parts;no-optional-ci-or-git-parts",
+        "keyword": "Scenario",
+        "name": "No optional CI or Git parts",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger literal context-with-optional-fields-absent",
+            "line": 4,
+            "output": [
+              "context-with-optional-fields-absent"
+            ],
+            "match": {
+              "location": "script/acceptance/presentation_ledger_developer/support.rb:114"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1321208
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

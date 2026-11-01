@@ -5,13 +5,14 @@ require "open3"
 require "fileutils"
 require "digest"
 require "time"
+require_relative "final_wp5_context"
 
 module LedgerFinalWP5
   ROOT = File.expand_path("../../..", __dir__)
-  STAMP = ENV.fetch("QA_WP5_STAMP", "wp5-final-20261101")
+  STAMP = LedgerWP5Context.stamp
   LINES = {
-    "2.0.1" => { sha: "06f498cf9fb05352a831fdafc9583b40dced9899", base: "79e5e9cfde4be6d29ca2293e549460c6c71fe87a", rubies: ["3.4"], cucumbers: ["12.0.1"] },
-    "1.3.2" => { sha: "1e136e89eb21276330e5fc9f1769fe9521a83cb9", base: "4ca2f770e0a84e83688f165ba04b4db8ef855cf9", rubies: ["3.3"], cucumbers: ["9.2.1", "10.2.0"] }
+    "2.0.1" => { sha: LedgerWP5Context.heads.fetch("2.0.1"), base: "79e5e9cfde4be6d29ca2293e549460c6c71fe87a", rubies: ["3.4"], cucumbers: ["12.0.1"] },
+    "1.3.2" => { sha: LedgerWP5Context.heads.fetch("1.3.2"), base: "4ca2f770e0a84e83688f165ba04b4db8ef855cf9", rubies: ["3.3"], cucumbers: ["9.2.1", "10.2.0"] }
   }.freeze
   JPEG = "/Users/nick/Documents/crr-2.0.1/script/acceptance/presentation_ledger_developer/evidence/baseline2-all/media/jpeg.jpg"
   CELLS = [["M1", "1.3.2", "3.1", "9.2.1"], ["M2", "1.3.2", "3.1", "10.2.0"],
@@ -62,6 +63,21 @@ module LedgerFinalWP5
   def self.container(qa, sdk, version, ruby, cucumber, entry, tail, live: false, extra: {})
     digits = ruby.delete(".")
     baseline = "/Users/nick/Documents/crr-qa-baseline-#{version == '1.3.2' ? '1.3.1' : '2.0.0'}"
+    if live
+      volume = dependency_volume(qa, ruby)
+      args = ["docker", "run", "--rm", "--add-host", "rp-2607.localhost:host-gateway",
+        "-v", "#{qa}:#{qa}", "-v", "#{sdk}:/qa-seed/final:ro", "-v", "#{baseline}:/qa-seed/baseline:ro",
+        "-v", "#{volume}:/bundle:ro", "-v", "#{File.dirname(JPEG)}:#{File.dirname(JPEG)}:ro", "-w", qa,
+        "-e", "RP_API_KEY", "-e", "RP_ENDPOINT=http://rp-2607.localhost:18080", "-e", "RP_PROJECT=superadmin_personal",
+        "-e", "QA_FINAL_SDK_ROOT=#{sdk}", "-e", "QA_FINAL_SOURCE_SHA=#{LINES.fetch(version)[:sha]}",
+        "-e", "QA_BASELINE_SDK_ROOT=#{baseline}", "-e", "QA_BASELINE_SOURCE_SHA=#{LINES.fetch(version)[:base]}",
+        "-e", "QA_DEPENDENCY_VOLUME=#{volume}"]
+      extra.each { |name, value| args.concat(["-e", "#{name}=#{value}"]) }
+      stage = "/Users/nick/Documents/crr-qa-2.0.1/spec/acceptance/ledger_qa/final_wp5_container_stage.rb"
+      args.concat(["-v", "#{File.dirname(stage)}:/qa-stage:ro", "ruby:#{ruby}-slim", "ruby", "/qa-stage/final_wp5_container_stage.rb",
+        File.join(qa, "spec/acceptance/ledger_qa/#{entry}.rb"), *tail])
+      return args
+    end
     args = ["docker", "run", "--rm", "--add-host", "rp-2607.localhost:host-gateway",
       "-v", "#{qa}:#{qa}", "-v", "#{sdk}:#{sdk}:ro", "-v", "#{baseline}:#{baseline}:ro",
       "-v", "/Users/nick/Documents/New project/.git:/Users/nick/Documents/New project/.git:ro",
@@ -71,6 +87,31 @@ module LedgerFinalWP5
     extra.each { |name, value| args.concat(["-e", "#{name}=#{value}"]) }
     args.concat(["ruby:#{ruby}-slim", "ruby", File.join(qa, "spec/acceptance/ledger_qa/#{entry}.rb"), *tail])
     args
+  end
+
+  def self.dependency_volume(qa, ruby)
+    @dependency_volumes ||= {}
+    return @dependency_volumes[ruby] if @dependency_volumes.key?(ruby)
+    name = "ledger-qa-#{STAMP.downcase}-ruby#{ruby.delete('.')}"
+    image = "ruby:#{ruby}-slim"
+    destination = File.join(qa, "docs/reviews/assets", STAMP, "dependency-volumes", "ruby#{ruby.delete('.')}.json")
+    existing, _, status = Open3.capture3("docker", "volume", "inspect", name)
+    raise "Refusing to reuse an unverified dependency volume" if status.success? && !File.file?(destination)
+    unless status.success?
+      raise "Dependency volume creation failed" unless system("docker", "volume", "create", name, out: File::NULL)
+      bootstrap = <<~'RUBY'
+        require "fileutils"; require "digest"; require "json"
+        FileUtils.cp_r(Dir.children("/seed").map { |n| "/seed/#{n}" }, "/bundle")
+        manifest = ->(root) { Dir.glob(root + "/**/*", File::FNM_DOTMATCH).sort.filter_map { |p| next if File.directory?(p); [p.delete_prefix(root + "/"), Digest::SHA256.file(p).hexdigest] } }
+        left, right = manifest.call("/seed"), manifest.call("/bundle")
+        abort "Dependency copy mismatch" unless left == right
+        puts JSON.generate(file_count: left.length, exact_manifest_equal: true, source_manifest_sha256: Digest::SHA256.hexdigest(JSON.generate(left)), copied_manifest_sha256: Digest::SHA256.hexdigest(JSON.generate(right)))
+      RUBY
+      stdout, stderr, result = Open3.capture3("docker", "run", "--rm", "-v", "/private/tmp/ledger-matrix-bundles/ruby#{ruby.delete('.')}:/seed:ro", "-v", "#{name}:/bundle", image, "ruby", "-e", bootstrap)
+      raise "Dependency copy failed" unless result.success?
+      write(destination, JSON.parse(stdout).merge(volume: name, ruby_image: image, source: "Existing cached dependency files; no credential environment passed to staging", stderr: stderr))
+    end
+    @dependency_volumes[ruby] = name
   end
 
   def self.live
@@ -125,6 +166,7 @@ module LedgerFinalWP5
       raise "Scratch pin failed" unless system("git", "-C", source, "checkout", "--quiet", "--detach", LINES.fetch(version)[:sha])
       FileUtils.cp_r(File.join(qa, "spec/acceptance/ledger_qa"), File.join(source, "spec/acceptance"))
       FileUtils.cp(File.join(__dir__, "final_wp5_matrix_stage.rb"), File.join(source, "spec/acceptance/ledger_qa/final_wp5_matrix_stage.rb"))
+      FileUtils.cp(File.join(__dir__, "final_wp5_local_cell.rb"), File.join(source, "spec/acceptance/ledger_qa/final_wp5_local_cell.rb"))
       if version == "1.3.2"
         File.open(File.join(source, "Gemfile"), "a") { |file| file.puts("\ngem \"cucumber\", \"= #{cucumber}\"") }
         FileUtils.rm_f(File.join(source, "Gemfile.lock"))
@@ -136,12 +178,12 @@ module LedgerFinalWP5
       chart = "/private/tmp/ledger-final-matrix-20261031T063546Z-62ce39/M6-ruby34-cucumber12/source/helm/reportportal-rich-experience/charts"
       image_file = File.join("/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/ledger-qa-environment", "ruby#{ruby.delete('.')}\u002dimage.txt")
       image = File.file?(image_file) ? File.read(image_file).strip : "ruby:#{ruby}-slim"
-      args = ["docker", "run", "--rm", "--cpus", "2", "--memory", "3g", "-v", "#{source}:#{source}", "-w", source,
-        "-v", "/private/tmp/ledger-matrix-bundles/ruby#{ruby.delete('.')}:/seedbundle:ro",
+      args = ["docker", "run", "--rm", "--cpus", "2", "--memory", "3g", "-v", "#{source}:/qa-seed/source:ro", "-w", "/tmp",
+        "-v", "#{directory}:/qa-export", "-v", "/private/tmp/ledger-matrix-bundles/ruby#{ruby.delete('.')}:/qa-seed/bundle:ro",
         "-v", "/private/tmp/ledger-pinned-tools/linux-arm64:/tools:ro", "-v", "#{File.dirname(JPEG)}:/qa-media:ro",
-        "-v", "#{chart}:#{source}/helm/reportportal-rich-experience/charts:ro",
-        "-e", "QA_CELL=#{cell}", "-e", "QA_CUCUMBER=#{cucumber}", "-e", "QA_OUT=#{out}", "-e", "QA_HEAD=#{LINES.fetch(version)[:sha]}",
-        image, "ruby", File.join(source, "spec/acceptance/ledger_qa/final_wp5_matrix_stage.rb"), "--cell"]
+        "-v", "#{chart}:/qa-seed/charts:ro",
+        "-e", "QA_CELL=#{cell}", "-e", "QA_CUCUMBER=#{cucumber}", "-e", "QA_EXPORT=/qa-export/source/docs/reviews/assets/qa-cell-evidence", "-e", "QA_HEAD=#{LINES.fetch(version)[:sha]}",
+        image, "ruby", "/qa-seed/source/spec/acceptance/ledger_qa/final_wp5_local_cell.rb", "--cell"]
       execute(qa, "matrix-#{cell}", args)
       FileUtils.cp(File.join(out, "result.json"), File.join(directory, "result.json")) if File.file?(File.join(out, "result.json"))
       guard(version)
