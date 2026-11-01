@@ -180,3 +180,15 @@ F1 boundary clarification (owner-confirmed on 2026-11-01):
 Question: F1 要求显示位置不超过 40 字符；若无目录的 file:line 本身已超过 40，是否允许仅对显示文件名做中间省略，保留扩展名和行号，原始堆栈不变？
 
 Owner answer: 允许显示文件名中间省略（推荐）
+
+## Decision 15: Existing F14 Safety Omission
+
+Owner-confirmed on 2026-11-01.
+
+15. 是否仅对 F14 的 `back\slash` 故障输入保留既有的整条安全省略行为，并将 P1.2 的标题检查记录为明确例外？旧、新 Ledger 对同一真实输入都返回 `[REDACTED] [evidence omitted: unsafe or oversized input]`。其他标题及转义要求仍严格验收，不放宽脱敏。
+
+Owner answer: 保留安全省略，记录这一项例外（推荐）
+
+This exception applies only to the P1.2 title check for this exact F14 failure
+input. It does not waive other title, escaping, redaction, wire-equivalence or
+regression requirements, and does not authorize weakening the safety filter.
