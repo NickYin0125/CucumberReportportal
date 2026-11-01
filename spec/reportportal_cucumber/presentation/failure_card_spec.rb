@@ -76,6 +76,58 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
     expect(card(error: nil, message: "", backtrace: "")).to eq("Step failed")
   end
 
+  [40, 41, 96].each do |length|
+    it "caps a #{length}-character project location without changing its raw frame" do
+      location = "script/#{'d' * (length - 'script//support.rb:48'.length)}/support.rb:48"
+      expect(location.length).to eq(length)
+      raw = "/project/#{location}:in 'call'"
+      result = card(backtrace: raw)
+      displayed = length == 40 ? location : "script/\u2026/support.rb:48"
+      expect(result).to include("`#{displayed}`", "#{displayed}  call")
+      expect(displayed.length).to be <= 40
+      expect(result).to end_with("```text\n#{raw}\n```")
+      expect(result).to include("Full backtrace \u00b7 1 frame")
+    end
+  end
+
+  it "caps the feature location in both meta and the aligned frame block" do
+    raw = "/project/features/#{'deep/' * 20}checkout.feature:123:in 'scenario'"
+    displayed = "features/\u2026/checkout.feature:123"
+    result = card(backtrace: raw)
+    expect(result).to include("`#{displayed}`", "#{displayed}  scenario")
+    expect(result).to end_with("```text\n#{raw}\n```")
+  end
+
+  it "falls back to file:line if keeping the first directory still exceeds the cap" do
+    raw = "/project/#{'directory' * 8}/support.rb:48:in 'call'"
+    result = card(backtrace: raw)
+    expect(result).to include("`support.rb:48`", "support.rb:48  call")
+    expect(result).to end_with("```text\n#{raw}\n```")
+  end
+
+  [40, 41, 96].each do |length|
+    it "bounds a directory-free #{length}-character filename while retaining extension and line" do
+      location = "#{'x' * (length - '.rb:48'.length)}.rb:48"
+      result = card(backtrace: "#{location}:in 'call'")
+      displayed = result.split("\n\n")[1].delete_prefix('`').delete_suffix('`')
+      expect(displayed.length).to be <= 40
+      expect(displayed).to end_with(".rb:48")
+      expect(displayed).to eq(location) if length == 40
+      expect(displayed).to include("\u2026") if length > 40
+      expect(result).to end_with("```text\n#{location}:in 'call'\n```")
+    end
+  end
+
+  it "bounds rich-mode display locations while preserving the raw Unicode frame" do
+    location = ("\u4e2d" * 80) + ".rb:48"
+    raw = "#{location}:in 'call'"
+    result = described_class.format(error: error, message: error.message, backtrace: raw, cwd: cwd, presentation: "rich")
+    displayed = result.split("\n\n")[1].delete_prefix('`').delete_suffix('`')
+    expect(displayed.length).to eq(40)
+    expect(displayed).to end_with(".rb:48")
+    expect(result).to include("\n#{raw}\n")
+  end
+
   it "caps the complete title at 200 characters without splitting escapes or entities" do
     title = card(message: "x" * 500, backtrace: "").lines.first.chomp
     expect(title.length).to eq(200)
