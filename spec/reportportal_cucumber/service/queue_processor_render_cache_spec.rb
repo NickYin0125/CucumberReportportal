@@ -121,7 +121,7 @@ RSpec.describe ReportportalCucumber::Service::QueueProcessor do
       end
       records = 4.times.map { |index| record_attributes(index, name: "duplicate.txt") }
       baseline = records.map do |record|
-        "#{builder.safe_log_text(record[:message])}\n\n```text\npreview-#{record[:item_uuid].delete_prefix('owner-')}\\u0000 original bytes\n```"
+        "#{record[:message]}\n\n```text\npreview-#{record[:item_uuid].delete_prefix('owner-')}\0 original bytes\n```"
       end
       expect(ReportportalCucumber::Presentation::AttachmentCaption).to receive(:format).exactly(4).times.and_raise("SECRET123")
       expect(ReportportalCucumber.logger).to receive(:warn)

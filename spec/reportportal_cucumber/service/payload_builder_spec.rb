@@ -48,6 +48,7 @@ RSpec.describe ReportportalCucumber::Service::PayloadBuilder do
 
         expect(rendered_messages).to eq([2, "evidence.txt", "plain"] => expected[:entries].first["message"])
         expect(rendered_messages.values).to all(be_a(String))
+        expect(rendered_messages.values).to all(be_frozen)
       end
 
       it "keys captions by the final collision-safe filename rather than the explicit filename" do
