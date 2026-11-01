@@ -12,7 +12,12 @@ require "digest"
   data = JSON.parse(File.read(evidence_path))
   by_id = data.fetch("checks").to_h { |check| [check["check_id"], check] }
   data.fetch("criteria").each { |row| row["checks"] ||= row.fetch("check_ids").map { |id| by_id.fetch(id) } }
-  head = Open3.capture2("git", "-C", root, "rev-parse", "HEAD").first.strip
+  binding_path = "docs/reviews/assets/ledger-qa-doc-only-binding-#{version}.json"
+  binding = JSON.parse(File.read(File.join(root, binding_path)))
+  raise "Unverified doc-only feature binding" unless binding["verdict"] == "PASS"
+  qa_head = binding.fetch("actual_qa_checkpoint_head")
+  head = binding.fetch("candidate_feature_head")
+  runtime_head = binding.fetch("tested_runtime_head")
   branch = Open3.capture2("git", "-C", root, "branch", "--show-current").first.strip
   baseline = version == "1.3.2" ? "4ca2f770e0a84e83688f165ba04b4db8ef855cf9" : "79e5e9cfde4be6d29ca2293e549460c6c71fe87a"
   cells = version == "1.3.2" ? %w[M1 M2 M3 M4] : %w[M5 M6]
@@ -21,12 +26,23 @@ require "digest"
     [cell, File.file?(path) ? JSON.parse(File.read(path)) : nil]
   end
   final_complete = matrix.values.all? { |result| result && result["status"] == "PASS" }
-  data["status"] = final_complete ? "BLOCKED_OWNER_DECISIONS_PENDING" : "DRAFT_FINAL_MATRIX_RUNNING"
+  verdict = if data["criteria"].any? { |row| row["level"] == "MUST" && row["verdict"] == "FAIL" }
+              "REJECT"
+            elsif !final_complete || data["criteria"].any? { |row| row["level"] == "MUST" && !%w[PASS N/A].include?(row["verdict"]) }
+              "BLOCKED"
+            else
+              "ACCEPT"
+            end
+  data["status"] = verdict
   data["candidate_head"] = head
   data["baseline_head"] = baseline
   data["qa_branch"] = branch
+  data["qa_checkpoint_head"] = qa_head
+  data["tested_runtime_head"] = runtime_head
+  data["candidate_runtime_binding"] = binding_path
+  data["original_blocked_history"] = "docs/reviews/assets/ledger-qa-owner-closure-history-#{version}.json"
   data["report_date"] = "2026-11-01 Asia/Shanghai"
-  data["signoff"] = "NOT_SIGNED"
+  data["signoff"] = verdict == "ACCEPT" ? "QA_ACCEPTANCE_ONLY_NOT_RELEASE_AUTHORIZATION" : "NOT_SIGNED"
   data["capture_dates"] = "Actual UTC capture stamps are preserved; do not relabel October 31 runs as November 1 runs."
   data["final_matrix_stamp"] = "final-hooks-20261101"
   data["normalization"] = [
@@ -40,7 +56,8 @@ require "digest"
   data["criteria"].find { |row| row["id"] == "G10" }["verdict"] = "BLOCKED" unless final_complete
   p6 = data["criteria"].find { |row| row["id"] == "P6.1" }
   p6["current_note"] = p6["verdict"] == "PASS" ? "Resolved D03: C9/C10/C12 native Before/After/AfterStep names, real retry, fault fallback and final cache cleanup independently verified in both modes twice. Original failures remain in the historical ledger." : "Native/API retest passes; final-head full-suite evidence is still being completed. Original failures are retained separately."
-  data["criteria"].find { |row| row["id"] == "V7" }["current_note"] = "Authentic complete pre-task public CI tag fetch-list and unchanged protected refs retained. Original full ls-remote before snapshot is unavailable; owner approval of alternative evidence is pending."
+  data["criteria"].find { |row| row["id"] == "V7" }["current_note"] = "Decision 10: fresh authenticated public CI fetch-list plus fresh current ls-remote tag NAMES match; protected head SHAs unchanged. Historical tag object SHAs were not recorded and equality is NOT claimed. Original BLOCKED proof retained."
+  data["criteria"].find { |row| row["id"] == "P10.6" }["current_note"] = "Decision 9: exact canonical word equality after narrowly validated existing P10 annotations/Decision2 positions. Raw caller markup and all code bytes preserved; arbitrary insertion/deletion/reordering negatives and separate frozen 62-frame byte guards pass."
 
   perf_root = File.join(assets, "ledger-qa-performance/final-hooks")
   perf = { source: "docs/reviews/assets/ledger-qa-performance/final-hooks", wall: {}, micro: {}, replay_errors: [] }
@@ -81,8 +98,10 @@ require "digest"
   File.write(evidence_path, JSON.pretty_generate(data) + "\n")
 
   lines = ["# Ledger presentation acceptance \u2014 #{version}", "",
-    "Verdict: BLOCKED. Date: 2026-11-01 (Asia/Shanghai). Tester: Independent Ledger QA. Branch: `#{branch}`. Candidate head: `#{head}`. Baseline: `#{baseline}`. RP UI 5.15.6 / server 26.0.7.", "",
-    "#{final_complete ? 'Final technical evidence is complete' : 'Draft: final matrix is still running'}; this is NOT ACCEPT. P10.6 and V7 require explicit owner decisions; neither is waived or PASS. Actual October 31 capture stamps remain unchanged. Underlying product suites contain 1345 examples on 1.x and 1402 on 2.x; the independent QA property file adds 16, giving 1361/1418 total examples. Actual per-cell counts below are authoritative.", "",
+    "Verdict: #{verdict}. Date: 2026-11-01 (Asia/Shanghai). Tester: Independent Ledger QA. Branch: `#{branch}`. Candidate FEATURE head: `#{head}`. Baseline: `#{baseline}`. RP UI 5.15.6 / server 26.0.7.", "",
+    "Owner Decisions 9/10 were approved on 2026-11-01 and independently verified, not inferred. The previously published BLOCKED checkpoint `#{qa_head}` and its exact records remain in history. G11 remains an open nonblocking S3 finding; ACCEPT is QA acceptance only, not authorization to merge, release or publish.", "",
+    "The full matrix actually tested runtime head `#{runtime_head}`, not the QA commit or new doc-only feature commit. [Git path/mode/blob fingerprints](#{binding_path.delete_prefix('docs/reviews/')}) prove runtime, product tests, dependency/lock, workflows/Helm and every non-design-doc path unchanged; new design docs are byte-identical to the feature head. Existing full-suite results are reused on that explicit basis, with no relabelled executions or new matrix. Fresh standalone gem build/contents proof binds the packaged new docs to `#{head}`; no .gem or source mirror is published.", "",
+    "Actual October 31 capture stamps remain unchanged. Underlying product suites contain 1345 examples on 1.x and 1402 on 2.x; the independent QA property file adds 16, giving 1361/1418 total examples. Actual per-cell counts below are authoritative.", "",
     "## Runs", "| Run | Ruby | Cucumber | Mode | RSpec (examples/failures/pending) | Cucumber (scenarios/steps) | Launch IDs |",
     "| --- | --- | --- | --- | --- | --- | --- |"]
   matrix.each do |cell, result|
@@ -124,7 +143,9 @@ require "digest"
     "| D03 | S2, resolved by final native/API retest | P6.1 | F15-named | Preserve declared native hook names | Original native Hook.name existed but RP lost it. Final 178 checks on 2.x and 284 on 1.x pass, including all three kinds, real retry, fault fallback and actual-completion cache cleanup. | Historical ledger; hooks-audit JSON; final S07 |",
     "| D04 | S3, open | G11 | F01-F18 corpus | Every formatter p95 below 2 ms | FailureCard.format p95 #{perf[:micro].dig('FailureCard.format', :p95_ms)&.round(3)} ms in wrapper-free replay (2,100 calls). Wall medians remain within +10%; full samples/runtime retained. | ledger-qa-performance-#{version}.json |",
     "| D05 | S3, cosmetic | Outside P4.3 | F02 | Compact Examples metadata | Examples metadata wraps at 1100px. Key/value chips each have one physical line; P4.3 passes. | S05 and chip getClientRects proof |", "",
-    "P10.6 is a specification-algorithm conflict, not permission to alter frozen backtrace bytes or raw user logs. The literal prescribed regex deletes three `top` words from Ruby `<top (required)>` code labels. The proposed code-aware comparison passes, but owner approval is pending. V7 retains authentic public pre-task CI fetch-list evidence, not a fabricated original remote before snapshot.", "",
+    "Decision 9 closes the strip-tags conflict without changing frozen backtrace or caller bytes. The independent checker protects raw caller `<details>/<summary>/<span style=...>` even when identical to client vocabulary, plus fenced/inline code. It requires exact canonical words, not an unrestricted subsequence. Only the already documented P10 meta-status and count-verified preview/body/DocString captions, plus Decision2 sample positions, are normalized; arbitrary insertion, removal, reordering and angle-loss controls fail as expected. Separate live guards retain all 62 frozen frame bytes. See [fresh checks](assets/ledger-qa-p106-decision9-#{version}.json).", "",
+    "Decision 10 accepts the authentic pre-task public CI complete tag fetch-list as alternative evidence. The fresh read-only remote name list has exactly the same eight names, and all three protected head SHAs match task-start observations. This is historical tag NAME proof, not historical tag object-SHA proof and not an original before ls-remote snapshot. No tag was created or modified. Original BLOCKED records remain in [history](assets/ledger-qa-owner-closure-history-#{version}.json).", "",
+    "[Fresh package evidence](assets/ledger-qa-final-doc-package-#{version}.json) includes exact spec/member paths, packaged docs, runtime hashes and two explicitly allowed pre-existing SDK-shipped PNGs with original tested-head byte proof. The first QA hygiene helper's overly broad rejection of those shipping images is retained as a superseded harness attempt, not a product defect or waiver. Old pre-decision gem evidence remains labelled old.", "",
     "On 1.x, six baseline NUL-preview attachment losses use only the exact Decision 8 exception: baseline accepted wire plus complete candidate per-item download, with matching owner/name/MIME/bytes/hash. The unchanged raw-NUL native user log is absent from both versions. HTTP 201 is submission acceptance, not persistence proof; the read API gives no server rejection reason. The old baseline F16f SECRET123 probe hit is not a candidate G8 failure.", "",
     "The final GET audit initially omitted 15 first-attempt Scenarios because the normal API item page nests them in the latest Scenario's retries array. Original mismatches are retained. The separate immutable supplement discovers those actual nested IDs, directly reads each attempt, verifies UUID/real parent/closed status/Suite-to-Launch lineage and per-item filters, and proves the expanded item/log sets equal the snapshots. This is an explicit query-model correction, not a topology or persistence waiver.", "",
     "The supplied pre-fix Master M4 wall-clock assertion failure (0.817765 s versus <0.5 s under concurrent load) is not erased or labelled proven baseline flakiness. Its helper includes bootstrap/business work; separate timing instrumentation records actual finalization while retaining every original assertion. All six final isolated cells pass unchanged bounds. No timeout increase or timing waiver was used.", "",
@@ -136,7 +157,7 @@ require "digest"
     relative = absolute_png.delete_prefix(File.join(root, "docs/reviews/") )
     lines << "- [#{shot['slug']}](#{relative}), #{shot['mode']}; Launch #{shot['launch_ids'].join(',')}; context Item #{shot['context_item_id'] || 'N/A Launch list'}; #{shot['visual_verdict']}."
   end
-  lines += ["", "S12 is genuine native Console via ordinary Log Message search, not Markdown-off. Pagination was already ON and not changed; Console/search/Markdown state was restored. Historical empty-scope blocked shots remain labelled historical and are not exit evidence. S03 was re-captured using a fixed 1100 x 780 viewport clip; metadata records the actual method. Native download filenames are proved by real UI clicks and separately statted/hashed files, not headers alone.", "", "## Waivers", "Only the owner-confirmed Decisions below apply. Master review/QA-artifact archival instructions are not user waivers. P10.6/V7 pending questions are not approvals.", ""]
+  lines += ["", "S12 is genuine native Console via ordinary Log Message search, not Markdown-off. Pagination was already ON and not changed; Console/search/Markdown state was restored. Historical empty-scope blocked shots remain labelled historical and are not exit evidence. S03 was re-captured using a fixed 1100 x 780 viewport clip; metadata records the actual method. Native download filenames are proved by real UI clicks and separately statted/hashed files, not headers alone.", "", "## Waivers", "Only the ten owner-confirmed Decisions below apply. Decisions 1-8 remain verbatim; Decisions 9/10 are new explicit approvals, not retroactive changes to historical BLOCKED evidence. Master review/QA-artifact archival instructions are not user waivers.", ""]
   decisions = File.read(File.join(root, "docs/design/presentation-ledger-acceptance.md")).split(/^## Decisions\s*$/, 2).last
   lines.concat(decisions.to_s.lines.map { |line| line.chomp.empty? ? ">" : "> #{line.chomp}" })
   report = File.join(root, "docs/reviews/2026-11-01-presentation-ledger-#{version}-acceptance.md")
@@ -168,7 +189,7 @@ require "digest"
   data["checks"] = unique
   data["check_index_note"] = "Every check's full inputs, expected/actual values, verdict and source/Launch/item/log references occur once in checks. Criteria reference them through check_ids; no assertion values were discarded."
   File.write(evidence_path, JSON.pretty_generate(data) + "\n")
-  puts JSON.generate(version: version, report: report, verdict: "BLOCKED", criteria: data["criteria"].length,
+  puts JSON.generate(version: version, report: report, verdict: verdict, candidate_feature_head: head, tested_runtime_head: runtime_head, criteria: data["criteria"].length,
     current_fail: data["criteria"].select { |r| r["verdict"] == "FAIL" }.map { |r| r["id"] },
     current_blocked: data["criteria"].select { |r| r["verdict"] == "BLOCKED" }.map { |r| r["id"] })
 end

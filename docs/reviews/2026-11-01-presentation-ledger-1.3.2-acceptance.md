@@ -1,8 +1,12 @@
 # Ledger presentation acceptance — 1.3.2
 
-Verdict: BLOCKED. Date: 2026-11-01 (Asia/Shanghai). Tester: Independent Ledger QA. Branch: `qa/presentation-ledger-1.3.2`. Candidate head: `c27510547ace0d4baaf964a0575e5bec4344e11a`. Baseline: `4ca2f770e0a84e83688f165ba04b4db8ef855cf9`. RP UI 5.15.6 / server 26.0.7.
+Verdict: ACCEPT. Date: 2026-11-01 (Asia/Shanghai). Tester: Independent Ledger QA. Branch: `qa/presentation-ledger-1.3.2`. Candidate FEATURE head: `168932ef55ac3166d70f6ecc91f8c860ff628166`. Baseline: `4ca2f770e0a84e83688f165ba04b4db8ef855cf9`. RP UI 5.15.6 / server 26.0.7.
 
-Final technical evidence is complete; this is NOT ACCEPT. P10.6 and V7 require explicit owner decisions; neither is waived or PASS. Actual October 31 capture stamps remain unchanged. Underlying product suites contain 1345 examples on 1.x and 1402 on 2.x; the independent QA property file adds 16, giving 1361/1418 total examples. Actual per-cell counts below are authoritative.
+Owner Decisions 9/10 were approved on 2026-11-01 and independently verified, not inferred. The previously published BLOCKED checkpoint `df328a37fbe7c66d5ce9330dd99e6c9a467b0ded` and its exact records remain in history. G11 remains an open nonblocking S3 finding; ACCEPT is QA acceptance only, not authorization to merge, release or publish.
+
+The full matrix actually tested runtime head `c27510547ace0d4baaf964a0575e5bec4344e11a`, not the QA commit or new doc-only feature commit. [Git path/mode/blob fingerprints](assets/ledger-qa-doc-only-binding-1.3.2.json) prove runtime, product tests, dependency/lock, workflows/Helm and every non-design-doc path unchanged; new design docs are byte-identical to the feature head. Existing full-suite results are reused on that explicit basis, with no relabelled executions or new matrix. Fresh standalone gem build/contents proof binds the packaged new docs to `168932ef55ac3166d70f6ecc91f8c860ff628166`; no .gem or source mirror is published.
+
+Actual October 31 capture stamps remain unchanged. Underlying product suites contain 1345 examples on 1.x and 1402 on 2.x; the independent QA property file adds 16, giving 1361/1418 total examples. Actual per-cell counts below are authoritative.
 
 ## Runs
 | Run | Ruby | Cucumber | Mode | RSpec (examples/failures/pending) | Cucumber (scenarios/steps) | Launch IDs |
@@ -32,7 +36,7 @@ Native Cucumber compound syntax is N/A on 1.x only under Decision 4, with parser
 | G7 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 493 checks; logs 4480,4479,4481,4482,4483,4484; items 6533,6534,6535,6536 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | G8 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 536 checks; logs 4480,4479,4481,4482,4483,4484; items 6533,6534,6535,6536 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | G9 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 57 checks; logs 6218,6219,6220,6221,6222,6223; items 9332,9333,9334,9335 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
-| G10 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 4 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
+| G10 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 5 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | G11 | SHOULD | FAIL | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 1 checks | SHOULD timing target not met; nonblocking, no threshold relaxed. |
 | G12 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 271 checks; logs 4891,4893,4892,4894,4895,4896; items 7189,7190,7191,7192 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | P1.1 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 6 checks; logs 6122,6123,5562,5563,5575,5576; items 9170,9171,9172,9173 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
@@ -93,19 +97,19 @@ Native Cucumber compound syntax is N/A on 1.x only under Decision 4, with parser
 | P10.3 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 206 checks; logs 4891,4893,4892,4894,4895,4896; items 7189,7190,7191,7192 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | P10.4 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 30 checks; logs 6172,6173,5729,5730,5731,5734; items 9254,9255,9256,9257 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | P10.5 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 206 checks; logs 4891,4893,4892,4894,4895,4896; items 7189,7190,7191,7192 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
-| P10.6 | MUST | BLOCKED | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 207 checks; logs 4891,4893,4892,4894,4895,4896; items 7189,7190,7191,7192 | Literal strip-tags removes <top (required)> and <main> inside byte-frozen F04 fences; owner clarification pending |
-| P10.7 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 262 checks; logs 4891,4893,4892,4894,4895,4896; items 7189,7190,7191,7192 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
+| P10.6 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 617 checks; logs 4481,4892,4480,4891,4479,4893; items 7191,7194,7195,7198 | Decision 9: exact canonical word equality after narrowly validated existing P10 annotations/Decision2 positions. Raw caller markup and all code bytes preserved; arbitrary insertion/deletion/reordering negatives and separate frozen 62-frame byte guards pass. |
+| P10.7 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 223 checks; logs 4891,4893,4892,4894,4895,4896; items 7189,7190,7191,7192 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | P10.8 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 31 checks; logs 6172,6173,5732,5736,5050,5051; items 9254,9255,9256,9257 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | P10.9 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 3 checks; logs 5018,5019; items 7381,7382,7383,7384 | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | P10.10 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 49 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | P10.11 | SHOULD | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 5 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
-| V1 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 1 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
+| V1 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 2 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | V2 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 1 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | V3 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 1 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | V4 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 1 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 | V5 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 1 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
-| V6 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 2 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
-| V7 | MUST | BLOCKED | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 2 checks | Authentic complete pre-task public CI tag fetch-list and unchanged protected refs retained. Original full ls-remote before snapshot is unavailable; owner approval of alternative evidence is pending. |
+| V6 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 3 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
+| V7 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 5 checks | Decision 10: fresh authenticated public CI fetch-list plus fresh current ls-remote tag NAMES match; protected head SHAs unchanged. Historical tag object SHAs were not recorded and equality is NOT claimed. Original BLOCKED proof retained. |
 | V8 | MUST | PASS | [Complete checks](assets/presentation-ledger-1.3.2-acceptance.json), 1 checks | All recorded subchecks pass; see exact inputs/expected/actual and source references. |
 
 ## Defects
@@ -117,7 +121,11 @@ Native Cucumber compound syntax is N/A on 1.x only under Decision 4, with parser
 | D04 | S3, open | G11 | F01-F18 corpus | Every formatter p95 below 2 ms | FailureCard.format p95 7.34 ms in wrapper-free replay (2,100 calls). Wall medians remain within +10%; full samples/runtime retained. | ledger-qa-performance-1.3.2.json |
 | D05 | S3, cosmetic | Outside P4.3 | F02 | Compact Examples metadata | Examples metadata wraps at 1100px. Key/value chips each have one physical line; P4.3 passes. | S05 and chip getClientRects proof |
 
-P10.6 is a specification-algorithm conflict, not permission to alter frozen backtrace bytes or raw user logs. The literal prescribed regex deletes three `top` words from Ruby `<top (required)>` code labels. The proposed code-aware comparison passes, but owner approval is pending. V7 retains authentic public pre-task CI fetch-list evidence, not a fabricated original remote before snapshot.
+Decision 9 closes the strip-tags conflict without changing frozen backtrace or caller bytes. The independent checker protects raw caller `<details>/<summary>/<span style=...>` even when identical to client vocabulary, plus fenced/inline code. It requires exact canonical words, not an unrestricted subsequence. Only the already documented P10 meta-status and count-verified preview/body/DocString captions, plus Decision2 sample positions, are normalized; arbitrary insertion, removal, reordering and angle-loss controls fail as expected. Separate live guards retain all 62 frozen frame bytes. See [fresh checks](assets/ledger-qa-p106-decision9-1.3.2.json).
+
+Decision 10 accepts the authentic pre-task public CI complete tag fetch-list as alternative evidence. The fresh read-only remote name list has exactly the same eight names, and all three protected head SHAs match task-start observations. This is historical tag NAME proof, not historical tag object-SHA proof and not an original before ls-remote snapshot. No tag was created or modified. Original BLOCKED records remain in [history](assets/ledger-qa-owner-closure-history-1.3.2.json).
+
+[Fresh package evidence](assets/ledger-qa-final-doc-package-1.3.2.json) includes exact spec/member paths, packaged docs, runtime hashes and two explicitly allowed pre-existing SDK-shipped PNGs with original tested-head byte proof. The first QA hygiene helper's overly broad rejection of those shipping images is retained as a superseded harness attempt, not a product defect or waiver. Old pre-decision gem evidence remains labelled old.
 
 On 1.x, six baseline NUL-preview attachment losses use only the exact Decision 8 exception: baseline accepted wire plus complete candidate per-item download, with matching owner/name/MIME/bytes/hash. The unchanged raw-NUL native user log is absent from both versions. HTTP 201 is submission acceptance, not persistence proof; the read API gives no server rejection reason. The old baseline F16f SECRET123 probe hit is not a candidate G8 failure.
 
@@ -167,10 +175,11 @@ Evidence checkout/extraction and path mapping: [artifact guide](assets/presentat
 S12 is genuine native Console via ordinary Log Message search, not Markdown-off. Pagination was already ON and not changed; Console/search/Markdown state was restored. Historical empty-scope blocked shots remain labelled historical and are not exit evidence. S03 was re-captured using a fixed 1100 x 780 viewport clip; metadata records the actual method. Native download filenames are proved by real UI clicks and separately statted/hashed files, not headers alone.
 
 ## Waivers
-Only the owner-confirmed Decisions below apply. Master review/QA-artifact archival instructions are not user waivers. P10.6/V7 pending questions are not approvals.
+Only the ten owner-confirmed Decisions below apply. Decisions 1-8 remain verbatim; Decisions 9/10 are new explicit approvals, not retroactive changes to historical BLOCKED evidence. Master review/QA-artifact archival instructions are not user waivers.
 
 >
-> Owner-confirmed on 2026-10-31. The following questions and answers are reproduced
+> Decisions 1-8 were owner-confirmed on 2026-10-31; Decisions 9-10 on 2026-11-01.
+> The following questions and answers are reproduced
 > word for word. These decisions take precedence over conflicting text above;
 > the independent tester must assess against them.
 >
@@ -205,4 +214,12 @@ Only the owner-confirmed Decisions below apply. Master review/QA-artifact archiv
 > 8. Question: 独立 QA 确认：1.x 旧基线有 6 个含 NUL 字符的文本附件未落库，新版则完整保存，且上传字节、MIME 和归属均不变。是否允许仅这 6 项改用旧版实际提交的报文作对照，并要求新版完整读回；其余 G2/G3 仍严格比较 API 基线？另有一条原生 NUL 用户日志在新旧版均未落库，将明确列为既有限制，暂不改变其语义。
 >
 >    Owner answer: 允许这 6 项基线例外，记录既有限制（推荐）
+>
+> 9. Question: 独立 QA 发现 P10.6 的 strip-tags 定义（删除所有 <[^>]+>）会把原始 Ruby 堆栈里的 `<top (required)>` 也删除，与 P1 要求完整保留堆栈冲突。是否改为仅剥离客户端生成的展示 HTML，保留代码块、代码片段和用户原文中的尖括号，再严格检查文字顺序（仅沿用已批准的 Rich 样例差异）？
+>
+>    Owner answer: 按此澄清规则，保留原始内容（推荐）
+>
+> 10. Question: V7 的“开始前完整 ls-remote Tag 清单”未保存；我找到了本任务开始前 GitHub CI 的完整 Tag 拉取记录，8 个 Tag 与当前远端清单完全一致，三个受保护分支也均未变。是否允许用该历史 CI 记录与当前 ls-remote 对照作为替代证据，并在报告中注明来源？不会改变“禁止创建 Tag”的要求。
+>
+>     Owner answer: 接受历史 CI 记录作为替代证据（推荐）
 >

@@ -1,0 +1,127 @@
+{
+  "schema": "decision10-alternative-before-tag-proof/1",
+  "version": "1.3.2",
+  "checked_at_utc": "2026-11-01T02:03:11Z",
+  "inputs": {
+    "ci_source": "docs/reviews/assets/ledger-qa-v7-decision10-ci-refresh.json",
+    "ci_source_sha256": "aa78cb5d1166bb63cf7549c56d4a82c38041f9cdc134a6f1dc7f4550050a0ad2",
+    "original_ci_source": "docs/reviews/assets/ledger-qa-v7-public-ci-before.json",
+    "c0_commit_and_time": "9ea7f1f226380d4907b6157abb41b72bd86d5b56\t2026-10-31T12:53:22+08:00"
+  },
+  "read_only_current_ls_remote": {
+    "argv": [
+      "git",
+      "ls-remote",
+      "https://github.com/NickYin0125/CucumberReportportal.git",
+      "refs/heads/main",
+      "refs/heads/maintenance/1.x",
+      "refs/heads/codex/cucumber-12",
+      "refs/tags/*"
+    ],
+    "stdout": "f2e68f112ad28604f4395710f10f595246f6dc00\trefs/heads/codex/cucumber-12\n75cb090a7852c56285010af17cde9ad55df1284b\trefs/heads/main\n4ca2f770e0a84e83688f165ba04b4db8ef855cf9\trefs/heads/maintenance/1.x\n0c2e5c66139688d8dcf60da6a8fac9440108044e\trefs/tags/m3\nc9eacad5f1320e84f9660a413ef307d39f48d2de\trefs/tags/m3^{}\n10882646c776d79879b9159b269f447c4f5c7a3b\trefs/tags/milestone1\ndd00b81b1041d48269d1c7daff3c49edcc354fa3\trefs/tags/milestone1^{}\n371636c511fc145688c7db434dbe2117c68492db\trefs/tags/v1.0.0\na28bf7afd49e3a50138da5ef8f8c0cab291d7018\trefs/tags/v1.0.0^{}\neb42ec31ad78893367b86c07bd619a7e25fc9e41\trefs/tags/v1.1.0\na2c1e909c5255abf03ce1b956d1bba5ae7464f9d\trefs/tags/v1.2.0\nbb3805dbc497e2627252d1097c74281f26375fbb\trefs/tags/v1.2.0^{}\nacf7cfe34d8bbc3720f1fa7e09f77ab95c840b9c\trefs/tags/v1.3.0\n71b63023fbf9318147a175c3e637fdd87195b82e\trefs/tags/v1.3.0^{}\na3381656c17986f509e8a97cb537bea76adc3225\trefs/tags/v1.3.1\n4ca2f770e0a84e83688f165ba04b4db8ef855cf9\trefs/tags/v1.3.1^{}\na04160efce8a9e92e86bbc5f7f27d00314e5e069\trefs/tags/v2.0.0\nf2e68f112ad28604f4395710f10f595246f6dc00\trefs/tags/v2.0.0^{}\n",
+    "stderr": "",
+    "exit": 0
+  },
+  "current_tag_names": [
+    "m3",
+    "milestone1",
+    "v1.0.0",
+    "v1.1.0",
+    "v1.2.0",
+    "v1.3.0",
+    "v1.3.1",
+    "v2.0.0"
+  ],
+  "current_tag_objects_for_observation_only": {
+    "refs/tags/m3": "0c2e5c66139688d8dcf60da6a8fac9440108044e",
+    "refs/tags/m3^{}": "c9eacad5f1320e84f9660a413ef307d39f48d2de",
+    "refs/tags/milestone1": "10882646c776d79879b9159b269f447c4f5c7a3b",
+    "refs/tags/milestone1^{}": "dd00b81b1041d48269d1c7daff3c49edcc354fa3",
+    "refs/tags/v1.0.0": "371636c511fc145688c7db434dbe2117c68492db",
+    "refs/tags/v1.0.0^{}": "a28bf7afd49e3a50138da5ef8f8c0cab291d7018",
+    "refs/tags/v1.1.0": "eb42ec31ad78893367b86c07bd619a7e25fc9e41",
+    "refs/tags/v1.2.0": "a2c1e909c5255abf03ce1b956d1bba5ae7464f9d",
+    "refs/tags/v1.2.0^{}": "bb3805dbc497e2627252d1097c74281f26375fbb",
+    "refs/tags/v1.3.0": "acf7cfe34d8bbc3720f1fa7e09f77ab95c840b9c",
+    "refs/tags/v1.3.0^{}": "71b63023fbf9318147a175c3e637fdd87195b82e",
+    "refs/tags/v1.3.1": "a3381656c17986f509e8a97cb537bea76adc3225",
+    "refs/tags/v1.3.1^{}": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+    "refs/tags/v2.0.0": "a04160efce8a9e92e86bbc5f7f27d00314e5e069",
+    "refs/tags/v2.0.0^{}": "f2e68f112ad28604f4395710f10f595246f6dc00"
+  },
+  "historical_tag_object_sha_proof": false,
+  "no_tag_mutation_performed": true,
+  "owner_decision": 10,
+  "checks": [
+    {
+      "check": "Authentic successful empty-checkout all-tag fetch completed before C0",
+      "expected": true,
+      "actual": true,
+      "verdict": "PASS"
+    },
+    {
+      "check": "Historical CI tag NAMES equal original independent public CI extraction",
+      "expected": [
+        "m3",
+        "milestone1",
+        "v1.0.0",
+        "v1.1.0",
+        "v1.2.0",
+        "v1.3.0",
+        "v1.3.1",
+        "v2.0.0"
+      ],
+      "actual": [
+        "m3",
+        "milestone1",
+        "v1.0.0",
+        "v1.1.0",
+        "v1.2.0",
+        "v1.3.0",
+        "v1.3.1",
+        "v2.0.0"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "check": "Fresh current remote tag NAMES equal approved historical CI name-list",
+      "expected": [
+        "m3",
+        "milestone1",
+        "v1.0.0",
+        "v1.1.0",
+        "v1.2.0",
+        "v1.3.0",
+        "v1.3.1",
+        "v2.0.0"
+      ],
+      "actual": [
+        "m3",
+        "milestone1",
+        "v1.0.0",
+        "v1.1.0",
+        "v1.2.0",
+        "v1.3.0",
+        "v1.3.1",
+        "v2.0.0"
+      ],
+      "verdict": "PASS"
+    },
+    {
+      "check": "Fresh protected head SHAs equal task-start observations",
+      "expected": {
+        "refs/heads/main": "75cb090a7852c56285010af17cde9ad55df1284b",
+        "refs/heads/maintenance/1.x": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+        "refs/heads/codex/cucumber-12": "f2e68f112ad28604f4395710f10f595246f6dc00"
+      },
+      "actual": {
+        "refs/heads/main": "75cb090a7852c56285010af17cde9ad55df1284b",
+        "refs/heads/maintenance/1.x": "4ca2f770e0a84e83688f165ba04b4db8ef855cf9",
+        "refs/heads/codex/cucumber-12": "f2e68f112ad28604f4395710f10f595246f6dc00"
+      },
+      "verdict": "PASS"
+    }
+  ],
+  "claim_limit": "PASS is approved historical/current tag NAME-list comparison plus protected branch SHA comparison. No historical tag object SHAs were supplied by CI; no object-SHA equality or original ls-remote before snapshot is claimed.",
+  "verdict": "PASS"
+}
