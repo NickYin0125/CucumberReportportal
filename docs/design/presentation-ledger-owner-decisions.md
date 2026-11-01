@@ -143,3 +143,40 @@ These are focused developer checks, not the full Ruby/Cucumber matrix or an
 independent acceptance verdict. Publication calls in these tests are mocked.
 Chart files, CI workflows, protected branches, tags and remote releases were
 not changed.
+
+## Decisions 9-10
+
+9. 独立 QA 发现 P10.6 的 strip-tags 定义（删除所有 <[^>]+>）会把原始 Ruby 堆栈里的 `<top (required)>` 也删除，与 P1 要求完整保留堆栈冲突。是否改为仅剥离客户端生成的展示 HTML，保留代码块、代码片段和用户原文中的尖括号，再严格检查文字顺序（仅沿用已批准的 Rich 样例差异）？
+
+Owner answer: 按此澄清规则，保留原始内容（推荐）
+
+10. V7 的“开始前完整 ls-remote Tag 清单”未保存；我找到了本任务开始前 GitHub CI 的完整 Tag 拉取记录，8 个 Tag 与当前远端清单完全一致，三个受保护分支也均未变。是否允许用该历史 CI 记录与当前 ls-remote 对照作为替代证据，并在报告中注明来源？不会改变“禁止创建 Tag”的要求。
+
+Owner answer: 接受历史 CI 记录作为替代证据（推荐）
+
+## Final Release Preparation Decisions
+
+Decisions 11-14 were owner-confirmed on 2026-11-01.
+
+11. P1 display refinements are approved: displayed frame locations (meta line
+    and project-frame block) are capped at 40 characters by eliding middle
+    directories; the raw backtrace tail is unchanged. When three frame kinds
+    are hidden, the tail caption reads "a, b and c frames not shown above".
+    Goldens may be updated for these two rules only.
+12. Remote Ruby 3.1 / Cucumber 9 CI is not required for 1.3.2. The local
+    four-cell matrix (Ruby 3.1/3.3 x Cucumber 9/10), re-run on the final
+    tagged code, is the accepted evidence and is recorded in the release notes.
+13. 1.3.2 is published through the release pipeline after a separate,
+    approved backport of the 1.x release-ancestry rule. Manual asset upload is
+    not used.
+14. F2 (intraword underscore escaping in titles) and F3 (Unicode attachment
+    slugs) are NOT approved for 1.3.2 / 2.0.1. Current behaviour stays.
+
+Operational clarification: the owner confirmed that only the three named draft
+PRs (#5, #6 and the separate WP3 PR) are required. No fourth PR is authorized.
+
+F1 boundary clarification (owner-confirmed on 2026-11-01):
+
+Question: F1 要求显示位置不超过 40 字符；若无目录的 file:line 本身已超过 40，是否允许仅对显示文件名做中间省略，保留扩展名和行号，原始堆栈不变？
+
+Owner answer: 允许显示文件名中间省略（推荐）
