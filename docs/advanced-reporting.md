@@ -36,6 +36,10 @@ not a partially formatted card. Rendering does not change Scenario outcomes.
 `RP_RUN_CONTEXT` defaults to `false`. When enabled it adds only the documented
 SDK/runtime/CI attributes and a one-line description if none was supplied;
 explicit values win. The 2.x `workers` attribute is opt-in metadata from `PARALLEL_TEST_GROUPS` when present; the off-mode legacy worker behavior is unchanged.
+`RP_RUN_CONTEXT` has no effect when `RP_LAUNCH_UUID` is supplied, because the
+CI-owned Launch is created outside the SDK. The `workers` attribute appears
+only when the reporting process creates its own Launch; workers joining an
+external Launch do not update its metadata.
 See the [configuration allowlist](configuration.md#presentation-and-run-context).
 
 The owner-approved compatibility exceptions preserve baseline behavior:

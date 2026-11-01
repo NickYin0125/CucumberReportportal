@@ -12,6 +12,7 @@
 - Assertion, failure-evidence and HTTP cards preserve diagnostic values, HTTP severity and existing sanitized bounds.
 - Keep structured HTTP and assertion bodies in their baseline format for native Cucumber and terminal formatters; apply Ledger cards only to the RP route.
 - Opt-in `RP_RUN_CONTEXT=true` adds allowlisted SDK, Cucumber, Ruby and CI metadata plus a default Launch description; explicit attributes and descriptions win.
+- `RP_RUN_CONTEXT` has no effect when `RP_LAUNCH_UUID` is supplied: that CI-owned Launch is created outside the SDK. The `workers` attribute appears only when the reporting process creates its own Launch.
 - Opt-in `RP_PRESENTATION=rich` adds status pills, table-header accents and collapsible evidence to ReportPortal log messages only. Native Cucumber, terminal output, caller text and item metadata remain unchanged.
 - Preserve item hierarchy, identities, statuses, timestamps, ownership, log counts and attachment bytes. Presentation faults retain the original baseline with one warning; rich output preserves ERROR first lines and adds at most 1,024 bytes.
 - Released as a patch at the owner's request; the two opt-in switches are additive and off by default.

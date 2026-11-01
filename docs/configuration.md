@@ -117,6 +117,10 @@ every ERROR log's first line and adds at most 1,024 bytes per message; a budget
 or first-line guard retains the plain card. A presentation exception instead
 restores the original pre-Ledger baseline with one nonreflective warning.
 
+`RP_RUN_CONTEXT` has no effect when `RP_LAUNCH_UUID` is supplied, because the
+CI-owned Launch is created outside the SDK. The `workers` attribute appears
+only when the reporting process creates its own Launch.
+
 Run context adds missing `sdk`, `cucumber`, `ruby`, `git.branch`, `git.sha` and
 `ci.build` attributes. It reads only these environment sources, first non-empty
 value from left to right:
