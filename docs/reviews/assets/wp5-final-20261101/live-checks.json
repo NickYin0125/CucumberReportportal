@@ -1,0 +1,1679 @@
+{
+  "schema": "wp5-final-head-live-analysis/1",
+  "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+  "checked_at_utc": "2026-11-01T03:12:20Z",
+  "checks": [
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1: all fourteen literal exception inputs have error observations",
+      "method": "L",
+      "inputs": {
+        "fixture_capture": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json",
+        "comparison": "F14 plain/1: all fourteen literal exception inputs have error observations"
+      },
+      "expected": 14,
+      "actual": 14,
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10511,
+          10513,
+          10515,
+          10517,
+          10519,
+          10521,
+          10523,
+          10525,
+          10527,
+          10529,
+          10531,
+          10533,
+          10535,
+          10537
+        ],
+        "log_ids": [
+          6996,
+          6997,
+          6998,
+          6999,
+          7000,
+          7001,
+          7002,
+          7003,
+          7004,
+          7005,
+          7006,
+          7007,
+          7008,
+          7009
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 0: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 6996,
+        "gherkin_value": "<other>",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: &lt;other&gt;",
+      "actual": "## ✗ RuntimeError: &lt;other&gt;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10511
+        ],
+        "log_ids": [
+          6996
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 1: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 6997,
+        "gherkin_value": "<b>x</b>",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: &lt;b&gt;x&lt;/b&gt;",
+      "actual": "## ✗ RuntimeError: &lt;b&gt;x&lt;/b&gt;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10513
+        ],
+        "log_ids": [
+          6997
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 2: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 6998,
+        "gherkin_value": "a | b",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: a \\| b",
+      "actual": "## ✗ RuntimeError: a \\| b",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10515
+        ],
+        "log_ids": [
+          6998
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 3: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 6999,
+        "gherkin_value": "back\\slash",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: back\\\\slash",
+      "actual": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "verdict": "FAIL",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10517
+        ],
+        "log_ids": [
+          6999
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 4: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7000,
+        "gherkin_value": "*star*",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: \\*star\\*",
+      "actual": "## ✗ RuntimeError: \\*star\\*",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10519
+        ],
+        "log_ids": [
+          7000
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 5: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7001,
+        "gherkin_value": "_under_",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: \\_under\\_",
+      "actual": "## ✗ RuntimeError: \\_under\\_",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10521
+        ],
+        "log_ids": [
+          7001
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 6: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7002,
+        "gherkin_value": "`tick`",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: \\`tick\\`",
+      "actual": "## ✗ RuntimeError: \\`tick\\`",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10523
+        ],
+        "log_ids": [
+          7002
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 7: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7003,
+        "gherkin_value": "&amp;",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: &amp;amp;",
+      "actual": "## ✗ RuntimeError: &amp;amp;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10525
+        ],
+        "log_ids": [
+          7003
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 8: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7004,
+        "gherkin_value": "# heading",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: # heading",
+      "actual": "## ✗ RuntimeError: # heading",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10527
+        ],
+        "log_ids": [
+          7004
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 9: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7005,
+        "gherkin_value": "1. item",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: 1. item",
+      "actual": "## ✗ RuntimeError: 1. item",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10529
+        ],
+        "log_ids": [
+          7005
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 10: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7006,
+        "gherkin_value": "x<script>alert(1)</script>",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;",
+      "actual": "## ✗ RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10531
+        ],
+        "log_ids": [
+          7006
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 11: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7007,
+        "gherkin_value": "emoji 🟢",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: emoji 🟢",
+      "actual": "## ✗ RuntimeError: emoji 🟢",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10533
+        ],
+        "log_ids": [
+          7007
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 12: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7008,
+        "gherkin_value": "CJK 中文",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: CJK 中文",
+      "actual": "## ✗ RuntimeError: CJK 中文",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10535
+        ],
+        "log_ids": [
+          7008
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/1 input 13: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7009,
+        "gherkin_value": "first\nsecond",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: first",
+      "actual": "## ✗ RuntimeError: first",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1321
+        ],
+        "item_ids": [
+          10537
+        ],
+        "log_ids": [
+          7009
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-1/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2: all fourteen literal exception inputs have error observations",
+      "method": "L",
+      "inputs": {
+        "fixture_capture": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json",
+        "comparison": "F14 plain/2: all fourteen literal exception inputs have error observations"
+      },
+      "expected": 14,
+      "actual": 14,
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11255,
+          11257,
+          11259,
+          11261,
+          11263,
+          11265,
+          11267,
+          11269,
+          11271,
+          11273,
+          11275,
+          11277,
+          11279,
+          11281
+        ],
+        "log_ids": [
+          7480,
+          7481,
+          7482,
+          7483,
+          7484,
+          7485,
+          7486,
+          7487,
+          7488,
+          7489,
+          7490,
+          7491,
+          7492,
+          7493
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 0: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7480,
+        "gherkin_value": "<other>",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: &lt;other&gt;",
+      "actual": "## ✗ RuntimeError: &lt;other&gt;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11255
+        ],
+        "log_ids": [
+          7480
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 1: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7481,
+        "gherkin_value": "<b>x</b>",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: &lt;b&gt;x&lt;/b&gt;",
+      "actual": "## ✗ RuntimeError: &lt;b&gt;x&lt;/b&gt;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11257
+        ],
+        "log_ids": [
+          7481
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 2: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7482,
+        "gherkin_value": "a | b",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: a \\| b",
+      "actual": "## ✗ RuntimeError: a \\| b",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11259
+        ],
+        "log_ids": [
+          7482
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 3: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7483,
+        "gherkin_value": "back\\slash",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: back\\\\slash",
+      "actual": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "verdict": "FAIL",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11261
+        ],
+        "log_ids": [
+          7483
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 4: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7484,
+        "gherkin_value": "*star*",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: \\*star\\*",
+      "actual": "## ✗ RuntimeError: \\*star\\*",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11263
+        ],
+        "log_ids": [
+          7484
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 5: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7485,
+        "gherkin_value": "_under_",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: \\_under\\_",
+      "actual": "## ✗ RuntimeError: \\_under\\_",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11265
+        ],
+        "log_ids": [
+          7485
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 6: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7486,
+        "gherkin_value": "`tick`",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: \\`tick\\`",
+      "actual": "## ✗ RuntimeError: \\`tick\\`",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11267
+        ],
+        "log_ids": [
+          7486
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 7: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7487,
+        "gherkin_value": "&amp;",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: &amp;amp;",
+      "actual": "## ✗ RuntimeError: &amp;amp;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11269
+        ],
+        "log_ids": [
+          7487
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 8: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7488,
+        "gherkin_value": "# heading",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: # heading",
+      "actual": "## ✗ RuntimeError: # heading",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11271
+        ],
+        "log_ids": [
+          7488
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 9: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7489,
+        "gherkin_value": "1. item",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: 1. item",
+      "actual": "## ✗ RuntimeError: 1. item",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11273
+        ],
+        "log_ids": [
+          7489
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 10: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7490,
+        "gherkin_value": "x<script>alert(1)</script>",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;",
+      "actual": "## ✗ RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11275
+        ],
+        "log_ids": [
+          7490
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 11: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7491,
+        "gherkin_value": "emoji 🟢",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: emoji 🟢",
+      "actual": "## ✗ RuntimeError: emoji 🟢",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11277
+        ],
+        "log_ids": [
+          7491
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 12: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7492,
+        "gherkin_value": "CJK 中文",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: CJK 中文",
+      "actual": "## ✗ RuntimeError: CJK 中文",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11279
+        ],
+        "log_ids": [
+          7492
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "F14 plain/2 input 13: independently escaped exception title",
+      "method": "L",
+      "inputs": {
+        "log_id": 7493,
+        "gherkin_value": "first\nsecond",
+        "source": "acceptance F14 literal matrix; support.rb raises indexed value unchanged"
+      },
+      "expected": "## ✗ RuntimeError: first",
+      "actual": "## ✗ RuntimeError: first",
+      "verdict": "PASS",
+      "evidence": {
+        "launch_ids": [
+          1415
+        ],
+        "item_ids": [
+          11281
+        ],
+        "log_ids": [
+          7493
+        ],
+        "source": "docs/reviews/assets/ledger-qa-live/wp5-final-20261101-c12.0.1-plain-2/F14-negative/snapshot.json"
+      },
+      "note": null,
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G1",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G2",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G3",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G4",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G5",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G6",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G7",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G8",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "G12",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.1",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.2",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.3",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.4",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.5",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.6",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.7",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.8",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.9",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P1.10",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.1",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.2",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.3",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.4",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.5",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.6",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.7",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P5.8",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.1",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.2",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.3",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.4",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.5",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.6",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.7",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P8.8",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.1",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.2",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.3",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.4",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.5",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.6",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.7",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.8",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.9",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.10",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    },
+    {
+      "criterion": "P10.11",
+      "check": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "method": null,
+      "inputs": null,
+      "expected": "Required acceptance evidence",
+      "actual": null,
+      "verdict": "BLOCKED",
+      "evidence": {
+        "launch_ids": [],
+        "item_ids": [],
+        "log_ids": []
+      },
+      "note": "Fresh required capture set incomplete: rich-1, rich-2, baseline, default-batch1, supplement-rich-1, supplement-rich-2, supplement-baseline, framework-rich-1, framework-rich-2, framework-baseline, authored-rich-1, authored-rich-2, authored-baseline, parallel-rich-1, parallel-rich-2, parallel-baseline",
+      "runtime_sha": "06f498cf9fb05352a831fdafc9583b40dced9899",
+      "cucumber": "12.0.1"
+    }
+  ]
+}

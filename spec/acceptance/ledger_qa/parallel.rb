@@ -43,6 +43,7 @@ module LedgerQA
           command = [@options[:ruby], "-I", File.join(@options[:sdk_root], "lib"), "-e", CLI, "--", "--no-profile", "--publish-quiet",
             "--require", File.join(ROOT, "spec/acceptance/ledger_qa/parallel_support.rb"), "--format", "progress",
             "--format", "json", "--out", File.join(directory, "native.json"), "--format", "message", "--out", File.join(directory, "native.ndjson"),
+            "--format", "html", "--out", File.join(directory, "native.html"),
             "--format", "ReportPortal::Cucumber::ParallelFormatter", "--out", File.join(directory, "rp.out"),
             "--format", "LedgerDeveloper::Audit", "--out", File.join(directory, "audit.out"), feature.delete_prefix(ROOT + "/")]
           process = execute(env, command, ROOT)
