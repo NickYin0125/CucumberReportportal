@@ -147,6 +147,54 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
     expect(result).to eq(Automation::EvidenceRedactor::OMITTED)
   end
 
+  it "uses a supplied redacted baseline without constructing another redactor" do
+    expect(Automation::EvidenceRedactor).not_to receive(:new)
+    result = described_class.format(error: error, message: "api_key=SECRET123", backtrace: "support.rb:1",
+                                    baseline: "api_key=[REDACTED]\nsupport.rb:1", cwd: cwd)
+    expect(result).not_to include("SECRET123")
+    expect(result).to include("api\\_key=\\[REDACTED\\]", "support.rb:1")
+  end
+
+  it "redacts once when called directly without a supplied baseline" do
+    redactor = Automation::EvidenceRedactor.new
+    allow(Automation::EvidenceRedactor).to receive(:new).and_return(redactor)
+    expect(redactor).to receive(:redact_text).with("#{error.message}\n#{backtrace}").once.and_call_original
+    expect(card).to include("Full backtrace")
+  end
+
+  it "keeps a secret assigned across the message/frame boundary redacted" do
+    result = card(message: "failure password=", backtrace: "CROSS_BOUNDARY_SECRET\nsupport.rb:1")
+    expect(result).to start_with("## \u2717 RuntimeError: failure password=")
+    expect(result).not_to include("CROSS_BOUNDARY_SECRET")
+    expect(result).to end_with("```text\n[REDACTED]\nsupport.rb:1\n```")
+  end
+
+  it "returns the whole baseline when a cross-boundary quoted secret changes line count" do
+    message = 'failure password="secret first half'
+    trace = "secret second half\"\nsupport.rb:1"
+    expected = Automation::EvidenceRedactor.new.redact_text("#{message}\n#{trace}")
+    expect(expected.count("\n")).not_to eq("#{message}\n#{trace}".count("\n"))
+    expect(card(message: message, backtrace: trace)).to eq(expected)
+    expect(expected).not_to include("secret first", "secret second")
+  end
+
+  it "returns supplied structural redaction exactly rather than rebuilding it" do
+    expect(Automation::EvidenceRedactor).not_to receive(:new)
+    result = described_class.format(error: error, message: "first\nsecond", backtrace: "support.rb:1",
+                                    baseline: "[REDACTED]", cwd: cwd)
+    expect(result).to eq("[REDACTED]")
+  end
+
+  it "splits safe evidence without losing trailing empty message or backtrace lines" do
+    result = card(message: "headline\n", backtrace: "support.rb:1\n")
+    expect(result).to start_with("## \u2717 RuntimeError: headline")
+    expect(result).to end_with("```text\nsupport.rb:1\n\n```")
+  end
+
+  it "preserves the baseline Step failed when sanitizing an encoded empty message" do
+    expect(card(message: '""', backtrace: "")).to eq("Step failed")
+  end
+
   it "preserves the redacted baseline on oversized evidence or unsafe fences" do
     expect(card(message: "x" * 65_537)).to eq(Automation::EvidenceRedactor::OMITTED)
     message = "`" * 32 + "~" * 32

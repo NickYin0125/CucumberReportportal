@@ -1198,10 +1198,10 @@ module ReportportalCucumber
             fetch_value(error, :backtrace).to_s
           end
         message = [details, backtrace].reject(&:empty?).join("\n")
-        message = Automation::EvidenceRedactor.new.redact_text(message)
-        baseline = message.empty? ? "Step failed" : message
-        message = Presentation::Fallback.render(fallback: -> { baseline }) do
-          Presentation::FailureCard.format(error: error, message: details, backtrace: backtrace, presentation: @config.presentation)
+        baseline = Automation::EvidenceRedactor.new.redact_text(message)
+        message = Presentation::Fallback.render(fallback: -> { baseline.empty? ? "Step failed" : baseline }) do
+          Presentation::FailureCard.format(error: error, message: details, backtrace: backtrace,
+                                          presentation: @config.presentation, baseline: baseline)
         end
         @log_buffer.emit_log(
           item_uuid: item_uuid,
