@@ -1,0 +1,123 @@
+{
+  "cell": "M3",
+  "source_head": "df072ba0e6f603e66ba87e0b29c75fcc334a8e43",
+  "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+  "commands": [
+    {
+      "command": [
+        "apt-get",
+        "update",
+        "-qq"
+      ],
+      "exit": 0,
+      "seconds": 3.7315964599984
+    },
+    {
+      "command": [
+        "apt-get",
+        "install",
+        "-y",
+        "--no-install-recommends",
+        "git",
+        "ca-certificates",
+        "curl",
+        "gcc",
+        "make",
+        "libc6-dev",
+        "libffi-dev",
+        "jq"
+      ],
+      "exit": 0,
+      "seconds": 5.769710003005457
+    },
+    {
+      "command": [
+        "git",
+        "config",
+        "--global",
+        "--add",
+        "safe.directory",
+        "/tmp/ledger-matrix-source"
+      ],
+      "exit": 0,
+      "seconds": 0.009135000000242144
+    },
+    {
+      "command": [
+        "bundle",
+        "_2.6.6_",
+        "install",
+        "--local"
+      ],
+      "exit": 0,
+      "seconds": 0.3532345840067137
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "ruby",
+        "-e",
+        "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, cucumber: Gem.loaded_specs.fetch('cucumber').version.to_s, sdk: ReportportalCucumber::VERSION)"
+      ],
+      "exit": 0,
+      "seconds": 0.5446121669956483
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "rspec",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/private/tmp/ledger-simplified-matrix-20261101-02/M3/rspec.json"
+      ],
+      "exit": 0,
+      "seconds": 171.44460074299423
+    },
+    {
+      "command": [
+        "bundle",
+        "exec",
+        "cucumber",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/private/tmp/ledger-simplified-matrix-20261101-02/M3/cucumber.json"
+      ],
+      "exit": 0,
+      "seconds": 0.7518940830050269
+    }
+  ],
+  "source_storage": {
+    "checkout": "/private/tmp/ledger-simplified-matrix-20261101-02/M3/source",
+    "execution_copy": "/tmp/ledger-matrix-source",
+    "identical_library_bytes": true
+  },
+  "dependency_storage": "Copied /bundle into container-local /tmp/ledger-matrix-bundle; dependency versions still checked below",
+  "runtime": {
+    "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+    "cucumber": "9.2.1",
+    "sdk": "1.3.2"
+  },
+  "rspec": {
+    "duration": 170.168912995,
+    "example_count": 1519,
+    "failure_count": 0,
+    "pending_count": 0,
+    "errors_outside_of_examples_count": 0
+  },
+  "cucumber": {
+    "scenarios": 1,
+    "steps": 3,
+    "statuses": {
+      "passed": 3
+    }
+  },
+  "status": "PASS"
+}

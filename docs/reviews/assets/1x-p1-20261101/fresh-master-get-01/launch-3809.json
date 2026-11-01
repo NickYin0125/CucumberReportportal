@@ -1,0 +1,2273 @@
+{
+  "persistence": "fresh_independent_GET",
+  "observed_at": "2026-11-01T13:03:29Z",
+  "source_capture": "/private/tmp/ledger-developer-final-runner-20261101/docs/reviews/assets/simplified-1x-20261101-master-01/cucumber9.2.1-plain-native/F14/snapshot.json",
+  "source_capture_sha256": "9a65e85183adb137eb83cecdb3cd1637a03e9c083d8df53c5653183a8949d178",
+  "final_runtime_sha": "df072ba0e6f603e66ba87e0b29c75fcc334a8e43",
+  "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+  "cucumber": "9.2.1",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3809,
+      "uuid": "ad77a829-d384-4c73-ae00-2afa4fcbe834",
+      "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+      "number": 1,
+      "startTime": "2026-11-01T12:59:28.911Z",
+      "endTime": "2026-11-01T12:59:30.987Z",
+      "lastModified": "2026-11-01T12:59:31.005602Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 16,
+          "passed": 16
+        },
+        "defects": {}
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "metadata": {
+        "rp.cluster.lastRun": "1793537971035"
+      },
+      "retentionPolicy": "REGULAR",
+      "launchType": "AUTOMATION"
+    }
+  ],
+  "items": [
+    {
+      "id": 30419,
+      "uuid": "8c940325-cf92-4fa6-8562-3b4d59d03d38",
+      "name": "Feature: Ledger literal markup and outline fallback inputs",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": "2026-11-01T12:59:28.928Z",
+      "endTime": "2026-11-01T12:59:30.986Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 16,
+          "passed": 16
+        },
+        "defects": {}
+      },
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "auto:2ce0d45c050af63a1a0307ee073e493a",
+      "testCaseHash": -342215554,
+      "patternTemplates": [],
+      "path": "30419",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30420,
+      "uuid": "57cc0308-ad33-44b5-af8b-a420ce272f05",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `<other>` · _Examples: Literal values · line 10_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "<other>"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:28.929Z",
+      "endTime": "2026-11-01T12:59:29.165Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "7764a96751aa50eacd2e054b097caf5cd09afaba",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=<other>]",
+      "testCaseHash": 436129795,
+      "patternTemplates": [],
+      "path": "30419.30420",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30421,
+      "uuid": "07c3de33-84e2-4717-b2e6-31e6d718d534",
+      "name": "Given ledger literal <other>",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.029Z",
+      "endTime": "2026-11-01T12:59:29.096Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30420,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30420,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:156c050d78cc897012e094e739e5484a",
+      "testCaseHash": 2054920336,
+      "patternTemplates": [],
+      "path": "30419.30420.30421",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30422,
+      "uuid": "6a84781b-a3c6-42f4-ae37-15662e4d94cf",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| &lt;other&gt; |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.111Z",
+      "endTime": "2026-11-01T12:59:29.148Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30420,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30420,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30420.30422",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30423,
+      "uuid": "a0a5bef9-c3e0-46be-9480-fbf6c50664c9",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `<b>x</b>` · _Examples: Literal values · line 11_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "<b>x</b>"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.178Z",
+      "endTime": "2026-11-01T12:59:29.295Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "a855e1bd24ab2c7a2af56b976ce843da23628a75",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=<b>x</b>]",
+      "testCaseHash": -808894850,
+      "patternTemplates": [],
+      "path": "30419.30423",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30424,
+      "uuid": "e10e5f34-ba87-4007-a238-c70282cc0241",
+      "name": "Given ledger literal <b>x</b>",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.194Z",
+      "endTime": "2026-11-01T12:59:29.228Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30423,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30423,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:2b2d2713def439cd3d936d8cf6e421ef",
+      "testCaseHash": -907107447,
+      "patternTemplates": [],
+      "path": "30419.30423.30424",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30425,
+      "uuid": "7034a10f-056e-4073-86aa-c8b42b209e9c",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| &lt;b&gt;x&lt;/b&gt; |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.247Z",
+      "endTime": "2026-11-01T12:59:29.280Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30423,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30423,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30423.30425",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30426,
+      "uuid": "a7e6628b-2c61-495f-8a56-1419deba8fd0",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `a | b` · _Examples: Literal values · line 12_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "a | b"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.318Z",
+      "endTime": "2026-11-01T12:59:29.425Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "d284556d62eb68b4463872e3cedecf7ddb97723c",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=a | b]",
+      "testCaseHash": -1855511666,
+      "patternTemplates": [],
+      "path": "30419.30426",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30427,
+      "uuid": "e706c937-f9de-4df4-86d5-22588fa229f8",
+      "name": "Given ledger literal a | b",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.340Z",
+      "endTime": "2026-11-01T12:59:29.370Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30426,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30426,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:e61721370184cde3bb5c8b746971c44f",
+      "testCaseHash": 1946807589,
+      "patternTemplates": [],
+      "path": "30419.30426.30427",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30428,
+      "uuid": "93742388-e778-41a2-b332-ec63e0d7a2b6",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| a \\| b |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.385Z",
+      "endTime": "2026-11-01T12:59:29.413Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30426,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30426,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30426.30428",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30429,
+      "uuid": "52ec719d-f0cb-4905-9f5d-f0b5f43df39c",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `back\\slash` · _Examples: Literal values · line 13_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "back\\slash"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.436Z",
+      "endTime": "2026-11-01T12:59:29.530Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "8d162ba89e3f31874686a166383e982391926f47",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=back\\slash]",
+      "testCaseHash": 1627363397,
+      "patternTemplates": [],
+      "path": "30419.30429",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30430,
+      "uuid": "ce765422-1e55-4d8c-8ff7-586ee2b08d9d",
+      "name": "Given ledger literal back\\slash",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.448Z",
+      "endTime": "2026-11-01T12:59:29.477Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30429,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30429,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:6623912a7dc2369b2c3a1e19fdd921d0",
+      "testCaseHash": 1169107554,
+      "patternTemplates": [],
+      "path": "30419.30429.30430",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30431,
+      "uuid": "88ed3df7-4dff-46f9-b086-4ff233223d92",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| back\\\\slash |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.488Z",
+      "endTime": "2026-11-01T12:59:29.516Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30429,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30429,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30429.30431",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30432,
+      "uuid": "8357a5b3-0457-4e4f-85a4-77690ff96f34",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `*star*` · _Examples: Literal values · line 14_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "*star*"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.545Z",
+      "endTime": "2026-11-01T12:59:29.719Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "349376d401f99f98a567a56728da79e40db7919e",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=*star*]",
+      "testCaseHash": -883567329,
+      "patternTemplates": [],
+      "path": "30419.30432",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30433,
+      "uuid": "2384fd23-7afc-43c4-9017-c4ebd135108d",
+      "name": "Given ledger literal *star*",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.565Z",
+      "endTime": "2026-11-01T12:59:29.625Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30432,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30432,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:b4d098d4d96528f2c70f8512514fe3e4",
+      "testCaseHash": -1276633272,
+      "patternTemplates": [],
+      "path": "30419.30432.30433",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30434,
+      "uuid": "28e859af-3095-438b-a994-027e610c75fd",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| \\*star\\* |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.650Z",
+      "endTime": "2026-11-01T12:59:29.695Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30432,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30432,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30432.30434",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30435,
+      "uuid": "8e54b282-d08a-42f5-bd45-480c98a78736",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `_under_` · _Examples: Literal values · line 15_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "_under_"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.738Z",
+      "endTime": "2026-11-01T12:59:29.820Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "1546cdc494e057e02ee19e7f010e26de26c77330",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=_under_]",
+      "testCaseHash": -2135431097,
+      "patternTemplates": [],
+      "path": "30419.30435",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30436,
+      "uuid": "147ddb67-c667-4146-b002-eba4cd3a8478",
+      "name": "Given ledger literal _under_",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.750Z",
+      "endTime": "2026-11-01T12:59:29.775Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30435,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30435,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:aa72e381d9a71aec0e6c9840954a6fe5",
+      "testCaseHash": -1076074548,
+      "patternTemplates": [],
+      "path": "30419.30435.30436",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30437,
+      "uuid": "4d34d020-7332-4559-9ea6-a69209b6c51f",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| \\_under\\_ |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.787Z",
+      "endTime": "2026-11-01T12:59:29.808Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30435,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30435,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30435.30437",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30438,
+      "uuid": "e3f85974-97cb-4ff6-853c-cc23981df711",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `` `tick` `` · _Examples: Literal values · line 16_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "`tick`"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.832Z",
+      "endTime": "2026-11-01T12:59:29.927Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "fc31c99d71580e0ad446c9c3e0caed535eaf96c3",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=`tick`]",
+      "testCaseHash": -184483862,
+      "patternTemplates": [],
+      "path": "30419.30438",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30439,
+      "uuid": "c0737585-dec9-40a0-8a7d-0a595bcbeb64",
+      "name": "Given ledger literal `tick`",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.843Z",
+      "endTime": "2026-11-01T12:59:29.873Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30438,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30438,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:39486493c04fc6bc973587d36add72a8",
+      "testCaseHash": 269938461,
+      "patternTemplates": [],
+      "path": "30419.30438.30439",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30440,
+      "uuid": "7b906d72-0b12-49e9-8600-4042a849a97c",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| \\`tick\\` |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.884Z",
+      "endTime": "2026-11-01T12:59:29.909Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30438,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30438,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30438.30440",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30441,
+      "uuid": "2b15f54a-24fa-4987-b265-854699029712",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `&amp;` · _Examples: Literal values · line 17_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "&amp;"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.936Z",
+      "endTime": "2026-11-01T12:59:30.026Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "52a22554336811cb72e43ba951b58f0cc58281a4",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=&amp;]",
+      "testCaseHash": 809993392,
+      "patternTemplates": [],
+      "path": "30419.30441",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30442,
+      "uuid": "6845c2dc-2cbe-442d-a74e-dc202ea203cd",
+      "name": "Given ledger literal &amp;",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.946Z",
+      "endTime": "2026-11-01T12:59:29.974Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30441,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30441,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:a16ae584a7b2306e8faf10d037444f68",
+      "testCaseHash": 1894244291,
+      "patternTemplates": [],
+      "path": "30419.30441.30442",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30443,
+      "uuid": "5c46c6b0-5af5-40d1-8f99-c7625c1da703",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| &amp;amp; |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:29.987Z",
+      "endTime": "2026-11-01T12:59:30.013Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30441,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30441,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30441.30443",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30444,
+      "uuid": "afd450d4-d097-467b-b0ca-87e4b10e40df",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `# heading` · _Examples: Literal values · line 18_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "# heading"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.040Z",
+      "endTime": "2026-11-01T12:59:30.130Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "d5944ed7248040c843746d8dc0213e24462b6d32",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=# heading]",
+      "testCaseHash": 1954213576,
+      "patternTemplates": [],
+      "path": "30419.30444",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30445,
+      "uuid": "e50f6a1d-df6d-49c1-8338-3bb18d3b50df",
+      "name": "Given ledger literal # heading",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.051Z",
+      "endTime": "2026-11-01T12:59:30.070Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30444,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30444,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:a89ad9fefe8d10368eada477f91a84a6",
+      "testCaseHash": -1062950997,
+      "patternTemplates": [],
+      "path": "30419.30444.30445",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30446,
+      "uuid": "1df9faf2-f347-4aef-81e6-680b5cfbaf6a",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| # heading |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.083Z",
+      "endTime": "2026-11-01T12:59:30.112Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30444,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30444,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30444.30446",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30447,
+      "uuid": "f4104bb6-d08f-4542-95de-83b21dfd0ed2",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `1. item` · _Examples: Literal values · line 19_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "1. item"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.141Z",
+      "endTime": "2026-11-01T12:59:30.366Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "1133755c536043a5ebc9d0bdf9ee10fa8a6710b5",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=1. item]",
+      "testCaseHash": -1516601161,
+      "patternTemplates": [],
+      "path": "30419.30447",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30448,
+      "uuid": "db4566e4-aa88-4685-accd-15169d5d33c1",
+      "name": "Given ledger literal 1. item",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.151Z",
+      "endTime": "2026-11-01T12:59:30.180Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30447,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30447,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:cc2f023f5e6610ca23e7db5d0c46f151",
+      "testCaseHash": -1056112292,
+      "patternTemplates": [],
+      "path": "30419.30447.30448",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30449,
+      "uuid": "a31189ae-3183-4925-8512-6fceae5c9933",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| 1. item |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.196Z",
+      "endTime": "2026-11-01T12:59:30.292Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30447,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30447,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30447.30449",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30450,
+      "uuid": "58991a94-8d0e-46fd-9229-8b07cfa3b326",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `x<script>alert(1)</script>` · _Examples: Literal values · line 20_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "x<script>alert(1)</script>"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.397Z",
+      "endTime": "2026-11-01T12:59:30.487Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "f87ea6c19b35e4857f5098ddb0b3761db716b828",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=x<script>alert(1)</script>]",
+      "testCaseHash": -1030249536,
+      "patternTemplates": [],
+      "path": "30419.30450",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30451,
+      "uuid": "349e1a4d-487a-4f5d-ba3a-3349236f06f9",
+      "name": "Given ledger literal x<script>alert(1)</script>",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.419Z",
+      "endTime": "2026-11-01T12:59:30.445Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30450,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30450,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:a9192b0ce1fbd97f0d3a0c3c026196c5",
+      "testCaseHash": -1376358521,
+      "patternTemplates": [],
+      "path": "30419.30450.30451",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30452,
+      "uuid": "46e37dc9-67f6-4ee3-b930-f6c6ed72ed12",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| x&lt;script&gt;alert(1)&lt;/script&gt; |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.456Z",
+      "endTime": "2026-11-01T12:59:30.476Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30450,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30450,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30450.30452",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30453,
+      "uuid": "9d3320ae-dc3b-4185-b37f-bcbe346b1104",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `emoji 🟢` · _Examples: Literal values · line 21_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "emoji 🟢"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.496Z",
+      "endTime": "2026-11-01T12:59:30.584Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "9c55efade1540c088dbc14879c27199bceb4b4fa",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=emoji 🟢]",
+      "testCaseHash": 324150286,
+      "patternTemplates": [],
+      "path": "30419.30453",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30454,
+      "uuid": "d1f5875d-0afe-44c5-863c-f19d7f053ead",
+      "name": "Given ledger literal emoji 🟢",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.515Z",
+      "endTime": "2026-11-01T12:59:30.537Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30453,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30453,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:be936f455e83d7563c715e5e998c13f1",
+      "testCaseHash": 99273721,
+      "patternTemplates": [],
+      "path": "30419.30453.30454",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30455,
+      "uuid": "61bc42c1-c5e3-438c-89cd-d0de6c8305e2",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| emoji 🟢 |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.550Z",
+      "endTime": "2026-11-01T12:59:30.570Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30453,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30453,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30453.30455",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30456,
+      "uuid": "26a940c8-fcff-4e45-b386-87ff6e5db766",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "`value` = `CJK 中文` · _Examples: Literal values · line 22_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "CJK 中文"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.606Z",
+      "endTime": "2026-11-01T12:59:30.707Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "653dfbae35b491cbdf3fb48c776cb6243677cc71",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=CJK 中文]",
+      "testCaseHash": -1364480393,
+      "patternTemplates": [],
+      "path": "30419.30456",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30457,
+      "uuid": "d1445a01-1325-43ce-8e27-dc7a7b04bc40",
+      "name": "Given ledger literal CJK 中文",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.625Z",
+      "endTime": "2026-11-01T12:59:30.661Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30456,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30456,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:65d874d5ebede864b7d0e81c647a1e13",
+      "testCaseHash": -599409936,
+      "patternTemplates": [],
+      "path": "30419.30456.30457",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30458,
+      "uuid": "fdbc9d99-25de-47a8-b523-542f39cc08e2",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| CJK 中文 |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.673Z",
+      "endTime": "2026-11-01T12:59:30.696Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30456,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30456,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30456.30458",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30459,
+      "uuid": "a8fd4c87-694e-4cb5-8ec2-5ad0fe632de5",
+      "name": "Scenario: Escaping matrix",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:3",
+      "description": "Examples: Literal values · line 23\n\n| value |\n| --- |\n| first<br>second |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "first\nsecond"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.716Z",
+      "endTime": "2026-11-01T12:59:30.828Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "98beaf32cb4ffec110cb6437e75a22e8cd0f5a9c",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:3[value=first\nsecond]",
+      "testCaseHash": 907405055,
+      "patternTemplates": [],
+      "path": "30419.30459",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30460,
+      "uuid": "4424abaa-9526-4ca8-94d8-72f034bc9384",
+      "name": "Given ledger literal first\nsecond",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.728Z",
+      "endTime": "2026-11-01T12:59:30.749Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30459,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30459,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:002c0b5965c1ecd1b16e6e6812ccfd02",
+      "testCaseHash": 1706848744,
+      "patternTemplates": [],
+      "path": "30419.30459.30460",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30461,
+      "uuid": "fd1918ed-3642-47ae-baab-6bb5eb127b51",
+      "name": "And ledger records this table:",
+      "description": "**And** ledger records this table:\n\n| value |\n| --- |\n| first<br>second |",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.759Z",
+      "endTime": "2026-11-01T12:59:30.779Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30459,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30459,
+            "name": "Scenario: Escaping matrix"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:34c70d8c5f02d2cf765c86787e08f081",
+      "testCaseHash": -1095590323,
+      "patternTemplates": [],
+      "path": "30419.30459.30461",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30462,
+      "uuid": "121b39c9-c827-4832-b716-896acd903837",
+      "name": "Scenario: Five parameters force description fallback",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:25",
+      "description": "Examples · line 29\n\n| a | b | c | d | e |\n| --- | --- | --- | --- | --- |\n| 1 | 2 | 3 | 4 | 5 |",
+      "parameters": [
+        {
+          "key": "c",
+          "value": "3"
+        },
+        {
+          "key": "b",
+          "value": "2"
+        },
+        {
+          "key": "a",
+          "value": "1"
+        },
+        {
+          "key": "e",
+          "value": "5"
+        },
+        {
+          "key": "d",
+          "value": "4"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.846Z",
+      "endTime": "2026-11-01T12:59:30.895Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "5ece20c2712487002a6b466448c93e664f472594",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:25[a=1,b=2,c=3,d=4,e=5]",
+      "testCaseHash": -657122516,
+      "patternTemplates": [],
+      "path": "30419.30462",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30463,
+      "uuid": "95bab02a-efc7-427c-8ba9-07aa534f6013",
+      "name": "Given ledger literal 12345",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.859Z",
+      "endTime": "2026-11-01T12:59:30.880Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30462,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30462,
+            "name": "Scenario: Five parameters force description fallback"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:8a4a226302875d845722ed41ae2d66e6",
+      "testCaseHash": -866306413,
+      "patternTemplates": [],
+      "path": "30419.30462.30463",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30464,
+      "uuid": "4b0add9a-84bf-4cb5-81d9-4e7c7aed4b75",
+      "name": "Scenario: Long parameter forces description fallback",
+      "codeRef": "features/presentation_ledger/qa_runtime/F14.feature:31",
+      "description": "Examples: Long value · line 35\n\n| value |\n| --- |\n| 12345678901234567890123456789012345678901 |",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "12345678901234567890123456789012345678901"
+        }
+      ],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.911Z",
+      "endTime": "2026-11-01T12:59:30.965Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 30419,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3809,
+      "uniqueId": "c9b03da98eb3147ab048b963d20ae324e8ae2e4a",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F14.feature:31[value=12345678901234567890123456789012345678901]",
+      "testCaseHash": -319200251,
+      "patternTemplates": [],
+      "path": "30419.30464",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30465,
+      "uuid": "014f2bd4-46af-4b3a-85eb-0dbf2ec2aae0",
+      "name": "Given ledger literal 12345678901234567890123456789012345678901",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:30.927Z",
+      "endTime": "2026-11-01T12:59:30.949Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30464,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-native-F14",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30419,
+            "name": "Feature: Ledger literal markup and outline fallback inputs"
+          },
+          {
+            "id": 30464,
+            "name": "Scenario: Long parameter forces description fallback"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3809,
+      "uniqueId": "auto:29fad51aec4cac2e77d2b55601ac30df",
+      "testCaseHash": -139442267,
+      "patternTemplates": [],
+      "path": "30419.30464.30465",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 19755,
+      "time": "2026-11-01T12:59:29.079Z",
+      "message": "<other>",
+      "level": "info",
+      "itemId": 30421
+    },
+    {
+      "id": 19756,
+      "time": "2026-11-01T12:59:29.137Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| &lt;other&gt; |",
+      "level": "info",
+      "itemId": 30422
+    },
+    {
+      "id": 19757,
+      "time": "2026-11-01T12:59:29.207Z",
+      "message": "<b>x</b>",
+      "level": "info",
+      "itemId": 30424
+    },
+    {
+      "id": 19758,
+      "time": "2026-11-01T12:59:29.265Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| &lt;b&gt;x&lt;/b&gt; |",
+      "level": "info",
+      "itemId": 30425
+    },
+    {
+      "id": 19759,
+      "time": "2026-11-01T12:59:29.357Z",
+      "message": "a | b",
+      "level": "info",
+      "itemId": 30427
+    },
+    {
+      "id": 19760,
+      "time": "2026-11-01T12:59:29.404Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| a \\| b |",
+      "level": "info",
+      "itemId": 30428
+    },
+    {
+      "id": 19761,
+      "time": "2026-11-01T12:59:29.468Z",
+      "message": "back\\slash",
+      "level": "info",
+      "itemId": 30430
+    },
+    {
+      "id": 19762,
+      "time": "2026-11-01T12:59:29.506Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| back\\\\slash |",
+      "level": "info",
+      "itemId": 30431
+    },
+    {
+      "id": 19763,
+      "time": "2026-11-01T12:59:29.600Z",
+      "message": "*star*",
+      "level": "info",
+      "itemId": 30433
+    },
+    {
+      "id": 19764,
+      "time": "2026-11-01T12:59:29.675Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| \\*star\\* |",
+      "level": "info",
+      "itemId": 30434
+    },
+    {
+      "id": 19765,
+      "time": "2026-11-01T12:59:29.767Z",
+      "message": "_under_",
+      "level": "info",
+      "itemId": 30436
+    },
+    {
+      "id": 19766,
+      "time": "2026-11-01T12:59:29.800Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| \\_under\\_ |",
+      "level": "info",
+      "itemId": 30437
+    },
+    {
+      "id": 19767,
+      "time": "2026-11-01T12:59:29.862Z",
+      "message": "`tick`",
+      "level": "info",
+      "itemId": 30439
+    },
+    {
+      "id": 19768,
+      "time": "2026-11-01T12:59:29.899Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| \\`tick\\` |",
+      "level": "info",
+      "itemId": 30440
+    },
+    {
+      "id": 19769,
+      "time": "2026-11-01T12:59:29.958Z",
+      "message": "&amp;",
+      "level": "info",
+      "itemId": 30442
+    },
+    {
+      "id": 19770,
+      "time": "2026-11-01T12:59:30.005Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| &amp;amp; |",
+      "level": "info",
+      "itemId": 30443
+    },
+    {
+      "id": 19771,
+      "time": "2026-11-01T12:59:30.063Z",
+      "message": "# heading",
+      "level": "info",
+      "itemId": 30445
+    },
+    {
+      "id": 19772,
+      "time": "2026-11-01T12:59:30.098Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| # heading |",
+      "level": "info",
+      "itemId": 30446
+    },
+    {
+      "id": 19773,
+      "time": "2026-11-01T12:59:30.170Z",
+      "message": "1. item",
+      "level": "info",
+      "itemId": 30448
+    },
+    {
+      "id": 19774,
+      "time": "2026-11-01T12:59:30.215Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| 1. item |",
+      "level": "info",
+      "itemId": 30449
+    },
+    {
+      "id": 19775,
+      "time": "2026-11-01T12:59:30.437Z",
+      "message": "x<script>alert(1)</script>",
+      "level": "info",
+      "itemId": 30451
+    },
+    {
+      "id": 19776,
+      "time": "2026-11-01T12:59:30.468Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| x&lt;script&gt;alert(1)&lt;/script&gt; |",
+      "level": "info",
+      "itemId": 30452
+    },
+    {
+      "id": 19777,
+      "time": "2026-11-01T12:59:30.529Z",
+      "message": "emoji 🟢",
+      "level": "info",
+      "itemId": 30454
+    },
+    {
+      "id": 19778,
+      "time": "2026-11-01T12:59:30.560Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| emoji 🟢 |",
+      "level": "info",
+      "itemId": 30455
+    },
+    {
+      "id": 19779,
+      "time": "2026-11-01T12:59:30.650Z",
+      "message": "CJK 中文",
+      "level": "info",
+      "itemId": 30457
+    },
+    {
+      "id": 19780,
+      "time": "2026-11-01T12:59:30.686Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| CJK 中文 |",
+      "level": "info",
+      "itemId": 30458
+    },
+    {
+      "id": 19781,
+      "time": "2026-11-01T12:59:30.742Z",
+      "message": "first\nsecond",
+      "level": "info",
+      "itemId": 30460
+    },
+    {
+      "id": 19782,
+      "time": "2026-11-01T12:59:30.770Z",
+      "message": "_Data table · 1 column × 1 row_\n\n| value |\n| --- |\n| first<br>second |",
+      "level": "info",
+      "itemId": 30461
+    },
+    {
+      "id": 19783,
+      "time": "2026-11-01T12:59:30.873Z",
+      "message": "12345",
+      "level": "info",
+      "itemId": 30463
+    },
+    {
+      "id": 19784,
+      "time": "2026-11-01T12:59:30.941Z",
+      "message": "12345678901234567890123456789012345678901",
+      "level": "info",
+      "itemId": 30465
+    }
+  ],
+  "item_and_log_sets_match_capture": true,
+  "secret_filter_observed_count": 0,
+  "policy": "D19: raw failure bytes may be legacy content; any secret hits require source comparison, not an automatic zero-hit rule",
+  "verdict": "NOT_SCORED"
+}

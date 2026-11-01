@@ -1,0 +1,281 @@
+{
+  "persistence": "fresh_independent_GET",
+  "observed_at": "2026-11-01T13:03:28Z",
+  "source_capture": "/private/tmp/ledger-developer-final-runner-20261101/docs/reviews/assets/simplified-1x-20261101-master-01/cucumber9.2.1-plain-frozen/F04-frozen/snapshot.json",
+  "source_capture_sha256": "55fdbea3b822d06d05193badf82412f6450687181684eb34c2b6fd14702647a2",
+  "final_runtime_sha": "df072ba0e6f603e66ba87e0b29c75fcc334a8e43",
+  "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+  "cucumber": "9.2.1",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3811,
+      "uuid": "78eeddff-e394-4933-9ae1-ef1f83cb031d",
+      "name": "ledger-developer-final-cucumber9.2.1-plain-frozen-F04-frozen",
+      "number": 1,
+      "startTime": "2026-11-01T12:59:40.882Z",
+      "endTime": "2026-11-01T12:59:41.300Z",
+      "lastModified": "2026-11-01T12:59:41.358163Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "metadata": {
+        "rp.cluster.lastRun": "1793537982439"
+      },
+      "retentionPolicy": "REGULAR",
+      "launchType": "AUTOMATION"
+    }
+  ],
+  "items": [
+    {
+      "id": 30495,
+      "uuid": "1231c792-d988-4d85-8b6e-56f4090fb087",
+      "name": "Feature: Frozen presentation failure",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": "2026-11-01T12:59:40.947Z",
+      "endTime": "2026-11-01T12:59:41.299Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-frozen-F04-frozen",
+          "number": 1
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3811,
+      "uniqueId": "auto:5c2058162a8a000364ff7287550be1ce",
+      "testCaseHash": 2136902418,
+      "patternTemplates": [],
+      "path": "30495",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30496,
+      "uuid": "f857c0c6-3de9-4af5-b7bd-ced7a194e7ec",
+      "name": "Scenario: Failure and skipped follower",
+      "codeRef": "features/audit.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:40.948Z",
+      "endTime": "2026-11-01T12:59:41.230Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 30495,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-frozen-F04-frozen",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30495,
+            "name": "Feature: Frozen presentation failure"
+          }
+        ]
+      },
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": []
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3811,
+      "uniqueId": "ae3af1746e3a3d41cba8f74d33ca85fb38e4ad99",
+      "testCaseId": "features/audit.feature:3",
+      "testCaseHash": -537576310,
+      "patternTemplates": [],
+      "path": "30495.30496",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 30497,
+      "uuid": "a71ca8ae-4d21-4794-b331-69c52c56b9eb",
+      "name": "Given independent fail",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:41.039Z",
+      "endTime": "2026-11-01T12:59:41.090Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30496,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-frozen-F04-frozen",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30495,
+            "name": "Feature: Frozen presentation failure"
+          },
+          {
+            "id": 30496,
+            "name": "Scenario: Failure and skipped follower"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3811,
+      "uniqueId": "auto:7918581206a330ab7b2215970a1b4e3f",
+      "testCaseHash": 1581734198,
+      "patternTemplates": [],
+      "path": "30495.30496.30497",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30498,
+      "uuid": "7e119190-8134-40fc-aab1-f12b237b47e0",
+      "name": "Then independent follower stays skipped",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": "2026-11-01T12:59:41.108Z",
+      "endTime": "2026-11-01T12:59:41.140Z",
+      "status": "SKIPPED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30496,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-frozen-F04-frozen",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30495,
+            "name": "Feature: Frozen presentation failure"
+          },
+          {
+            "id": 30496,
+            "name": "Scenario: Failure and skipped follower"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3811,
+      "uniqueId": "auto:8101a9a3ac17f763e6d7776d12d45aed",
+      "testCaseHash": 548203266,
+      "patternTemplates": [],
+      "path": "30495.30496.30498",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 30499,
+      "uuid": "d85bf804-123e-402b-bacf-b5766d56ee07",
+      "name": "After hook",
+      "parameters": [],
+      "attributes": [],
+      "type": "AFTER_METHOD",
+      "startTime": "2026-11-01T12:59:41.167Z",
+      "endTime": "2026-11-01T12:59:41.207Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 30496,
+      "pathNames": {
+        "launchPathName": {
+          "name": "ledger-developer-final-cucumber9.2.1-plain-frozen-F04-frozen",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 30495,
+            "name": "Feature: Frozen presentation failure"
+          },
+          {
+            "id": 30496,
+            "name": "Scenario: Failure and skipped follower"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3811,
+      "uniqueId": "auto:7398937af28dd32453bb877781a4f42d",
+      "testCaseHash": -284020138,
+      "patternTemplates": [],
+      "path": "30495.30496.30499",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 19799,
+      "time": "2026-11-01T12:59:41.071Z",
+      "message": "## ✗ RuntimeError: INDEPENDENT\\_FULL\\_BACKTRACE\n\n`features/audit.feature:5` → `runtime-support.rb:65`\n\n```text\nruntime-support.rb:65     IndependentCucumber12.inner_failure\nruntime-support.rb:59     IndependentCucumber12.deep_failure\nruntime-support.rb:136    block in <top (required)>\nfeatures/audit.feature:5  independent fail\n```\n\n_Full backtrace · 62 frames · 56 framework and 2 runner frames not shown above_\n\n```text\n/Users/nick/Documents/New project/tmp/cucumber12-independent/live/replay-20261031T033405Z/TC10/failed-step-after-artifact/runtime-support.rb:65:in 'IndependentCucumber12.inner_failure'\n/Users/nick/Documents/New project/tmp/cucumber12-independent/live/replay-20261031T033405Z/TC10/failed-step-after-artifact/runtime-support.rb:59:in 'IndependentCucumber12.deep_failure'\n/Users/nick/Documents/New project/tmp/cucumber12-independent/live/replay-20261031T033405Z/TC10/failed-step-after-artifact/runtime-support.rb:136:in 'block in <top (required)>'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/private/tmp/reportportal-cucumber12-bundle-ruby342/ruby/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'\n-e:1:in 'Kernel#load'\n-e:1:in '<main>'\n/Users/nick/Documents/New project/tmp/cucumber12-independent/runtime/corrected-c6bf0aae/audit-20261031T033149432700-13852/TC10/failed-step-after-artifact/features/audit.feature:5:in `independent fail'\n```",
+      "level": "error",
+      "itemId": 30497
+    },
+    {
+      "id": 19800,
+      "time": "2026-11-01T12:59:41.189Z",
+      "message": "`after-failure.jpg` · JPEG · 754 × 790 · 36 KB",
+      "binaryContent": {
+        "id": "4922",
+        "contentType": "image/jpeg"
+      },
+      "level": "info",
+      "itemId": 30499
+    }
+  ],
+  "item_and_log_sets_match_capture": true,
+  "secret_filter_observed_count": 0,
+  "policy": "D19: raw failure bytes may be legacy content; any secret hits require source comparison, not an automatic zero-hit rule",
+  "verdict": "NOT_SCORED"
+}

@@ -1,0 +1,104 @@
+- complementary:
+  - generic: sl
+  - link:
+    - /url: "#superadmin_personal/dashboard"
+  - link:
+    - /url: "#superadmin_personal/launches"
+  - link:
+    - /url: "#superadmin_personal/filters"
+  - link:
+    - /url: "#superadmin_personal/userdebug/all"
+  - link:
+    - /url: "#superadmin_personal/members"
+  - link:
+    - /url: "#superadmin_personal/settings"
+  - img "avatar"
+- link "All":
+  - /url: "#superadmin_personal/launches/all"
+- 'link "ledger-developer-independent-QA-replay-c9.2.1-plain-01-F14-negative-3778 #1"':
+  - /url: "#superadmin_personal/launches/all/3827"
+- 'link "Feature: Ledger developer F14"':
+  - /url: "#superadmin_personal/launches/all/3827/30767"
+- generic: "Scenario: Escaping exception 1"
+- generic: History Across All Launches
+- button [disabled]:
+- 'button "Scenario: Failure and skipped follower"':
+- button "Refresh":
+  - generic: Refresh
+- generic: "#1"
+- generic: TI
+- text: Comment
+- text: More
+- text: "0"
+- generic: Failed
+- generic "To Investigate":
+  - generic: To Investigate
+- button "Make decision":
+  - generic: Make decision
+- button "Stack trace":
+  - generic: Stack trace
+- button "All logs" [active]:
+  - generic: All logs
+- button "Attachments":
+  - generic: Attachments
+- button "Item details":
+  - generic: Item details
+- button "History of actions":
+  - generic: History of actions
+- slider
+- generic: Fatal
+- generic: Error
+- generic: Warn
+- generic: Info
+- generic: Debug
+- generic: Trace
+- generic: All
+- button "Show":
+  - generic: Show
+- generic: 1 Error Log
+- generic: Logs with Attachment
+- generic: Hide All Passed Logs
+- button "Markdown Mode":
+- button:
+- button [disabled]:
+- generic: "1"
+- text: of
+- generic: "1"
+- button [disabled]:
+- text: Log message
+- textbox
+- text: ALL STATUSES
+- text: Time
+- paragraph: Given ledger escaping failure 1
+- generic: FAILED
+- text: 0.03s
+- 'heading "✗ RuntimeError: <b>x</b>" [level=2]'
+- paragraph:
+  - code: F14-negative.feature:6
+  - text: →
+  - code: script/…/support.rb:232
+- code: script/…/support.rb:232 block in <top (required)> F14-negative.feature:6 ledger escaping failure 1
+- paragraph:
+  - emphasis: Full backtrace · 58 frames · 54 framework and 2 runner frames not shown above
+- code: "/Users/nick/Documents/crr-qa-1.3.2/script/acceptance/presentation_ledger_developer/support.rb:232:in `block in <top (required)>' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `instance_exec' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `block in cucumber_instance_exec_in' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:53:in `cucumber_run_with_backtrace_filtering' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:30:in `cucumber_instance_exec_in' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/step_definition.rb:135:in `invoke' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:34:in `invoke' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:27:in `block in activate' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/action/defined.rb:24:in `execute' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:36:in `execute' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:30:in `test_step' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:24:in `describe_to' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `each' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:22:in `execute' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:37:in `around_hook' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:13:in `describe_to' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:31:in `block in describe_to' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:20:in `test_case' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:11:in `test_case' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:56:in `test_case' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/retry.rb:23:in `test_case' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in `test_case' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/quit.rb:11:in `test_case' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/compiler.rb:32:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:36:in `done' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:35:in `parse' /bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:24:in `compile' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/runtime.rb:80:in `run!' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/cli/main.rb:29:in `execute!' /bundle/ruby/3.3.0/gems/cucumber-10.2.0/bin/cucumber:9:in `<top (required)>' -e:8:in `load' -e:8:in `<main>' features/presentation_ledger/qa_runtime/F14-negative.feature:6:in `ledger escaping failure 1'"
+- button "2026-11-01 21:05:13"
+- row
+- generic: 1 - 1 of 1
+- generic: 50 per page
+- contentinfo:
+  - text: Build
+  - generic: ": 5.15.6"
+  - generic: © Report Portal 2026
+  - text: All rights reserved
+  - link "Fork us on GitHub |":
+    - /url: https://github.com/reportportal
+  - link "Documentation |":
+    - /url: http://reportportal.io/docs
+  - link "Chat with us on Slack |":
+    - /url: https://slack.epmrpp.reportportal.io/
+  - link "Contact us |":
+    - /url: mailto:support@reportportal.io
+  - link "EPAM |":
+    - /url: https://www.epam.com/
+  - link "Privacy Policy":
+    - /url: https://privacy.epam.com/core/interaction/showpolicy?type=PrivacyPolicy

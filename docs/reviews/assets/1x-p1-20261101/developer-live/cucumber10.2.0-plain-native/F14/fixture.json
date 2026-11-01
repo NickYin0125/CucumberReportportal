@@ -1,0 +1,13 @@
+{
+  "id": "F14",
+  "source": "@reportportal_live @ledger_developer @F14\nFeature: Ledger literal markup and outline fallback inputs\n  Scenario Outline: Escaping matrix\n    Given ledger literal <value>\n    And ledger records this table:\n      | value   |\n      | <value> |\n    Examples: Literal values\n      | value                     |\n      | <other>                   |\n      | <b>x</b>                  |\n      | a \\| b                    |\n      | back\\\\slash               |\n      | *star*                    |\n      | _under_                   |\n      | `tick`                    |\n      | &amp;                     |\n      | # heading                 |\n      | 1. item                   |\n      | x<script>alert(1)</script> |\n      | emoji 🟢                  |\n      | CJK 中文                  |\n      | first\\nsecond             |\n\n  Scenario Outline: Five parameters force description fallback\n    Given ledger literal <a><b><c><d><e>\n    Examples:\n      | a | b | c | d | e |\n      | 1 | 2 | 3 | 4 | 5 |\n\n  Scenario Outline: Long parameter forces description fallback\n    Given ledger literal <value>\n    Examples: Long value\n      | value                                     |\n      | 12345678901234567890123456789012345678901 |\n",
+  "negative": false,
+  "scenarios": 16,
+  "failed": 0,
+  "origin": "presentation-ledger-acceptance.md section 3",
+  "limitations": [
+
+  ],
+  "source_path": "/private/tmp/ledger-developer-final-runner-20261101/features/presentation_ledger/f14_escaping.feature",
+  "source_sha256": "08e22d57438d97889bb333c2a1908c3c882f474274346576639e984dedbaa182"
+}

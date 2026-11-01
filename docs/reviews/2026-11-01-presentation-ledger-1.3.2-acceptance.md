@@ -1,5 +1,67 @@
 # Ledger presentation acceptance - 1.3.2
 
+## Current Scoped Verdict
+
+**PASS: P1.1-P1.10 and G8 only.** Independently scored on 2026-11-01 (Asia/Shanghai) against final runtime `df072ba0e6f603e66ba87e0b29c75fcc334a8e43`. Tester: Independent Ledger QA. Branch: `qa/presentation-ledger-1.3.2`. ReportPortal UI 5.15.6, project `superadmin_personal`.
+
+This is the owner's simplified 1.x scope, not a whole-release certification. No G11, V criteria, 2.x runtime, corpus reconstruction, CI or matrix verification is claimed here. Master approved this QA evidence commit only; no push, release, protected-branch change, PR merge or tag is authorized. All historical observations below remain historical, including prior failures and Decision 15's now-withdrawn 1.x exception.
+
+Current machine-readable evidence: [scoped-acceptance.json](assets/1x-p1-20261101/scoped-acceptance.json), with **715 checks, zero failures**, exact inputs/expected/actual values, Launch/item/log IDs, and capture/source SHA-256 bindings. The older `assets/presentation-ledger-1.3.2-acceptance.json` is preserved unchanged as historical evidence, not used as a current verdict.
+
+## Current Runs
+
+| Runtime / Presentation | Master Native F01 / F04 / F14 / F14-negative | Frozen 62-Frame F04 | Independent Original-3778 Replay |
+| --- | --- | --- | --- |
+| Cucumber 9.2.1 / plain | 3807 / 3808 / 3809 / 3810 | 3811 | 3827 |
+| Cucumber 9.2.1 / rich | 3812 / 3813 / 3814 / 3815 | 3816 | 3828 |
+| Cucumber 10.2.0 / plain | 3817 / 3818 / 3819 / 3820 | 3821 | 3829 |
+| Cucumber 10.2.0 / rich | 3822 / 3823 / 3824 / 3825 | 3826 | 3830 |
+
+The 24 Launches above have fresh independent GET captures in `fresh-master-get-01` and `fresh-replay-get-01`. All item/log sets are complete and match their source captures. Loaded SDK bytes are independently checked against the final SHA. Master executed the four unchanged QA replay commands with private credential injection only; QA supplied the original inputs, runner and assertions. The 20 native/frozen executions were Master-run; independent GETs, scoring and CUA observations, not Master verdicts, are the QA evidence.
+
+The six remaining fixtures were freshly executed using unchanged existing QA runners on Cucumber 10.2.0/plain: F16a 3831, F16d 3832, F16e 3833, F16f 3834, non-Exception event adapter 3835, and explicit framework-only input replay 3836. Each has authenticated live readback, source binding, one intentional native failure and one ERROR log. Adapter inputs are explicitly distinguished from natural Ruby exceptions. No extra matrix was run.
+
+Baseline Launch **3778** is the reused committed historical GET at `assets/ledger-qa-live/wp5-ci-final-20261101-c10.2.0-baseline/F14-negative/snapshot.json`, not a newly fetched baseline. All 33 loaded SDK file hashes bind it to actual v1.3.1 `4ca2f770e0a84e83688f165ba04b4db8ef855cf9`. The 14 original message/frame splits are in [launch-3778-inputs.json](assets/1x-p1-20261101/launch-3778-inputs.json), SHA-256 `e13f5e4c02cfab1679628abafc7b9dda1682f5bd8480c793c6597a266609cdf7`. Every replay contains all 58 original frames per case; **56/56 messages, full tails and combined raw failures are byte-identical**, including `back\slash`. Presentation escaping alone is decoded; no path or frame normalization is used. Native C9/C10 backtraces are separately compared to their own native JSON, never declared equal to each other or to 3778.
+
+## Current Results
+
+| Criterion | Verdict | Independent Evidence |
+| --- | --- | --- |
+| P1.1 | PASS | Plain 3811/3821 equal the complete proposal golden. All four frozen tails retain all 62 original lines, SHA-256 `3fd9692c6e95a2e7e1868111ad41fd5f2584f95098c67d18ccc9756d66eca75d`. |
+| P1.2 | PASS | Exact escaped titles; non-Exception 3835; empty message 3832; 200-character ellipsis title 3833. Its full original 500-character message is retained in the optional Full message block. No Decision 15 exception. |
+| P1.3 | PASS | Counts independently recomputed for all 125 nonempty tails, including 62 total / 56 framework / 2 runner in frozen F04 and framework-only 3836. |
+| P1.4 | PASS | Original frame order, at most eight project frames, feature last, 40-character display cap; 3836 shows precisely the first three framework frames. |
+| P1.5 | PASS | 3831 preserves both continuation lines in a text fence immediately after meta and before Project frames. Caption is absent without continuation. |
+| P1.6 | PASS | Eight independent DOM checks across 3827-3830: both markup inputs appear literally; title/card DOM contains zero injected script or b elements. |
+| P1.7 | PASS | Revised by D19: 3834 preserves the exact original synthetic message and complete native tail, rather than adding failure-path redaction. |
+| P1.8 | PASS | S01 for 3811/3821 at 1100 x 780: title y=527 and meta y=589, both above the untouched fold, without scrolling or expansion. |
+| P1.9 | PASS | S02 for 3811/3821: Stack trace begins with the card title. RP displays raw Markdown in this tab, not an h2 DOM element. |
+| P1.10 | PASS | Separate C9/C10 frozen-input runs have identical pre-tail text within each presentation mode; native stacks are not normalized. |
+| G8 | PASS | D19 contract: all 126 failure payloads retain original message/frame content. The only synthetic SECRET123 hit is the unchanged F16f message, log 20013; no item/Launch field hit. All 30 candidate Launches are final-source bound. |
+
+The four QA content-comparison tests passed: 4 runs, 6 assertions, zero failures/errors/skips (`legacy_3778_test.rb`, seed 47972). Offline scoring is reproducible without credentials using `ruby spec/acceptance/ledger_qa/p1_1x/score_captures.rb`; it does not execute the SDK, contact RP or create Launches.
+
+## Current Defects
+
+None found in the scoped checks. No scoped checks remain blocked. The initial Stack trace heading-locator miss and the earlier pre-Cucumber F04 trace mismatch are retained as diagnostics in the JSON; neither was converted into a product defect or a waiver. Final native JSON is the correct final-event frame input and matches the ERROR tail exactly.
+
+## Current Screenshots
+
+All screenshots are unmodified native CUA JPEG captures. [UI observations](assets/1x-p1-20261101/screenshots/ui-observations.json) bind every screenshot to its actual page URL, 1100 x 780 viewport, Launch/item/log IDs and DOM results.
+
+- [S01 C9 plain](assets/1x-p1-20261101/screenshots/S01-c9-plain-frozen-3811.jpg), [S02 C9 plain](assets/1x-p1-20261101/screenshots/S02-c9-plain-frozen-3811.jpg): Launch 3811, item 30497, log 19799.
+- [S01 C10 plain](assets/1x-p1-20261101/screenshots/S01-c10-plain-frozen-3821.jpg), [S02 C10 plain](assets/1x-p1-20261101/screenshots/S02-c10-plain-frozen-3821.jpg): Launch 3821, item 30675, log 19901.
+- Eight `P1.6-*.jpg` screenshots and corresponding DOM snapshots cover cases 1 and 10 in Launches 3827-3830; exact filenames and IDs are in the UI observations JSON.
+
+## Current Decisions And Exit
+
+Decision 19 at final runtime HEAD is authoritative: on 1.x the failure log carries the same text v1.3.1 sent, in the Ledger card. Failure-log redaction is not added; Decision 15's P1.2 exception is withdrawn; G8 means nothing is sent that v1.3.1 would not have sent. Historical Decisions 20-26 and old WP0-WP5 followups are not new gates. No new waiver was inferred.
+
+Master-supplied four-cell matrix records and the retained first missing-jq attempt are archived separately under this dated asset directory as context, not independently executed or certified by this scoped QA review. Current P1/G8 exit is PASS. Master approved only the QA evidence commit covering [the exact path list](assets/1x-p1-20261101/review-paths.txt), with `Assisted-by: OpenAI Codex`. No push, release, protected-branch change, PR merge or tag is authorized.
+
+<details>
+<summary>Historical WP5 Report: Preserved Old Scope, Not Current Certification</summary>
+
 Verdict: ACCEPT. Date: 2026-11-01 (Asia/Shanghai). Tester: Independent Ledger QA. Branch: `qa/presentation-ledger-1.3.2`. Candidate feature head: `01db2e42d70fc7ec2179198992fc00c1c55825bc`. Actually tested runtime head: `f41888a9fdd6896630765cbbf350353a7f803e59`. Baseline: `4ca2f770e0a84e83688f165ba04b4db8ef855cf9`. RP UI 5.15.6 / server 26.0.7.
 
 Documentation-only binding: [exact path/mode/blob fingerprints and fresh package member proof](assets/wp5-ci-final-20261101/docs-only-final-binding-r2.json) pass. Only the approved documentation delta is newly verified; matrix/live/fault/performance runs retain their original tested SHAs. No release authorization.
@@ -1512,3 +1574,5 @@ Decision18: [pinned protocol review](assets/wp5-ci-final-20261101/parameter-orde
 > response DTOs declare Lists; server persistence uses a Set. Do not describe the
 > response contract as an unordered Set. All other acceptance and
 > no-merge/no-tag/no-publication requirements remain unchanged.
+
+</details>
