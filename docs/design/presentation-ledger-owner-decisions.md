@@ -365,3 +365,44 @@ commit, reconciling only the package documentation/date assertions. Preserve
 the dated 2.0.1 history, the Unreleased 2.0.2 section and the strict positive
 and negative date checks. No runtime edits are authorized by this integration
 decision; all four PRs remain draft and protected refs remain untouched.
+
+## Decision 27: 2.0.2 Readability Fixes From the 2.0.1 User Trial
+
+Owner-confirmed on 2026-11-02.
+
+27. SDK 2.0.2 fixes the client issues found in the independent 2.0.1 trial
+    (Launches 3837-3842). These amend the Ledger proposal and acceptance
+    criteria:
+
+    a. Rich presentation never adds HTML to ERROR or FATAL log messages; they
+       are byte-identical to plain. ReportPortal's Stack Trace tab shows these
+       messages as raw text. Rich accents remain for TRACE to WARN messages.
+       This replaces the rule that allowed a pill on the second line of ERROR
+       cards and the rich backtrace fold.
+    b. Assertion values that are empty, whitespace-only, or start or end with
+       whitespace are shown quoted with a label, for example `"" (empty
+       string)`. All other strings are still shown as-is.
+    c. HTTP cards show the outcome before transport detail: title, response
+       body, URL, request body, request headers, response headers. Headers
+       render one `name: value` line per value; the content-type subtitle
+       shows the plain media type. No value is changed or dropped.
+    d. When both assertion values are JSON objects, one line before the
+       comparison names the top-level keys that are missing, extra or
+       changed. This is not a general diff.
+    e. The generated run-context description no longer repeats versions that
+       are already Launch attributes.
+    f. The shipped example (examples/current_sdk) and user docs are corrected
+       as listed in the 2.0.2 work packages.
+
+    The plain default, redaction, raw evidence bytes, item ownership and
+    statuses are unchanged. The 1.x line is not changed.
+
+### R02 Scope Clarification
+
+Owner-confirmed on 2026-11-02 after inspecting the current capture-target API.
+
+Owner answer: 保持现有 API 和 After 归属，仅补充过滤警告，R02 标记未修复（推荐，改动最小）
+
+Do not extend the runtime capture API or move After-hook evidence to a Scenario.
+Document the passed-log filter interaction and record R02 as not fixed. All
+other work packages continue under Decision 27.
