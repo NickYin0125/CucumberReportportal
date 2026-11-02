@@ -1,0 +1,299 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3966,
+      "uuid": "c9f2c72c-8d61-4ba0-93db-acc909e3efa0",
+      "name": "ledger-developer-QA202-INDEPENDENT-candidate-supplement-plain-QA202-regex",
+      "number": 1,
+      "startTime": 1793620774970,
+      "endTime": 1793620775126,
+      "lastModified": 1793620775150,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 32479,
+      "uuid": "bbe126e4-93d2-44b6-a1c6-992c3e71884f",
+      "name": "Feature: QA202 independent regex",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793620774985,
+      "endTime": 1793620775125,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3966,
+      "uniqueId": "auto:3d76e70ddbe10dcc51c7e25e683e4b66",
+      "testCaseHash": -1972588845,
+      "patternTemplates": [],
+      "path": "32479",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 32480,
+      "uuid": "e6807a63-ff4f-480c-b3af-cea972e7b66e",
+      "name": "Scenario: QA202 regex",
+      "codeRef": "features/presentation_ledger/qa_runtime/QA202-regex.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620774986,
+      "endTime": 1793620775102,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 32479,
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": []
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3966,
+      "uniqueId": "869e5717109b3a7a4980ef0a123b662564a1edca",
+      "testCaseId": "features/presentation_ledger/qa_runtime/QA202-regex.feature:3",
+      "testCaseHash": 919687948,
+      "patternTemplates": [],
+      "path": "32479.32480",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 32481,
+      "uuid": "44ecee2b-7990-4fa2-8be0-c8780b8a6214",
+      "name": "Given QA202 regex",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620775037,
+      "endTime": 1793620775086,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 32480,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3966,
+      "uniqueId": "auto:099ba7844c9604dd7903258a175ff1f2",
+      "testCaseHash": 339035610,
+      "patternTemplates": [],
+      "path": "32479.32480.32481",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 21670,
+      "time": "2026-11-02T11:59:35.070Z",
+      "message": "## ✗ RSpec::Expectations::ExpectationNotMetError\n\nMessage withheld: unsafe or ambiguous input\n\n`QA202-regex.feature:4` → `spec/…/supplement_support.rb:11`\n\n```text\nspec/…/supplement_support.rb:11  block in <top (required)>\nQA202-regex.feature:4            QA202 regex\n```\n\n_Full backtrace · 69 frames · 65 framework and 2 runner frames not shown above_\n\n```text\n/bundle/ruby/3.4.0/gems/rspec-support-3.13.7/lib/rspec/support.rb:110:in 'block in <module:Support>'\n/bundle/ruby/3.4.0/gems/rspec-support-3.13.7/lib/rspec/support.rb:119:in 'RSpec::Support.notify_failure'\n/bundle/ruby/3.4.0/gems/rspec-expectations-3.13.5/lib/rspec/expectations/fail_with.rb:35:in 'RSpec::Expectations.fail_with'\n/bundle/ruby/3.4.0/gems/rspec-expectations-3.13.5/lib/rspec/expectations/handler.rb:37:in 'RSpec::Expectations::ExpectationHelper.handle_failure'\n/bundle/ruby/3.4.0/gems/rspec-expectations-3.13.5/lib/rspec/expectations/handler.rb:55:in 'block in RSpec::Expectations::PositiveExpectationHandler.handle_matcher'\n/bundle/ruby/3.4.0/gems/rspec-expectations-3.13.5/lib/rspec/expectations/handler.rb:26:in 'RSpec::Expectations::ExpectationHelper.with_matcher'\n/bundle/ruby/3.4.0/gems/rspec-expectations-3.13.5/lib/rspec/expectations/handler.rb:47:in 'RSpec::Expectations::PositiveExpectationHandler.handle_matcher'\n/bundle/ruby/3.4.0/gems/rspec-expectations-3.13.5/lib/rspec/expectations/expectation_target.rb:65:in 'RSpec::Expectations::ExpectationTarget::InstanceMethods#to'\n/bundle/ruby/3.4.0/gems/rspec-expectations-3.13.5/lib/rspec/expectations/expectation_target.rb:101:in 'RSpec::Expectations::ValueExpectationTarget#to'\n/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/supplement_support.rb:11:in 'block in <top (required)>'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:222:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:157:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/filter.rb:61:in 'done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/bundle/ruby/3.4.0/gems/cucumber-core-20.0.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/bundle/ruby/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'\n-e:8:in 'Kernel#load'\n-e:8:in '<main>'\nfeatures/presentation_ledger/qa_runtime/QA202-regex.feature:4:in `QA202 regex'\n```",
+      "level": "error",
+      "itemId": 32481
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 3966,
+      "items_by_launch": [
+        {
+          "id": 32479,
+          "uuid": "bbe126e4-93d2-44b6-a1c6-992c3e71884f",
+          "name": "Feature: QA202 independent regex",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-02T11:59:34.985Z",
+          "endTime": "2026-11-02T11:59:35.125Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-candidate-supplement-plain-QA202-regex",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3966,
+          "uniqueId": "auto:3d76e70ddbe10dcc51c7e25e683e4b66",
+          "testCaseHash": -1972588845,
+          "patternTemplates": [],
+          "path": "32479",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 32480,
+          "uuid": "e6807a63-ff4f-480c-b3af-cea972e7b66e",
+          "name": "Scenario: QA202 regex",
+          "codeRef": "features/presentation_ledger/qa_runtime/QA202-regex.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T11:59:34.986Z",
+          "endTime": "2026-11-02T11:59:35.102Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "parent": 32479,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-candidate-supplement-plain-QA202-regex",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 32479,
+                "name": "Feature: QA202 independent regex"
+              }
+            ]
+          },
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": []
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3966,
+          "uniqueId": "869e5717109b3a7a4980ef0a123b662564a1edca",
+          "testCaseId": "features/presentation_ledger/qa_runtime/QA202-regex.feature:3",
+          "testCaseHash": 919687948,
+          "patternTemplates": [],
+          "path": "32479.32480",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 32481,
+          "uuid": "44ecee2b-7990-4fa2-8be0-c8780b8a6214",
+          "name": "Given QA202 regex",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T11:59:35.037Z",
+          "endTime": "2026-11-02T11:59:35.086Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 32480,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-candidate-supplement-plain-QA202-regex",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 32479,
+                "name": "Feature: QA202 independent regex"
+              },
+              {
+                "id": 32480,
+                "name": "Scenario: QA202 regex"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3966,
+          "uniqueId": "auto:099ba7844c9604dd7903258a175ff1f2",
+          "testCaseHash": 339035610,
+          "patternTemplates": [],
+          "path": "32479.32480.32481",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

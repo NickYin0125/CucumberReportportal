@@ -1,0 +1,761 @@
+test / test (Ruby 3.3)	UNKNOWN STEP	﻿2026-11-02T12:04:41.0494797Z Current runner version: '2.338.2'
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0525885Z ##[group]Runner Image Provisioner
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0527278Z Hosted Compute Agent
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0527948Z Version: 20261021.618
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0528587Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0529295Z Build Date: 2026-10-21T00:45:21Z
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0529989Z Worker ID: {e977cc56-8a6f-45bd-a752-4ab104cfd2e4}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0530697Z Region: centralus
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0531239Z Cloud: Azure
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0531756Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0533213Z ##[group]Operating System
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0533869Z Ubuntu
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0534369Z 24.04.5
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0534973Z LTS
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0535516Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0536021Z ##[group]Runner Image
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0537004Z Image: ubuntu-24.04
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0537571Z Version: 20261025.353.1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0538853Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0540393Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0541422Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0542469Z ##[group]GITHUB_TOKEN Permissions
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0544980Z Contents: read
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0545568Z Metadata: read
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0546157Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0548620Z Secret source: Actions
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0549610Z Cache mode: write
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.0550301Z Prepare workflow directory
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.1263757Z Prepare all required actions
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.1354576Z Getting action download info
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.4260135Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.5925792Z Download action repository 'ruby/setup-ruby@v1' (SHA:de492cf36cbab201753d720ce4f4e336cd688c94)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:41.9387549Z Download action repository 'azure/setup-helm@v5' (SHA:9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.2569348Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.5959986Z Uses: NickYin0125/CucumberReportportal/.github/workflows/validate.yml@refs/pull/8/merge (1a49522134d7be76fd6702b49f3f70177e2c1e50)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.5966950Z ##[group] Inputs
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.5968554Z   release: false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.5969599Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.5970667Z Complete job name: test / test (Ruby 3.3)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7077696Z ##[group]Run actions/checkout@v6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7079388Z with:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7080450Z   ref: 1a49522134d7be76fd6702b49f3f70177e2c1e50
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7081758Z   fetch-depth: 0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7082846Z   persist-credentials: false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7084094Z   repository: NickYin0125/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7093225Z   token: ***
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7094248Z   ssh-strict: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7095258Z   ssh-user: git
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7096376Z   clean: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7097664Z   sparse-checkout-cone-mode: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7098855Z   fetch-tags: false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7099890Z   show-progress: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7100957Z   lfs: false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7101926Z   submodules: false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7102955Z   set-safe-directory: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7104116Z   allow-unsafe-pr-checkout: false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7105609Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7106715Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7108564Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7110344Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:42.7111396Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0062778Z Syncing repository: NickYin0125/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0067877Z ##[group]Getting Git version info
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0070669Z Working directory is '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0073636Z [command]/usr/bin/git version
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0149612Z git version 2.56.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0176066Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0195572Z Temporarily overriding HOME='/home/runner/work/_temp/7b2c71b3-7b79-4d97-8a2c-ec706279254e' before making global git config changes
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0200826Z Adding repository directory to the temporary git global config as a safe directory
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0205224Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0276981Z Deleting the contents of '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0281994Z ##[group]Determining repository object format
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0285829Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0288808Z ##[group]Initializing the repository
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0291874Z [command]/usr/bin/git init /home/runner/work/CucumberReportportal/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0402535Z hint: Using 'master' as the name for the initial branch. This default branch name
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0405070Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0407416Z hint: to use in all of your new repositories, which will suppress this warning,
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0409117Z hint: call:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0409986Z hint:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0411181Z hint: 	git config --global init.defaultBranch <name>
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0412511Z hint:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0413760Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0415701Z hint: 'development'. The just-created branch can be renamed via this command:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0417697Z hint:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0418631Z hint: 	git branch -m <name>
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0419818Z hint:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0421324Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0430402Z Initialized empty Git repository in /home/runner/work/CucumberReportportal/CucumberReportportal/.git/
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0443221Z [command]/usr/bin/git remote add origin https://github.com/NickYin0125/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0504024Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0506622Z ##[group]Disabling automatic garbage collection
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0508332Z [command]/usr/bin/git config --local gc.auto 0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0552956Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0555895Z ##[group]Setting up auth
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0558015Z Removing SSH command configuration
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0561463Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.0603821Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1103725Z Removing HTTP extra header
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1111280Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1168209Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1416748Z Removing includeIf entries pointing to credentials config files
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1425303Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1468748Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1697940Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1743453Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1887453Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1934767Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.1975958Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.2015270Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.2017230Z ##[group]Fetching the repository
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:43.2023122Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8629630Z From https://github.com/NickYin0125/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8631631Z  * [new branch]        codex/cucumber-12 -> origin/codex/cucumber-12
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8635108Z  * [new branch]        codex/day2-security-endurance -> origin/codex/day2-security-endurance
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8637479Z  * [new branch]        codex/failure-redaction-2.0.2 -> origin/codex/failure-redaction-2.0.2
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8638702Z  * [new branch]        codex/presentation-ledger-2.0.1 -> origin/codex/presentation-ledger-2.0.1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8639704Z  * [new branch]        codex/release-draft-recovery -> origin/codex/release-draft-recovery
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8640491Z  * [new branch]        codex/reporting-experience-v1-2 -> origin/codex/reporting-experience-v1-2
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8641290Z  * [new branch]        codex/reportportal-rich-experience -> origin/codex/reportportal-rich-experience
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8642199Z  * [new branch]        docs/user-guides-20261014 -> origin/docs/user-guides-20261014
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8642775Z  * [new branch]        main              -> origin/main
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8643316Z  * [new branch]        maintenance/1.x   -> origin/maintenance/1.x
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8644049Z  * [new branch]        maintenance/presentation-ledger-1.3.2 -> origin/maintenance/presentation-ledger-1.3.2
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8645342Z  * [new branch]        maintenance/release-ancestry-1.x -> origin/maintenance/release-ancestry-1.x
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8646979Z  * [new branch]        qa/presentation-ledger-1.3.2 -> origin/qa/presentation-ledger-1.3.2
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8648209Z  * [new branch]        qa/presentation-ledger-2.0.1 -> origin/qa/presentation-ledger-2.0.1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8648901Z  * [new tag]           m3                -> m3
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8649462Z  * [new tag]           milestone1        -> milestone1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8649946Z  * [new tag]           v1.0.0            -> v1.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8650425Z  * [new tag]           v1.1.0            -> v1.1.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8651045Z  * [new tag]           v1.2.0            -> v1.2.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8651484Z  * [new tag]           v1.3.0            -> v1.3.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8652039Z  * [new tag]           v1.3.1            -> v1.3.1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8652487Z  * [new tag]           v1.3.2            -> v1.3.2
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8653164Z  * [new tag]           v2.0.0            -> v2.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8653633Z  * [new tag]           v2.0.1            -> v2.0.1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8657671Z [command]/usr/bin/git rev-parse --verify --quiet 1a49522134d7be76fd6702b49f3f70177e2c1e50^{object}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:48.8679537Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin 1a49522134d7be76fd6702b49f3f70177e2c1e50
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1846989Z From https://github.com/NickYin0125/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1848272Z  * branch              1a49522134d7be76fd6702b49f3f70177e2c1e50 -> FETCH_HEAD
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1855585Z [command]/usr/bin/git rev-parse --verify --quiet 1a49522134d7be76fd6702b49f3f70177e2c1e50^{object}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1882841Z 1a49522134d7be76fd6702b49f3f70177e2c1e50
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1885348Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1886002Z ##[group]Determining the checkout info
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1887296Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1892559Z [command]/usr/bin/git sparse-checkout disable
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1951534Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1987308Z ##[group]Checking out the ref
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.1991142Z [command]/usr/bin/git checkout --progress --force 1a49522134d7be76fd6702b49f3f70177e2c1e50
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2499422Z Note: switching to '1a49522134d7be76fd6702b49f3f70177e2c1e50'.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2500048Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2500695Z You are in 'detached HEAD' state. You can look around, make experimental
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2501346Z changes and commit them, and you can discard any commits you make in this
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2501920Z state without impacting any branches by switching back to a branch.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2502270Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2502549Z If you want to create a new branch to retain commits you create, you may
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2503470Z do so (now or later) by using -c with the switch command. Example:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2503904Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2504166Z   git switch -c <new-branch-name>
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2504529Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2504751Z Or undo this operation with:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2505079Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2505316Z   git switch -
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2505575Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2506016Z Turn off this advice by setting config variable advice.detachedHead to false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2506677Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2507255Z HEAD is now at 1a495221 Merge d1725d3ab9e796c008fe9e80a11ea0ce29bde762 into ef38224b28b451dc4cc94ac314906ac4ecee459a
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2509385Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2562309Z [command]/usr/bin/git log -1 --format=%H
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2594536Z 1a49522134d7be76fd6702b49f3f70177e2c1e50
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2613187Z ##[group]Removing auth
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2613854Z Removing SSH command configuration
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2614526Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2652813Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2873891Z Removing HTTP extra header
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2879786Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.2917083Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3185440Z Removing includeIf entries pointing to credentials config files
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3190658Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3251127Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3252304Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3253335Z includeif.gitdir:/github/workspace/.git.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3253940Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3262955Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3305205Z /home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3309401Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3359235Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3395837Z /home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3406870Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3456949Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3484120Z /github/runner_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3492014Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3530883Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3563028Z /github/runner_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3570990Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3646080Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3880424Z Removing credentials config '/home/runner/work/_temp/git-credentials-044d0890-29ab-446c-94a1-03bbaffb725d.config'
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.3889058Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4161700Z ##[group]Run ruby/setup-ruby@v1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4162123Z with:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4162423Z   ruby-version: 3.3
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4162786Z   bundler-cache: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4165469Z   token: ***
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4165805Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4166132Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4167052Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4167620Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.4168050Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.5748240Z ##[group]Modifying PATH
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.5749348Z Entries added to PATH to use selected Ruby:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.5750575Z   /opt/hostedtoolcache/Ruby/3.3.13/x64/bin
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.5756829Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.5758314Z ##[group]Print Ruby version
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.5873632Z [command]/opt/hostedtoolcache/Ruby/3.3.13/x64/bin/ruby --version
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.9616987Z ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.9653327Z Took   0.39 seconds
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.9654597Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.9655228Z ##[group]Installing Bundler
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.9660100Z Using Bundler 2.6.6 from /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile.lock BUNDLED WITH 2.6.6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:49.9664819Z [command]/opt/hostedtoolcache/Ruby/3.3.13/x64/bin/gem install bundler -v 2.6.6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:52.8157769Z Successfully installed bundler-2.6.6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:52.8158288Z 1 gem installed
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:52.8205425Z Took   2.86 seconds
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:52.8206734Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:52.8208352Z > bundle install
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:52.8212462Z Setting BUNDLER_VERSION=2.6.6 for "bundle config|lock" commands below to ensure Bundler 2.6.6 is used
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:52.8232476Z [command]/opt/hostedtoolcache/Ruby/3.3.13/x64/bin/bundle config set --local path /home/runner/work/CucumberReportportal/CucumberReportportal/vendor/bundle
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.0490339Z [command]/opt/hostedtoolcache/Ruby/3.3.13/x64/bin/bundle config set --local deployment true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1840805Z ##[group]Print lockfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1855408Z [command]/usr/bin/cat /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile.lock
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1885715Z PATH
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1886157Z   remote: .
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1886805Z   specs:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1887363Z     reportportal-cucumber-ruby (2.0.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1888467Z       aws-sdk-s3 (>= 1.180)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1888920Z       base64 (~> 0.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1889334Z       cgi (~> 0.4)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1889774Z       cucumber (~> 12.0, >= 12.0.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1890345Z       logger (~> 1.6)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1890648Z       mime-types (>= 3.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1890903Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1891007Z GEM
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1891419Z   remote: https://rubygems.org/
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1891839Z   specs:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1892127Z     addressable (2.8.9)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1892453Z       public_suffix (>= 2.0.2, < 8.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1892850Z     aws-eventstream (1.4.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1893215Z     aws-partitions (1.1255.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1893556Z     aws-sdk-core (3.250.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1893936Z       aws-eventstream (~> 1, >= 1.3.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1894403Z       aws-partitions (~> 1, >= 1.992.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1894789Z       aws-sigv4 (~> 1.9)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1895125Z       base64
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1895412Z       bigdecimal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1895726Z       jmespath (~> 1, >= 1.6.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1896044Z       logger
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1896349Z     aws-sdk-kms (1.128.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1896934Z       aws-sdk-core (~> 3, >= 3.248.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1897365Z       aws-sigv4 (~> 1.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1897786Z     aws-sdk-s3 (1.224.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1898105Z       aws-sdk-core (~> 3, >= 3.248.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1898493Z       aws-sdk-kms (~> 1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1898833Z       aws-sigv4 (~> 1.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1899119Z     aws-sigv4 (1.12.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1899693Z       aws-eventstream (~> 1, >= 1.0.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1900032Z     base64 (0.3.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1900338Z     bigdecimal (4.1.3)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1900798Z     builder (3.3.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1901075Z     cgi (0.5.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1901394Z     crack (1.0.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1901680Z       bigdecimal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1901970Z       rexml
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1902291Z     cucumber (12.0.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1902596Z       base64 (~> 0.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1902965Z       builder (~> 3.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1903395Z       cucumber-ci-environment (> 9, < 14)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1903900Z       cucumber-core (>= 20, < 21)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1904401Z       cucumber-cucumber-expressions (> 17, < 21)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1904834Z       cucumber-html-formatter (> 21, < 25)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1905218Z       cucumber-query (~> 16.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1905583Z       diff-lcs (>= 1.5, < 3.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1905884Z       logger (~> 1.6)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1906264Z       mini_mime (~> 1.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1907055Z       multi_test (> 1, < 4)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1907568Z       sys-uname (~> 1.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1907992Z     cucumber-ci-environment (11.0.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1908533Z     cucumber-core (20.0.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1909125Z       cucumber-gherkin (> 36, < 43)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1909635Z       cucumber-messages (> 31, < 35)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1910191Z       cucumber-tag-expressions (> 6, < 12)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1910775Z     cucumber-cucumber-expressions (20.1.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1911278Z       bigdecimal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1911771Z     cucumber-gherkin (42.0.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1912306Z       cucumber-messages (>= 34, < 35)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1913164Z     cucumber-html-formatter (24.2.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1913736Z       cucumber-messages (> 23, < 35)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1914311Z     cucumber-messages (34.2.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1914817Z     cucumber-query (16.1.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1915289Z       cucumber-messages (>= 34.1, < 36)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1915814Z     cucumber-tag-expressions (8.1.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1916405Z     diff-lcs (1.6.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1917132Z     ffi (1.17.3)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1917626Z     ffi (1.17.3-aarch64-linux-gnu)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1918163Z     ffi (1.17.3-aarch64-linux-musl)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1918699Z     ffi (1.17.3-arm-linux-gnu)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1919225Z     ffi (1.17.3-arm-linux-musl)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1919791Z     ffi (1.17.3-arm64-darwin)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1920567Z     ffi (1.17.3-x86-linux-gnu)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1921041Z     ffi (1.17.3-x86-linux-musl)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1921552Z     ffi (1.17.3-x86_64-darwin)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1922077Z     ffi (1.17.3-x86_64-linux-gnu)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1922586Z     ffi (1.17.3-x86_64-linux-musl)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1923037Z     hashdiff (1.2.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1923571Z     jmespath (1.6.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1924118Z     logger (1.7.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1924550Z     memoist3 (1.0.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1925029Z     mime-types (3.7.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1925460Z       logger
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1925963Z       mime-types-data (~> 3.2025, >= 3.2025.0507)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1927364Z     mime-types-data (3.2026.0317)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1927922Z     mini_mime (1.1.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1928452Z     multi_test (1.1.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1928950Z     mustermann (3.1.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1929470Z     nio4r (2.7.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1929889Z     parallel (1.27.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1930359Z     parallel_tests (5.6.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1930890Z       parallel
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1931306Z     public_suffix (7.0.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1931800Z     puma (8.0.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1932202Z       nio4r (~> 2.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1932622Z     rack (3.2.6)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1933247Z     rack-protection (4.2.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1933700Z       base64 (>= 0.1.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1934114Z       logger (>= 1.6.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1934613Z       rack (>= 3.0.0, < 4)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1935195Z     rack-session (2.1.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1935955Z       base64 (>= 0.1.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1936355Z       rack (>= 3.0.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1936987Z     rackup (2.3.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1937423Z       rack (>= 3)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1937840Z     rake (13.3.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1938321Z     rantly (3.0.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1938735Z     rexml (3.4.4)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1939572Z     rspec (3.13.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1940147Z       rspec-core (~> 3.13.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1940648Z       rspec-expectations (~> 3.13.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1941229Z       rspec-mocks (~> 3.13.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1941721Z     rspec-core (3.13.6)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1942132Z       rspec-support (~> 3.13.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1942598Z     rspec-expectations (3.13.5)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1943047Z       diff-lcs (>= 1.2.0, < 2.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1943428Z       rspec-support (~> 3.13.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1943761Z     rspec-mocks (3.13.8)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1944074Z       diff-lcs (>= 1.2.0, < 2.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1944462Z       rspec-support (~> 3.13.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1944826Z     rspec-support (3.13.7)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1945169Z     sinatra (4.2.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1945532Z       logger (>= 1.6.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1945922Z       mustermann (~> 3.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1946362Z       rack (>= 3.0.0, < 4)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1946974Z       rack-protection (= 4.2.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1947464Z       rack-session (>= 2.0.0, < 3)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1947981Z       tilt (~> 2.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1948408Z     sys-uname (1.5.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1948999Z       ffi (~> 1.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1949390Z       memoist3 (~> 1.0.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1949881Z     tilt (2.7.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1950332Z     webmock (3.26.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1950767Z       addressable (>= 2.8.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1951257Z       crack (>= 0.3.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1951733Z       hashdiff (>= 0.4.0, < 2.0.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1952004Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1952134Z PLATFORMS
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1952430Z   aarch64-linux-gnu
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1952745Z   aarch64-linux-musl
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1953191Z   arm-linux-gnu
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1953488Z   arm-linux-musl
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1953890Z   arm64-darwin
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1954265Z   ruby
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1954610Z   x86-linux-gnu
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1955003Z   x86-linux-musl
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1955488Z   x86_64-darwin
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1955934Z   x86_64-linux-gnu
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1956348Z   x86_64-linux-musl
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1957033Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1957172Z DEPENDENCIES
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1957647Z   bundler (>= 2.6)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1958321Z   parallel_tests (>= 4.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1958800Z   puma (>= 6.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1959265Z   rackup (>= 2.2)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1959656Z   rake (>= 13.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1960065Z   rantly (>= 2.0)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1960547Z   reportportal-cucumber-ruby!
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1961035Z   rspec (>= 3.13)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1961410Z   sinatra (>= 4.1)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1961924Z   webmock (>= 3.23)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1962195Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1962430Z BUNDLED WITH
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1962885Z    2.6.6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1963719Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.1974767Z Cache key: setup-ruby-bundler-cache-v6-ubuntu-24.04-x64-ruby-3.3.13-wd-/home/runner/work/CucumberReportportal/CucumberReportportal-with--without--only--/home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile.lock-b1abda171b289cd30234effc574e9192e2c71e57dee9d684b906fcdb13c42dea
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:53.3663466Z Cache hit for: setup-ruby-bundler-cache-v6-ubuntu-24.04-x64-ruby-3.3.13-wd-/home/runner/work/CucumberReportportal/CucumberReportportal-with--without--only--/home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile.lock-b1abda171b289cd30234effc574e9192e2c71e57dee9d684b906fcdb13c42dea
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.2005386Z Received 10811572 of 10811572 (100.0%), 15.9 MBs/sec
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.2005973Z Cache Size: ~10 MB (10811572 B)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.2031364Z [command]/usr/bin/tar -xf /home/runner/work/_temp/1d22dbfa-462c-41e9-8227-028eaccb8923/cache.tzst -P -C /home/runner/work/CucumberReportportal/CucumberReportportal --use-compress-program unzstd
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.2853087Z Cache restored successfully
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.2861166Z Found cache for key: setup-ruby-bundler-cache-v6-ubuntu-24.04-x64-ruby-3.3.13-wd-/home/runner/work/CucumberReportportal/CucumberReportportal-with--without--only--/home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile.lock-b1abda171b289cd30234effc574e9192e2c71e57dee9d684b906fcdb13c42dea
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.2872434Z [command]/opt/hostedtoolcache/Ruby/3.3.13/x64/bin/bundle install --jobs 4
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7029744Z Bundle complete! 10 Gemfile dependencies, 55 gems now installed.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7030850Z Bundled gems are installed into `./vendor/bundle`
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7254725Z Took   1.90 seconds
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7371398Z ##[group]Run ruby --version
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7372066Z ^[[36;1mruby --version^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7373311Z ^[[36;1mbundle exec ruby -e 'require "reportportal_cucumber"; cucumber = Gem.loaded_specs.fetch("cucumber").version; puts "SDK=#{ReportportalCucumber::VERSION} Cucumber=#{cucumber}"; if ReportportalCucumber::VERSION.start_with?("2."); abort "Unsupported target Cucumber" unless Gem::Requirement.new("~> 12.0", ">= 12.0.1").satisfied_by?(cucumber); end'^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7397436Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7397882Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7398236Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7398805Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7399344Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7399653Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:54.7595191Z ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1452307Z SDK=2.0.2 Cucumber=12.0.1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1588177Z ##[group]Run azure/setup-helm@v5
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1588566Z with:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1590614Z   version: v3.18.4
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1593278Z   token: ***
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1593650Z   downloadBaseURL: https://get.helm.sh
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1594043Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1594421Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1594888Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1595468Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.1595775Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.2599214Z ##[group]Installing v3.18.4
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.2606748Z Downloading 'v3.18.4' from 'https://get.helm.sh'
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:56.4571495Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/f040cbf4-8d7d-41ef-89f9-ce1980ede345 -f /home/runner/work/_temp/7f5e5b4d-4fe5-4bb4-b2e6-847e961b1f29
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1128426Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1129567Z Helm tool version 'v3.18.4' has been cached at /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1256365Z ##[group]Run helm_bin="$(command -v helm)"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1257115Z ^[[36;1mhelm_bin="$(command -v helm)"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1257546Z ^[[36;1mtest -x "$helm_bin"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1257935Z ^[[36;1mecho "HELM_BIN=$helm_bin" >> "$GITHUB_ENV"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1273204Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1273802Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1274108Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1274594Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1275172Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.1275529Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2327350Z ##[group]Run sha256sum helm/reportportal-rich-experience/Chart.lock > "$RUNNER_TEMP/chart-lock.sha256"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2328165Z ^[[36;1msha256sum helm/reportportal-rich-experience/Chart.lock > "$RUNNER_TEMP/chart-lock.sha256"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2329002Z ^[[36;1mhelm repo add reportportal https://k8s.reportportal.io/^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2329487Z ^[[36;1mhelm repo update^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2329906Z ^[[36;1mhelm dependency build ./helm/reportportal-rich-experience^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2330546Z ^[[36;1msha256sum --check "$RUNNER_TEMP/chart-lock.sha256"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2345581Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2346082Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2346394Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2347228Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2347753Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2348200Z   HELM_BIN: /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.2348921Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.5580209Z "reportportal" has been added to your repositories
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.5952263Z Hang tight while we grab the latest from your chart repositories...
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.6729903Z ...Successfully got an update from the "reportportal" chart repository
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.6730950Z Update Complete. ⎈Happy Helming!⎈
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.7091033Z Hang tight while we grab the latest from your chart repositories...
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.7966021Z ...Successfully got an update from the "reportportal" chart repository
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.7967976Z Update Complete. ⎈Happy Helming!⎈
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.8039212Z Saving 1 charts
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:57.8039799Z Downloading reportportal from repo https://k8s.reportportal.io/
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1713372Z Deleting outdated charts
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1746054Z helm/reportportal-rich-experience/Chart.lock: OK
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1808445Z ##[group]Run chart=./helm/reportportal-rich-experience
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1809085Z ^[[36;1mchart=./helm/reportportal-rich-experience^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1809553Z ^[[36;1mhelm lint "$chart" --kube-version 1.35.0^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1810130Z ^[[36;1mhelm template release-validation "$chart" --kube-version 1.35.0 > /dev/null^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1810759Z ^[[36;1mfor profile in values-local-latest.yaml values-production.example.yaml; do^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1811340Z ^[[36;1m  helm lint "$chart" --kube-version 1.35.0 -f "$chart/$profile"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1812003Z ^[[36;1m  helm template release-validation "$chart" --kube-version 1.35.0 -f "$chart/$profile" > /dev/null^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1812550Z ^[[36;1mdone^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1813164Z ^[[36;1mhelm lint "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1814199Z ^[[36;1mhelm template release-validation "$chart" --kube-version 1.35.0 -f "$chart/values-production.example.yaml" -f "$chart/values-huawei.example.yaml" > /dev/null^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1829110Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1829538Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1829845Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1830397Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1830928Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1831301Z   HELM_BIN: /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.1831750Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.2533107Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.2606131Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.2662346Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.3990289Z ==> Linting ./helm/reportportal-rich-experience
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.3991439Z [INFO] Chart.yaml: icon is recommended
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.3991872Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.3992844Z 1 chart(s) linted, 0 chart(s) failed
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.4662241Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.4733376Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.4788124Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.6525468Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.6577006Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.6637696Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.7897625Z ==> Linting ./helm/reportportal-rich-experience
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.7898273Z [INFO] Chart.yaml: icon is recommended
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.7898538Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.7899344Z 1 chart(s) linted, 0 chart(s) failed
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.8619468Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.8670900Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:58.8728116Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.0391816Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.0447620Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.0521056Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.1745809Z ==> Linting ./helm/reportportal-rich-experience
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.1757727Z [INFO] Chart.yaml: icon is recommended
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.1758104Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.1758267Z 1 chart(s) linted, 0 chart(s) failed
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.2429814Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.2499059Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.2553252Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.4418567Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.4474582Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.4532872Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.5864291Z ==> Linting ./helm/reportportal-rich-experience
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.5865588Z [INFO] Chart.yaml: icon is recommended
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.5865814Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.5865987Z 1 chart(s) linted, 0 chart(s) failed
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.6546163Z coalesce.go:301: warning: destination for postgresql.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.6597153Z coalesce.go:301: warning: destination for rabbitmq.ingress.tls is a table. Ignoring non-table value ([])
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.6656421Z coalesce.go:301: warning: destination for minio.ingress.tls is a table. Ignoring non-table value (false)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7728780Z ##[group]Run umask 077
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7729385Z ^[[36;1mumask 077^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7730259Z ^[[36;1mmkdir -p "$RUNNER_TEMP/rspec-fault-diagnostics/day2" "$RUNNER_TEMP/rspec-fault-diagnostics/m4d"^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7750795Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7751319Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7751952Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7752711Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7753637Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7754233Z   HELM_BIN: /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7754886Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7858902Z ##[group]Run bundle exec rspec
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7859325Z ^[[36;1mbundle exec rspec^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7872786Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7873296Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7873605Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7874269Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7874798Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7875247Z   HELM_BIN: /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7875831Z   DAY2_LOCAL_CAPTURE: /home/runner/work/_temp/rspec-fault-diagnostics/day2
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7876378Z   M4_D_EVIDENCE_DIR: /home/runner/work/_temp/rspec-fault-diagnostics/m4d
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:04:59.7877104Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:08.9974578Z ......................................................................................................................................................slow: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:09.1496984Z transient: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:09.2634021Z refusal-400: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:09.2948987Z refusal-401: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:09.3710504Z disconnect: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:10.4979788Z timeout: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:10.5362110Z hidden-ack: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:10.7252009Z partial-ack: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:10.8659836Z durable-replay: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:10.9018285Z finish-outage: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:10.9212632Z expired-budget: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:10.9255777Z W, [2026-11-02T12:05:10.925269 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (overflow)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:11.1436117Z bounded-queue: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:11.7969832Z native-sigint: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:12.4989269Z native-business_failure: validated=true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:22.5754612Z W, [2026-11-02T12:05:22.575109 #2504]  WARN -- reportportal-cucumber: ReportPortal durable log retention failed (quota_exceeded); reporting remains incomplete
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:24.0439822Z W, [2026-11-02T12:05:24.043690 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (overflow)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:24.0449216Z W, [2026-11-02T12:05:24.044501 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (oversized)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:24.3763155Z RP upload-chain fault validation failed
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:55.2399345Z ...................................................................................................................................Published verified GitHub release v1.3.2. RubyGems was not modified.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:57.5448028Z .....................................Published verified GitHub release v1.3.0. RubyGems was not modified.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:57.8253039Z .Published verified GitHub release v1.3.0. RubyGems was not modified.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:58.1021336Z .Published verified GitHub release v1.3.0. RubyGems was not modified.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:59.2091999Z ....Published verified GitHub release v1.3.0. RubyGems was not modified.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:05:59.2123991Z Release v1.3.0 is already published and verified; no changes made.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:06:12.1189375Z W, [2026-11-02T12:06:12.118604 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=passed reporting=incomplete confirmed=0 spooled=4 pending=0 ambiguous=1 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:06:48.6229402Z W, [2026-11-02T12:06:48.622600 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=passed reporting=incomplete confirmed=0 spooled=0 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:06:48.6237225Z W, [2026-11-02T12:06:48.623560 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=0 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:09.7295077Z W, [2026-11-02T12:07:09.729030 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=passed reporting=incomplete confirmed=0 spooled=1 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:09.7499785Z W, [2026-11-02T12:07:09.749672 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=2 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:09.8258094Z W, [2026-11-02T12:07:09.825545 #2504]  WARN -- reportportal-cucumber: ReportPortal log/attachment rejected: ownership is unresolved; no fallback item or launch was selected
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.0551231Z W, [2026-11-02T12:07:13.054865 #2504]  WARN -- reportportal-cucumber: ReportPortal evidence rejected: target is not an open action in this launch
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.0573048Z W, [2026-11-02T12:07:13.057170 #2504]  WARN -- reportportal-cucumber: ReportPortal evidence unavailable: RuntimeError
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.0639645Z W, [2026-11-02T12:07:13.063782 #2504]  WARN -- reportportal-cucumber: ReportPortal evidence reporting failed: ArgumentError
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.1010708Z W, [2026-11-02T12:07:13.100752 #2504]  WARN -- reportportal-cucumber: ReportPortal evidence rejected: target is not an open action in this launch
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.1368693Z W, [2026-11-02T12:07:13.136533 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=7 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.1765162Z W, [2026-11-02T12:07:13.176202 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=3 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.1865988Z W, [2026-11-02T12:07:13.186338 #2504]  WARN -- reportportal-cucumber: ReportPortal evidence rejected: target belongs to a different active runtime
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.2035002Z W, [2026-11-02T12:07:13.203251 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=1 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.2838036Z W, [2026-11-02T12:07:13.283483 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=6 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.3002922Z W, [2026-11-02T12:07:13.299395 #2504]  WARN -- reportportal-cucumber: ReportportalCucumber::Transport::HTTPClient::Error: HTTP 503
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:13.3034981Z W, [2026-11-02T12:07:13.303268 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=1 pending=0 ambiguous=1 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:14.1449792Z W, [2026-11-02T12:07:14.144580 #2504]  WARN -- reportportal-cucumber: ReportPortal evidence rejected: target is not an open action in this launch
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:14.1487324Z W, [2026-11-02T12:07:14.148400 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=2 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:15.1456160Z W, [2026-11-02T12:07:15.145337 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=1 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:15.1644265Z W, [2026-11-02T12:07:15.164149 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=1 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:15.2040634Z W, [2026-11-02T12:07:15.203699 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=2 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:15.2370342Z W, [2026-11-02T12:07:15.236660 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=2 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:15.2582965Z W, [2026-11-02T12:07:15.257890 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=failed reporting=incomplete confirmed=0 spooled=1 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:25.8756080Z W, [2026-11-02T12:07:25.875231 #2504]  WARN -- reportportal-cucumber: Scenario link omitted (source_unavailable)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:34.0499448Z W, [2026-11-02T12:07:34.049598 #2504]  WARN -- reportportal-cucumber: ReportPortal evidence target close timed out; target was cancelled
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:34.0504354Z W, [2026-11-02T12:07:34.050275 #2504]  WARN -- reportportal-cucumber: Timeout::Error: reporting deadline expired
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:34.0506352Z W, [2026-11-02T12:07:34.050531 #2504]  WARN -- reportportal-cucumber: Timeout::Error: reporting deadline expired
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:34.0508672Z W, [2026-11-02T12:07:34.050772 #2504]  WARN -- reportportal-cucumber: Timeout::Error: reporting deadline expired
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:34.0510575Z W, [2026-11-02T12:07:34.050970 #2504]  WARN -- reportportal-cucumber: Timeout::Error: reporting deadline expired
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:34.0512908Z W, [2026-11-02T12:07:34.051072 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=passed reporting=incomplete confirmed=0 spooled=0 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:44.5514030Z W, [2026-11-02T12:07:44.551132 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (oversized)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:44.5523247Z W, [2026-11-02T12:07:44.552172 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (unsupported)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:45.0095672Z W, [2026-11-02T12:07:45.009317 #2504]  WARN -- reportportal-cucumber: ReportPortal presentation failed; using baseline format
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:45.0375091Z W, [2026-11-02T12:07:45.037190 #2504]  WARN -- reportportal-cucumber: ReportPortal presentation failed; using baseline format
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.3950802Z W, [2026-11-02T12:07:58.394795 #2504]  WARN -- reportportal-cucumber: ReportPortal durable log retention failed (persistence_failed); reporting remains incomplete
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8078493Z W, [2026-11-02T12:07:58.807546 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (closed)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8403857Z W, [2026-11-02T12:07:58.839844 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (admission_timeout)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8435809Z W, [2026-11-02T12:07:58.843341 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (closed)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8451064Z W, [2026-11-02T12:07:58.844857 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (admission_timeout)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8452364Z W, [2026-11-02T12:07:58.844967 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (closed)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8453615Z W, [2026-11-02T12:07:58.845010 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (unsupported)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8465894Z W, [2026-11-02T12:07:58.846400 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (overflow)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.8608988Z W, [2026-11-02T12:07:58.860604 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (overflow)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.9205607Z W, [2026-11-02T12:07:58.920271 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (overflow)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:58.9631695Z W, [2026-11-02T12:07:58.962837 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (unsupported)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:59.0359829Z W, [2026-11-02T12:07:59.035489 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (admission_timeout)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:59.3017700Z W, [2026-11-02T12:07:59.301464 #2504]  WARN -- reportportal-cucumber: ReportPortal log exceeded the request byte limit; preserved in local spool best-effort
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:59.3140487Z W, [2026-11-02T12:07:59.313769 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (closed)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:07:59.4212468Z W, [2026-11-02T12:07:59.420781 #2504]  WARN -- reportportal-cucumber: ReportPortal log admission rejected (closed)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:25.8235390Z W, [2026-11-02T12:08:25.823248 #2504]  WARN -- reportportal-cucumber: RuntimeError: {"password":"[REDACTED]"}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:25.8295182Z W, [2026-11-02T12:08:25.829362 #2504]  WARN -- reportportal-cucumber: RuntimeError: {"password":"[REDACTED]"}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:25.8380806Z W, [2026-11-02T12:08:25.837865 #2504]  WARN -- reportportal-cucumber: RuntimeError: {"password":"[REDACTED]"}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:25.8432806Z W, [2026-11-02T12:08:25.842920 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=passed reporting=incomplete confirmed=0 spooled=3 pending=0 ambiguous=3 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:25.8705160Z W, [2026-11-02T12:08:25.870182 #2504]  WARN -- reportportal-cucumber: ReportPortal durable log retention failed (deadline_expired); reporting remains incomplete
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:25.8824325Z W, [2026-11-02T12:08:25.882101 #2504]  WARN -- reportportal-cucumber: ReportPortal durable log retention failed (deadline_expired); reporting remains incomplete
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:25.8881470Z W, [2026-11-02T12:08:25.887857 #2504]  WARN -- reportportal-cucumber: ReportPortal durable log retention failed (deadline_expired); reporting remains incomplete
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:27.6706142Z W, [2026-11-02T12:08:27.669840 #2504]  WARN -- reportportal-cucumber: ReportPortal durable log retention failed (quota_exceeded); reporting remains incomplete
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:28.0881651Z W, [2026-11-02T12:08:28.087856 #2504]  WARN -- reportportal-cucumber: ReportPortal log exceeded the request byte limit; preserved in local spool best-effort
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:38.8375405Z W, [2026-11-02T12:08:38.837212 #2504]  WARN -- reportportal-cucumber: Timeout::Error: execution expired
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:38.8378446Z W, [2026-11-02T12:08:38.837706 #2504]  WARN -- reportportal-cucumber: Timeout::Error: reporting deadline expired
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:38.8380088Z W, [2026-11-02T12:08:38.837917 #2504]  WARN -- reportportal-cucumber: Timeout::Error: reporting deadline expired
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:38.8381573Z W, [2026-11-02T12:08:38.838032 #2504]  WARN -- reportportal-cucumber: ReportPortal reporting incomplete: business=passed reporting=incomplete confirmed=0 spooled=0 pending=0 ambiguous=0 possible_duplicates=0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.8657569Z ...........................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................................
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.8661845Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.8662132Z Finished in 3 minutes 38.6 seconds (files took 1.29 seconds to load)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.8662965Z 1631 examples, 0 failures
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.8663179Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9010488Z ##[group]Run actions/upload-artifact@v6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9010933Z with:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9011331Z   name: rspec-faults-ruby-3.3-1
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9011828Z   path: /home/runner/work/_temp/rspec-fault-diagnostics/
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9012290Z   include-hidden-files: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9012682Z   if-no-files-found: warn
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9013057Z   retention-days: 7
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9013465Z   compression-level: 6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9013811Z   overwrite: false
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9014150Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9014486Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9015059Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9015626Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9016042Z   HELM_BIN: /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:39.9016656Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.1534176Z With the provided path, there will be 247 files uploaded
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.1535569Z Artifact name is valid!
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.1536346Z Root directory input is valid!
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.4370940Z Beginning upload of artifact content to blob storage
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.9214607Z Uploaded bytes 264850
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.9607621Z Finished uploading artifact content to blob storage!
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.9608936Z SHA256 digest of uploaded artifact zip is 2691e24adeb8b2ff6dcfc162e5eb42b030569ebcdff5e91c7814f8e81ac5dee4
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:40.9612004Z Finalizing artifact upload
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5112851Z Artifact rspec-faults-ruby-3.3-1.zip successfully finalized. Artifact ID 13141127020
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5114223Z Artifact rspec-faults-ruby-3.3-1 has been successfully uploaded! Final size is 264850 bytes. Artifact ID is 13141127020
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5118521Z Artifact download URL: https://github.com/NickYin0125/CucumberReportportal/actions/runs/41441751980/artifacts/13141127020
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5305460Z ##[group]Run bundle exec cucumber
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5305888Z ^[[36;1mbundle exec cucumber^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5322546Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5322967Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5323276Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5323863Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5324488Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5324920Z   HELM_BIN: /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:41.5325389Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4086787Z Using the default profile...
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4087296Z @cucumber12_cli
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4087679Z Feature: Native Cucumber 12 HTTP reporting contract
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4091262Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4091942Z   Scenario Outline: Real CLI business outcomes are not harness failures           # features/cucumber12_native_contract.feature:3
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4093264Z     When a native Cucumber 12 process runs the "<tag>" contract case              # features/cucumber12_native_contract.feature:4
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4094973Z     Then its native exit is <exit> and ReportPortal scenario status is "<status>" # features/cucumber12_native_contract.feature:5
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4095997Z     And its complete ReportPortal item tree has no wire violations                # features/cucumber12_native_contract.feature:6
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4096734Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4096896Z     Examples: 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:42.4097221Z       | tag          | exit | status  |
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:43.0995807Z       | qa_pass      | 0    | PASSED  |
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:43.7534200Z       | qa_fail      | 1    | FAILED  |
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:44.4342879Z       | qa_undefined | 1    | FAILED  |
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:45.1634825Z       | qa_pending   | 1    | FAILED  |
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:45.8857438Z       | qa_ambiguous | 1    | FAILED  |
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.5656842Z       | qa_skip      | 0    | SKIPPED |
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.5659406Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.5659582Z @stubbed
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.5659890Z Feature: Formatter contract
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.5660114Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.5660557Z   Scenario: Replay fixture events through the formatter    # features/formatter_contract.feature:3
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.5916685Z     Given ReportPortal HTTP is stubbed                     # features/step_definitions/formatter_steps.rb:3
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6275866Z     When I replay the NDJSON fixture through the formatter # features/step_definitions/formatter_steps.rb:43
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6289209Z     Then the ReportPortal call sequence is correct         # features/step_definitions/formatter_steps.rb:59
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6301534Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6301689Z 7 scenarios (7 passed)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6302030Z 21 steps (21 passed)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6302355Z 0m4.219s
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6451878Z ##[group]Run bundle exec rspec script/release/spec
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6452279Z ^[[36;1mbundle exec rspec script/release/spec^[[0m
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6466024Z shell: /usr/bin/bash -e {0}
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6466297Z env:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6467297Z   CUCUMBER_PUBLISH_QUIET: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6467757Z   BUNDLE_GEMFILE: /home/runner/work/CucumberReportportal/CucumberReportportal/Gemfile
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6468176Z   BUNDLE_FROZEN: true
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6468485Z   HELM_BIN: /opt/hostedtoolcache/helm/3.18.4/x64/linux-amd64/helm
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:46.6468824Z ##[endgroup]
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.0538104Z ...  Successfully built RubyGem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.0538634Z   Name: wp4-dependency
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.0539009Z   Version: 1.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.0539407Z   File: wp4-dependency-1.0.0.gem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.9348163Z .  Successfully built RubyGem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.9348591Z   Name: wp4-dependency
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.9348839Z   Version: 1.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:47.9349166Z   File: wp4-dependency-1.0.0.gem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.2975856Z .  Successfully built RubyGem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.2976365Z   Name: wp4-dependency
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.2976959Z   Version: 1.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.2977317Z   File: wp4-dependency-1.0.0.gem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.6756325Z .  Successfully built RubyGem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.6757098Z   Name: wp4-dependency
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.6757447Z   Version: 1.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:48.6757793Z   File: wp4-dependency-1.0.0.gem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.0403447Z .  Successfully built RubyGem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.0403979Z   Name: wp4-dependency
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.0404343Z   Version: 1.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.0404729Z   File: wp4-dependency-1.0.0.gem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.4113701Z .  Successfully built RubyGem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.4114209Z   Name: wp4-dependency
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.4114548Z   Version: 1.0.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.4114893Z   File: wp4-dependency-1.0.0.gem
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.7629460Z .
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.7629866Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.7630354Z Finished in 2.75 seconds (files took 0.15289 seconds to load)
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.7630731Z 9 examples, 0 failures
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.7630890Z 
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.7806087Z Post job cleanup.
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8758417Z [command]/usr/bin/git version
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8809614Z git version 2.56.0
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8859270Z Temporarily overriding HOME='/home/runner/work/_temp/8171b137-4d22-467f-86af-56b0647c2b49' before making global git config changes
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8860806Z Adding repository directory to the temporary git global config as a safe directory
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8866080Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8911368Z Removing SSH command configuration
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8919796Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.8963784Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.9285824Z Removing HTTP extra header
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.9293048Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.9339984Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.9618276Z Removing includeIf entries pointing to credentials config files
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.9626111Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:49.9666957Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / test (Ruby 3.3)	UNKNOWN STEP	2026-11-02T12:08:50.0090754Z Cleaning up orphan processes

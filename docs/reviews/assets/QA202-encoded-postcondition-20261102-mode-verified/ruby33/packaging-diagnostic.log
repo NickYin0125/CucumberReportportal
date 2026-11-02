@@ -1,0 +1,714 @@
+..............................................FFFFFFFFFFF
+
+Failures:
+
+  1) Installed release packaging has the release identity and verified-origin metadata without a fabricated email
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  2) Installed release packaging enforces the Ruby minimum and rejects legacy or future-major Cucumber resolutions in the built artifact
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  3) Installed release packaging preserves the four protected development dependencies without making them runtime dependencies
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  4) Installed release packaging excludes repository-only QA harnesses and development scaffolding from the actual gem
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  5) Installed release packaging ships the user guides and resolves their local links from the installed gem
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  6) Installed release packaging pins the independent consumer to the packaged SDK version
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  7) Installed release packaging runs the packaged logger demo without writing inside the installed gem
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  8) Installed release packaging loads only the installed SDK and a supported Bundler-pinned native Cucumber
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  9) Installed release packaging ships an executable spool CLI which works without source-path loading
+     Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+     RuntimeError:
+       Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+       Successfully installed bundler-2.6.6
+       Successfully installed logger-1.7.0
+       Successfully installed mime-types-data-3.2026.0317
+       Successfully installed mime-types-3.7.0
+       Successfully installed jmespath-1.6.2
+       Building native extensions. This could take a while...
+       1 gem installed
+
+       ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+       	ERROR: Failed to build gem native extension.
+
+           current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+       /usr/local/bin/ruby extconf.rb
+       checking for __builtin_clz()... *** extconf.rb failed ***
+       Could not create Makefile due to some reason, probably lack of necessary
+       libraries and/or headers.  Check the mkmf.log file for more details.  You may
+       need configuration options.
+
+       Provided configuration options:
+       	--with-opt-dir
+       	--without-opt-dir
+       	--with-opt-include=${opt-dir}/include
+       	--without-opt-include
+       	--with-opt-lib=${opt-dir}/lib
+       	--without-opt-lib
+       	--with-make-prog
+       	--without-make-prog
+       	--srcdir=.
+       	--curdir
+       	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+       /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+       You have to install development tools first.
+
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+       	from extconf.rb:6:in `block in have_builtin_func'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+       	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+       	from extconf.rb:5:in `have_builtin_func'
+       	from extconf.rb:18:in `<main>'
+
+       To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+         /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+       extconf failed, exit code 1
+
+       Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+       Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+     # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+     # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  10) Installed release packaging pins the dependency and compares the approved chart payload with packaged source
+      Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+      RuntimeError:
+        Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+        Successfully installed bundler-2.6.6
+        Successfully installed logger-1.7.0
+        Successfully installed mime-types-data-3.2026.0317
+        Successfully installed mime-types-3.7.0
+        Successfully installed jmespath-1.6.2
+        Building native extensions. This could take a while...
+        1 gem installed
+
+        ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+        	ERROR: Failed to build gem native extension.
+
+            current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+        /usr/local/bin/ruby extconf.rb
+        checking for __builtin_clz()... *** extconf.rb failed ***
+        Could not create Makefile due to some reason, probably lack of necessary
+        libraries and/or headers.  Check the mkmf.log file for more details.  You may
+        need configuration options.
+
+        Provided configuration options:
+        	--with-opt-dir
+        	--without-opt-dir
+        	--with-opt-include=${opt-dir}/include
+        	--without-opt-include
+        	--with-opt-lib=${opt-dir}/lib
+        	--without-opt-lib
+        	--with-make-prog
+        	--without-make-prog
+        	--srcdir=.
+        	--curdir
+        	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+        /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+        You have to install development tools first.
+
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+        	from extconf.rb:6:in `block in have_builtin_func'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+        	from extconf.rb:5:in `have_builtin_func'
+        	from extconf.rb:18:in `<main>'
+
+        To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+          /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+        extconf failed, exit code 1
+
+        Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+        Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+      # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+      # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+  11) Installed release packaging builds a local candidate chart without fetching dependencies or deploying it
+      Failure/Error: raise "Candidate command failed (#{status.exitstatus}): #{command.join(' ')}\n#{stdout}\n#{stderr}" unless status.success?
+
+      RuntimeError:
+        Candidate command failed (1): /usr/local/bin/ruby -S gem install --local --no-document --install-dir /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems /usr/local/bundle/cache/bundler-2.6.6.gem /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem
+        Successfully installed bundler-2.6.6
+        Successfully installed logger-1.7.0
+        Successfully installed mime-types-data-3.2026.0317
+        Successfully installed mime-types-3.7.0
+        Successfully installed jmespath-1.6.2
+        Building native extensions. This could take a while...
+        1 gem installed
+
+        ERROR:  Error installing /tmp/rp-candidate-package-20261102-3273-lnpwhl/source/reportportal-cucumber-ruby-2.0.2.gem:
+        	ERROR: Failed to build gem native extension.
+
+            current directory: /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3/ext/bigdecimal
+        /usr/local/bin/ruby extconf.rb
+        checking for __builtin_clz()... *** extconf.rb failed ***
+        Could not create Makefile due to some reason, probably lack of necessary
+        libraries and/or headers.  Check the mkmf.log file for more details.  You may
+        need configuration options.
+
+        Provided configuration options:
+        	--with-opt-dir
+        	--without-opt-dir
+        	--with-opt-include=${opt-dir}/include
+        	--without-opt-include
+        	--with-opt-lib=${opt-dir}/lib
+        	--without-opt-lib
+        	--with-make-prog
+        	--without-make-prog
+        	--srcdir=.
+        	--curdir
+        	--ruby=/usr/local/bin/$(RUBY_BASE_NAME)
+        /usr/local/lib/ruby/3.3.0/mkmf.rb:480:in `try_do': The compiler failed to generate an executable file. (RuntimeError)
+        You have to install development tools first.
+
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `block in try_compile'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:555:in `with_werror'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:606:in `try_compile'
+        	from extconf.rb:6:in `block in have_builtin_func'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:983:in `block in checking_for'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block (2 levels) in postpone'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:344:in `block in postpone'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:314:in `open'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:340:in `postpone'
+        	from /usr/local/lib/ruby/3.3.0/mkmf.rb:982:in `checking_for'
+        	from extconf.rb:5:in `have_builtin_func'
+        	from extconf.rb:18:in `<main>'
+
+        To see why this extension failed to compile, please check the mkmf.log which can be found here:
+
+          /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/mkmf.log
+
+        extconf failed, exit code 1
+
+        Gem files will remain installed in /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/gems/bigdecimal-4.1.3 for inspection.
+        Results logged to /tmp/rp-candidate-package-20261102-3273-lnpwhl/gems/extensions/aarch64-linux/3.3.0/bigdecimal-4.1.3/gem_make.out
+      # ./spec/packaging/release_package_spec.rb:72:in `block (3 levels) in <top (required)>'
+      # ./spec/packaging/release_package_spec.rb:79:in `block (2 levels) in <top (required)>'
+
+Finished in 1.04 seconds (files took 0.35451 seconds to load)
+57 examples, 11 failures
+
+Failed examples:
+
+rspec ./spec/packaging/release_package_spec.rb:113 # Installed release packaging has the release identity and verified-origin metadata without a fabricated email
+rspec ./spec/packaging/release_package_spec.rb:123 # Installed release packaging enforces the Ruby minimum and rejects legacy or future-major Cucumber resolutions in the built artifact
+rspec ./spec/packaging/release_package_spec.rb:150 # Installed release packaging preserves the four protected development dependencies without making them runtime dependencies
+rspec ./spec/packaging/release_package_spec.rb:160 # Installed release packaging excludes repository-only QA harnesses and development scaffolding from the actual gem
+rspec ./spec/packaging/release_package_spec.rb:169 # Installed release packaging ships the user guides and resolves their local links from the installed gem
+rspec ./spec/packaging/release_package_spec.rb:188 # Installed release packaging pins the independent consumer to the packaged SDK version
+rspec ./spec/packaging/release_package_spec.rb:201 # Installed release packaging runs the packaged logger demo without writing inside the installed gem
+rspec ./spec/packaging/release_package_spec.rb:213 # Installed release packaging loads only the installed SDK and a supported Bundler-pinned native Cucumber
+rspec ./spec/packaging/release_package_spec.rb:225 # Installed release packaging ships an executable spool CLI which works without source-path loading
+rspec ./spec/packaging/release_package_spec.rb:230 # Installed release packaging pins the dependency and compares the approved chart payload with packaged source
+rspec ./spec/packaging/release_package_spec.rb:242 # Installed release packaging builds a local candidate chart without fetching dependencies or deploying it
+

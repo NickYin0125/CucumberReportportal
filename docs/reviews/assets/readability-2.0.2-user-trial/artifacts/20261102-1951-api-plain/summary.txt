@@ -1,0 +1,55 @@
+Practice API contracts and diagnostic evidence
+  Create a practice session from a JSON document ✓
+  Query practice word metadata (persevere) ✓
+  Query practice word metadata (focus) ✓
+  Expected validation error is not a business failure ✓
+
+Practice API - independent consumer contract checks
+  Save a word that uses accents, CJK and emoji ✓
+  Metadata length counts characters, not bytes ✓
+  Reject a practice payload that has no usable word (empty string) ✓
+  Reject a practice payload that has no usable word (whitespace only) ✓
+  Reject a practice payload that has no usable word (number) ✓
+  Reject a practice payload that has no usable word (missing field) ✓
+  Reject a practice payload that has no usable word (JSON array) ✓
+  Reject a word longer than 80 characters ✓
+  Malformed JSON gets a request error, not a server crash ✓
+  Routing errors use the right status codes ✓
+  Metadata contract matches the published example exactly ✗
+  Saved word echoes the submitted text verbatim ✗
+
+API tester workplace response contracts
+  Save a practice word at the supported length boundary ✓
+  Metadata includes the difficulty required by the consuming application ✗
+
+(::) failed steps (::)
+
+metadata contract: expected "{\n  \"word\": \"focus\",\n  \"length\": 5,\n  \"kind\": \"practice\",\n  \"difficulty\": \"easy\"\n}", got "{\n  \"word\": \"focus\",\n  \"length\": 5,\n  \"kind\": \"practice\"\n}" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/step_definitions/independent_api_steps.rb:24:in `"the response body matches this JSON exactly:"'
+./features/support/env.rb:45:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/independent/api_contracts.feature:64:in `the response body matches this JSON exactly:'
+
+saved word: expected "line one\nline two", got "line one" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/step_definitions/independent_api_steps.rb:30:in `"the saved word equals this text:"'
+./features/support/env.rb:45:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/independent/api_contracts.feature:80:in `the saved word equals this text:'
+
+API tester consumer metadata contract: expected {"word" => "focus", "length" => 5, "kind" => "practice", "difficulty" => "easy"}, got {"word" => "focus", "length" => 5, "kind" => "practice"} (RuntimeError)
+./features/tester_api/workplace_steps.rb:33:in 'ApiTesterWorkplaceSteps#api_tester_compare'
+./features/tester_api/workplace_steps.rb:68:in `"the API tester expects the following metadata contract:"'
+./features/support/env.rb:45:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/tester_api/workplace_contracts.feature:11:in `the API tester expects the following metadata contract:'
+
+Failing Scenarios:
+cucumber -p trial_api features/independent/api_contracts.feature:62 # Scenario: Metadata contract matches the published example exactly
+cucumber -p trial_api features/independent/api_contracts.feature:75 # Scenario: Saved word echoes the submitted text verbatim
+cucumber -p trial_api features/tester_api/workplace_contracts.feature:9 # Scenario: Metadata includes the difficulty required by the consuming application
+
+18 scenarios (3 failed, 15 passed)
+68 steps (3 failed, 65 passed)
+0m3.605s

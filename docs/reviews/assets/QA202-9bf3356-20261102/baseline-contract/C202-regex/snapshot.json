@@ -1,0 +1,299 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3983,
+      "uuid": "40fd14ae-3796-47f1-b145-07e88ee207e7",
+      "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-regex",
+      "number": 1,
+      "startTime": 1793620907165,
+      "endTime": 1793620907560,
+      "lastModified": 1793620907601,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 32530,
+      "uuid": "6d72c3eb-bc2a-4d8d-b9ed-f30bd50f647b",
+      "name": "Feature: QA202 exact R01 regex",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793620907252,
+      "endTime": 1793620907559,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3983,
+      "uniqueId": "auto:844e3d885af8cf69faaf0ca94289209a",
+      "testCaseHash": 577866507,
+      "patternTemplates": [],
+      "path": "32530",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 32531,
+      "uuid": "c987b6a0-8770-43b4-b771-9adf559536ad",
+      "name": "Scenario: R01 regex",
+      "codeRef": "features/presentation_ledger/qa_runtime/C202-regex.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620907253,
+      "endTime": 1793620907470,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 32530,
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": []
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3983,
+      "uniqueId": "3ea31ca6916d893a1d899104468538f7c792c492",
+      "testCaseId": "features/presentation_ledger/qa_runtime/C202-regex.feature:3",
+      "testCaseHash": 712383871,
+      "patternTemplates": [],
+      "path": "32530.32531",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 32532,
+      "uuid": "b20a3257-4d08-4be8-96b6-619578ba0923",
+      "name": "Given QA202 contract regex",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620907349,
+      "endTime": 1793620907433,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 32531,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3983,
+      "uniqueId": "auto:433d4bb47f03cc4fa84532a3708310c9",
+      "testCaseHash": 215007615,
+      "patternTemplates": [],
+      "path": "32530.32531.32532",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 21721,
+      "time": "2026-11-02T12:01:47.404Z",
+      "message": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "level": "error",
+      "itemId": 32532
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 3983,
+      "items_by_launch": [
+        {
+          "id": 32530,
+          "uuid": "6d72c3eb-bc2a-4d8d-b9ed-f30bd50f647b",
+          "name": "Feature: QA202 exact R01 regex",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-02T12:01:47.252Z",
+          "endTime": "2026-11-02T12:01:47.559Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-regex",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3983,
+          "uniqueId": "auto:844e3d885af8cf69faaf0ca94289209a",
+          "testCaseHash": 577866507,
+          "patternTemplates": [],
+          "path": "32530",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 32531,
+          "uuid": "c987b6a0-8770-43b4-b771-9adf559536ad",
+          "name": "Scenario: R01 regex",
+          "codeRef": "features/presentation_ledger/qa_runtime/C202-regex.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T12:01:47.253Z",
+          "endTime": "2026-11-02T12:01:47.470Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "parent": 32530,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-regex",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 32530,
+                "name": "Feature: QA202 exact R01 regex"
+              }
+            ]
+          },
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": []
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3983,
+          "uniqueId": "3ea31ca6916d893a1d899104468538f7c792c492",
+          "testCaseId": "features/presentation_ledger/qa_runtime/C202-regex.feature:3",
+          "testCaseHash": 712383871,
+          "patternTemplates": [],
+          "path": "32530.32531",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 32532,
+          "uuid": "b20a3257-4d08-4be8-96b6-619578ba0923",
+          "name": "Given QA202 contract regex",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T12:01:47.349Z",
+          "endTime": "2026-11-02T12:01:47.433Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 32531,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-regex",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 32530,
+                "name": "Feature: QA202 exact R01 regex"
+              },
+              {
+                "id": 32531,
+                "name": "Scenario: R01 regex"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3983,
+          "uniqueId": "auto:433d4bb47f03cc4fa84532a3708310c9",
+          "testCaseHash": 215007615,
+          "patternTemplates": [],
+          "path": "32530.32531.32532",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

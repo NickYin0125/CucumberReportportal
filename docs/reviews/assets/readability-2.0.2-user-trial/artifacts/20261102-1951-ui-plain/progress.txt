@@ -1,0 +1,338 @@
+Using the trial_ui profile...
+
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: résumé 中文 ✓ | Saved: résumé 中文 ✓ |
+.
+Page after the last action
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Submit an empty practice form
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Ready to practice | Ready to practice |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Type 100 letters
+.
+## Assertion: practice word length
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 80 | 80 |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+Practising 3 words
+
+```json
+[
+  {
+    "word": "focus",
+    "note": "short"
+  },
+  {
+    "word": "persevere",
+    "note": "from the docs"
+  },
+  {
+    "word": "継続",
+    "note": "Japanese \"continue\""
+  }
+]
+```
+
+UI action: Save practice word focus
+
+UI action: Save practice word persevere
+
+UI action: Save practice word 継続
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: 継続 | Saved: 継続 |
+.
+Page after the last action
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: calm | Saved: calm |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: O'Brien | Saved: O'Brien |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: <b>bold</b> | Saved: <b>bold</b> |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** FAIL
+
+| Expected | Actual |
+| --- | --- |
+| Saved: persevere! | Saved: persevere |
+F
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word using Enter
+.
+UI action: Correct and resave practice word using Enter
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: handover | Saved: handover |
+.
+UI tester checkpoint: corrected-word-saved
+
+Checkpoint browser state
+
+```json
+{
+  "checkpoint": "corrected-word-saved",
+  "url": "http://127.0.0.1:60452/",
+  "word": "handover",
+  "status": "Saved: handover"
+}
+```
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word using Enter
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: follow-up | Saved: follow-up |
+.
+UI tester checkpoint: saved-before-refresh
+
+Checkpoint browser state
+
+```json
+{
+  "checkpoint": "saved-before-refresh",
+  "url": "http://127.0.0.1:60452/",
+  "word": "follow-up",
+  "status": "Saved: follow-up"
+}
+```
+.
+UI action: Refresh the practice page
+.
+## Assertion: restored practice word after refresh
+
+**Outcome:** FAIL
+
+| Expected | Actual |
+| --- | --- |
+| follow-up |  |
+F
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: persevere | Saved: persevere |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Click deliberately missing practice button
+F
+
+(::) failed steps (::)
+
+practice status: expected "Saved: persevere!", got "Saved: persevere" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/step_definitions/ui_steps.rb:16:in `"the practice status is {string}"'
+./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/independent/ui_journeys.feature:45:in `the practice status is "Saved: persevere!"'
+
+restored practice word after refresh: expected "follow-up", got "" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/tester_ui/workday_practice_steps.rb:33:in `"the UI tester finds the restored word {string}"'
+./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/tester_ui/workday_practice.feature:19:in `the UI tester finds the restored word "follow-up"'
+
+Timeout 750ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Deliberately missing button", exact=True)
+ (Playwright::TimeoutError)
+./features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>'
+./helpers/world.rb:20:in 'CurrentSDK::World#ui_action'
+./features/step_definitions/ui_steps.rb:20:in `"I click the deliberately missing practice button"'
+./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/ui.feature:12:in `I click the deliberately missing practice button'
+
+Failing Scenarios:
+cucumber -p trial_ui features/independent/ui_journeys.feature:43 # Scenario: Status copy uses the new punctuation style
+cucumber -p trial_ui features/tester_ui/workday_practice.feature:13 # Scenario: Recover the last saved word after an accidental refresh
+cucumber -p trial_ui features/ui.feature:11 # Scenario: Missing locator preserves its Playwright error and screenshot
+
+12 scenarios (3 failed, 9 passed)
+42 steps (3 failed, 39 passed)
+0m9.716s

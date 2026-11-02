@@ -1,0 +1,43 @@
+{
+  "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+  "source_manifest": "0d4ada41c59e91c7c29c7b01063e8788f9df49d93b683a80f06565370c00ab44",
+  "commands": [
+    {
+      "label": "rspec",
+      "argv": [
+        "bundle",
+        "exec",
+        "rspec",
+        "--format",
+        "progress",
+        "--format",
+        "json",
+        "--out",
+        "/evidence/ruby33-complete/rspec.json"
+      ],
+      "exit": 0,
+      "seconds": 331.18454852500054
+    },
+    {
+      "label": "cucumber",
+      "argv": [
+        "bundle",
+        "exec",
+        "cucumber"
+      ],
+      "exit": 0,
+      "seconds": 9.382452922000084
+    },
+    {
+      "label": "release",
+      "argv": [
+        "bundle",
+        "exec",
+        "rspec",
+        "script/release/spec"
+      ],
+      "exit": 0,
+      "seconds": 2.660987709999972
+    }
+  ]
+}

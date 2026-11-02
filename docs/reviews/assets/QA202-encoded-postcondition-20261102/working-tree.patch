@@ -1,0 +1,92 @@
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 950d3dab..c0326097 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -7,6 +7,7 @@
+ - F1: Redact the failure message and backtrace independently so an ambiguous message does not discard safe frame evidence. Keep backslash text, RSpec regex-match messages and Windows paths in Errno messages; withhold ambiguous multiline RSpec eq diffs, JSON with escaped quotes and escaped JSON secrets. Retain all safe frames in those cases. If the backtrace unit is omitted, redact its original entries individually without splitting embedded newlines. Preserve the whole-input safety path for cross-boundary credentials. A withheld message keeps the exception class and a plain `Message withheld: unsafe or ambiguous input` line before the frame evidence; redaction is not weakened.
+ - Reuse the frozen default failure-redaction policy instead of rebuilding its patterns for every failure. Scanners, traversal budgets and evidence remain per-call; no message or frame output is cached, and explicitly supplied redactors remain independent. This is a performance-only change, not a relaxation of the safety policy.
+ - Candidate fix (pending independent review): when whitespace ends a free-text URL early, apply URL query/fragment redaction to the remaining percent-encoded tokens, so encoded credential names such as `pass%5Cu0077ord` in a fragment are masked rather than passed through literal matching. If an encoded key and its value are split by whitespace, a newline or a message/frame boundary, or decoding still reveals an unmasked credential, the text or the whole failure is withheld instead. Text without percent escapes is unchanged. URL redaction used by HTTP evidence applies the same encoded-component rules to path segments and valueless query parts, and withholds a URL whose decoded form still shows an unmasked credential; route templates such as `%7Bid%7D` stay readable.
++- Tighten the encoded-output safety check: a `[REDACTED]` prefix is not a complete mask, encoded Bearer credentials are checked, and quoted JSON keys follow the same normalization as structured evidence. Tests inspect decoded output through three percent-encoding layers and cover HTTP cards and failure evidence. Ordinary caller-provided `AppLog.info(..., report: true)` messages remain unchanged, including complete reproduction curl commands; this is not a global log sanitizer.
+ - F2: Rich never adds decoration to ERROR or FATAL messages: the entire message is byte-identical to plain, including failure cards, failed assertions, failure evidence, ERROR HTTP exchanges and error-level attachment captions. TRACE through WARN retain rich accents. Existing video markup and caller text are not stripped or modified by presentation.
+ - F3: Quote and label empty, whitespace-only and leading/trailing-whitespace assertion strings in expected/actual values, including `"" (empty string)`, `"   " (3 spaces)` and `" a " (leading/trailing whitespace)`. Other strings remain as-is.
+ - F4: Show HTTP outcomes first at every level: title, response subtitle/body, URL, request subtitle/body, request headers, response headers. Render each header value on its own `name: value` line, repeating multi-value header names, with plain media type subtitles instead of array notation. Keep the shared 16 KiB / 100 lines preview bounds, redaction, native Cucumber body and terminal summary unchanged.
+diff --git a/lib/reportportal_cucumber/automation/evidence_redactor.rb b/lib/reportportal_cucumber/automation/evidence_redactor.rb
+index 697b6c92..e89157ed 100644
+--- a/lib/reportportal_cucumber/automation/evidence_redactor.rb
++++ b/lib/reportportal_cucumber/automation/evidence_redactor.rb
+@@ -40,11 +40,12 @@ module Automation
+     PERCENT_ESCAPE = /%[0-9a-f]{2}/i.freeze
+     PLAIN_TOKEN = /[^\s"'<>]+/.freeze
+     JSON_UNICODE_ESCAPE = /\\u([0-9a-f]{4})/i.freeze
++    COMPLETE_MASK = /\A(?:\\?["']\[REDACTED\]\\?["']|\[REDACTED\][\]},)]*)\z/.freeze
+     MAX_PERCENT_DECODE_PASSES = 3
+     private_constant :BOUNDARY_KEY_PATTERN, :BOUNDARY_ENCODED_KEY_PATTERN,
+                      :BOUNDARY_KEY_SEPARATOR, :BOUNDARY_KEY_CHUNK_CHARS,
+                      :BOUNDARY_ESCAPED_QUOTE_PATTERN, :BOUNDARY_ESCAPED_VALUE_PATTERN,
+-                     :PERCENT_ESCAPE, :PLAIN_TOKEN, :JSON_UNICODE_ESCAPE, :MAX_PERCENT_DECODE_PASSES
++                     :PERCENT_ESCAPE, :PLAIN_TOKEN, :JSON_UNICODE_ESCAPE, :COMPLETE_MASK, :MAX_PERCENT_DECODE_PASSES
+ 
+     # @param sensitive_keys [Array<String, Symbol>] Additional sensitive key names.
+     # @return [EvidenceRedactor]
+@@ -451,10 +452,33 @@ module Automation
+       return false unless text.match?(PERCENT_ESCAPE)
+ 
+       decoded = json_unescaped(percent_decoded(text))
+-      decoded.to_enum(:scan, @key_value_pattern).any? do
++      exposed_value = decoded.to_enum(:scan, @key_value_pattern).any? do
+         match = Regexp.last_match
+-        value = match[0][(match[1].length + match[2].length)..].delete("\\\"'")
+-        !value.empty? && !value.start_with?(MASK)
++        value = match[0][(match[1].length + match[2].length)..]
++        !value.match?(COMPLETE_MASK)
++      end
++      return true if exposed_value
++      return true if decoded.to_enum(:scan, BEARER_PATTERN).any? do
++        !Regexp.last_match(0).sub(/\ABearer[ \t]+/i, "").match?(COMPLETE_MASK)
++      end
++
++      # Quoted JSON keys use the same normalization as structured evidence, not
++      # just the narrower plain-text regex (e.g. "pass word" is a sensitive key).
++      [BOUNDARY_KEY_PATTERN, BOUNDARY_ENCODED_KEY_PATTERN].any? do |pattern|
++        scanner = StringScanner.new(decoded)
++        exposed = false
++        while scanner.skip_until(pattern)
++          start = scanner.pos - scanner.matched_size
++          next unless boundary_sensitive_key?(decoded, start, scanner.pos, encoded: pattern == BOUNDARY_ENCODED_KEY_PATTERN)
++
++          scanner.skip(BOUNDARY_KEY_SEPARATOR)
++          value = scanner.scan(@boundary_value_pattern)
++          unless value&.match?(COMPLETE_MASK)
++            exposed = true
++            break
++          end
++        end
++        exposed
+       end
+     end
+ 
+diff --git a/spec/reportportal_cucumber/automation/cucumber_logger_spec.rb b/spec/reportportal_cucumber/automation/cucumber_logger_spec.rb
+index c0a5ac78..8f402b49 100644
+--- a/spec/reportportal_cucumber/automation/cucumber_logger_spec.rb
++++ b/spec/reportportal_cucumber/automation/cucumber_logger_spec.rb
+@@ -79,6 +79,20 @@ RSpec.describe "Automation::CucumberLogger" do
+     expect(world.rp_attachments).to be_empty
+   end
+ 
++  it "preserves caller-provided reproduction curl messages on the ordinary log routes" do
++    world = TripleTrackWorldSpy.new(rp_active: true)
++    logger = Automation::CucumberLogger.new(world: world, output: StringIO.new)
++    curl = "curl 'https://example.test/Bearer%2520TEST_TOKEN' -H 'Authorization: Bearer TEST_TOKEN' " \
++           "--data-raw '{\"password\":\"[REDACTED]TEST_SECRET\"}'"
++    message = "Reproduce request:\n\n```bash\n#{curl}\n```"
++
++    logger.info(message, report: true)
++
++    expect(world.logs).to eq([[message]])
++    expect(world.rp_logs.length).to eq(1)
++    expect(world.rp_logs.first.first).to eq([message])
++  end
++
+   it "keeps large JSON out of terminal output while attaching Markdown-fenced JSON to Cucumber" do
+     world = TripleTrackWorldSpy.new
+     logger = build_logger(world)

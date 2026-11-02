@@ -1,0 +1,57 @@
+{
+  "status": "BLOCKED_CONFIRMED_OFFLINE",
+  "source_sha": "50b6d4d1d3b6c61926a023fc96bf291878ab68b0",
+  "source_directory": "/private/tmp/ledger-qa202-50b6d4d/candidate",
+  "source_proof": "/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-50b6d4d-20261102/focused-window-2/source-proof.json",
+  "source_proof_sha256": "185d7a21519ffb48cde5c1fa10d8849833f9261e9b6d90fedb7bd0487852bf9d",
+  "probe": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/deferred_malformed_url_probe.rb",
+  "probe_sha256": "41e78b94f257ec6c6c032d2e7a5ffa51be40e518c380140d1e6b8ad7af62ef81",
+  "image_id": "sha256:316dd4f6b6de632d5ade7bdb78fc33f7e82db8a87785e93a8a2c8d81706d3fe7",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--name",
+    "ledger-qa202-deferred-offline",
+    "--network",
+    "none",
+    "--cpus",
+    "1",
+    "--memory",
+    "2g",
+    "-v",
+    "/private/tmp/ledger-qa202-50b6d4d/candidate:/qa202-sdk:ro",
+    "-v",
+    "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/deferred_malformed_url_probe.rb:/qa202-probe.rb:ro",
+    "-e",
+    "SDK202_RUNTIME_ROOT=/qa202-sdk",
+    "sha256:316dd4f6b6de632d5ade7bdb78fc33f7e82db8a87785e93a8a2c8d81706d3fe7",
+    "ruby",
+    "/qa202-probe.rb"
+  ],
+  "exit": 1,
+  "signal": null,
+  "all_result_fields_equal": true,
+  "leaked_fields": {
+    "shared_default": [
+      "backtrace",
+      "baseline"
+    ],
+    "fresh_injected": [
+      "backtrace",
+      "baseline"
+    ]
+  },
+  "safe_frames": 62,
+  "same_restored_fixture": true,
+  "fixture_sha256": "73fd82bd4878e647c86f0e27ff2de07f15dcc1a95169bd2b640a43718919d712",
+  "network": "none",
+  "RP_credentials_forwarded": false,
+  "RP_traffic": false,
+  "new_launches": [],
+  "actual_RP_exposure_observed": false,
+  "performance_timing": "NOT_COLLECTED",
+  "stdout_sha256": "d1ff83916ecad07eb1ad8bba1524be409c553b087339109254725bd1f46e2f2f",
+  "stderr_sha256": "05511ddcfa0cd81221116c73550800e960f0f16faf422ee56301412afa5c0902",
+  "owner_disposition": "Security fix explicitly deferred; release blocker retained regardless of performance"
+}

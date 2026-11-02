@@ -1,0 +1,279 @@
+Browser tab: 148298245, Title: "Report Portal", URL: "http://rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3849/31628/31692/log".
+0 AXWebArea Report Portal, URL: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3849/31628/31692/log
+	11 container
+		12 container
+			13 text SL
+			14 link rp-2607.localhost:18080/ui/#superadmin_personal/dashboard
+			15 link rp-2607.localhost:18080/ui/#superadmin_personal/launches
+			16 link rp-2607.localhost:18080/ui/#superadmin_personal/filters
+			17 link rp-2607.localhost:18080/ui/#superadmin_personal/userdebug/all
+			18 link rp-2607.localhost:18080/ui/#superadmin_personal/members
+			19 link rp-2607.localhost:18080/ui/#superadmin_personal/settings
+			20 image avatar
+		21 container
+			32 link Description: All, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all
+			33 link Description: Trial 2.0.2 · API · plain #2, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3849
+			34 link Description: Feature: Practice API - independent consumer contract checks, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3849/31628
+			35 text Scenario: Metadata contract matches the published example exactly
+			36 container
+				37 image
+				38 text History Across All Launches
+			39 button Scenario: Routing errors use the right status codes
+			40 button Scenario: Saved word echoes the submitted text verbatim
+			41 button Refresh
+				42 text Refresh
+			43 container
+				44 container
+					45 text # 1 TI
+				46 container
+					47 text # 2 TI
+			48 container
+				49 image
+				50 text Comment
+				51 image
+				52 text More
+				53 image
+				54 text 0
+				55 text FAILED
+				56 text To Investigate
+				57 button Make decision
+			58 container
+				59 button STACK TRACE
+					60 text STACK TRACE
+				61 button LOG ALL LOGS
+					62 image Created with Sketch.
+						63 text LOG
+					64 text ALL LOGS
+				65 button ATTACHMENTS
+					66 text ATTACHMENTS
+				67 button ITEM DETAILS
+					68 text ITEM DETAILS
+				69 button HISTORY OF ACTIONS
+					70 text HISTORY OF ACTIONS
+			71 container
+				72 slider 6
+				73 container
+					74 text Fatal Error Warn Info Debug Trace All
+				75 button Show previous Error Log
+				76 button Show next Error Log
+				77 text 2  Error Logs
+				78 text Logs with Attachment
+				79 text Hide All Passed Logs
+				80 button Markdown Mode
+					81 image
+				82 button
+					83 image
+				84 text 1 of 1
+			85 container
+				86 container LOG MESSAGE
+					87 container
+						88 text LOG MESSAGE
+						89 container
+							90 image
+							91 text field (settable)
+				92 container ALL STATUSES
+					93 container
+						94 text ALL STATUSES
+						95 image
+				96 container TIME
+					97 container
+						98 text TIME
+						99 image
+				100 container [Background] Given the local API is healthy
+					101 container
+						102 image
+						103 text [Background] Given the local API is healthy
+				104 container PASSED
+					105 text PASSED
+				106 container 0.03s
+					107 container
+						108 image
+						109 text 0.03s
+				110 container When I GET metadata for "focus"
+					111 container
+						112 image
+						113 text When I GET metadata for "focus"
+				114 container PASSED
+					115 text PASSED
+				116 container 0.03s
+					117 container
+						118 image
+						119 text 0.03s
+				120 container Then the response body matches this JSON exactly:
+					121 container
+						122 image
+						123 text Then the response body matches this JSON exactly:
+				124 container FAILED
+					125 text FAILED
+				126 container 1 0.04s
+					127 text 1
+					128 container
+						129 image
+						130 text 0.04s
+				131 container Doc string · JSON { "word": "focus", "length": 5, "kind": "practice", "difficulty": "easy" }
+					132 text Doc string · JSON
+					133 text {
+  "word": "focus",
+  "length": 5,
+  "kind": "practice",
+  "difficulty": "easy"
+}
+				134 container 2026-11-02 19:52:59
+					135 button 2026-11-02 19:52:59
+				136 container actual-response.json · JSON · 58 B { "word": "focus", "length": 5, "kind": "practice" }
+					137 container
+						138 text actual-response.json  · JSON · 58 B
+					139 text { "word": "focus", "length": 5, "kind": "practice" }
+				140 container application/json
+					141 image application/json
+				142 container 2026-11-02 19:52:59
+					143 button 2026-11-02 19:52:59
+				144 container ✗ Assertion failed · metadata contract missing in actual: difficulty expected {"word":"focus","length":5,"kind":"practice","difficulty":"easy"} actual {"word":"focus","length":5,"kind":"practice"}
+					145 heading ✗ Assertion failed · metadata contract, Value: 2, ID: ✗-assertion-failed-·-metadata-contract
+						146 text ✗ Assertion failed · metadata contract
+					147 container
+						148 text missing in actual:  difficulty
+					149 text expected  {"word":"focus","length":5,"kind":"practice","difficulty":"easy"}
+actual    {"word":"focus","length":5,"kind":"practice"}
+				150 container 2026-11-02 19:52:59
+					151 button 2026-11-02 19:52:59
+				152 container ✗ RuntimeError Message withheld: unsafe or ambiguous input api_contracts.feature:64 → helpers/world.rb:15 helpers/world.rb:15 CurrentSDK::World#check_equal features/…/independent_api_steps.rb:24 "the response body matches this JSON exactly:" features/support/env.rb:45 block (2 levels) in <top (required)> features/support/env.rb:29 block in <top (required)> bundle:25 Kernel#load bundle:25 <main> api_contracts.feature:64 the response body matches this JSON exactly: Full backtrace · 88 frames · 81 framework frames not shown above /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/helpers/world.rb:15:in 'CurrentSDK::World#check_equal' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/step_definitions/independent_api_steps.rb:24:in `"the response body matches this JSON exactly:"' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:45:in 'block (2 levels) in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/reportportal-cucumber-ruby-2.0.2/lib/reportportal_cucumber/automation/app_log.rb:50:in 'AppLog.with_logger' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:29:in 'block in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/hook.rb:21:in 'Cucumber::Glue::Hook#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime/support_code.rb:132:in 'block (2 levels) in Cucumber::Runtime::SupportCode#find_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in 'Kernel#load' /opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in '<top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Kernel.load' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Bundler::CLI::Exec#kernel_load' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:23:in 'Bundler::CLI::Exec#run' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:452:in 'Bundler::CLI#exec' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/command.rb:28:in 'Bundler::Thor::Command#run' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in 'Bundler::Thor::Invocation#invoke_command' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor.rb:538:in 'Bundler::Thor.dispatch' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:35:in 'Bundler::CLI.dispatch' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/base.rb:584:in 'Bundler::Thor::Base::ClassMethods#start' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:29:in 'Bundler::CLI.start' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:28:in 'block in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/friendly_errors.rb:117:in 'Bundler.with_friendly_errors' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:20:in '<top (required)>' /opt/homebrew/opt/ruby@3.4/bin/bundle:25:in 'Kernel#load' /opt/homebrew/opt/ruby@3.4/bin/bundle:25:in '<main>' features/independent/api_contracts.feature:64:in `the response body matches this JSON exactly:'
+					153 container
+						154 heading ✗ RuntimeError, Value: 2, ID: ✗-runtimeerror
+							155 text ✗ RuntimeError
+						156 text Message withheld: unsafe or ambiguous input
+						157 text api_contracts.feature:64
+						158 text  → 
+						159 text helpers/world.rb:15
+						160 text helpers/world.rb:15                     CurrentSDK::World#check_equal
+features/…/independent_api_steps.rb:24  "the response body matches this JSON exactly:"
+features/support/env.rb:45              block (2 levels) in <top (required)>
+features/support/env.rb:29              block in <top (required)>
+bundle:25                               Kernel#load
+bundle:25                               <main>
+api_contracts.feature:64                the response body matches this JSON exactly:
+						161 text Full backtrace · 88 frames · 81 framework frames not shown above
+						162 text /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/step_definitions/independent_api_steps.rb:24:in `"the response body matches this JSON exactly:"'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:45:in 'block (2 levels) in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/reportportal-cucumber-ruby-2.0.2/lib/reportportal_cucumber/automation/app_log.rb:50:in 'AppLog.with_logger'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:29:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/hook.rb:21:in 'Cucumber::Glue::Hook#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime/support_code.rb:132:in 'block (2 levels) in Cucumber::Runtime::SupportCode#find_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in 'Kernel#load'
+/opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in '<top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Kernel.load'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Bundler::CLI::Exec#kernel_load'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:23:in 'Bundler::CLI::Exec#run'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:452:in 'Bundler::CLI#exec'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/command.rb:28:in 'Bundler::Thor::Command#run'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in 'Bundler::Thor::Invocation#invoke_command'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor.rb:538:in 'Bundler::Thor.dispatch'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:35:in 'Bundler::CLI.dispatch'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/base.rb:584:in 'Bundler::Thor::Base::ClassMethods#start'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:29:in 'Bundler::CLI.start'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:28:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/friendly_errors.rb:117:in 'Bundler.with_friendly_errors'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:20:in '<top (required)>'
+/opt/homebrew/opt/ruby@3.4/bin/bundle:25:in 'Kernel#load'
+/opt/homebrew/opt/ruby@3.4/bin/bundle:25:in '<main>'
+features/independent/api_contracts.feature:64:in `the response body matches this JSON exactly:'
+				163 container 2026-11-02 19:52:59
+					164 button 2026-11-02 19:52:59
+				165 container After hook
+					166 text After hook
+				167 container PASSED
+					168 text PASSED
+				169 container 0.01s
+					170 container
+						171 image
+						172 text 0.01s
+			173 container
+				174 text 1 - 4 of 4
+				175 text 50
+				176 text per page
+			177 button
+			22 container
+				23 text Build :  5.15.6
+			24 container
+				25 text © Report Portal  2026 All rights reserved
+			26 link Description: Fork us on GitHub |, Value: github.com/reportportal
+			27 link Description: Documentation |, Value: reportportal.io/docs
+			28 link Description: Chat with us on Slack |, Value: slack.epmrpp.reportportal.io/
+			29 link Description: Contact us |, Value: mailto:support@reportportal.io
+			30 link Description: EPAM |, Value: epam.com/
+			31 link Description: Privacy Policy, Value: privacy.epam.com/core/interaction/showpolicy?type=PrivacyPolicy
+	2 container popper-container
+		3 button
+		4 button 图片翻译
+		5 button 语音翻译
+			6 image Capa_1
+		7 button (disabled) 添加到收藏夹
+		8 button 快捷设置
+		9 button 关闭(Esc)
+		10 text 请输入需要翻译的文本。
+
+The focused UI element is 0 AXWebArea Report Portal, URL: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3849/31628/31692/log

@@ -1,0 +1,31 @@
+{
+  "finding": "UI-F07",
+  "reviewed_at": "2026-11-02T12:14:36Z",
+  "mode": "independent offline public-document review",
+  "file": "/Users/nick/Documents/crr-2.0.2/examples/current_sdk/README.md",
+  "previous_sha256": "43ff605221a43fc6be67a73e855196ed28ddc12adc57e294c19036390960df75",
+  "reviewed_sha256": "b43426fde49b9d9c91ccc06e134365b85c64feb18795f14ca813acf0e9faf54d",
+  "previous_disposition": "partly_fixed",
+  "disposition": "fixed",
+  "scope": "Documentation discoverability and actionable reuse guidance only",
+  "criteria": [
+    {"id": "explicit_node_floor", "satisfied": true, "line": 50, "evidence": "Node >=20 is a requirement at the example setup point, replacing the previous-lab anecdote."},
+    {"id": "exact_binding_cli_pair", "satisfied": true, "line": 50, "evidence": "playwright-core 1.62.1 is paired with playwright-ruby-client 1.62.0, consistent with the permitted public getting-started guide."},
+    {"id": "concrete_version_checks", "satisfied": true, "line": 59, "evidence": ["node --version", "bundle exec ruby -rplaywright/version -e 'puts \"Required CLI: #{Playwright::COMPATIBLE_PLAYWRIGHT_VERSION}\"'", "\"$PLAYWRIGHT_CLI_EXECUTABLE_PATH\" --version"]},
+    {"id": "exact_match_and_browser_cache", "satisfied": true, "line": 64, "evidence": "Required and installed CLI versions must match exactly; matching Chromium must exist in PLAYWRIGHT_BROWSERS_PATH."},
+    {"id": "clear_mismatched_override_before_setup", "satisfied": true, "line": 71, "evidence": ["unset SKIP_BROWSER_SETUP PLAYWRIGHT_CLI_EXECUTABLE_PATH", "ruby bin/setup \"$SDK_GEM_ARCHIVE\""]}
+  ],
+  "limits": {
+    "setup_or_version_commands_executed": false,
+    "new_installation_attempted": false,
+    "fresh_install_success_claim": false,
+    "previous_install_failure_claim": false,
+    "upstream_external_sources_queried": false,
+    "sdk_implementation_or_regression_spec_read": false,
+    "browser_or_api_actions": false,
+    "rp_health_certified": false,
+    "new_commit_id_supplied_for_document_edit": false
+  },
+  "unchanged_live_findings": "R02 passed-After filter behavior and the generic attachment viewer remain not fixed; existing screenshots and log provenance are unchanged.",
+  "updated_totals": {"fixed": 6, "partly_fixed": 0, "not_fixed": 2}
+}

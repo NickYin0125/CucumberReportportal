@@ -1,0 +1,25 @@
+{
+  "validated_at": "2026-11-02T12:39:18Z",
+  "validation_process_offline_only": true,
+  "result": "pass",
+  "errors": [],
+  "capture_count": 72,
+  "total_screenshot_bytes": 5681949,
+  "original_capture_count": 57,
+  "post_recovery_capture_count": 15,
+  "checks": [
+    "Unique sequential saved evidence IDs with E058 intentionally absent",
+    "Previously indexed screenshots unchanged",
+    "No missing, empty, or unindexed screenshot files",
+    "JPEG start/end markers and sips-readable dimensions",
+    "Actual dimensions match recorded 1100/1440 x 1000 DPR1 viewports",
+    "SHA-256 and byte length for every screenshot",
+    "All cited new item/log IDs belong to saved launch/item records",
+    "Original captures.json and record-ids.json unchanged"
+  ],
+  "limitations": [
+    "Hashes are local integrity fingerprints, not build provenance or comparison to source PNG bytes.",
+    "Metadata validation is not an exhaustive image-decoder or visual-content test.",
+    "Old record IDs derive from the permitted baseline and rendered UI, not a new offline API query."
+  ]
+}

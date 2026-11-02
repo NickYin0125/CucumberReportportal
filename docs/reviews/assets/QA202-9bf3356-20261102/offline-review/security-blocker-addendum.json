@@ -1,0 +1,45 @@
+{
+  "schema": "independent-ledger-security-scope-addendum/1",
+  "finding_id": "QA202-SEC-DEFERRED-01",
+  "date": "2026-11-02",
+  "overall_release_status": "NOT_ACCEPTED",
+  "overall_G8_status": "BLOCKED",
+  "prior_recorded_capture_G8_status": "PASS",
+  "prior_criterion_counts_preserved": { "PASS": 27, "PENDING": 4, "FAIL": 1 },
+  "prior_G11_first_window_status": "FAIL",
+  "original_checks_sha256": "19bc83706a044baaa383f40ed3b90595d4fe029074276aee9302ffcbf7d4aa25",
+  "new_security_probe_status": "FAIL_REPORTED_BY_MASTER",
+  "independently_reexecuted_by_ledger": false,
+  "evidence_source": "Master's direct handoff in this conversation; no other reviewer report read",
+  "reported_input": {
+    "message": "Valid URL; exact message bytes not yet handed off",
+    "malformed_frame": "https://example.test/bad path#%7B%22pass%5Cu0077ord%22%3A%22SYNTHETIC_SECRET%22%7D",
+    "additional_safe_frame_count": 62,
+    "exact_safe_frame_bytes": null,
+    "marker": "SYNTHETIC_SECRET"
+  },
+  "reported_result": "The original synthetic marker remains in local redaction output with both a freshly injected redactor and the cached default",
+  "reported_mechanism": "URL token matching ends at whitespace; the encoded JSON outside that token is not decoded",
+  "attribution": "Separate reported existing redaction gap; not evidence that default-policy reuse introduced a cache regression",
+  "network_probe_performed": false,
+  "new_RP_launches": [],
+  "actual_RP_marker_exposure_observed": false,
+  "owner_disposition": {
+    "security_fix_authorized": false,
+    "security_fix_deferred": true,
+    "retain_release_blocker": true,
+    "performance_only_optimization_may_finish": true,
+    "performance_result_cannot_clear_security_blocker": true,
+    "full_new_live_campaign": "SKIP_WHILE_GLOBAL_GATE_BLOCKED",
+    "focused_retiming": "WAIT_FOR_NEW_COMMITTED_HEAD_AND_EXPLICIT_QUIET_WINDOW"
+  },
+  "pending_evidence": [
+    "Restored standalone executable failing QA probe path and SHA-256",
+    "Exact original input bytes and source binding",
+    "Invocation, nonzero exit status and retained local output"
+  ],
+  "probe_preservation_rule": "Keep the distinct executable failing case separate from passing policy-reuse units; do not change its fixture or expectation to accept the leak",
+  "remaining_presentation_criteria": ["P1.6", "P10.8", "P10.10", "P10.11"],
+  "named_missing_fixture": "F18 plain/rich long attachment and DocString coverage",
+  "no_new_execution_in_this_addendum": true
+}

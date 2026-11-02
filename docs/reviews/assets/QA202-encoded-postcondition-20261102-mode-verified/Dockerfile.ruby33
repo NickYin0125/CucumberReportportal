@@ -1,0 +1,6 @@
+FROM ruby:3.3-slim@sha256:af55abc3e35217b7bf17a9f4a456b35e2e73550eaaa2e3be949f9db7f6e65396
+RUN sed -i 's|http://deb.debian.org/|https://deb.debian.org/|g' /etc/apt/sources.list.d/debian.sources \
+    && apt-get update -qq \
+    && apt-get install -y --no-install-recommends git gcc make libc6-dev libffi-dev \
+    && rm -rf /var/lib/apt/lists/*
+RUN gem install bundler -v 2.6.6 --no-document

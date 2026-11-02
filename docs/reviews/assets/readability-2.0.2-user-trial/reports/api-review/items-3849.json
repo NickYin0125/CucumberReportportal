@@ -1,0 +1,4008 @@
+[
+  {
+    "content": [
+      {
+        "id": 31592,
+        "uuid": "53dc22d8-6931-437d-b50e-e268c8a57540",
+        "name": "Feature: Practice API contracts and diagnostic evidence",
+        "parameters": [],
+        "attributes": [],
+        "type": "SUITE",
+        "startTime": "2026-11-02T11:52:56.211Z",
+        "endTime": "2026-11-02T11:52:59.831Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 4,
+            "passed": 4
+          },
+          "defects": {}
+        },
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          }
+        },
+        "hasChildren": true,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "auto:4567d17ce2b9e66b40af103064eac69b",
+        "testCaseHash": 817583055,
+        "patternTemplates": [],
+        "path": "31592",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31593,
+        "uuid": "fe407635-f6eb-429a-9708-092ca7c837ab",
+        "name": "Scenario: Create a practice session from a JSON document",
+        "codeRef": "features/api.feature:6",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.212Z",
+        "endTime": "2026-11-02T11:52:56.614Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31592,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "434f999e89247996d803f230f8997ac28e7c2ad5",
+        "testCaseId": "features/api.feature:6",
+        "testCaseHash": -1197782132,
+        "patternTemplates": [],
+        "path": "31592.31593",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31594,
+        "uuid": "8ee204ca-67b5-4be8-8d5f-5cfdf876efa6",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.257Z",
+        "endTime": "2026-11-02T11:52:56.337Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31593,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31593,
+              "name": "Scenario: Create a practice session from a JSON document"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:e4c18f80f74025c538178c12b270c1e5",
+        "testCaseHash": 325519633,
+        "patternTemplates": [],
+        "path": "31592.31593.31594",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31595,
+        "uuid": "c449b14c-191c-4fba-b519-803ecca9cc4b",
+        "name": "When I POST this JSON to the practice API:",
+        "description": "**When** I POST this JSON to the practice API:\n\n```json\n{ \"word\": \"persevere\" }\n```",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.354Z",
+        "endTime": "2026-11-02T11:52:56.453Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31593,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31593,
+              "name": "Scenario: Create a practice session from a JSON document"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:d50739b2000ecd1dd16d065f426552c6",
+        "testCaseHash": -348507655,
+        "patternTemplates": [],
+        "path": "31592.31593.31595",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31596,
+        "uuid": "391792b5-08bb-46b2-904f-f67eafd752ee",
+        "name": "Then the response status is 201",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.485Z",
+        "endTime": "2026-11-02T11:52:56.534Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31593,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31593,
+              "name": "Scenario: Create a practice session from a JSON document"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:aa40caacc7afa6e13a98a010fdb98f56",
+        "testCaseHash": -13099185,
+        "patternTemplates": [],
+        "path": "31592.31593.31596",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31598,
+        "uuid": "6fe4959f-9250-491f-9d84-ff6133924eed",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| word | persevere |\n| saved | true |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.542Z",
+        "endTime": "2026-11-02T11:52:56.566Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31593,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31593,
+              "name": "Scenario: Create a practice session from a JSON document"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:814af7a89bfdc40560f69ac8420a7469",
+        "testCaseHash": -1620467903,
+        "patternTemplates": [],
+        "path": "31592.31593.31598",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31599,
+        "uuid": "022166da-7036-4b84-b48e-32e4f1eb4b34",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:56.582Z",
+        "endTime": "2026-11-02T11:52:56.599Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31593,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31593,
+              "name": "Scenario: Create a practice session from a JSON document"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:0fa18cc3ae4196479ca1b47f3d24e131",
+        "testCaseHash": 434584950,
+        "patternTemplates": [],
+        "path": "31592.31593.31599",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31601,
+        "uuid": "b274152b-e874-480e-994c-c8919e5c056e",
+        "name": "Scenario: Query practice word metadata (persevere)",
+        "codeRef": "features/api.feature:17",
+        "description": "`word` = `persevere` · `length` = `9` · _Examples · line 28_",
+        "parameters": [
+          {
+            "key": "word",
+            "value": "persevere"
+          },
+          {
+            "key": "length",
+            "value": "9"
+          }
+        ],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.630Z",
+        "endTime": "2026-11-02T11:52:56.928Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31592,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "685d097772b878fd088f0689361361914e274362",
+        "testCaseId": "features/api.feature:17[word=persevere,length=9]",
+        "testCaseHash": 573052920,
+        "patternTemplates": [],
+        "path": "31592.31601",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31603,
+        "uuid": "a9500bce-61e2-4681-aead-1091839cc2d5",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.643Z",
+        "endTime": "2026-11-02T11:52:56.696Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31601,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31601,
+              "name": "Scenario: Query practice word metadata (persevere)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:3219ca28dbf04819882b1c710046f2e5",
+        "testCaseHash": 1027984383,
+        "patternTemplates": [],
+        "path": "31592.31601.31603",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31605,
+        "uuid": "41ac7a0e-f189-446a-b9ca-05ff174ec57e",
+        "name": "When I GET metadata for \"persevere\"",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.713Z",
+        "endTime": "2026-11-02T11:52:56.746Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31601,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31601,
+              "name": "Scenario: Query practice word metadata (persevere)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:860a49f75b75dc50c18576e0c115a9be",
+        "testCaseHash": -394219183,
+        "patternTemplates": [],
+        "path": "31592.31601.31605",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31606,
+        "uuid": "77d41ce3-7a10-4e87-aee3-eb45e7944b6d",
+        "name": "Then the response status is 200",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.755Z",
+        "endTime": "2026-11-02T11:52:56.802Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31601,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31601,
+              "name": "Scenario: Query practice word metadata (persevere)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:c5ae118184115919066a44c5765aad03",
+        "testCaseHash": -1168025796,
+        "patternTemplates": [],
+        "path": "31592.31601.31606",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31608,
+        "uuid": "bd6c7469-42f3-426d-acb5-2c816eb4fa07",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| word | persevere |\n| length | 9 |\n| kind | practice |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.835Z",
+        "endTime": "2026-11-02T11:52:56.889Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31601,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31601,
+              "name": "Scenario: Query practice word metadata (persevere)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:a906ab47717741a203af6cf98fbf52f4",
+        "testCaseHash": 1519572783,
+        "patternTemplates": [],
+        "path": "31592.31601.31608",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31610,
+        "uuid": "fd1dbeda-c6ec-43d7-bf82-94b933cda2b6",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:56.901Z",
+        "endTime": "2026-11-02T11:52:56.918Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31601,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31601,
+              "name": "Scenario: Query practice word metadata (persevere)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:8dcdb09536a538f8b431d0b4509da2a0",
+        "testCaseHash": 1898917064,
+        "patternTemplates": [],
+        "path": "31592.31601.31610",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31611,
+        "uuid": "1bddfbd2-a62e-4c83-8a63-03bf263fe606",
+        "name": "Scenario: Query practice word metadata (focus)",
+        "codeRef": "features/api.feature:17",
+        "description": "`word` = `focus` · `length` = `5` · _Examples · line 29_",
+        "parameters": [
+          {
+            "key": "length",
+            "value": "5"
+          },
+          {
+            "key": "word",
+            "value": "focus"
+          }
+        ],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.936Z",
+        "endTime": "2026-11-02T11:52:57.208Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31592,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "7cfa21463c0b2e28da265be70f4cd0577df67857",
+        "testCaseId": "features/api.feature:17[word=focus,length=5]",
+        "testCaseHash": -2038881853,
+        "patternTemplates": [],
+        "path": "31592.31611",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31612,
+        "uuid": "8616b2cd-dd63-40fa-bf25-69115888d06d",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:56.974Z",
+        "endTime": "2026-11-02T11:52:57.011Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31611,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31611,
+              "name": "Scenario: Query practice word metadata (focus)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:6b818f0df8fd1f0197891cf86828b7ca",
+        "testCaseHash": 1122005336,
+        "patternTemplates": [],
+        "path": "31592.31611.31612",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31613,
+        "uuid": "883a8b6a-e707-4c9f-9992-f5c6e88546ef",
+        "name": "When I GET metadata for \"focus\"",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.026Z",
+        "endTime": "2026-11-02T11:52:57.076Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31611,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31611,
+              "name": "Scenario: Query practice word metadata (focus)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:69e5aa3ff4848a4100eb7aced1accf11",
+        "testCaseHash": 444512771,
+        "patternTemplates": [],
+        "path": "31592.31611.31613",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31614,
+        "uuid": "1846a59d-8808-428d-bcc1-c78b91c3ee67",
+        "name": "Then the response status is 200",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.092Z",
+        "endTime": "2026-11-02T11:52:57.121Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31611,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31611,
+              "name": "Scenario: Query practice word metadata (focus)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:6b0541ac8b25a74228b0d78e6488193f",
+        "testCaseHash": -2020705771,
+        "patternTemplates": [],
+        "path": "31592.31611.31614",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31615,
+        "uuid": "dd9796fe-6dc6-490e-b7fd-940c3972cd87",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| word | focus |\n| length | 5 |\n| kind | practice |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.135Z",
+        "endTime": "2026-11-02T11:52:57.163Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31611,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31611,
+              "name": "Scenario: Query practice word metadata (focus)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:14dd931f31b82dc6f37ef528268bc6f6",
+        "testCaseHash": 666892808,
+        "patternTemplates": [],
+        "path": "31592.31611.31615",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31616,
+        "uuid": "315071d4-a2d7-4aaf-bc9a-659be6c2f169",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:57.173Z",
+        "endTime": "2026-11-02T11:52:57.193Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31611,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31611,
+              "name": "Scenario: Query practice word metadata (focus)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:0b3ef589a6390ff4c4958a0fe96bece8",
+        "testCaseHash": 1929761871,
+        "patternTemplates": [],
+        "path": "31592.31611.31616",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31617,
+        "uuid": "b705d835-d7bd-4ede-910a-16d62b8e087f",
+        "name": "Scenario: Expected validation error is not a business failure",
+        "codeRef": "features/api.feature:31",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.223Z",
+        "endTime": "2026-11-02T11:52:57.653Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31592,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "1c156b0efa05dc7f05450a3f75c9bf8fbff66400",
+        "testCaseId": "features/api.feature:31",
+        "testCaseHash": 1523459528,
+        "patternTemplates": [],
+        "path": "31592.31617",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31618,
+        "uuid": "2d690b6b-d936-4779-ab0c-5af9c664231e",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.231Z",
+        "endTime": "2026-11-02T11:52:57.321Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31617,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31617,
+              "name": "Scenario: Expected validation error is not a business failure"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:76aa9c268c4d52b7ad36e28ed060cf2d",
+        "testCaseHash": -502874536,
+        "patternTemplates": [],
+        "path": "31592.31617.31618",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31620,
+        "uuid": "cd6432a5-bc27-465b-b60d-0d8276591b06",
+        "name": "When I submit an empty practice word expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.364Z",
+        "endTime": "2026-11-02T11:52:57.464Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31617,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31617,
+              "name": "Scenario: Expected validation error is not a business failure"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:2065929958b7f6b25a5ba8960de534e6",
+        "testCaseHash": 429546881,
+        "patternTemplates": [],
+        "path": "31592.31617.31620",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31622,
+        "uuid": "c266cca8-bb47-467c-a4ee-8a533be56ac6",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.488Z",
+        "endTime": "2026-11-02T11:52:57.556Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31617,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31617,
+              "name": "Scenario: Expected validation error is not a business failure"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:6eb43d2c0e9e71806665febd7c0d23e0",
+        "testCaseHash": 1543523991,
+        "patternTemplates": [],
+        "path": "31592.31617.31622",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31624,
+        "uuid": "fef48578-209e-45b1-adef-6ed698278335",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| error | word_required |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.569Z",
+        "endTime": "2026-11-02T11:52:57.587Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31617,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31617,
+              "name": "Scenario: Expected validation error is not a business failure"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:6ec57493221b7ccc661204aa1dda036a",
+        "testCaseHash": -63846648,
+        "patternTemplates": [],
+        "path": "31592.31617.31624",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31626,
+        "uuid": "588c167e-9024-4684-a662-a2fbdc2444ca",
+        "name": "And I record a non-fatal diagnostic comparison",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.597Z",
+        "endTime": "2026-11-02T11:52:57.615Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31617,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31617,
+              "name": "Scenario: Expected validation error is not a business failure"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:f64b0b194717db6d086ea9f927ccc7ba",
+        "testCaseHash": -2004563072,
+        "patternTemplates": [],
+        "path": "31592.31617.31626",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31627,
+        "uuid": "b2b14999-421b-450f-a2a7-4bbece0c48cd",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:57.629Z",
+        "endTime": "2026-11-02T11:52:57.643Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31617,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31592,
+              "name": "Feature: Practice API contracts and diagnostic evidence"
+            },
+            {
+              "id": 31617,
+              "name": "Scenario: Expected validation error is not a business failure"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:a47daf48c15245fe4a0eb4371241a51c",
+        "testCaseHash": -59906225,
+        "patternTemplates": [],
+        "path": "31592.31617.31627",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31628,
+        "uuid": "bca8d698-98dc-4706-9834-49833897031c",
+        "name": "Feature: Practice API - independent consumer contract checks",
+        "description": "As an API automation tester adopting the 2.0.1 client,\n  I want request/response evidence, tables and JSON in ReportPortal\n  so that I can diagnose a failed contract without re-running it.",
+        "parameters": [],
+        "attributes": [],
+        "type": "SUITE",
+        "startTime": "2026-11-02T11:52:57.661Z",
+        "endTime": "2026-11-02T11:52:59.832Z",
+        "status": "FAILED",
+        "statistics": {
+          "executions": {
+            "total": 12,
+            "failed": 2,
+            "passed": 10
+          },
+          "defects": {
+            "to_investigate": {
+              "total": 2,
+              "ti001": 2
+            }
+          }
+        },
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          }
+        },
+        "hasChildren": true,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "auto:2930f2c230b6b9200ba533aae1735544",
+        "testCaseHash": -94699775,
+        "patternTemplates": [],
+        "path": "31628",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31630,
+        "uuid": "a9dec214-58f3-4396-bec9-c720b6333659",
+        "name": "Scenario: Save a word that uses accents, CJK and emoji",
+        "codeRef": "features/independent/api_contracts.feature:10",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.662Z",
+        "endTime": "2026-11-02T11:52:57.894Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "ffdc9262f354af9998b82d1df3f04c9c42232457",
+        "testCaseId": "features/independent/api_contracts.feature:10",
+        "testCaseHash": 2073045020,
+        "patternTemplates": [],
+        "path": "31628.31630",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31631,
+        "uuid": "b01195ae-8ac6-422f-af1d-89269c2fc4e5",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.683Z",
+        "endTime": "2026-11-02T11:52:57.718Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31630,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31630,
+              "name": "Scenario: Save a word that uses accents, CJK and emoji"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:31a6492c94db9388c2405a0d4cb501cf",
+        "testCaseHash": 485562696,
+        "patternTemplates": [],
+        "path": "31628.31630.31631",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31633,
+        "uuid": "de30efea-3764-4bf0-a56c-c3443027f67a",
+        "name": "When I POST this JSON to the practice API:",
+        "description": "**When** I POST this JSON to the practice API:\n\n```json\n{ \"word\": \"résumé 中文 ✓\" }\n```",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.725Z",
+        "endTime": "2026-11-02T11:52:57.755Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31630,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31630,
+              "name": "Scenario: Save a word that uses accents, CJK and emoji"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:021f87c37f6ece7fc1407a7baf15109b",
+        "testCaseHash": 1319223010,
+        "patternTemplates": [],
+        "path": "31628.31630.31633",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31634,
+        "uuid": "8b270c77-342c-468e-9eaf-34b17617996a",
+        "name": "Then the response status is 201",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.765Z",
+        "endTime": "2026-11-02T11:52:57.784Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31630,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31630,
+              "name": "Scenario: Save a word that uses accents, CJK and emoji"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:771da0110eb262d5179613c9c856aaaf",
+        "testCaseHash": 1458014726,
+        "patternTemplates": [],
+        "path": "31628.31630.31634",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31636,
+        "uuid": "f6e6a477-b99e-49e6-ae4a-a8b57dde94aa",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| word | résumé 中文 ✓ |\n| saved | true |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.800Z",
+        "endTime": "2026-11-02T11:52:57.848Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31630,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31630,
+              "name": "Scenario: Save a word that uses accents, CJK and emoji"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:970c3389fa8ad70a0769d0deda982db9",
+        "testCaseHash": -149353992,
+        "patternTemplates": [],
+        "path": "31628.31630.31636",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31637,
+        "uuid": "aaa1f755-5ca1-4bf2-a169-dd4a8ba51fae",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:57.861Z",
+        "endTime": "2026-11-02T11:52:57.879Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31630,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31630,
+              "name": "Scenario: Save a word that uses accents, CJK and emoji"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:6252343cdcfa3da584389dac3e82318a",
+        "testCaseHash": 95727199,
+        "patternTemplates": [],
+        "path": "31628.31630.31637",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31638,
+        "uuid": "9444eeb7-ac4c-4c09-9f3f-e2afe3886045",
+        "name": "Scenario: Metadata length counts characters, not bytes",
+        "codeRef": "features/independent/api_contracts.feature:21",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.903Z",
+        "endTime": "2026-11-02T11:52:58.070Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "b7ef251a635aae737a39aeb753904d13bd56d0b2",
+        "testCaseId": "features/independent/api_contracts.feature:21",
+        "testCaseHash": 2073045052,
+        "patternTemplates": [],
+        "path": "31628.31638",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31639,
+        "uuid": "5a934a09-1c48-4222-b7c0-c5051fc7bfb3",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.913Z",
+        "endTime": "2026-11-02T11:52:57.939Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31638,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31638,
+              "name": "Scenario: Metadata length counts characters, not bytes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:81a7408312dc57827100e0e357cf5aa6",
+        "testCaseHash": -1846423870,
+        "patternTemplates": [],
+        "path": "31628.31638.31639",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31640,
+        "uuid": "ea0c609a-b37e-42c9-9779-57d583095c12",
+        "name": "When I GET metadata for \"naïve\"",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.950Z",
+        "endTime": "2026-11-02T11:52:57.976Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31638,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31638,
+              "name": "Scenario: Metadata length counts characters, not bytes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:2538a8c27eff0317508ae59162a84cb6",
+        "testCaseHash": 1192396890,
+        "patternTemplates": [],
+        "path": "31628.31638.31640",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31641,
+        "uuid": "503df799-8b4b-4806-8a3a-ff7c1f440600",
+        "name": "Then the response status is 200",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:57.989Z",
+        "endTime": "2026-11-02T11:52:58.007Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31638,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31638,
+              "name": "Scenario: Metadata length counts characters, not bytes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:0b1522febbc8c3064d573272e257057e",
+        "testCaseHash": -1493096833,
+        "patternTemplates": [],
+        "path": "31628.31638.31641",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31642,
+        "uuid": "af9cb486-a2d3-483d-a2c6-71b5305d663c",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| word | naïve |\n| length | 5 |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.016Z",
+        "endTime": "2026-11-02T11:52:58.041Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31638,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31638,
+              "name": "Scenario: Metadata length counts characters, not bytes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:04cacde3b0d630a2311e0d1ca00de68d",
+        "testCaseHash": 1194501746,
+        "patternTemplates": [],
+        "path": "31628.31638.31642",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31643,
+        "uuid": "cef83129-836d-4225-85f0-0e3a07e642c3",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:58.050Z",
+        "endTime": "2026-11-02T11:52:58.061Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31638,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31638,
+              "name": "Scenario: Metadata length counts characters, not bytes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:dfd0733baefae379df9f3d2130923e62",
+        "testCaseHash": -1168574043,
+        "patternTemplates": [],
+        "path": "31628.31638.31643",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31644,
+        "uuid": "6aac3bc9-aba4-4a3c-8908-85a2fc9141cc",
+        "name": "Scenario: Reject a practice payload that has no usable word (empty string)",
+        "codeRef": "features/independent/api_contracts.feature:29",
+        "description": "`case` = `empty string` · `payload` = `{\"word\": \"\"}` · _Examples · line 38_",
+        "parameters": [
+          {
+            "key": "case",
+            "value": "empty string"
+          },
+          {
+            "key": "payload",
+            "value": "{\"word\": \"\"}"
+          }
+        ],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.082Z",
+        "endTime": "2026-11-02T11:52:58.288Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "e119e572804469b397c5deeca6808a7f65639a3b",
+        "testCaseId": "features/independent/api_contracts.feature:29[case=empty string,payload={\"word\": \"\"}]",
+        "testCaseHash": 282507446,
+        "patternTemplates": [],
+        "path": "31628.31644",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31645,
+        "uuid": "e3899af3-5f61-4a8c-afe1-983b5e4d5e53",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.092Z",
+        "endTime": "2026-11-02T11:52:58.123Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31644,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31644,
+              "name": "Scenario: Reject a practice payload that has no usable word (empty string)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:f6ddd7776be57f690ac19435bb2b5cac",
+        "testCaseHash": -1737231337,
+        "patternTemplates": [],
+        "path": "31628.31644.31645",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31646,
+        "uuid": "bd728ede-a6f3-4dcc-b4fb-339eb8bcf6ba",
+        "name": "When I POST the raw body {\"word\": \"\"} expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.138Z",
+        "endTime": "2026-11-02T11:52:58.169Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31644,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31644,
+              "name": "Scenario: Reject a practice payload that has no usable word (empty string)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:1c5303ddecaf597bbd9cdcfc1fb76109",
+        "testCaseHash": 899612620,
+        "patternTemplates": [],
+        "path": "31628.31644.31646",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31647,
+        "uuid": "cf707e87-5f03-4ebb-a2c0-edbb4f455ac5",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.179Z",
+        "endTime": "2026-11-02T11:52:58.205Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31644,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31644,
+              "name": "Scenario: Reject a practice payload that has no usable word (empty string)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:278a66c786e9ce8a5d2edc6419995665",
+        "testCaseHash": 473492182,
+        "patternTemplates": [],
+        "path": "31628.31644.31647",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31648,
+        "uuid": "dff907d0-b763-48ec-a252-a9b4f0f9ad0d",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| error | word_required |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.218Z",
+        "endTime": "2026-11-02T11:52:58.243Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31644,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31644,
+              "name": "Scenario: Reject a practice payload that has no usable word (empty string)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:e96778fc5ceacc503c6cea9af420d089",
+        "testCaseHash": -1133878457,
+        "patternTemplates": [],
+        "path": "31628.31644.31648",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31649,
+        "uuid": "6b9f94ff-dedb-4693-92c8-eaa3a641a7ad",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:58.253Z",
+        "endTime": "2026-11-02T11:52:58.266Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31644,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31644,
+              "name": "Scenario: Reject a practice payload that has no usable word (empty string)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:c2dba87fc71eefc994cb951bddafbef8",
+        "testCaseHash": -2082651728,
+        "patternTemplates": [],
+        "path": "31628.31644.31649",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31650,
+        "uuid": "c5be628d-036c-40c6-81d2-9f2f7c5332c7",
+        "name": "Scenario: Reject a practice payload that has no usable word (whitespace only)",
+        "codeRef": "features/independent/api_contracts.feature:29",
+        "description": "`case` = `whitespace only` · `payload` = `{\"word\": \" \"}` · _Examples · line 39_",
+        "parameters": [
+          {
+            "key": "payload",
+            "value": "{\"word\": \"   \"}"
+          },
+          {
+            "key": "case",
+            "value": "whitespace only"
+          }
+        ],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.313Z",
+        "endTime": "2026-11-02T11:52:58.547Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "f1bec5564f0b5785676306050ad7f75b199bb734",
+        "testCaseId": "features/independent/api_contracts.feature:29[case=whitespace only,payload={\"word\": \"   \"}]",
+        "testCaseHash": -552616945,
+        "patternTemplates": [],
+        "path": "31628.31650",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31651,
+        "uuid": "9a86c390-0019-49bb-9d7b-7f5a9c887234",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.334Z",
+        "endTime": "2026-11-02T11:52:58.379Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31650,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31650,
+              "name": "Scenario: Reject a practice payload that has no usable word (whitespace only)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:64e032c5d057304a6e1e2fd883cf53a0",
+        "testCaseHash": -23772078,
+        "patternTemplates": [],
+        "path": "31628.31650.31651",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31652,
+        "uuid": "fc4be437-41d2-45d1-85e0-16cbe864f04b",
+        "name": "When I POST the raw body {\"word\": \"   \"} expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.403Z",
+        "endTime": "2026-11-02T11:52:58.435Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31650,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31650,
+              "name": "Scenario: Reject a practice payload that has no usable word (whitespace only)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:d69d7a7fbe9667f292f908b77e41f778",
+        "testCaseHash": 1097985875,
+        "patternTemplates": [],
+        "path": "31628.31650.31652",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31653,
+        "uuid": "f904b840-a2b7-45ed-88cf-79bb637aadc6",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.445Z",
+        "endTime": "2026-11-02T11:52:58.481Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31650,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31650,
+              "name": "Scenario: Reject a practice payload that has no usable word (whitespace only)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:0849c17e472b652e3bdca943e92e5447",
+        "testCaseHash": 1635548049,
+        "patternTemplates": [],
+        "path": "31628.31650.31653",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31654,
+        "uuid": "c90a771e-2633-4cb4-99b0-71e8538a1d6d",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| error | word_required |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.493Z",
+        "endTime": "2026-11-02T11:52:58.514Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31650,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31650,
+              "name": "Scenario: Reject a practice payload that has no usable word (whitespace only)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:bcecc4b9017655780657333456da18a4",
+        "testCaseHash": 28177410,
+        "patternTemplates": [],
+        "path": "31628.31650.31654",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31655,
+        "uuid": "1243985d-bc9c-487b-9624-b81df282508d",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:58.524Z",
+        "endTime": "2026-11-02T11:52:58.536Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31650,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31650,
+              "name": "Scenario: Reject a practice payload that has no usable word (whitespace only)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:698a26e8447270a9a868735fa711cbad",
+        "testCaseHash": 883315221,
+        "patternTemplates": [],
+        "path": "31628.31650.31655",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31656,
+        "uuid": "723dbf4e-4014-436e-ac4d-9b7fa6088c5e",
+        "name": "Scenario: Reject a practice payload that has no usable word (number)",
+        "codeRef": "features/independent/api_contracts.feature:29",
+        "description": "`case` = `number` · `payload` = `{\"word\": 42}` · _Examples · line 40_",
+        "parameters": [
+          {
+            "key": "case",
+            "value": "number"
+          },
+          {
+            "key": "payload",
+            "value": "{\"word\": 42}"
+          }
+        ],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.556Z",
+        "endTime": "2026-11-02T11:52:58.724Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "610ab5752c7ffcfe5c73563dffb8eb1c889ca0e6",
+        "testCaseId": "features/independent/api_contracts.feature:29[case=number,payload={\"word\": 42}]",
+        "testCaseHash": 2059326265,
+        "patternTemplates": [],
+        "path": "31628.31656",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31657,
+        "uuid": "60cce808-ceaa-4c3d-9144-dc575271acc7",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.567Z",
+        "endTime": "2026-11-02T11:52:58.589Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31656,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31656,
+              "name": "Scenario: Reject a practice payload that has no usable word (number)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:2c57a0119d1822eed268c9da641e9c3a",
+        "testCaseHash": -1128274702,
+        "patternTemplates": [],
+        "path": "31628.31656.31657",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31658,
+        "uuid": "c6d3f80c-cb88-4c06-a316-9a099ec59473",
+        "name": "When I POST the raw body {\"word\": 42} expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.596Z",
+        "endTime": "2026-11-02T11:52:58.618Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31656,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31656,
+              "name": "Scenario: Reject a practice payload that has no usable word (number)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:2813e92695e2ab5160a5e64eba22f8b2",
+        "testCaseHash": -1527546545,
+        "patternTemplates": [],
+        "path": "31628.31656.31658",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31659,
+        "uuid": "eb73d1fa-0862-4c02-823b-9616efb9a793",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.625Z",
+        "endTime": "2026-11-02T11:52:58.646Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31656,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31656,
+              "name": "Scenario: Reject a practice payload that has no usable word (number)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:4f4a8428e4fcd10a24d32be2ba7264c7",
+        "testCaseHash": -686093263,
+        "patternTemplates": [],
+        "path": "31628.31656.31659",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31660,
+        "uuid": "3fb26673-469e-465e-8dcd-9fbf88f4b3d5",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| error | word_required |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.655Z",
+        "endTime": "2026-11-02T11:52:58.682Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31656,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31656,
+              "name": "Scenario: Reject a practice payload that has no usable word (number)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:e85050a297ae9df1afe421eb56f6a106",
+        "testCaseHash": 2001503394,
+        "patternTemplates": [],
+        "path": "31628.31656.31660",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31661,
+        "uuid": "f37dabd1-1df1-4978-bc2f-b358d6b88ef0",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:58.693Z",
+        "endTime": "2026-11-02T11:52:58.707Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31656,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31656,
+              "name": "Scenario: Reject a practice payload that has no usable word (number)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:d22ada7071be97d9b9b1b9bcf598a363",
+        "testCaseHash": -681927307,
+        "patternTemplates": [],
+        "path": "31628.31656.31661",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31662,
+        "uuid": "c6b4bdee-5330-42d3-ab51-78c13f7961c6",
+        "name": "Scenario: Reject a practice payload that has no usable word (missing field)",
+        "codeRef": "features/independent/api_contracts.feature:29",
+        "description": "`case` = `missing field` · `payload` = `{}` · _Examples · line 41_",
+        "parameters": [
+          {
+            "key": "payload",
+            "value": "{}"
+          },
+          {
+            "key": "case",
+            "value": "missing field"
+          }
+        ],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.736Z",
+        "endTime": "2026-11-02T11:52:58.900Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "36e35915926e1204588846ce2490ef359ea25942",
+        "testCaseId": "features/independent/api_contracts.feature:29[case=missing field,payload={}]",
+        "testCaseHash": -488731542,
+        "patternTemplates": [],
+        "path": "31628.31662",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31663,
+        "uuid": "c8d74a53-4447-4079-8223-e8f5290d4614",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.749Z",
+        "endTime": "2026-11-02T11:52:58.773Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31662,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31662,
+              "name": "Scenario: Reject a practice payload that has no usable word (missing field)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:04d163ef7d09e0714957e3117abd46f8",
+        "testCaseHash": 1194193505,
+        "patternTemplates": [],
+        "path": "31628.31662.31663",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31664,
+        "uuid": "72ceb2b3-924f-4eb2-ac75-bf023ec0d96b",
+        "name": "When I POST the raw body {} expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.779Z",
+        "endTime": "2026-11-02T11:52:58.814Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31662,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31662,
+              "name": "Scenario: Reject a practice payload that has no usable word (missing field)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:0345f0d91174849d64fec0bd9cdd1689",
+        "testCaseHash": 1806979686,
+        "patternTemplates": [],
+        "path": "31628.31662.31664",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31665,
+        "uuid": "d092f7ef-d542-40a9-97c8-067c54496d9a",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.821Z",
+        "endTime": "2026-11-02T11:52:58.837Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31662,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31662,
+              "name": "Scenario: Reject a practice payload that has no usable word (missing field)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:43ff32c16814996d450f975b3ede2fb0",
+        "testCaseHash": -1583970272,
+        "patternTemplates": [],
+        "path": "31628.31662.31665",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31666,
+        "uuid": "0feafb00-4552-487e-a570-06cd573fc387",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| error | word_required |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.844Z",
+        "endTime": "2026-11-02T11:52:58.866Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31662,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31662,
+              "name": "Scenario: Reject a practice payload that has no usable word (missing field)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:f8716f04ab244706db616aa2f428ddf1",
+        "testCaseHash": 1103626385,
+        "patternTemplates": [],
+        "path": "31628.31662.31666",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31667,
+        "uuid": "ef36bddb-0053-4caf-9ad2-dbfa337ecd9c",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:58.874Z",
+        "endTime": "2026-11-02T11:52:58.885Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31662,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31662,
+              "name": "Scenario: Reject a practice payload that has no usable word (missing field)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:9719e5c7b3c17a83e81699fed26508b5",
+        "testCaseHash": 341092902,
+        "patternTemplates": [],
+        "path": "31628.31662.31667",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31668,
+        "uuid": "93dd81a2-f0b7-4e01-b486-54c3dbce3d60",
+        "name": "Scenario: Reject a practice payload that has no usable word (JSON array)",
+        "codeRef": "features/independent/api_contracts.feature:29",
+        "description": "`case` = `JSON array` · `payload` = `[\"persevere\"]` · _Examples · line 42_",
+        "parameters": [
+          {
+            "key": "case",
+            "value": "JSON array"
+          },
+          {
+            "key": "payload",
+            "value": "[\"persevere\"]"
+          }
+        ],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.908Z",
+        "endTime": "2026-11-02T11:52:59.064Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "f1af7671d4736a9e160a2f144014a1c5abf4a272",
+        "testCaseId": "features/independent/api_contracts.feature:29[case=JSON array,payload=[\"persevere\"]]",
+        "testCaseHash": -124349060,
+        "patternTemplates": [],
+        "path": "31628.31668",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31669,
+        "uuid": "899a42b2-6786-4704-b2ef-238535b02d57",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.917Z",
+        "endTime": "2026-11-02T11:52:58.945Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31668,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31668,
+              "name": "Scenario: Reject a practice payload that has no usable word (JSON array)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:8dc9a40da859e57090c4e2bb5b74f418",
+        "testCaseHash": -1847737446,
+        "patternTemplates": [],
+        "path": "31628.31668.31669",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31670,
+        "uuid": "3530af68-f839-4350-ac85-e97560898d2f",
+        "name": "When I POST the raw body [\"persevere\"] expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.953Z",
+        "endTime": "2026-11-02T11:52:58.972Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31668,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31668,
+              "name": "Scenario: Reject a practice payload that has no usable word (JSON array)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:5b5630c1e92f29806f07f8ce79c3babb",
+        "testCaseHash": 978735590,
+        "patternTemplates": [],
+        "path": "31628.31668.31670",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31671,
+        "uuid": "d98c8b9c-e1e1-4dce-93af-1307d384b547",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:58.980Z",
+        "endTime": "2026-11-02T11:52:59Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31668,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31668,
+              "name": "Scenario: Reject a practice payload that has no usable word (JSON array)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:25b07185013c689a8ec840211f494ddb",
+        "testCaseHash": 1750312665,
+        "patternTemplates": [],
+        "path": "31628.31668.31671",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31672,
+        "uuid": "80bb3f77-1eac-404c-9b90-0371ab53c239",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| error | word_required |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.009Z",
+        "endTime": "2026-11-02T11:52:59.026Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31668,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31668,
+              "name": "Scenario: Reject a practice payload that has no usable word (JSON array)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:383510094a50fce59d8e7cc0eed5d149",
+        "testCaseHash": 142942026,
+        "patternTemplates": [],
+        "path": "31628.31668.31672",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31673,
+        "uuid": "5409709d-237e-4ac3-82eb-d851da56b3e4",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:59.034Z",
+        "endTime": "2026-11-02T11:52:59.043Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31668,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31668,
+              "name": "Scenario: Reject a practice payload that has no usable word (JSON array)"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:ac4ec9430a134543de06ab878dd75625",
+        "testCaseHash": -1707497011,
+        "patternTemplates": [],
+        "path": "31628.31668.31673",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31674,
+        "uuid": "197396a2-1db3-4b54-bd0f-89236b28fe47",
+        "name": "Scenario: Reject a word longer than 80 characters",
+        "codeRef": "features/independent/api_contracts.feature:44",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.078Z",
+        "endTime": "2026-11-02T11:52:59.189Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "cb2d8cf54133a3fbd5c35e7881fa51351ae84749",
+        "testCaseId": "features/independent/api_contracts.feature:44",
+        "testCaseHash": 2073045117,
+        "patternTemplates": [],
+        "path": "31628.31674",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31675,
+        "uuid": "92329bcc-d736-46ee-94a4-a18419624f82",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.086Z",
+        "endTime": "2026-11-02T11:52:59.107Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31674,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31674,
+              "name": "Scenario: Reject a word longer than 80 characters"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:cfd9ca94c51abcbf0051b40ab4397944",
+        "testCaseHash": -543504183,
+        "patternTemplates": [],
+        "path": "31628.31674.31675",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31676,
+        "uuid": "a700bd57-8519-497d-b8dc-c9f6b2e304d8",
+        "name": "When I POST a word of 81 letters expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.115Z",
+        "endTime": "2026-11-02T11:52:59.140Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31674,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31674,
+              "name": "Scenario: Reject a word longer than 80 characters"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:eea6fe46cf0fe055aa5cae50ec50584f",
+        "testCaseHash": 1304021387,
+        "patternTemplates": [],
+        "path": "31628.31674.31676",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31677,
+        "uuid": "5dc7b9e7-a03d-4f62-a41c-b73ede7d5397",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.148Z",
+        "endTime": "2026-11-02T11:52:59.163Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31674,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31674,
+              "name": "Scenario: Reject a word longer than 80 characters"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:1780554864dc385b811a4b618b1b40cb",
+        "testCaseHash": 2030287496,
+        "patternTemplates": [],
+        "path": "31628.31674.31677",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31678,
+        "uuid": "57b0fc9f-dc3b-49dd-8082-b38a2704fe28",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:59.169Z",
+        "endTime": "2026-11-02T11:52:59.179Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31674,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31674,
+              "name": "Scenario: Reject a word longer than 80 characters"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:1ec3c7f3fc56caca66e8a9dda3a5f931",
+        "testCaseHash": -1801992514,
+        "patternTemplates": [],
+        "path": "31628.31674.31678",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31679,
+        "uuid": "94661920-6cd1-46d6-afa3-cb43ea2404b8",
+        "name": "Scenario: Malformed JSON gets a request error, not a server crash",
+        "codeRef": "features/independent/api_contracts.feature:48",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.199Z",
+        "endTime": "2026-11-02T11:52:59.334Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "501e41374b486c6c9a536c06a5ae59c55ab22838",
+        "testCaseId": "features/independent/api_contracts.feature:48",
+        "testCaseHash": 2073045121,
+        "patternTemplates": [],
+        "path": "31628.31679",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31680,
+        "uuid": "8df22e59-840f-46ba-a975-9a4a5a2d322d",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.208Z",
+        "endTime": "2026-11-02T11:52:59.229Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31679,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31679,
+              "name": "Scenario: Malformed JSON gets a request error, not a server crash"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:739f7fd2ca934145dd7240b0244e72b9",
+        "testCaseHash": 951177351,
+        "patternTemplates": [],
+        "path": "31628.31679.31680",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31681,
+        "uuid": "ebf92a5b-cf9c-4455-b7cc-a9752f9b4e84",
+        "name": "When I POST the raw body {\"word\": \"unterminated expecting status 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.235Z",
+        "endTime": "2026-11-02T11:52:59.252Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31679,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31679,
+              "name": "Scenario: Malformed JSON gets a request error, not a server crash"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:464fa13c8dad6cc248c6f9c48938ac77",
+        "testCaseHash": -574364005,
+        "patternTemplates": [],
+        "path": "31628.31679.31681",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31682,
+        "uuid": "c6131ef8-5592-4be6-829a-84fb262354f6",
+        "name": "Then the response status is 400",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.258Z",
+        "endTime": "2026-11-02T11:52:59.276Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31679,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31679,
+              "name": "Scenario: Malformed JSON gets a request error, not a server crash"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:4a504de8e27e9ae529ad5fdbce0a7f62",
+        "testCaseHash": 1216999238,
+        "patternTemplates": [],
+        "path": "31628.31679.31682",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31683,
+        "uuid": "efcc470c-7449-42b2-8396-9cb2ffe32803",
+        "name": "And the JSON response includes:",
+        "description": "**And** the JSON response includes:\n\n| field | value |\n| --- | --- |\n| error | invalid_json_or_request |",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.288Z",
+        "endTime": "2026-11-02T11:52:59.305Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31679,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31679,
+              "name": "Scenario: Malformed JSON gets a request error, not a server crash"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:13f2f8b402f98cd8dd1394ad20334f3f",
+        "testCaseHash": -390371401,
+        "patternTemplates": [],
+        "path": "31628.31679.31683",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31684,
+        "uuid": "df5fab00-8c3a-4708-a239-0eb8e154b0df",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:59.311Z",
+        "endTime": "2026-11-02T11:52:59.325Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31679,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31679,
+              "name": "Scenario: Malformed JSON gets a request error, not a server crash"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:ad7c579196ab6ba2ae094f5654542e0c",
+        "testCaseHash": -277588160,
+        "patternTemplates": [],
+        "path": "31628.31679.31684",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31685,
+        "uuid": "e309d3bf-425f-4e85-9fd4-e9ee8fd39ad7",
+        "name": "Scenario: Routing errors use the right status codes",
+        "codeRef": "features/independent/api_contracts.feature:55",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.342Z",
+        "endTime": "2026-11-02T11:52:59.497Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "passed": 1
+          },
+          "defects": {}
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "f738a3337741e5fb2486bf1e3a917fea04a53670",
+        "testCaseId": "features/independent/api_contracts.feature:55",
+        "testCaseHash": 2073045149,
+        "patternTemplates": [],
+        "path": "31628.31685",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31686,
+        "uuid": "50dee703-b337-49d8-a60d-1469a4d4ee68",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.352Z",
+        "endTime": "2026-11-02T11:52:59.373Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31685,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31685,
+              "name": "Scenario: Routing errors use the right status codes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:9248984e4f0a7b362174dbc32731cb87",
+        "testCaseHash": -74070540,
+        "patternTemplates": [],
+        "path": "31628.31685.31686",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31687,
+        "uuid": "98d8a7ce-29e0-4277-8ef6-ac4752fe9a77",
+        "name": "When I send DELETE to \"/api/practice\" expecting status 405",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.381Z",
+        "endTime": "2026-11-02T11:52:59.403Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31685,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31685,
+              "name": "Scenario: Routing errors use the right status codes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:528684453c6a09e321f2b7507e4a43ba",
+        "testCaseHash": 1405270196,
+        "patternTemplates": [],
+        "path": "31628.31685.31687",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31688,
+        "uuid": "79f4fbc2-a9d9-4cd9-8fca-b2bcaeac4d00",
+        "name": "Then the response status is 405",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.413Z",
+        "endTime": "2026-11-02T11:52:59.429Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31685,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31685,
+              "name": "Scenario: Routing errors use the right status codes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:3e57c8a7c82c0a235c7d14c959984bbd",
+        "testCaseHash": 856219704,
+        "patternTemplates": [],
+        "path": "31628.31685.31688",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31689,
+        "uuid": "c876d50d-c71c-4d13-997e-caa459725c4a",
+        "name": "When I send GET to \"/api/unknown\" expecting status 404",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.435Z",
+        "endTime": "2026-11-02T11:52:59.452Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31685,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31685,
+              "name": "Scenario: Routing errors use the right status codes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:13eb8769f637f6cf8cbf54689eb35210",
+        "testCaseHash": 1225796211,
+        "patternTemplates": [],
+        "path": "31628.31685.31689",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31690,
+        "uuid": "411b6e66-dbcf-4517-9f2c-00204b180c42",
+        "name": "Then the response status is 404",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.458Z",
+        "endTime": "2026-11-02T11:52:59.474Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31685,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31685,
+              "name": "Scenario: Routing errors use the right status codes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:47855652633a79fa01333ec2884b7a5b",
+        "testCaseHash": 856219703,
+        "patternTemplates": [],
+        "path": "31628.31685.31690",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31691,
+        "uuid": "5a2aa289-07d8-44c1-95ce-91b9cb1cac72",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:59.481Z",
+        "endTime": "2026-11-02T11:52:59.488Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31685,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31685,
+              "name": "Scenario: Routing errors use the right status codes"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:4eedb06010c2840eb27561ca75d6ea67",
+        "testCaseHash": 347999283,
+        "patternTemplates": [],
+        "path": "31628.31685.31691",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31692,
+        "uuid": "8067c9ca-ae63-4c75-8097-772dc8a59589",
+        "name": "Scenario: Metadata contract matches the published example exactly",
+        "codeRef": "features/independent/api_contracts.feature:62",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.506Z",
+        "endTime": "2026-11-02T11:52:59.668Z",
+        "status": "FAILED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "failed": 1
+          },
+          "defects": {
+            "to_investigate": {
+              "total": 1,
+              "ti001": 1
+            }
+          }
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "issue": {
+          "issueType": "ti001",
+          "autoAnalyzed": false,
+          "ignoreAnalyzer": false,
+          "externalSystemIssues": []
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "f4604bc2a3cefe2800a788e3194c7cebaf7d8727",
+        "testCaseId": "features/independent/api_contracts.feature:62",
+        "testCaseHash": 2073045177,
+        "patternTemplates": [],
+        "path": "31628.31692",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31693,
+        "uuid": "6cc2cf64-d32d-4158-b11e-54c29747d3ce",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.516Z",
+        "endTime": "2026-11-02T11:52:59.547Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31692,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31692,
+              "name": "Scenario: Metadata contract matches the published example exactly"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:754e4f274774adfa12707ffb2cf5477e",
+        "testCaseHash": -1124021376,
+        "patternTemplates": [],
+        "path": "31628.31692.31693",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31694,
+        "uuid": "74964ec8-788c-4aa8-b7b7-0153b6f7370c",
+        "name": "When I GET metadata for \"focus\"",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.558Z",
+        "endTime": "2026-11-02T11:52:59.585Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31692,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31692,
+              "name": "Scenario: Metadata contract matches the published example exactly"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:d0a8b439c18936e12f79e7b890a9b7ec",
+        "testCaseHash": -1074327509,
+        "patternTemplates": [],
+        "path": "31628.31692.31694",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31695,
+        "uuid": "26563fa7-bd2a-47bd-970d-df7d3e8bcd38",
+        "name": "Then the response body matches this JSON exactly:",
+        "description": "**Then** the response body matches this JSON exactly:\n\n```json\n{\n  \"word\": \"focus\",\n  \"length\": 5,\n  \"kind\": \"practice\",\n  \"difficulty\": \"easy\"\n}\n```",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.593Z",
+        "endTime": "2026-11-02T11:52:59.630Z",
+        "status": "FAILED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31692,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31692,
+              "name": "Scenario: Metadata contract matches the published example exactly"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:d6c5057d0348986b2b87d2557ba99c0f",
+        "testCaseHash": -18489278,
+        "patternTemplates": [],
+        "path": "31628.31692.31695",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31696,
+        "uuid": "bbb1c944-c21c-4e26-8e28-25ed73fc0153",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:59.646Z",
+        "endTime": "2026-11-02T11:52:59.656Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31692,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31692,
+              "name": "Scenario: Metadata contract matches the published example exactly"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:ba53b2499fd967886b720ed7f31517bf",
+        "testCaseHash": 1918301479,
+        "patternTemplates": [],
+        "path": "31628.31692.31696",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31697,
+        "uuid": "6c440b09-f1b3-4155-8c65-290e78d587d9",
+        "name": "Scenario: Saved word echoes the submitted text verbatim",
+        "codeRef": "features/independent/api_contracts.feature:75",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.679Z",
+        "endTime": "2026-11-02T11:52:59.813Z",
+        "status": "FAILED",
+        "statistics": {
+          "executions": {
+            "total": 1,
+            "failed": 1
+          },
+          "defects": {
+            "to_investigate": {
+              "total": 1,
+              "ti001": 1
+            }
+          }
+        },
+        "parent": 31628,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            }
+          ]
+        },
+        "issue": {
+          "issueType": "ti001",
+          "autoAnalyzed": false,
+          "ignoreAnalyzer": false,
+          "externalSystemIssues": []
+        },
+        "hasChildren": false,
+        "hasStats": true,
+        "launchId": 3849,
+        "uniqueId": "d66d25936d98d609c7dc82c0f9b59192603331ca",
+        "testCaseId": "features/independent/api_contracts.feature:75",
+        "testCaseHash": 2073045211,
+        "patternTemplates": [],
+        "path": "31628.31697",
+        "hasNestedSteps": true
+      },
+      {
+        "id": 31698,
+        "uuid": "6391e218-8b17-4f6e-a081-a0a2a920d0e1",
+        "name": "[Background] Given the local API is healthy",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.687Z",
+        "endTime": "2026-11-02T11:52:59.705Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31697,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31697,
+              "name": "Scenario: Saved word echoes the submitted text verbatim"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:7893037ad4aa8cd44d62cc6f7fd9d6c0",
+        "testCaseHash": -976718566,
+        "patternTemplates": [],
+        "path": "31628.31697.31698",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31699,
+        "uuid": "c98f8d2f-42d8-49f4-861a-f4aca42d80d5",
+        "name": "When I POST this JSON to the practice API:",
+        "description": "**When** I POST this JSON to the practice API:\n\n```json\n{ \"word\": \"line one\" }\n```",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.711Z",
+        "endTime": "2026-11-02T11:52:59.741Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31697,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31697,
+              "name": "Scenario: Saved word echoes the submitted text verbatim"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:33045ebf84a39527b4a1ebac2b19b3a7",
+        "testCaseHash": -1637441328,
+        "patternTemplates": [],
+        "path": "31628.31697.31699",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31700,
+        "uuid": "a85459a5-3bc3-4479-8abc-8cbb1cc147fc",
+        "name": "Then the saved word equals this text:",
+        "description": "**Then** the saved word equals this text:\n\n```\nline one\nline two\n```",
+        "parameters": [],
+        "attributes": [],
+        "type": "STEP",
+        "startTime": "2026-11-02T11:52:59.750Z",
+        "endTime": "2026-11-02T11:52:59.780Z",
+        "status": "FAILED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31697,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31697,
+              "name": "Scenario: Saved word echoes the submitted text verbatim"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:9bb66921b49f6227f38f309cc129a81c",
+        "testCaseHash": 1599457691,
+        "patternTemplates": [],
+        "path": "31628.31697.31700",
+        "hasNestedSteps": false
+      },
+      {
+        "id": 31701,
+        "uuid": "21218b61-12ab-4c02-9ea8-c720bf6e96df",
+        "name": "After hook",
+        "parameters": [],
+        "attributes": [],
+        "type": "AFTER_METHOD",
+        "startTime": "2026-11-02T11:52:59.789Z",
+        "endTime": "2026-11-02T11:52:59.798Z",
+        "status": "PASSED",
+        "statistics": {
+          "executions": {},
+          "defects": {}
+        },
+        "parent": 31697,
+        "pathNames": {
+          "launchPathName": {
+            "name": "Trial 2.0.2 · API · plain",
+            "number": 2
+          },
+          "itemPaths": [
+            {
+              "id": 31628,
+              "name": "Feature: Practice API - independent consumer contract checks"
+            },
+            {
+              "id": 31697,
+              "name": "Scenario: Saved word echoes the submitted text verbatim"
+            }
+          ]
+        },
+        "hasChildren": false,
+        "hasStats": false,
+        "launchId": 3849,
+        "uniqueId": "auto:15c697bc75812663ec94c2753a9b21fb",
+        "testCaseHash": -1517500339,
+        "patternTemplates": [],
+        "path": "31628.31697.31701",
+        "hasNestedSteps": false
+      }
+    ],
+    "page": {
+      "number": 1,
+      "size": 300,
+      "totalElements": 97,
+      "totalPages": 1
+    }
+  }
+]

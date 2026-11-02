@@ -1,0 +1,20 @@
+Workday practice checkpoints
+  Correct a typo and save the replacement using the keyboard ✓
+  Recover the last saved word after an accidental refresh ✗
+
+(::) failed steps (::)
+
+restored practice word after refresh: expected "follow-up", got "" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/tester_ui/workday_practice_steps.rb:33:in `"the UI tester finds the restored word {string}"'
+./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/tester_ui/workday_practice.feature:19:in `the UI tester finds the restored word "follow-up"'
+
+Failing Scenarios:
+cucumber -p tester_ui features/tester_ui/workday_practice.feature:13 # Scenario: Recover the last saved word after an accidental refresh
+
+2 scenarios (1 failed, 1 passed)
+11 steps (1 failed, 10 passed)
+0m2.890s

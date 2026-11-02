@@ -1,0 +1,493 @@
+{
+  "captured_at": "2026-11-02T11:59:04Z",
+  "runtime_sha_supplied": "9bf3356cff350d8e2ba11bad1c33aa89881ac456",
+  "runs": [
+    {
+      "launch": 3850,
+      "artifact_directory": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-plain",
+      "meta": {
+        "protocolVersion": "34.2.1",
+        "implementation": {
+          "name": "cucumber-ruby",
+          "version": "12.0.1"
+        },
+        "runtime": {
+          "name": "ruby",
+          "version": "3.4.2"
+        },
+        "os": {
+          "name": "darwin24",
+          "version": "Darwin Kernel Version 25.6.0: Sat Jul 11 15:26:21 PDT 2026; root:xnu-12377.161.13~4/RELEASE_ARM64_T6000"
+        },
+        "cpu": {
+          "name": "arm64"
+        }
+      },
+      "native_pngs": [
+        {
+          "scenario": "Save a word with accents, CJK and emoji",
+          "hook": false,
+          "step": "I keep a screenshot of the page as evidence",
+          "sha256": "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+          "bytes": 36216
+        },
+        {
+          "scenario": "Practise several words in a row",
+          "hook": false,
+          "step": "I keep a screenshot of the page as evidence",
+          "sha256": "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+          "bytes": 34734
+        }
+      ],
+      "failures": [
+        {
+          "scenario": "Missing locator preserves its Playwright error and screenshot",
+          "hook": false,
+          "step": "I click the deliberately missing practice button",
+          "result": {
+            "duration": {
+              "seconds": 0,
+              "nanos": 758634000
+            },
+            "message": "./features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>'\n./helpers/world.rb:20:in 'CurrentSDK::World#ui_action'\n./features/step_definitions/ui_steps.rb:20:in `\"I click the deliberately missing practice button\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/ui.feature:12:in `I click the deliberately missing practice button'",
+            "status": "FAILED",
+            "exception": {
+              "type": "Playwright::TimeoutError",
+              "message": "Timeout 750ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Deliberately missing button\", exact=True)\n",
+              "stackTrace": "./features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>'\n./helpers/world.rb:20:in 'CurrentSDK::World#ui_action'\n./features/step_definitions/ui_steps.rb:20:in `\"I click the deliberately missing practice button\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/ui.feature:12:in `I click the deliberately missing practice button'"
+            }
+          }
+        },
+        {
+          "scenario": "Status copy uses the new punctuation style",
+          "hook": false,
+          "step": "the practice status is \"Saved: persevere!\"",
+          "result": {
+            "duration": {
+              "seconds": 0,
+              "nanos": 2974000
+            },
+            "message": "./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'\n./features/step_definitions/ui_steps.rb:16:in `\"the practice status is {string}\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/independent/ui_journeys.feature:45:in `the practice status is \"Saved: persevere!\"'",
+            "status": "FAILED",
+            "exception": {
+              "type": "RuntimeError",
+              "message": "practice status: expected \"Saved: persevere!\", got \"Saved: persevere\"",
+              "stackTrace": "./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'\n./features/step_definitions/ui_steps.rb:16:in `\"the practice status is {string}\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/independent/ui_journeys.feature:45:in `the practice status is \"Saved: persevere!\"'"
+            }
+          }
+        }
+      ],
+      "hooks": [
+        {
+          "scenario": "Save a practice word",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Missing locator preserves its Playwright error and screenshot",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Save a word with accents, CJK and emoji",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "The browser blocks an empty submission",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Typing is capped at 80 characters",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Practise several words in a row",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Each saved word is echoed back (calm)",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Each saved word is echoed back (O'Brien)",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Each saved word is echoed back (<b>bold</b>)",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Status copy uses the new punctuation style",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        }
+      ],
+      "local_pngs": [
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-plain/evidence-2360a2c5.png",
+          "bytes": 36216,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+          "native_match": true
+        },
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-plain/evidence-9a6e4188.png",
+          "bytes": 34734,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+          "native_match": true
+        },
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-plain/missing-locator-preserves-its-playwright-error-and-screenshot-click-deliberately-missing-practice-button-6fee9835.png",
+          "bytes": 32910,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+          "native_match": false
+        },
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-plain/status-copy-uses-the-new-punctuation-style-practice-status-7a8a1a5e.png",
+          "bytes": 34272,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "b389e179128700133f52ac33a848233fc14790743c5b6b6a25bfb19532ba550e",
+          "native_match": false
+        }
+      ],
+      "native_html_exists": true,
+      "native_html_visually_reviewed": false
+    },
+    {
+      "launch": 3852,
+      "artifact_directory": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-rich",
+      "meta": {
+        "protocolVersion": "34.2.1",
+        "implementation": {
+          "name": "cucumber-ruby",
+          "version": "12.0.1"
+        },
+        "runtime": {
+          "name": "ruby",
+          "version": "3.4.2"
+        },
+        "os": {
+          "name": "darwin24",
+          "version": "Darwin Kernel Version 25.6.0: Sat Jul 11 15:26:21 PDT 2026; root:xnu-12377.161.13~4/RELEASE_ARM64_T6000"
+        },
+        "cpu": {
+          "name": "arm64"
+        }
+      },
+      "native_pngs": [
+        {
+          "scenario": "Save a word with accents, CJK and emoji",
+          "hook": false,
+          "step": "I keep a screenshot of the page as evidence",
+          "sha256": "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+          "bytes": 36216
+        },
+        {
+          "scenario": "Practise several words in a row",
+          "hook": false,
+          "step": "I keep a screenshot of the page as evidence",
+          "sha256": "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+          "bytes": 34734
+        }
+      ],
+      "failures": [
+        {
+          "scenario": "Missing locator preserves its Playwright error and screenshot",
+          "hook": false,
+          "step": "I click the deliberately missing practice button",
+          "result": {
+            "duration": {
+              "seconds": 0,
+              "nanos": 755750000
+            },
+            "message": "./features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>'\n./helpers/world.rb:20:in 'CurrentSDK::World#ui_action'\n./features/step_definitions/ui_steps.rb:20:in `\"I click the deliberately missing practice button\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/ui.feature:12:in `I click the deliberately missing practice button'",
+            "status": "FAILED",
+            "exception": {
+              "type": "Playwright::TimeoutError",
+              "message": "Timeout 750ms exceeded.\nCall log:\n  - waiting for get_by_role(\"button\", name=\"Deliberately missing button\", exact=True)\n",
+              "stackTrace": "./features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>'\n./helpers/world.rb:20:in 'CurrentSDK::World#ui_action'\n./features/step_definitions/ui_steps.rb:20:in `\"I click the deliberately missing practice button\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/ui.feature:12:in `I click the deliberately missing practice button'"
+            }
+          }
+        },
+        {
+          "scenario": "Status copy uses the new punctuation style",
+          "hook": false,
+          "step": "the practice status is \"Saved: persevere!\"",
+          "result": {
+            "duration": {
+              "seconds": 0,
+              "nanos": 2819000
+            },
+            "message": "./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'\n./features/step_definitions/ui_steps.rb:16:in `\"the practice status is {string}\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/independent/ui_journeys.feature:45:in `the practice status is \"Saved: persevere!\"'",
+            "status": "FAILED",
+            "exception": {
+              "type": "RuntimeError",
+              "message": "practice status: expected \"Saved: persevere!\", got \"Saved: persevere\"",
+              "stackTrace": "./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'\n./features/step_definitions/ui_steps.rb:16:in `\"the practice status is {string}\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/independent/ui_journeys.feature:45:in `the practice status is \"Saved: persevere!\"'"
+            }
+          }
+        }
+      ],
+      "hooks": [
+        {
+          "scenario": "Save a practice word",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Missing locator preserves its Playwright error and screenshot",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Save a word with accents, CJK and emoji",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "The browser blocks an empty submission",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Typing is capped at 80 characters",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Practise several words in a row",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Each saved word is echoed back (calm)",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Each saved word is echoed back (O'Brien)",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Each saved word is echoed back (<b>bold</b>)",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Status copy uses the new punctuation style",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        }
+      ],
+      "local_pngs": [
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-rich/evidence-35975341.png",
+          "bytes": 34734,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+          "native_match": true
+        },
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-rich/evidence-5f633417.png",
+          "bytes": 36216,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+          "native_match": true
+        },
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-rich/missing-locator-preserves-its-playwright-error-and-screenshot-click-deliberately-missing-practice-button-90ad5881.png",
+          "bytes": 32910,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+          "native_match": false
+        },
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/20261102-1952-ui-rich/status-copy-uses-the-new-punctuation-style-practice-status-4322af30.png",
+          "bytes": 34272,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "b389e179128700133f52ac33a848233fc14790743c5b6b6a25bfb19532ba550e",
+          "native_match": false
+        }
+      ],
+      "native_html_exists": true,
+      "native_html_visually_reviewed": false
+    },
+    {
+      "launch": 3848,
+      "artifact_directory": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/ui-tester",
+      "meta": {
+        "protocolVersion": "34.2.1",
+        "implementation": {
+          "name": "cucumber-ruby",
+          "version": "12.0.1"
+        },
+        "runtime": {
+          "name": "ruby",
+          "version": "3.4.2"
+        },
+        "os": {
+          "name": "darwin24",
+          "version": "Darwin Kernel Version 25.6.0: Sat Jul 11 15:26:21 PDT 2026; root:xnu-12377.161.13~4/RELEASE_ARM64_T6000"
+        },
+        "cpu": {
+          "name": "arm64"
+        }
+      },
+      "native_pngs": [
+        {
+          "scenario": "Correct a typo and save the replacement using the keyboard",
+          "hook": false,
+          "step": "the UI tester records the \"corrected-word-saved\" checkpoint",
+          "sha256": "fbc85a97706e1090d426ef10605343334a63fcce89cb256aaa5c5d8485ce6fb6",
+          "bytes": 34144
+        },
+        {
+          "scenario": "Recover the last saved word after an accidental refresh",
+          "hook": false,
+          "step": "the UI tester records the \"saved-before-refresh\" checkpoint",
+          "sha256": "5dcbf5f4e9ef74e0e3f275d4eba2fdf5d5144e32b6c19cf6ed0fc0c3ee57f1f3",
+          "bytes": 34771
+        }
+      ],
+      "failures": [
+        {
+          "scenario": "Recover the last saved word after an accidental refresh",
+          "hook": false,
+          "step": "the UI tester finds the restored word \"follow-up\"",
+          "result": {
+            "duration": {
+              "seconds": 0,
+              "nanos": 13781000
+            },
+            "message": "./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'\n./features/tester_ui/workday_practice_steps.rb:33:in `\"the UI tester finds the restored word {string}\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/tester_ui/workday_practice.feature:19:in `the UI tester finds the restored word \"follow-up\"'",
+            "status": "FAILED",
+            "exception": {
+              "type": "RuntimeError",
+              "message": "restored practice word after refresh: expected \"follow-up\", got \"\"",
+              "stackTrace": "./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'\n./features/tester_ui/workday_practice_steps.rb:33:in `\"the UI tester finds the restored word {string}\"'\n./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'\n./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'\n./features/support/env.rb:29:in 'block in <top (required)>'\nfeatures/tester_ui/workday_practice.feature:19:in `the UI tester finds the restored word \"follow-up\"'"
+            }
+          }
+        }
+      ],
+      "hooks": [
+        {
+          "scenario": "Correct a typo and save the replacement using the keyboard",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        },
+        {
+          "scenario": "Recover the last saved word after an accidental refresh",
+          "hook": true,
+          "step": null,
+          "status": "PASSED"
+        }
+      ],
+      "local_pngs": [
+        {
+          "path": "/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/artifacts/ui-tester/recover-the-last-saved-word-after-an-accidental-refresh-restored-practice-word-after-refresh-11a96e63.png",
+          "bytes": 32910,
+          "valid_png_signature": true,
+          "dimensions": [
+            1100,
+            740
+          ],
+          "sha256": "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+          "native_match": false
+        }
+      ],
+      "native_html_exists": true,
+      "native_html_visually_reviewed": false
+    }
+  ],
+  "original_tester_inputs": [
+    {
+      "name": "workday_practice.feature",
+      "original_sha256": "447643797b28931c1e4be90e3bc6c6bfb406ab0e14ba445c5ac14705f8fc44a7",
+      "copied_sha256": "447643797b28931c1e4be90e3bc6c6bfb406ab0e14ba445c5ac14705f8fc44a7",
+      "identical": true
+    },
+    {
+      "name": "workday_practice_steps.rb",
+      "original_sha256": "76b93c11e7655d34746c0c0428221993a8cdaebecaaade29ca40872e97d88925",
+      "copied_sha256": "76b93c11e7655d34746c0c0428221993a8cdaebecaaade29ca40872e97d88925",
+      "identical": true
+    }
+  ],
+  "error_presentation_comparison": [
+    {
+      "plain_item": 31710,
+      "rich_item": 31860,
+      "byte_identical_messages": true,
+      "added_html_tags_present": false
+    },
+    {
+      "plain_item": 31753,
+      "rich_item": 31911,
+      "byte_identical_messages": true,
+      "added_html_tags_present": false
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.ruby33
+#1 transferring dockerfile: 361B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/ruby:3.3-slim@sha256:cb99474e7bacb60ba093808995f85fe46062c2bdfcc662872feb785b2498fb34
+#2 ERROR: unexpected media type application/octet-stream for sha256:cb99474e7bacb60ba093808995f85fe46062c2bdfcc662872feb785b2498fb34: not found
+------
+ > [internal] load metadata for docker.io/library/ruby:3.3-slim@sha256:cb99474e7bacb60ba093808995f85fe46062c2bdfcc662872feb785b2498fb34:
+------
+Dockerfile.ruby33:1
+--------------------
+   1 | >>> FROM ruby:3.3-slim@sha256:cb99474e7bacb60ba093808995f85fe46062c2bdfcc662872feb785b2498fb34
+   2 |     RUN sed -i 's|http://deb.debian.org/|https://deb.debian.org/|g' /etc/apt/sources.list.d/debian.sources \
+   3 |         && apt-get update -qq \
+--------------------
+ERROR: failed to build: failed to solve: ruby:3.3-slim@sha256:cb99474e7bacb60ba093808995f85fe46062c2bdfcc662872feb785b2498fb34: failed to resolve source metadata for docker.io/library/ruby:3.3-slim@sha256:cb99474e7bacb60ba093808995f85fe46062c2bdfcc662872feb785b2498fb34: unexpected media type application/octet-stream for sha256:cb99474e7bacb60ba093808995f85fe46062c2bdfcc662872feb785b2498fb34: not found
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/e6y0ml7lbcj11uvox45nzk7sp

@@ -1,0 +1,57 @@
+[
+  {
+    "id": "qa202-independent-values",
+    "uri": "features/presentation_ledger/qa_runtime/QA202-values.feature",
+    "keyword": "Feature",
+    "name": "QA202 independent values",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "qa202-independent-values;qa202-values",
+        "keyword": "Scenario",
+        "name": "QA202 values",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "QA202 values",
+            "line": 4,
+            "output": [
+              "## Assertion: QA202 empty\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n|  |  |",
+              "## Assertion: QA202 spaces\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n|     |   |",
+              "## Assertion: QA202 edges\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n|  a  | b  |",
+              "## Assertion: QA202 tabs\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| \t |   |",
+              "## Assertion: QA202 ordinary\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| abc | abc |",
+              "## Assertion: QA202 delta\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"z\":1,\"missing\":2,\"change\":3} | {\"z\":1,\"extra\":4,\"change\":5} |",
+              "## Assertion: QA202 nested_only\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"nested\":{\"a\":1}} | {\"nested\":{\"a\":2}} |",
+              "## Assertion: QA202 equal\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"a\":1} | {\"a\":1} |",
+              "## Assertion: QA202 oversized details\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| a | b |\n\n### Details\n\n{\"data\":\"[diagnostic omitted: unsafe or oversized input]\"}"
+            ],
+            "match": {
+              "location": "spec/acceptance/ledger_qa/sdk202/supplement_support.rb:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 39251583
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

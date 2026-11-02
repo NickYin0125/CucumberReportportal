@@ -1,0 +1,299 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3985,
+      "uuid": "c6c858ad-7ea4-44d0-b1d3-9db437ba7d5a",
+      "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-escaped_json",
+      "number": 1,
+      "startTime": 1793620909605,
+      "endTime": 1793620909736,
+      "lastModified": 1793620909761,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [
+        "cluster"
+      ],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 32536,
+      "uuid": "19e47947-4a48-45b0-9fa2-86c28c7f0a18",
+      "name": "Feature: QA202 exact R01 escaped_json",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793620909621,
+      "endTime": 1793620909735,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3985,
+      "uniqueId": "auto:70347e2bd96db2119265d37e9ce4e2c7",
+      "testCaseHash": 345710688,
+      "patternTemplates": [],
+      "path": "32536",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 32537,
+      "uuid": "636f05a5-161c-4e57-9580-edc1c5a4a919",
+      "name": "Scenario: R01 escaped_json",
+      "codeRef": "features/presentation_ledger/qa_runtime/C202-escaped_json.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620909622,
+      "endTime": 1793620909700,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 32536,
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": []
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3985,
+      "uniqueId": "010c029793c52e978115a076deb057e250bfb934",
+      "testCaseId": "features/presentation_ledger/qa_runtime/C202-escaped_json.feature:3",
+      "testCaseHash": 1240833358,
+      "patternTemplates": [],
+      "path": "32536.32537",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 32538,
+      "uuid": "1a8892ff-4e77-4f21-89aa-3a6aa816b22f",
+      "name": "Given QA202 contract escaped_json",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620909649,
+      "endTime": 1793620909683,
+      "status": "FAILED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 32537,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3985,
+      "uniqueId": "auto:2b2ff0cf59fbbfe408f8ed009bae0e91",
+      "testCaseHash": 1675210394,
+      "patternTemplates": [],
+      "path": "32536.32537.32538",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 21723,
+      "time": "2026-11-02T12:01:49.673Z",
+      "message": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "level": "error",
+      "itemId": 32538
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 3985,
+      "items_by_launch": [
+        {
+          "id": 32536,
+          "uuid": "19e47947-4a48-45b0-9fa2-86c28c7f0a18",
+          "name": "Feature: QA202 exact R01 escaped_json",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-02T12:01:49.621Z",
+          "endTime": "2026-11-02T12:01:49.735Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-escaped_json",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3985,
+          "uniqueId": "auto:70347e2bd96db2119265d37e9ce4e2c7",
+          "testCaseHash": 345710688,
+          "patternTemplates": [],
+          "path": "32536",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 32537,
+          "uuid": "636f05a5-161c-4e57-9580-edc1c5a4a919",
+          "name": "Scenario: R01 escaped_json",
+          "codeRef": "features/presentation_ledger/qa_runtime/C202-escaped_json.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T12:01:49.622Z",
+          "endTime": "2026-11-02T12:01:49.700Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "failed": 1
+            },
+            "defects": {
+              "to_investigate": {
+                "total": 1,
+                "ti001": 1
+              }
+            }
+          },
+          "parent": 32536,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-escaped_json",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 32536,
+                "name": "Feature: QA202 exact R01 escaped_json"
+              }
+            ]
+          },
+          "issue": {
+            "issueType": "ti001",
+            "autoAnalyzed": false,
+            "ignoreAnalyzer": false,
+            "externalSystemIssues": []
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3985,
+          "uniqueId": "010c029793c52e978115a076deb057e250bfb934",
+          "testCaseId": "features/presentation_ledger/qa_runtime/C202-escaped_json.feature:3",
+          "testCaseHash": 1240833358,
+          "patternTemplates": [],
+          "path": "32536.32537",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 32538,
+          "uuid": "1a8892ff-4e77-4f21-89aa-3a6aa816b22f",
+          "name": "Given QA202 contract escaped_json",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T12:01:49.649Z",
+          "endTime": "2026-11-02T12:01:49.683Z",
+          "status": "FAILED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 32537,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-contract-C202-escaped_json",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 32536,
+                "name": "Feature: QA202 exact R01 escaped_json"
+              },
+              {
+                "id": 32537,
+                "name": "Scenario: R01 escaped_json"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3985,
+          "uniqueId": "auto:2b2ff0cf59fbbfe408f8ed009bae0e91",
+          "testCaseHash": 1675210394,
+          "patternTemplates": [],
+          "path": "32536.32537.32538",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

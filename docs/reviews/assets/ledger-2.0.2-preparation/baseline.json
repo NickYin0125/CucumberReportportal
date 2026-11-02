@@ -1,0 +1,828 @@
+{
+  "schema": "ledger-202-baseline-preparation/1",
+  "status": "HOLD_FOR_MASTER",
+  "final_runtime_sha": null,
+  "final_launch_ids": [],
+  "quiet_window": null,
+  "final_verdict": null,
+  "qa_base": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+  "accepted_runtime": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "released_201": "ef38224b28b451dc4cc94ac314906ac4ecee459a",
+  "measured_release_lib_diff": "",
+  "accepted_check_id": "WP5-0bd5af41d4-05932",
+  "accepted_check": {
+    "criterion": "G11",
+    "check": "Cucumber 12.0.1: unchanged F01-F18 wrapper-free replay, 10 warmups/50 samples; F07 medians of three",
+    "method": "U",
+    "runtime_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+    "inputs": {
+      "timing_observer_sha256": "567a5e0bac549f1adbabb41e1093e7208197abfc4d0e7fc26001d58566e4d809",
+      "unchanged_measurement": "Same actual-input F01-F18 corpus, including F06 only on 2.x; no new cached-only benchmark substituted"
+    },
+    "expected": {
+      "wall_ratio_max": 1.1,
+      "every_entry_p95_ms": "< 2",
+      "replay_errors": []
+    },
+    "actual": {
+      "wall": {
+        "baseline": {
+          "samples_s": [
+            1.2298733759962488,
+            1.4293043759971624,
+            2.2446122510009445
+          ],
+          "median_s": 1.4293043759971624
+        },
+        "plain": {
+          "samples_s": [
+            1.375824583999929,
+            1.328539209003793,
+            1.7452638760005357
+          ],
+          "median_s": 1.375824583999929
+        },
+        "rich": {
+          "samples_s": [
+            1.4049717509915354,
+            1.2212702499964507,
+            1.8803115000046091
+          ],
+          "median_s": 1.4049717509915354
+        }
+      },
+      "micro": {
+        "Fallback.render": {
+          "count": 51550,
+          "p95_ms": 0.2210829989053309
+        },
+        "AttachmentCaption.format": {
+          "count": 7900,
+          "p95_ms": 0.03020900476258248
+        },
+        "MarkdownText.code": {
+          "count": 18350,
+          "p95_ms": 0.004959001671522856
+        },
+        "AttachmentCaption.kind": {
+          "count": 7900,
+          "p95_ms": 0.0011250085663050413
+        },
+        "ImageDimensions.read": {
+          "count": 7900,
+          "p95_ms": 0.003583001671358943
+        },
+        "Units.bytes": {
+          "count": 8900,
+          "p95_ms": 0.0015419936971738935
+        },
+        "MarkdownText.fence": {
+          "count": 11800,
+          "p95_ms": 0.25145799736492336
+        },
+        "Units.count": {
+          "count": 7450,
+          "p95_ms": 0.0013339886208996177
+        },
+        "LedgerJson.format": {
+          "count": 3300,
+          "p95_ms": 0.04612500197254121
+        },
+        "MarkdownText.inline": {
+          "count": 18050,
+          "p95_ms": 0.0034170079743489623
+        },
+        "MarkdownText.html": {
+          "count": 19400,
+          "p95_ms": 0.0018749997252598405
+        },
+        "MarkdownText.cell": {
+          "count": 6400,
+          "p95_ms": 0.003832989023067057
+        },
+        "FailureCard.format": {
+          "count": 2100,
+          "p95_ms": 1.6121249936986715
+        },
+        "Units.duration": {
+          "count": 600,
+          "p95_ms": 0.002625005436129868
+        },
+        "AttachmentCaption.slug": {
+          "count": 600,
+          "p95_ms": 0.009499999578110874
+        },
+        "Accent.pill": {
+          "count": 3650,
+          "p95_ms": 0.005583002348430455
+        },
+        "Accent.guard": {
+          "count": 8000,
+          "p95_ms": 0.0010410003596916795
+        },
+        "Accent.table_header": {
+          "count": 1700,
+          "p95_ms": 0.010249990737065673
+        },
+        "Accent.details": {
+          "count": 1350,
+          "p95_ms": 0.35524999839253724
+        },
+        "Accent.title": {
+          "count": 250,
+          "p95_ms": 0.002916989615187049
+        }
+      },
+      "replay_errors": []
+    },
+    "verdict": "PASS",
+    "evidence": {
+      "source": "/Users/nick/Documents/crr-qa-2.0.1/docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1",
+      "launch_ids": [],
+      "item_ids": [],
+      "log_ids": []
+    }
+  },
+  "historical_boundary": "renderer_only; excludes formatter redaction",
+  "excluded_early_result": {
+    "proof": {
+      "path": "docs/reviews/assets/ledger-qa-performance-2.0.1.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "34ee2d67ca46b4da808a97f7a25301d0a217cd85",
+      "sha256": "cd8b109e54f9e160f845617f535b5e5a1e58d5f2daa4cbefa0b62613bd663033"
+    },
+    "verdict": "FAIL",
+    "p95_ms": 8.310000004712492
+  },
+  "reports": [
+    {
+      "path": "docs/reviews/assets/presentation-ledger-2.0.1-acceptance.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "f853b922280f198716f48a464458c5ecd5245c39",
+      "sha256": "e0320ab665745751b72d86e33ae27776871ca0c1a66b6aaced007a4be484ab02"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101/checks.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "bc34cb07d075c8e93bdc1d501cc55ac768c20a8c",
+      "sha256": "e3a706679ace2c45656dc5535bc980cbfc076b1831b4c1125fff00accbc39d62"
+    },
+    {
+      "path": "docs/reviews/2026-11-01-presentation-ledger-2.0.1-acceptance.md",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "2e38139d6071204df923eae89c2fb7c539c09a62",
+      "sha256": "8ca818fbf88789a5f381350a19fc683af7110cd86eda0913a44ab507433c71f6"
+    }
+  ],
+  "raw_timing_files": [
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F01/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "4dc3033975c90f364eb9c553308fc21a9e58abe5",
+      "sha256": "04791ece6435b65c5a3ea630ec04b2d4d3e561a1d5494b1f3f6c8a66e08e344e"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F02/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "3988ac20f2f8b1048c7876da7ee4e3550d46ea0a",
+      "sha256": "8f7597e873d7353cd9357603b7087a4e6fe299e4d9a1c0e89b0c19b965fbda18"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F03/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "1ef8d453673b8ee5bc57fd7af57d623c5b45e824",
+      "sha256": "12b8889ff6e9b95f92591448ad0e76ad53537466e34d6fca5f4d6870e6a5bd98"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F04/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "1d775a9ac5cbb8b817fb7c8c968b993de143ec64",
+      "sha256": "e27e99750bdf4ad9d4a68a8fec2c05ed1048809896137b9cce7f4ac4ada8bf5a"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F05/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "d3eae1578cdd3bb656ae38f778409acd48d3d278",
+      "sha256": "e7ffcd3dfcd6b7c42fe9885d331cc54604dd93c1445d0d3344d5d4954d0196e0"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F07/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "6042655db9d72ef82d803a729e9d37cbe07c7bab",
+      "sha256": "d3933d0027ce3500bf459da3aa79d88f0a91d142dd65015da1c4f9d4882b3e3d"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F08-negative/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "3c28577b33491e920b68e2ee67c4284e1f58da20",
+      "sha256": "3105eedcf70640a5d2d5923a3d7f70251f2c7a586c6a3eaa73505850864a08f2"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F08/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "22f788a4b5edb96abc556e62b8ea322aee028092",
+      "sha256": "eb65ec7639738b49d0af3750849bde9449e4f69374899e7686814b4a7dec6589"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F09/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "76e2d36c1f8fae90079dd79a67b05e8d14852b41",
+      "sha256": "e6c922d098a8a7f12b1fcbad3bc31e8252e20495bd1db4d19b03c90a337d3262"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F10a/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "060017d4890be4eb42246fd78af358fc34180209",
+      "sha256": "6819421f05bf49581206e0535f2bd1fde8f74c9623aa9cf6cbae02d698bb3749"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F10b/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "895a6c0fb7da323ef5c742c6a9f2908532610800",
+      "sha256": "c12ca85bbbabbcaeddfcc45c8e2e3774d528e71c0933871e0793569be42e6170"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F10c/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "b55448e92eacdb1b186609dbfc32a3648f509a68",
+      "sha256": "ba8e415029f05671511420f51d823bf23ac2db732e40ab3b04e2975976e3fceb"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F10d/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "d993044e0af36fb745b28b92edea071d4f1273ff",
+      "sha256": "24acee5a088675ce74a9ac94216061eb61350c8d0246f7bc582c4a6074d34c40"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F10e/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "b8bb45bce3bc32a5106aa292e011d2356fa2ccfb",
+      "sha256": "b3b35ffe0871195302fcebee3edd6e158ae59c5026f5dd858c0f205bd0f3d17a"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F11a/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "fc51907a808290dde9d5674fb60c4937e7641608",
+      "sha256": "e753f7fbe92ff8103a60eaa32fefe61524ae8e8ccf5e9edf522d317ec2426e79"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F11b/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "1e304b2460eb79f9ac969a5a5c71842294b7ebd4",
+      "sha256": "fbfaf3c7b37b013b30f64aadb016920a6cadaefb0c5911d19a871823238f3edf"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F11c/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "44a4f5e5ef3cb767d8f76485459901bc61996da9",
+      "sha256": "7743d9bd7523e3ba15245e27726a1b63429ca967b5d7af0bd53d405ac37a8d49"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F11d/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "fa8492d99a77f3b77fd3ad468597c77bc3933d1f",
+      "sha256": "d19d4998c98e7c4a57c2de6a69f8e5cf3a396be718794093dbe4d1eb0ca1f186"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F11e/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "079b1f8706c4580d667fcb1cbca305ace5da2240",
+      "sha256": "5716254f83d4739782f0edfcfe1c52a242e37e670feaa5898339859b4c40b08c"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F11f/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "b2cf4017ee57b115ac6f1418bea1e5dfe2fa0c32",
+      "sha256": "a212d31e237497780ba8bef47df6163514c546880cbdc4c244ed91bdafc5c71b"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F12/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "35ed4b729b52546b0a02f1b3193d572402479162",
+      "sha256": "a3a5eef9a37acc316d0e1d6c31dbb06e66058309aa56b0ec2390b011b74b568b"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F13/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "807e5d605bc1c02ecb27c4ecb138a7ef6976398a",
+      "sha256": "8fbdc10793289b44f712ae035606c99c0f997dcd29b60fa2da87fe2d37064996"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F14-negative/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "ab76593339dd6b7399793a005ea50ebd6250e413",
+      "sha256": "2c10f8b1339e8b1ceeb84a0ecf6aa22eeb664d732bbe906d8e3ffe62b62efcf5"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F14/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "7c0cfa475c43c816c3c7f07704f9558b89d3de77",
+      "sha256": "1def8508276b281f58a21846e25c7c521e9f3b8c500ea9692690e86dc85c762d"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F15-global/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "1482197ead01fa4d7c14e69d721d97be4d41488f",
+      "sha256": "857c153ea76a51fd35014690f93b575a3c644ae84f2d38aa63723eb1652987b0"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F15-named/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "340b13e1acd4a90900678cc8aefcdfc4ed7f7e75",
+      "sha256": "4cac4bb3bec5cdd3ecae44940b83a2e7c6b12dc65023f406688bd315f74fd67f"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F15-negative/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "a2ca506498415d4ae7a7b82ac3dc8f672a1b7299",
+      "sha256": "44ca1e49263758b63e3764eee7e4d148e6a3bab129bd0774073cc19b362d59dd"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F15/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "1ff7482dd370a861015f125d27b935e0ce08c34f",
+      "sha256": "e2fd52102557075553ab97f39c8a05a59735620270a0c365a7fb800ebe4feeb0"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F16a/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "72ecebac27b9e5e3beb4545d0137c1a7bb4ab211",
+      "sha256": "6bde1572c53ca4f1a83d8966b488b1ed6cf110e99a1644b26660389b973af4f7"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F16b/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "426710397bf5af573adbc66eeb94677e17220ff2",
+      "sha256": "bb9c61174c0fffcd291d18a39eff89dd03829248f8a44633e0c4217dbd453e8e"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F16d/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "ac718f3ec39e98e59ae8cde624b3460b110af51c",
+      "sha256": "24c38455dc5fdb232442668b7a018e246aeac9c82b519028879955b8cac5d9f5"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F16e/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "160c7ed9849ed5f862668b35ff5a579ea98ce5ce",
+      "sha256": "adaa0730d47e29b1fe0dd09235fa55eea28ab12e226080884cd72d6b1d007680"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F16f/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "50acfe54ed003028c50893334d788ab13b3efa3a",
+      "sha256": "89ac4e668861ea451534ff02f13382d009c684fae5cf9c3c5d6ba295522302e5"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F17/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "8a743d2fbd2648d49e406b58eca6e496787ef1c5",
+      "sha256": "0e119acd8a79dd5b325bdb062ba9dac5bc33f15d05b8721df7a9f27c9adffcf7"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/F18/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "a3f5b88c16d5d7404dab40678ae6d76060142be4",
+      "sha256": "b998e74787b25b6e7cb5cc2da100ce02ce437f329ffdccdf0878af2386684f84"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F01/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "6e6282bd80209664e1c689737bdd99fae7f8ebec",
+      "sha256": "a858ed6c5bb209f1898fbb236c88b6e76a4b58e733c5993a5e2a54aadc8eb02e"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F02/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "b8ee82df0d42d3a1e63a502ea690c2efc434b801",
+      "sha256": "30672607c43b26dd3b2b4491bf36a5a1d97642d2d6c63cb5e240f2a975fd031f"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F03/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "f7e571a521f8c99790a187cd9798c7a1b99f4031",
+      "sha256": "67a3b2e12dc7d481e951dcc8ba578bd530a8be64c713b3ee5ada0a4629ca20d8"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F04/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "9e099c4d77f826c1376198eef8edecf11b7268c2",
+      "sha256": "698e3350c6144bd20d89d6490bd495e7b732b5ee11343489ddeebacfc22d2d21"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F05/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "5032daa4e3ca08435adc512a7269fe228e5cc2b7",
+      "sha256": "90d0030395c0a1d48b7776306033177cdd981298b288a639497bcb73f6db5c85"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F07/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "ca7e6d8f1d846a371d6f11ae6121fba554306b24",
+      "sha256": "de08296cf0e37aefc3061efbdf0026da0dd5878df70bed6e0d4a6ec533b74675"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F08-negative/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "15cac919b8cf81f42db0ec8fa623527ce629c3e1",
+      "sha256": "b4010b98eb66bae61bd859087ac23779796e5640b2cf23a075e0c1b51425e453"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F08/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "ad1f678e1946df776eb3618d48d529d25205dbe6",
+      "sha256": "c44e2e1f81f8c92cd511775a7aefafc79f51840dd73c866affbc56a3de531d7f"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F09/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "106b7e189e313bcf5d6ce7cc38f42ff13b2d89c3",
+      "sha256": "01edebdd2c32f7835cd011399b37678a00dfbaeb4378fd6f551a0e7e3cd6e567"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F10a/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "5d0ed6fd849e74240d54ad38458269b548cd177e",
+      "sha256": "20513cd76dac116ac567683d003c7dd648396aaa9fdc4d2ee44917548afd8d56"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F10b/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "e2bcd6321e314cfbaf1ff869b0787b3be4cb770f",
+      "sha256": "df5f1185c1491a8b29f09d490144b83fe0c0b7c6014174c78d0ae4a8a117af2c"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F10c/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "b1f2488d642c1d87768dbcbf120252c3adc3b1f1",
+      "sha256": "0caef5597df7893581886a666f6728961b7c28d7bb5622ed4be5658c12fd87f8"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F10d/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "186c562962b49f8d2e44518d89277f9c6e13acc4",
+      "sha256": "85223b35bdf8e1692b94eae8d1fa0468895d453bbae1f3229e1fecd043a7d73e"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F10e/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "e547e53d7793192f2a41dd42eb78a180e6d3fed8",
+      "sha256": "29bd5021378185e2d6d51eada0b34ef965613c487bf3288f0213f0a9881a568f"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F11a/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "d5204601f57922d74410aacd4e258b9cd485b9f9",
+      "sha256": "5937a5113d9af59f899e5d7cb0a453b2425f84ee4f1d5bb364633280bdda5da0"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F11b/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "e451ee2c29d65ab97c18a6ef909788f4ae641e2b",
+      "sha256": "9c13b9d857e9deb51cac70eaacd6b349f39bf502318afb87b60520863201c9c3"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F11c/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "21a64c6b41eeedf28ea2a95adfed9ce3135b622d",
+      "sha256": "8d3f5ed31352b5e2fe947b9d95bb78d3487b33273ac328c1845ee090f8f330ef"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F11d/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "22069c8e9cc3ae6d6d90400634aecde62c45f6cf",
+      "sha256": "d2d56fc7c9e0e8b370ab95b9fd0d4edc39ddaa152a2b34c41fdba6c73a2249a7"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F11e/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "892f52931adf0f43288688d56b0d10585aafc61c",
+      "sha256": "cf299d01c6688e80d0ab059d09a3573b3c5462ddaeacff73d2a69677306f95d3"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F11f/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "55789ad99d608f464f14591fc749c699e53af689",
+      "sha256": "ac1db3393041f5f19fcedff19a1b893f28a26d67a2b83579dc229259eff6ca02"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F12/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "ef46edfaac5d544c5075a2feb267ea131546407f",
+      "sha256": "c93556c9fb2b5f6d445d90eecd8e7deaf15648d8b3ae4976094f13dc8da835de"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F13/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "ecdf956fc8c9a2b1569b57c5087b5883d844f600",
+      "sha256": "084feb8d95c91311d77803b009f94639752b04df03d5ea96cd000911aba3c300"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F14-negative/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "814cfbdc88998926bfee5d70f8c20c28a6fad917",
+      "sha256": "1c285f4ae39baf1a83910956cd9e362d0fa906f78e5cae76e3729e1f4d997194"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F14/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "2f6df38b65fb616d4e74a8a3ae2a480a515005d6",
+      "sha256": "cbf1ac9f28ee9b25d52e7d3c97ce7d70797fe075c49dbd0bb43fd76953602606"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F15-global/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "9243eb650d9d8c13ac6083ca53db7abfe21367ad",
+      "sha256": "45771fa670a8eb6a76f1e8465d45e3e0c98434fa8308410c2a47b2afe7ca7fa5"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F15-named/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "f268d11e9c708ca8ca2e40018fbac22fd059e531",
+      "sha256": "727816e34b9f782ee04f6cd1263c82331bb721cc4ffa21b0800adc93164fd8e3"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F15-negative/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "15a91900c9508079e685f8b4a1374a3a9e5b4b38",
+      "sha256": "d5566ba1841e2f1c8fa260300884c059da3896a8f02f6c7c41376ddb522a8d30"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F15/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "72ed5ce898522549a93e1a85a1376c528a2614e0",
+      "sha256": "6468821184f3a155fca67694ab0365826128071891f9ea8292b16526587e3020"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F16a/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "a2cadb2040bcb027f3af6236ef6f568cbc888db9",
+      "sha256": "1752fad6d021b063ad9ea45aa9ed183a84da2978a89ce0339f5ff9a85aed1ca6"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F16b/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "f983e8bd5f3121ea19bdc8eefb6394eff2fdd05e",
+      "sha256": "9f8e5696db4d8b425953c419eb25982fb46a57ddeb745b5c49def8ca3bf27330"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F16d/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "92f1c74baa16bd34ee2f6ca9beadaf05a6272148",
+      "sha256": "a9da55bd3f5e7aaa38526a37574da367c8ede6a2cfe68067b11de156dde3ea36"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F16e/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "f5d539c1c7611d4c609d283f8ee0a36bd174b001",
+      "sha256": "323ba5432d2e019bf7b45d2f4ff454be1f47135a67c8f8572a08bd2652768ed1"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F16f/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "c1c8d94caa0f2c0be8875aa7eb1ca724d019a43f",
+      "sha256": "563487af0ba1eef9d007bd4b285477eea157b5b28d505f46730bcf5b5020ffa3"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F17/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "6d274d9a64b1010b17b88d7c5519c221a5e85b04",
+      "sha256": "8069827220bdbc0fd5542ea700e2d35584b5201f64274eeb3ba9692d44e9a5dd"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-rich/F18/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "52068fd3cc413c07c5ee6b1e09d638ff97cae7fe",
+      "sha256": "d21be21c0ac9929f926fb44d10866028d60a28ebdd3c528e9de58679e713f1d1"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-plain/worker-1/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "9ac0194010de83454f73127385076e747b7ab880",
+      "sha256": "3ce0e3b43e6d40b8ac48a54315652f1e2c51be4c10e9f2acd238ddbbafc4a1da"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-plain/worker-2/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "740741c050e93a63c2fd128f11260a95fac93ff2",
+      "sha256": "3bcbc818a162606a8be08f95e6d96b8053a322b55edc89cbb08aaf5e8f9e0264"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-plain/worker-3/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "cc66565c20ee7a9e2c8eada837f3c5dd8ce996ee",
+      "sha256": "1d602e6e685085ecdcbc49be3ff45049b9acae054d92cd050e74e9133c7ee804"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-plain/worker-4/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "2cd9651f17ed5b280e3db3c9773c18cc83a2a87f",
+      "sha256": "8dc6663901ed7b00db1befe4da0ecf695e17253cc3f7bb0d640bfe3eba41326f"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-rich/worker-1/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "ca7029e27a69414853ad512ebdb5cb0d4577a917",
+      "sha256": "c67213bef644560e58bebd6efb309f467db64332dab09cae252a54e887345c39"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-rich/worker-2/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "cc748c4e605dad16c74eaf0b2f196ab5be6faf51",
+      "sha256": "e5077446a80509977a34da3e94d64b621f7520418c016911835699c5277314c1"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-rich/worker-3/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "37c118480612495a11016ea7f4dba119e54b4dcb",
+      "sha256": "b867cdad15c252bf7b62b7728ac639b7e2300001cdc56d241f25545e0231e4fc"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/parallel-micro-rich/worker-4/presentation-timings.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "5bd9ec5f3522fe2c692d86eb4581d642c544078b",
+      "sha256": "a475a8679ad1e3d9486e5876df60701ce91ea5ba71235e4a93cca4025701bdb3"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-1-baseline/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "f4f9dc8c6c0e009b2bee6b9dba054c34a02ae2e7",
+      "sha256": "0ff4b26e977141293dad2cc1ec17326a8ef502cd810364dc9f9d7c6e9598ea32"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-2-baseline/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "e84cf929f772e1baafe4749e4cb29d61fb9f1fe1",
+      "sha256": "430ce10d573cd09948394930cf95bc67f6b7ab0ea194588e17a80def2ab59be9"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-3-baseline/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "e99d6cbf7f79f2557a53890e927536cacf6f4132",
+      "sha256": "38567fc77cfcc525f565f25da2fa6fad55ddd9525fca05939e425172d550bd4f"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-1-plain/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "c19f2577e04ca0a03ad1546f9c554293506aa28f",
+      "sha256": "35a9e3f847932b8c9413aa0c77b9ec0f5547e7e18ec7a899653c8badfa5d428f"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-2-plain/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "8c827463273a14587b4a6c8c644d8719c70bb904",
+      "sha256": "b0c6dffa82b2804421c0ee8b06c1ba51daeefdc6dad4fe686aa31f650b18ce0b"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-3-plain/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "2522ff01f6dd6995df9bc1773d55fba3139680ed",
+      "sha256": "9e0c26410bb21c183418c122d0e98b9e859ac677d7b12dae728b18ce19e681f9"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-1-rich/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "df671c97bbceab7d886ff53a27c36aeaf745141f",
+      "sha256": "6c71240da059a5f1daa273e30bbbb944b129e0054378fe6f8058ffc446f4a428"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-2-rich/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "496681b22a1ee2a837b3831c4ff2db612bc1b026",
+      "sha256": "819db6e4756950094c93c227aa33cd8ba3e03495a03348634734d894a503022c"
+    },
+    {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/wall-3-rich/F07/process.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "e4bc76f656f29019ca362945b6d6bcf33735f039",
+      "sha256": "405ab7629fd76b6a642042348d461ce76ef4a31bfc68ac82d5fcfab3df373d10"
+    }
+  ],
+  "harness": [
+    {
+      "path": "spec/acceptance/ledger_qa/performance.rb",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "7b1a7f50ddd2f02a721800fb8f4056e91426b320",
+      "sha256": "59259106db3ad7d0047050d4365bc03f5c97b1a6dedb901b9d6a4cc76cafa6dd"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/performance_support.rb",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "a4b4a61f59282cb2c78bd686ff70223935027928",
+      "sha256": "567a5e0bac549f1adbabb41e1093e7208197abfc4d0e7fc26001d58566e4d809"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/final_wp5_driver.rb",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "6f81d8963db0893fe8b6016e4abe6d1b7739c2ab",
+      "sha256": "0160c6fee3974a3ebb08541e354390d42368f98d0eb0182bbb8448946566be2f"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/final_wp5_score.rb",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "9f2bd6be9285902e667e03bdc5af7c1c844a7b8e",
+      "sha256": "1aab86ed761448278d28ac9cd6d20d7d364f1ddc19745fae0aa3ca8185d41641"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/isolated.rb",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "f21a9b3a1ea08dedc1198edee038cbdfb2fcbdc3",
+      "sha256": "b7a11eb98a64d5097e8f56797893dd65190f9e915f47a65cfc6238b27b6682b0"
+    },
+    {
+      "path": "spec/acceptance/ledger_qa/runtime-support.rb",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "66d7da3786fdd008275d067dd416b2b42842dc50",
+      "sha256": "38945e9c67e6dde4b23990a692da155d997e501204d810945ca23deb59aa03db"
+    }
+  ],
+  "corpus_sha256": "a99b8d138ce4b63d63b531698bf33ffcb0b0ca263136ac20517e4c72a1bd1d4f",
+  "historical_environment": {
+    "proof": {
+      "path": "docs/reviews/assets/wp5-ci-final-20261101-quiet/probes/c12.0.1/micro-plain/provenance.json",
+      "git_commit": "2f1bf137bab26a39b3c81e6ed8bf9d165acc1411",
+      "git_blob": "a41591624f77affa704e5318851b5044b8e6dbe3",
+      "sha256": "7a395a671035a30ac54aac5cc920f5b0893a5c18e4da9953e9dcbc05e713a19c"
+    },
+    "ruby": "ruby 3.4.12 (2026-10-23 revision 366f5fdc00) +PRISM [aarch64-linux]",
+    "cucumber": "12.0.1",
+    "dependencies": {
+      "error_highlight": "0.7.0",
+      "did_you_mean": "2.0.0",
+      "syntax_suggest": "2.0.3",
+      "set": "1.1.1",
+      "memoist3": "1.0.0",
+      "ffi": "1.17.3",
+      "sys-uname": "1.5.1",
+      "multi_test": "1.1.0",
+      "mini_mime": "1.1.5",
+      "logger": "1.7.0",
+      "diff-lcs": "1.6.2",
+      "cucumber-messages": "34.2.1",
+      "cucumber-query": "16.1.1",
+      "cucumber-html-formatter": "24.2.0",
+      "bigdecimal": "4.1.3",
+      "cucumber-cucumber-expressions": "20.1.0",
+      "cucumber-tag-expressions": "8.1.0",
+      "cucumber-gherkin": "42.0.1",
+      "cucumber-core": "20.0.0",
+      "cucumber-ci-environment": "11.0.0",
+      "builder": "3.3.0",
+      "base64": "0.3.0",
+      "cucumber": "12.0.1",
+      "cgi": "0.5.2",
+      "jmespath": "1.6.2",
+      "aws-eventstream": "1.4.0",
+      "aws-sigv4": "1.12.1",
+      "aws-partitions": "1.1255.0",
+      "aws-sdk-core": "3.250.0",
+      "aws-sdk-kms": "1.128.0",
+      "aws-sdk-s3": "1.224.0",
+      "mime-types-data": "3.2026.0317",
+      "mime-types": "3.7.0",
+      "json": "2.9.1",
+      "digest": "3.2.0",
+      "fileutils": "1.7.3",
+      "securerandom": "0.4.1",
+      "date": "3.4.1",
+      "time": "0.4.1",
+      "timeout": "0.4.3",
+      "uri": "1.0.4",
+      "yaml": "0.4.0",
+      "stringio": "3.1.2",
+      "psych": "5.2.2",
+      "tempfile": "0.3.1",
+      "delegate": "0.4.0",
+      "tmpdir": "0.3.1",
+      "etc": "1.4.6",
+      "pathname": "0.4.0",
+      "net-http": "0.6.0",
+      "net-protocol": "0.2.2",
+      "io-wait": "0.3.2",
+      "resolv": "0.7.2",
+      "zlib": "3.2.3",
+      "openssl": "3.3.3",
+      "io-nonblock": "0.3.2",
+      "ipaddr": "1.2.7",
+      "forwardable": "1.3.3",
+      "shellwords": "0.2.2",
+      "weakref": "0.1.3",
+      "erb": "4.0.4.1",
+      "strscan": "3.1.2",
+      "optparse": "0.6.0"
+    },
+    "image_note": "Historical probe used mutable ruby:3.4-slim; exact image ID not proven by that command. Pin one image for both fresh arms; do not infer it from matrix image IDs."
+  },
+  "planned_boundaries": [
+    "renderer_only",
+    "redaction_plus_rendering"
+  ],
+  "samples_per_mode_per_boundary": 1050,
+  "warmups_per_input": 10,
+  "samples_per_input": 50,
+  "stop_ratio": 1.1,
+  "presentation_p95_limit_ms_exclusive": 2,
+  "source_executions": 0,
+  "new_launches": [],
+  "benchmarks_executed": 0
+}

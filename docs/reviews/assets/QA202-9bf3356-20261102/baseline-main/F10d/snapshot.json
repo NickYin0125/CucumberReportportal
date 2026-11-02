@@ -1,0 +1,260 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 3858,
+      "uuid": "9c509866-f519-4b5a-88e5-1fef855e13e7",
+      "name": "ledger-developer-QA202-INDEPENDENT-baseline-main-F10d",
+      "number": 1,
+      "startTime": 1793620403695,
+      "endTime": 1793620403803,
+      "lastModified": 1793620403816,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 31922,
+      "uuid": "7bdcfa0e-d65b-4050-95db-e434d80f3323",
+      "name": "Feature: Ledger developer F10d",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793620403720,
+      "endTime": 1793620403802,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 3858,
+      "uniqueId": "auto:413b86bbd1b35d63cea2d37c010b0381",
+      "testCaseHash": 1958460378,
+      "patternTemplates": [],
+      "path": "31922",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 31923,
+      "uuid": "263c91e6-046a-402b-a7ff-94c10df3dd0e",
+      "name": "Scenario: F10d",
+      "codeRef": "features/presentation_ledger/qa_runtime/F10d.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620403721,
+      "endTime": 1793620403782,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 31922,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 3858,
+      "uniqueId": "f484b672b088391a9d155b97fa95aab878ca0fdc",
+      "testCaseId": "features/presentation_ledger/qa_runtime/F10d.feature:3",
+      "testCaseHash": -1335210797,
+      "patternTemplates": [],
+      "path": "31922.31923",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 31924,
+      "uuid": "2c738736-f7e2-410e-8c51-57b6619c30ac",
+      "name": "Given ledger assertion d",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793620403740,
+      "endTime": 1793620403771,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 31923,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 3858,
+      "uniqueId": "auto:f290be09f94b08848b57705388c7590d",
+      "testCaseHash": 609270359,
+      "patternTemplates": [],
+      "path": "31922.31923.31924",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 21373,
+      "time": "2026-11-02T11:53:23.760Z",
+      "message": "## ✗ Assertion failed · Limits\n\n```text\nexpected  { \"currency\": \"USD\", \"notional\": 5000000 }\nactual    { \"currency\": \"USD\", \"notional\": 4000000 }\n```\n\n_Details_\n\n```json\n{\n  \"key1\": 1,\n  \"key2\": 2,\n  \"key3\": 3,\n  \"key4\": 4,\n  \"key5\": 5,\n  \"key6\": 6,\n  \"key7\": 7,\n  \"key8\": 8\n}\n```",
+      "level": "error",
+      "itemId": 31924
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 3858,
+      "items_by_launch": [
+        {
+          "id": 31922,
+          "uuid": "7bdcfa0e-d65b-4050-95db-e434d80f3323",
+          "name": "Feature: Ledger developer F10d",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-02T11:53:23.720Z",
+          "endTime": "2026-11-02T11:53:23.802Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-main-F10d",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 3858,
+          "uniqueId": "auto:413b86bbd1b35d63cea2d37c010b0381",
+          "testCaseHash": 1958460378,
+          "patternTemplates": [],
+          "path": "31922",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 31923,
+          "uuid": "263c91e6-046a-402b-a7ff-94c10df3dd0e",
+          "name": "Scenario: F10d",
+          "codeRef": "features/presentation_ledger/qa_runtime/F10d.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T11:53:23.721Z",
+          "endTime": "2026-11-02T11:53:23.782Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 31922,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-main-F10d",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 31922,
+                "name": "Feature: Ledger developer F10d"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 3858,
+          "uniqueId": "f484b672b088391a9d155b97fa95aab878ca0fdc",
+          "testCaseId": "features/presentation_ledger/qa_runtime/F10d.feature:3",
+          "testCaseHash": -1335210797,
+          "patternTemplates": [],
+          "path": "31922.31923",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 31924,
+          "uuid": "2c738736-f7e2-410e-8c51-57b6619c30ac",
+          "name": "Given ledger assertion d",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T11:53:23.740Z",
+          "endTime": "2026-11-02T11:53:23.771Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 31923,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-QA202-INDEPENDENT-baseline-main-F10d",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 31922,
+                "name": "Feature: Ledger developer F10d"
+              },
+              {
+                "id": 31923,
+                "name": "Scenario: F10d"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 3858,
+          "uniqueId": "auto:f290be09f94b08848b57705388c7590d",
+          "testCaseHash": 609270359,
+          "patternTemplates": [],
+          "path": "31922.31923.31924",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

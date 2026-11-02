@@ -1,0 +1,312 @@
+{
+  "certification": "NOT_G11_CERTIFICATION",
+  "source_hashes_verified": {
+    "baseline": "a6ebac7b76921d0b38fdc84aa5180812dacbb1d65a8899db02f53c72e19a7305",
+    "before_fix": "5d7e195f64ce2a5026ebaf6af87c501d6d10849b54c1e5ea6ba09e5e957cc6fa",
+    "fixed": "58cf4a8da7ffdf355a4dae5a244a2ffe7e4fedcba31e1861d9739e065bdfce84"
+  },
+  "comparisons": [
+    {
+      "mode": "plain",
+      "round": "1",
+      "metrics": {
+        "renderer_only": {
+          "p95_ms": {
+            "baseline": 1.1687920004987973,
+            "before_fix": 1.1717919996954151,
+            "fixed": 1.014749999740161
+          },
+          "fixed_vs_baseline_percent": -13.17959061089542,
+          "fixed_vs_before_fix_percent": -13.401866542532648
+        },
+        "redaction_plus_rendering": {
+          "p95_ms": {
+            "baseline": 6.432124999264488,
+            "before_fix": 3.814916000010271,
+            "fixed": 3.8942500004850444
+          },
+          "fixed_vs_baseline_percent": -39.45624500564975,
+          "fixed_vs_before_fix_percent": 2.0795739794679635
+        }
+      }
+    },
+    {
+      "mode": "plain",
+      "round": "2",
+      "metrics": {
+        "renderer_only": {
+          "p95_ms": {
+            "baseline": 1.1089580002590083,
+            "before_fix": 1.1890420000781887,
+            "fixed": 1.1137499996038969
+          },
+          "fixed_vs_baseline_percent": 0.43211729783900754,
+          "fixed_vs_before_fix_percent": -6.332156515021403
+        },
+        "redaction_plus_rendering": {
+          "p95_ms": {
+            "baseline": 6.156333000035374,
+            "before_fix": 4.235749999679683,
+            "fixed": 3.8849170005050837
+          },
+          "fixed_vs_baseline_percent": -36.89560001899246,
+          "fixed_vs_before_fix_percent": -8.282665388682764
+        }
+      }
+    },
+    {
+      "mode": "rich",
+      "round": "1",
+      "metrics": {
+        "renderer_only": {
+          "p95_ms": {
+            "baseline": 1.2076249995516264,
+            "before_fix": 1.0835419998329598,
+            "fixed": 1.1140420001538587
+          },
+          "fixed_vs_baseline_percent": -7.749342671153192,
+          "fixed_vs_before_fix_percent": 2.8148424634763414
+        },
+        "redaction_plus_rendering": {
+          "p95_ms": {
+            "baseline": 6.32279199999175,
+            "before_fix": 4.064417000336107,
+            "fixed": 4.476459000215982
+          },
+          "fixed_vs_baseline_percent": -29.201229453351896,
+          "fixed_vs_before_fix_percent": 10.137788515445179
+        }
+      }
+    },
+    {
+      "mode": "rich",
+      "round": "2",
+      "metrics": {
+        "renderer_only": {
+          "p95_ms": {
+            "baseline": 1.4184159999786061,
+            "before_fix": 1.2111249998270068,
+            "fixed": 0.9735829999044654
+          },
+          "fixed_vs_baseline_percent": -31.361250865814405,
+          "fixed_vs_before_fix_percent": -19.613334705870255
+        },
+        "redaction_plus_rendering": {
+          "p95_ms": {
+            "baseline": 6.461832999775652,
+            "before_fix": 4.051040999911493,
+            "fixed": 4.016542000499612
+          },
+          "fixed_vs_baseline_percent": -37.842064308392644,
+          "fixed_vs_before_fix_percent": -0.8516082511293877
+        }
+      }
+    }
+  ],
+  "fixed_ranges": {
+    "plain": {
+      "renderer_only": {
+        "p95_ms_range": [
+          1.014749999740161,
+          1.1137499996038969
+        ],
+        "allocations_per_call": [
+          1371.0704761904763,
+          1371.0704761904763
+        ]
+      },
+      "redaction_plus_rendering": {
+        "p95_ms_range": [
+          3.8849170005050837,
+          3.8942500004850444
+        ],
+        "allocations_per_call": [
+          1748.4409523809525,
+          1748.4409523809525
+        ]
+      },
+      "url_plain": {
+        "p95_ms_range": [
+          0.019999999494757503,
+          0.020292000044719316
+        ],
+        "allocations_per_call": [
+          70.015,
+          70.015
+        ]
+      },
+      "url_safe_encoded": {
+        "p95_ms_range": [
+          0.0529589997313451,
+          0.05675000011251541
+        ],
+        "allocations_per_call": [
+          124.015,
+          124.015
+        ]
+      },
+      "url_double_bearer": {
+        "p95_ms_range": [
+          0.058040999647346325,
+          0.059750000218627974
+        ],
+        "allocations_per_call": [
+          165.015,
+          165.015
+        ]
+      },
+      "url_double_mask_prefix": {
+        "p95_ms_range": [
+          0.17916700016940013,
+          0.32625000039843144
+        ],
+        "allocations_per_call": [
+          468.015,
+          468.015
+        ]
+      },
+      "ordinary_curl_logger": {
+        "p95_ms_range": [
+          0.01170799987448845,
+          0.015083000107551925
+        ],
+        "allocations_per_call": [
+          38.003,
+          38.003
+        ]
+      },
+      "http_small": {
+        "p95_ms_range": [
+          1.5910839993011905,
+          1.6359169994757394
+        ],
+        "allocations_per_call": [
+          1930.14,
+          1930.08
+        ]
+      },
+      "http_large": {
+        "p95_ms_range": [
+          24.810416999571316,
+          24.907999999413732
+        ],
+        "allocations_per_call": [
+          53005.03,
+          53005.03
+        ]
+      },
+      "http_encoded": {
+        "p95_ms_range": [
+          1.4764170000489685,
+          1.5550419993815012
+        ],
+        "allocations_per_call": [
+          2060.08,
+          2060.08
+        ]
+      }
+    },
+    "rich": {
+      "renderer_only": {
+        "p95_ms_range": [
+          0.9735829999044654,
+          1.1140420001538587
+        ],
+        "allocations_per_call": [
+          1371.0704761904763,
+          1371.0704761904763
+        ]
+      },
+      "redaction_plus_rendering": {
+        "p95_ms_range": [
+          4.016542000499612,
+          4.476459000215982
+        ],
+        "allocations_per_call": [
+          1748.4409523809525,
+          1748.4409523809525
+        ]
+      },
+      "url_plain": {
+        "p95_ms_range": [
+          0.024499999199179,
+          0.02937499994004611
+        ],
+        "allocations_per_call": [
+          70.015,
+          70.015
+        ]
+      },
+      "url_safe_encoded": {
+        "p95_ms_range": [
+          0.06729100005031796,
+          0.07795900000928668
+        ],
+        "allocations_per_call": [
+          124.015,
+          124.015
+        ]
+      },
+      "url_double_bearer": {
+        "p95_ms_range": [
+          0.06504100019810721,
+          0.07112499952199869
+        ],
+        "allocations_per_call": [
+          165.015,
+          165.015
+        ]
+      },
+      "url_double_mask_prefix": {
+        "p95_ms_range": [
+          0.2667500002644374,
+          0.3063340000153403
+        ],
+        "allocations_per_call": [
+          468.015,
+          468.015
+        ]
+      },
+      "ordinary_curl_logger": {
+        "p95_ms_range": [
+          0.021249999917927198,
+          0.03220899998268578
+        ],
+        "allocations_per_call": [
+          38.003,
+          38.003
+        ]
+      },
+      "http_small": {
+        "p95_ms_range": [
+          1.6871249999894644,
+          2.0378330000312417
+        ],
+        "allocations_per_call": [
+          2439.25,
+          2439.19
+        ]
+      },
+      "http_large": {
+        "p95_ms_range": [
+          23.875833000602142,
+          27.328250000209664
+        ],
+        "allocations_per_call": [
+          53462.03,
+          53462.03
+        ]
+      },
+      "http_encoded": {
+        "p95_ms_range": [
+          1.8602500003908062,
+          2.104415999383491
+        ],
+        "allocations_per_call": [
+          2604.1,
+          2604.1
+        ]
+      }
+    }
+  }
+}

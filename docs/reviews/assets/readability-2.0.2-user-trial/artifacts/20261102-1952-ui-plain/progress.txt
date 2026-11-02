@@ -1,0 +1,251 @@
+Using the trial_ui profile...
+
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: persevere | Saved: persevere |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Click deliberately missing practice button
+F
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: résumé 中文 ✓ | Saved: résumé 中文 ✓ |
+.
+Page after the last action
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Submit an empty practice form
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Ready to practice | Ready to practice |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Type 100 letters
+.
+## Assertion: practice word length
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 80 | 80 |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+Practising 3 words
+
+```json
+[
+  {
+    "word": "focus",
+    "note": "short"
+  },
+  {
+    "word": "persevere",
+    "note": "from the docs"
+  },
+  {
+    "word": "継続",
+    "note": "Japanese \"continue\""
+  }
+]
+```
+
+UI action: Save practice word focus
+
+UI action: Save practice word persevere
+
+UI action: Save practice word 継続
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: 継続 | Saved: 継続 |
+.
+Page after the last action
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: calm | Saved: calm |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: O'Brien | Saved: O'Brien |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Saved: <b>bold</b> | Saved: <b>bold</b> |
+.
+UI action: Open local practice page
+
+## Assertion: practice heading
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| Practice Studio | Practice Studio |
+.
+UI action: Save practice word
+.
+## Assertion: practice status
+
+**Outcome:** FAIL
+
+| Expected | Actual |
+| --- | --- |
+| Saved: persevere! | Saved: persevere |
+F
+
+(::) failed steps (::)
+
+Timeout 750ms exceeded.
+Call log:
+  - waiting for get_by_role("button", name="Deliberately missing button", exact=True)
+ (Playwright::TimeoutError)
+./features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>'
+./helpers/world.rb:20:in 'CurrentSDK::World#ui_action'
+./features/step_definitions/ui_steps.rb:20:in `"I click the deliberately missing practice button"'
+./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/ui.feature:12:in `I click the deliberately missing practice button'
+
+practice status: expected "Saved: persevere!", got "Saved: persevere" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/step_definitions/ui_steps.rb:16:in `"the practice status is {string}"'
+./features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+./features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+features/independent/ui_journeys.feature:45:in `the practice status is "Saved: persevere!"'
+
+Failing Scenarios:
+cucumber -p trial_ui features/ui.feature:11 # Scenario: Missing locator preserves its Playwright error and screenshot
+cucumber -p trial_ui features/independent/ui_journeys.feature:43 # Scenario: Status copy uses the new punctuation style
+
+10 scenarios (2 failed, 8 passed)
+31 steps (2 failed, 29 passed)
+0m7.366s

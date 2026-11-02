@@ -1,0 +1,289 @@
+Browser tab: 148298245, Title: "Report Portal", URL: "http://rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3850/31702/31708/log".
+0 AXWebArea Report Portal, URL: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3850/31702/31708/log
+	11 container
+		12 container
+			13 text SL
+			14 link rp-2607.localhost:18080/ui/#superadmin_personal/dashboard
+			15 link rp-2607.localhost:18080/ui/#superadmin_personal/launches
+			16 link rp-2607.localhost:18080/ui/#superadmin_personal/filters
+			17 link rp-2607.localhost:18080/ui/#superadmin_personal/userdebug/all
+			18 link rp-2607.localhost:18080/ui/#superadmin_personal/members
+			19 link rp-2607.localhost:18080/ui/#superadmin_personal/settings
+			20 image avatar
+		21 container
+			32 link Description: All, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all
+			33 link Description: Trial 2.0.2 · UI · plain #2, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3850
+			34 link Description: Feature: Browser interactions with a deterministic local page, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3850/31702
+			35 text Scenario: Missing locator preserves its Playwright error and screenshot
+			36 container
+				37 image
+				38 text History Across All Launches
+			39 button Scenario: Save a word that uses accents, CJK and emoji
+			40 button Refresh
+				41 text Refresh
+			42 container
+				43 container
+					44 text # 1 TI
+				45 container
+					46 text # 2 TI
+			47 container
+				48 image
+				49 text Comment
+				50 image
+				51 text More
+				52 image
+				53 text 0
+				54 text FAILED
+				55 text To Investigate
+				56 button Make decision
+			57 container
+				58 button STACK TRACE
+					59 text STACK TRACE
+				60 button LOG ALL LOGS
+					61 image Created with Sketch.
+						62 text LOG
+					63 text ALL LOGS
+				64 button ATTACHMENTS
+					65 text ATTACHMENTS
+				66 button ITEM DETAILS
+					67 text ITEM DETAILS
+				68 button HISTORY OF ACTIONS
+					69 text HISTORY OF ACTIONS
+			70 container
+				71 slider 6
+				72 container
+					73 text Fatal Error Warn Info Debug Trace All
+				135 button Show previous Error Log
+				136 button Show next Error Log
+				134 text 2  Error Logs
+				76 text Logs with Attachment
+				137 text Hide All Passed Logs
+				78 button Markdown Mode
+					79 image
+				80 button
+					81 image
+				82 text 1 of 1
+			138 container
+				139 container LOG MESSAGE
+					140 container
+						141 text LOG MESSAGE
+						142 container
+							143 image
+							144 text field (settable)
+				145 container ALL STATUSES
+					146 container
+						147 text ALL STATUSES
+						148 image
+				149 container TIME
+					150 container
+						151 text TIME
+						152 image
+				153 container [Background] Given I open the local practice page
+					154 container
+						155 image
+						156 text [Background] Given I open the local practice page
+				157 container PASSED
+					158 text PASSED
+				159 container 0.07s
+					160 container
+						161 image
+						162 text 0.07s
+				163 container When I click the deliberately missing practice button
+					164 container
+						165 image
+						166 text When I click the deliberately missing practice button
+				167 container FAILED
+					168 text FAILED
+				169 container 0.83s
+					170 container
+						171 image
+						172 text 0.83s
+				173 container UI action: Click deliberately missing practice button
+					174 text UI action: Click deliberately missing practice button
+				175 container 2026-11-02 19:53:01
+					176 button 2026-11-02 19:53:01
+				177 container ✗ Playwright::TimeoutError: Timeout 750ms exceeded. ui.feature:12 → features/step_definitions/ui_steps.rb:21 Call log: - waiting for get_by_role("button", name="Deliberately missing button", exact=True) Project frames features/step_definitions/ui_steps.rb:21 block (2 levels) in <top (required)> helpers/world.rb:20 CurrentSDK::World#ui_action features/step_definitions/ui_steps.rb:20 "I click the deliberately missing practice button" features/support/env.rb:39 block (3 levels) in <top (required)> features/support/env.rb:32 block (2 levels) in <top (required)> features/support/env.rb:29 block in <top (required)> bundle:25 Kernel#load bundle:25 <main> ui.feature:12 I click the deliberately missing practice button Full backtrace · 102 frames · 93 framework frames not shown above /opt/homebrew/lib/ruby/gems/3.4.0/gems/concurrent-ruby-1.3.8/lib/concurrent-ruby/concurrent/promises.rb:1274:in 'Kernel#raise' /opt/homebrew/lib/ruby/gems/3.4.0/gems/concurrent-ruby-1.3.8/lib/concurrent-ruby/concurrent/promises.rb:1274:in 'Concurrent::Promises::Future#wait_until_resolved!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/concurrent-ruby-1.3.8/lib/concurrent-ruby/concurrent/promises.rb:1488:in 'Concurrent::Promises::ResolvableFuture#value!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/connection.rb:138:in 'Playwright::Connection#send_message_to_server' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:35:in 'block in Playwright::Channel#send_message_to_server_result' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:70:in 'Playwright::Channel#with_logging' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:34:in 'Playwright::Channel#send_message_to_server_result' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:20:in 'Playwright::Channel#send_message_to_server' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel_owners/frame.rb:362:in 'Playwright::ChannelOwners::Frame#click' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/locator_impl.rb:135:in 'Playwright::LocatorImpl#click' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright_api/locator.rb:238:in 'Playwright::Locator#click' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/helpers/world.rb:20:in 'CurrentSDK::World#ui_action' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/step_definitions/ui_steps.rb:20:in `"I click the deliberately missing practice button"' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:39:in 'block (3 levels) in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright.rb:99:in 'Playwright.create' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:32:in 'block (2 levels) in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/reportportal-cucumber-ruby-2.0.2/lib/reportportal_cucumber/automation/app_log.rb:50:in 'AppLog.with_logger' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:29:in 'block in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/hook.rb:21:in 'Cucumber::Glue::Hook#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime/support_code.rb:132:in 'block (2 levels) in Cucumber::Runtime::SupportCode#find_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in 'Kernel#load' /opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in '<top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Kernel.load' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Bundler::CLI::Exec#kernel_load' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:23:in 'Bundler::CLI::Exec#run' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:452:in 'Bundler::CLI#exec' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/command.rb:28:in 'Bundler::Thor::Command#run' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in 'Bundler::Thor::Invocation#invoke_command' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor.rb:538:in 'Bundler::Thor.dispatch' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:35:in 'Bundler::CLI.dispatch' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/base.rb:584:in 'Bundler::Thor::Base::ClassMethods#start' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:29:in 'Bundler::CLI.start' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:28:in 'block in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/friendly_errors.rb:117:in 'Bundler.with_friendly_errors' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:20:in '<top (required)>' /opt/homebrew/opt/ruby@3.4/bin/bundle:25:in 'Kernel#load' /opt/homebrew/opt/ruby@3.4/bin/bundle:25:in '<main>' features/ui.feature:12:in `I click the deliberately missing practice button'
+					178 container
+						179 heading ✗ Playwright::TimeoutError: Timeout 750ms exceeded., Value: 2, ID: ✗-playwrighttimeouterror-timeout-750ms-exceeded
+							180 text ✗ Playwright::TimeoutError: Timeout 750ms exceeded.
+						181 text ui.feature:12
+						182 text  → 
+						183 text features/step_definitions/ui_steps.rb:21
+						184 text Call log:
+  - waiting for get_by_role("button", name="Deliberately missing button", exact=True)
+						185 text Project frames
+						186 text features/step_definitions/ui_steps.rb:21  block (2 levels) in <top (required)>
+helpers/world.rb:20                       CurrentSDK::World#ui_action
+features/step_definitions/ui_steps.rb:20  "I click the deliberately missing practice button"
+features/support/env.rb:39                block (3 levels) in <top (required)>
+features/support/env.rb:32                block (2 levels) in <top (required)>
+features/support/env.rb:29                block in <top (required)>
+bundle:25                                 Kernel#load
+bundle:25                                 <main>
+ui.feature:12                             I click the deliberately missing practice button
+						187 text Full backtrace · 102 frames · 93 framework frames not shown above
+						188 text /opt/homebrew/lib/ruby/gems/3.4.0/gems/concurrent-ruby-1.3.8/lib/concurrent-ruby/concurrent/promises.rb:1274:in 'Kernel#raise'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/concurrent-ruby-1.3.8/lib/concurrent-ruby/concurrent/promises.rb:1274:in 'Concurrent::Promises::Future#wait_until_resolved!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/concurrent-ruby-1.3.8/lib/concurrent-ruby/concurrent/promises.rb:1488:in 'Concurrent::Promises::ResolvableFuture#value!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/connection.rb:138:in 'Playwright::Connection#send_message_to_server'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:35:in 'block in Playwright::Channel#send_message_to_server_result'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:70:in 'Playwright::Channel#with_logging'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:34:in 'Playwright::Channel#send_message_to_server_result'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel.rb:20:in 'Playwright::Channel#send_message_to_server'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/channel_owners/frame.rb:362:in 'Playwright::ChannelOwners::Frame#click'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright/locator_impl.rb:135:in 'Playwright::LocatorImpl#click'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright_api/locator.rb:238:in 'Playwright::Locator#click'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/step_definitions/ui_steps.rb:21:in 'block (2 levels) in <top (required)>'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/helpers/world.rb:20:in 'CurrentSDK::World#ui_action'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/step_definitions/ui_steps.rb:20:in `"I click the deliberately missing practice button"'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright.rb:99:in 'Playwright.create'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/reportportal-cucumber-ruby-2.0.2/lib/reportportal_cucumber/automation/app_log.rb:50:in 'AppLog.with_logger'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:29:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/hook.rb:21:in 'Cucumber::Glue::Hook#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime/support_code.rb:132:in 'block (2 levels) in Cucumber::Runtime::SupportCode#find_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in 'Kernel#load'
+/opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in '<top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Kernel.load'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Bundler::CLI::Exec#kernel_load'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:23:in 'Bundler::CLI::Exec#run'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:452:in 'Bundler::CLI#exec'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/command.rb:28:in 'Bundler::Thor::Command#run'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in 'Bundler::Thor::Invocation#invoke_command'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor.rb:538:in 'Bundler::Thor.dispatch'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:35:in 'Bundler::CLI.dispatch'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/base.rb:584:in 'Bundler::Thor::Base::ClassMethods#start'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:29:in 'Bundler::CLI.start'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:28:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/friendly_errors.rb:117:in 'Bundler.with_friendly_errors'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:20:in '<top (required)>'
+/opt/homebrew/opt/ruby@3.4/bin/bundle:25:in 'Kernel#load'
+/opt/homebrew/opt/ruby@3.4/bin/bundle:25:in '<main>'
+features/ui.feature:12:in `I click the deliberately missing practice button'
+				189 container 2026-11-02 19:53:02
+					190 button 2026-11-02 19:53:02
+				191 container After hook
+					192 container
+						193 image
+						194 text After hook
+				195 container PASSED
+					196 text PASSED
+				197 container 1 0.07s
+					198 text 1
+					199 container
+						200 image
+						201 text 0.07s
+				202 container Failure evidence: Missing locator preserves its Playwright error and screenshot - Click deliberately missing practice button Last browser action (passed): Open local practice page Playwright::TimeoutError: Timeout 750ms exceeded. Call log: waiting for get_by_role("button", name="Deliberately missing button", exact=True) Captured by the framework After hook, not the closed failed step. missing-locator-preserves-its-playwright-error-and-screenshot-click-deliberately-missing-practice-button-6fee9835.png · PNG · 1100 × 740 · 32 KB
+					203 container
+						204 text Failure evidence: Missing locator preserves its Playwright error and screenshot - Click deliberately missing practice button Last browser action (passed): Open local practice page Playwright::TimeoutError: Timeout 750ms exceeded.
+						205 text Call log:
+						206 content list
+							207 container
+								208 AXListMarker • 
+								209 text waiting for get_by_role("button", name="Deliberately missing button", exact=True)
+						210 text Captured by the framework After hook, not the closed failed step.
+						211 text missing-locator-preserves-its-playwright-error-and-screenshot-click-deliberately-missing-practice-button-6fee9835.png
+						212 text  · PNG · 1100 × 740 · 32 KB
+				213 container image/png
+					214 image image/png
+				215 container 2026-11-02 19:53:02
+					216 button 2026-11-02 19:53:02
+			217 container
+				218 text 1 - 3 of 3
+				219 text 50
+				220 text per page
+			221 button
+			22 container
+				23 text Build :  5.15.6
+			24 container
+				25 text © Report Portal  2026 All rights reserved
+			26 link Description: Fork us on GitHub |, Value: github.com/reportportal
+			27 link Description: Documentation |, Value: reportportal.io/docs
+			28 link Description: Chat with us on Slack |, Value: slack.epmrpp.reportportal.io/
+			29 link Description: Contact us |, Value: mailto:support@reportportal.io
+			30 link Description: EPAM |, Value: epam.com/
+			31 link Description: Privacy Policy, Value: privacy.epam.com/core/interaction/showpolicy?type=PrivacyPolicy
+	222 container
+		223 container
+			224 text ATTACHMENT
+			225 link Description: attachment, Value: blob:http://rp-2607.localhost:18080/600c7cbb-3760-44cf-acd4-aa31cfa5367b
+			226 container
+				227 button Close
+				228 container
+					229 image
+					230 text Rotate
+	2 container popper-container
+		3 button
+		4 button 图片翻译
+		5 button 语音翻译
+			6 image Capa_1
+		7 button (disabled) 添加到收藏夹
+		8 button 快捷设置
+		9 button 关闭(Esc)
+		10 text 请输入需要翻译的文本。
+
+The focused UI element is 0 AXWebArea Report Portal, URL: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3850/31702/31708/log

@@ -1,0 +1,29 @@
+Using the default profile...
+@cucumber12_cli
+Feature: Native Cucumber 12 HTTP reporting contract
+
+  Scenario Outline: Real CLI business outcomes are not harness failures           # features/cucumber12_native_contract.feature:3
+    When a native Cucumber 12 process runs the "<tag>" contract case              # features/cucumber12_native_contract.feature:4
+    Then its native exit is <exit> and ReportPortal scenario status is "<status>" # features/cucumber12_native_contract.feature:5
+    And its complete ReportPortal item tree has no wire violations                # features/cucumber12_native_contract.feature:6
+
+    Examples: 
+      | tag          | exit | status  |
+      | qa_pass      | 0    | PASSED  |
+      | qa_fail      | 1    | FAILED  |
+      | qa_undefined | 1    | FAILED  |
+      | qa_pending   | 1    | FAILED  |
+      | qa_ambiguous | 1    | FAILED  |
+      | qa_skip      | 0    | SKIPPED |
+
+@stubbed
+Feature: Formatter contract
+
+  Scenario: Replay fixture events through the formatter    # features/formatter_contract.feature:3
+    Given ReportPortal HTTP is stubbed                     # features/step_definitions/formatter_steps.rb:3
+    When I replay the NDJSON fixture through the formatter # features/step_definitions/formatter_steps.rb:43
+    Then the ReportPortal call sequence is correct         # features/step_definitions/formatter_steps.rb:59
+
+7 scenarios (7 passed)
+21 steps (21 passed)
+0m6.278s

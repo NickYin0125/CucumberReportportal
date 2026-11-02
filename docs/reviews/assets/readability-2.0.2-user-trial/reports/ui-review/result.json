@@ -1,0 +1,40 @@
+{
+  "review": "Independent UI usability re-review",
+  "sdk_version": "2.0.2",
+  "source_head_supplied_by_master": "9bf3356cff350d8e2ba11bad1c33aa89881ac456",
+  "final_source_head_supplied_by_master": "d1725d3ab9e796c008fe9e80a11ea0ce29bde762",
+  "final_head_equivalence": {
+    "basis": "Master attestation, not independent implementation/test inspection",
+    "unchanged": ["runtime", "examples", "Gemfile", "gemspec"],
+    "changed_per_master": ["CI", "one integration assertion"],
+    "new_final_head_live_execution": false,
+    "applicability": "Existing usability conclusions apply conditionally on the supplied runtime/consumer equivalence"
+  },
+  "status": "complete",
+  "adoption": "Conditional adoption for the tested serial Cucumber/Playwright workflow; keep passed-log filter off for After triage, retain local PNGs, and accept the explicit RP-only failure screenshot policy.",
+  "counts": {"fixed": 6, "partly_fixed": 0, "not_fixed": 2},
+  "findings": [
+    {"id": "UI-F01", "status": "not_fixed", "owner_scope": "R02 remains unresolved; documentation mitigation only", "launches": [3848,3852], "items": [31632,31635,31860,31861], "logs": [21026,21322], "binaries": [4978,4985]},
+    {"id": "UI-F02", "status": "fixed", "scope": "Distinct retained sample failure files; no parallel stress claim", "launches": [3850,3852,3848], "items": [31711,31754,31861,31912,31635], "logs": [21130,21172,21322,21369,21026], "binaries": [4980,4983,4985,4992,4978]},
+    {"id": "UI-F03", "status": "fixed", "launches": [3848,3850,3852], "logs": [21026,21172,21369,21322]},
+    {"id": "UI-F04", "status": "fixed", "scope": "Approved sample policy: assertion failures have three meaningful errors, locator failures two; one RP captioned PNG per failure", "launches": [3848,3850,3852], "logs": [21023,21024,21026,21170,21171,21172,21367,21368,21369,21129,21130,21321,21322]},
+    {"id": "UI-F05", "status": "fixed", "scope": "Original empty-string case in rich UI tester; plain empty-string and other whitespace variants not separately executed", "launches": [3848], "items": [31632], "logs": [21023,21024]},
+    {"id": "UI-F06", "status": "fixed", "scope": "Documentation only; runtime IDs not applicable", "file": "/Users/nick/Documents/crr-2.0.2/docs/getting-started.md", "line": 264},
+    {"id": "UI-F07", "status": "fixed", "previous_status": "partly_fixed", "scope": "Offline docs-only follow-up: explicit floor/pairing, concrete version checks, exact match and override-clearing recovery; commands not executed; no install success/failure claim; runtime IDs not applicable", "file": "/Users/nick/Documents/crr-2.0.2/examples/current_sdk/README.md", "line": 50, "reviewed_file_sha256": "b43426fde49b9d9c91ccc06e134365b85c64feb18795f14ca813acf0e9faf54d"},
+    {"id": "UI-F08", "status": "not_fixed", "launches": [3848,3852], "logs": [20983,21026,21322,21369], "binaries": [4976,4978,4985,4992]}
+  ],
+  "new_established_usability_defects": [],
+  "approved_tradeoff_not_a_fix": "Native failure PNG omitted; unique local PNG, original exception and native failure records preserved; one captioned RP PNG under passed After.",
+  "excluded_launches": [3843,3844,3845,3846],
+  "browser": {"surface": "Edge", "own_tab": "148298248", "actual_ui_interaction": true, "hide_passed_off_on_off": true},
+  "api": {"read_only": true, "fresh_launch_summaries": 6, "fresh_ui_item_log_sets": 95, "launch_log_empty_fields_ignored": true},
+  "native_html_visually_reviewed": false,
+  "new_test_runs_executed": 0,
+  "completion_mode": "Offline validation of preserved pre-outage evidence plus public documentation-only UI-F07 follow-up",
+  "documentation_followup": {"finding": "UI-F07", "reviewed_offline": true, "reviewed_file_sha256": "b43426fde49b9d9c91ccc06e134365b85c64feb18795f14ca813acf0e9faf54d", "new_commit_id_supplied": false, "commands_executed": false, "regression_spec_read_or_run": false, "live_findings_changed": false},
+  "service_health": "Not certified; Master health clearance and recovery verification remain pending",
+  "outage_effect_on_findings": "None inferred",
+  "network_or_browser_actions_during_offline_completion": 0,
+  "uncited_transition_sets_removed_before_pause": ["ui-tester-filter-on", "ui-tester-failure-viewer", "ui-tester-empty-actual"],
+  "remaining_evidence_preserved_during_offline_completion": true
+}

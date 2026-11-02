@@ -1,0 +1,127 @@
+Original local failure output preserved from the captured tool responses, before fixture replacement.
+QA evidence: the performance-only test results do not clear this unresolved security blocker.
+Worktree: /Users/nick/Documents/crr-2.0.2
+Branch: codex/failure-redaction-2.0.2
+Base HEAD: 090b6338
+Command: env PATH=/opt/homebrew/opt/ruby/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin bundle exec rspec spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb --format documentation
+Original execution session: 3906
+Original exit code: 1
+These are the original example counts and source line numbers, not a new run.
+
+Original FROZEN/url_credentials input:
+message: request https://alice:FROZEN_MESSAGE_SECRET@example.test/path?token=FROZEN_MESSAGE_SECRET&count=12
+first frame: https://example.test/bad path#%7B%22pass%5Cu0077ord%22%3A%22FROZEN_FRAME_SECRET%22%7D
+remaining frames: the 62 safe_frames("FROZEN") entries preserved in deferred_malformed_url_probe.rb
+decoded fragment: {"pass\u0077ord":"FROZEN_FRAME_SECRET"}
+
+--- Original RSpec output ---
+
+Automation::FailureRedactor default policy reuse
+  shares one frozen default with only frozen reachable policy fields before and after use (FAILED - 1)
+  keeps separately injected real redactors distinct and does not freeze caller-owned instances
+  matches fresh injected policies on every result field across a deterministic diverse corpus (FAILED - 2)
+  matches fresh policies at every split through encoded credential keys and value openers
+  isolates simultaneous mixed failures with separate_wrappers using the shared default (FAILED - 3)
+  isolates simultaneous mixed failures with same_wrapper using the shared default (FAILED - 4)
+  preserves exact message withholding and all 62 safe frames after unrelated failures
+  keeps configured keys independent of other instances and later caller configuration mutations
+  isolates default and conflicting custom policies across concurrent encoded boundaries
+  starts a fresh nodes budget for each message, backtrace and successive invocation
+  starts a fresh bytes budget for each message, backtrace and successive invocation
+  resets all per-call state after exhausting the nodes bound
+  resets all per-call state after exhausting the bytes bound
+  resets all per-call state after exhausting the depth bound
+  resets all per-call state after exhausting the input bound
+  does not retain message strings, frame strings, their arrays or copied evidence with default policy
+  does not retain message strings, frame strings, their arrays or copied evidence with injected policy
+  rechecks mutable messages, frame entries and frame arrays instead of caching earlier output
+  does not let mutation of a returned result poison later calls or another default instance
+
+Failures:
+
+  1) Automation::FailureRedactor default policy reuse shares one frozen default with only frozen reachable policy fields before and after use
+     Got 2 failures from failure aggregation block "FROZEN/url_credentials".
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:80:in 'RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:150:in 'block (3 levels) in <top (required)>'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:150:in 'Array#each'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:150:in 'block (2 levels) in <top (required)>'
+
+     1.1) Failure/Error: expect(record.fetch(:actual).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "FROZEN_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:83:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+     1.2) Failure/Error: expect(record.fetch(:expected).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "FROZEN_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:84:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+  2) Automation::FailureRedactor default policy reuse matches fresh injected policies on every result field across a deterministic diverse corpus
+     Got 2 failures from failure aggregation block "CORPUS_0/url_credentials".
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:80:in 'RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:176:in 'block (4 levels) in <top (required)>'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:175:in 'Array#each'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:175:in 'block (3 levels) in <top (required)>'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:174:in 'block (2 levels) in <top (required)>'
+
+     2.1) Failure/Error: expect(record.fetch(:actual).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "CORPUS_0_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:83:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+     2.2) Failure/Error: expect(record.fetch(:expected).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "CORPUS_0_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:84:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+  3) Automation::FailureRedactor default policy reuse isolates simultaneous mixed failures with separate_wrappers using the shared default
+     Got 2 failures from failure aggregation block "WORKER_0_ROUND_0/url_credentials".
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:80:in 'RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:213:in 'block (4 levels) in <top (required)>'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:213:in 'Array#each'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:213:in 'block (3 levels) in <top (required)>'
+
+     3.1) Failure/Error: expect(record.fetch(:actual).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "WORKER_0_ROUND_0_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:83:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+     3.2) Failure/Error: expect(record.fetch(:expected).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "WORKER_0_ROUND_0_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:84:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+  4) Automation::FailureRedactor default policy reuse isolates simultaneous mixed failures with same_wrapper using the shared default
+     Got 2 failures from failure aggregation block "WORKER_0_ROUND_0/url_credentials".
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:80:in 'RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:213:in 'block (4 levels) in <top (required)>'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:213:in 'Array#each'
+     # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:213:in 'block (3 levels) in <top (required)>'
+
+     4.1) Failure/Error: expect(record.fetch(:actual).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "WORKER_0_ROUND_0_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:83:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+     4.2) Failure/Error: expect(record.fetch(:expected).inspect).not_to include(secret)
+            expected "{message: \"request https://example.test/path?token=%5BREDACTED%5D&count=12\", backtrace: \"https://.../runner.rb:56:in 'run'\\n-e:1:in 'run'\\n<internal:kernel>:90:in 'require'\", fallback_only: false}" not to include "WORKER_0_ROUND_0_FRAME_SECRET"
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:84:in 'block (2 levels) in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'Array#each'
+          # ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:82:in 'block in RSpec::ExampleGroups::AutomationFailureRedactorDefaultPolicyReuse#expect_safe_record'
+
+Finished in 3.16 seconds (files took 0.46861 seconds to load)
+19 examples, 4 failures
+
+Failed examples:
+
+rspec ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:138 # Automation::FailureRedactor default policy reuse shares one frozen default with only frozen reachable policy fields before and after use
+rspec ./spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb:173 # Automation::FailureRedactor default policy reuse matches fresh injected policies on every result field across a deterministic diverse corpus
+rspec './spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb[1:5]' # Automation::FailureRedactor default policy reuse isolates simultaneous mixed failures with separate_wrappers using the shared default
+rspec './spec/reportportal_cucumber/automation/failure_redactor_reuse_spec.rb[1:6]' # Automation::FailureRedactor default policy reuse isolates simultaneous mixed failures with same_wrapper using the shared default

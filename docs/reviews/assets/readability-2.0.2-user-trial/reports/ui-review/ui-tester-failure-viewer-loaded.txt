@@ -1,0 +1,310 @@
+Browser tab: 148298248, Title: "Report Portal", URL: "http://rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3848/31589/31609/log".
+0 AXWebArea Report Portal, URL: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3848/31589/31609/log
+	11 container
+		12 container
+			13 text SL
+			14 link rp-2607.localhost:18080/ui/#superadmin_personal/dashboard
+			15 link rp-2607.localhost:18080/ui/#superadmin_personal/launches
+			16 link rp-2607.localhost:18080/ui/#superadmin_personal/filters
+			17 link rp-2607.localhost:18080/ui/#superadmin_personal/userdebug/all
+			18 link rp-2607.localhost:18080/ui/#superadmin_personal/members
+			19 link rp-2607.localhost:18080/ui/#superadmin_personal/settings
+			20 image avatar
+		21 container
+			32 link Description: All, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all
+			33 link Description: Trial 2.0.2 · UI tester #1, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3848
+			34 link Description: Feature: Workday practice checkpoints, Value: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3848/31589
+			35 text Scenario: Recover the last saved word after an accidental refresh
+			36 container
+				37 image
+				38 text History Across All Launches
+			39 button Scenario: Correct a typo and save the replacement using the keyboard
+			40 button Refresh
+				41 text Refresh
+			42 container
+				43 text # 1 TI
+			44 container
+				45 image
+				46 text Comment
+				47 image
+				48 text More
+				49 image
+				50 text 0
+				51 text FAILED
+				52 text To Investigate
+				53 button Make decision
+			54 container
+				55 button STACK TRACE
+					56 text STACK TRACE
+				57 button LOG ALL LOGS
+					58 image Created with Sketch.
+						59 text LOG
+					60 text ALL LOGS
+				61 button ATTACHMENTS
+					62 text ATTACHMENTS
+				63 button ITEM DETAILS
+					64 text ITEM DETAILS
+				65 button HISTORY OF ACTIONS
+					66 text HISTORY OF ACTIONS
+			67 container
+				68 slider 6
+				69 container
+					70 text Fatal Error Warn Info Debug Trace All
+				71 button Show previous Error Log
+				72 button Show next Error Log
+				73 text 3  Error Logs
+				74 text Logs with Attachment
+				180 text Hide All Passed Logs
+				76 button Markdown Mode
+					77 image
+				78 button
+					79 image
+				80 text 1 of 1
+			83 container
+				84 container LOG MESSAGE
+					85 container
+						86 text LOG MESSAGE
+						87 container
+							88 image
+							89 text field (settable)
+				90 container ALL STATUSES
+					91 container
+						92 text ALL STATUSES
+						93 image
+				94 container TIME
+					95 container
+						96 text TIME
+						97 image
+				98 container Given I open the local practice page
+					99 container
+						100 image
+						101 text Given I open the local practice page
+				102 container PASSED
+					103 text PASSED
+				104 container 0.11s
+					105 container
+						106 image
+						107 text 0.11s
+				108 container When the UI tester saves "follow-up" using Enter
+					109 container
+						110 image
+						111 text When the UI tester saves "follow-up" using Enter
+				112 container PASSED
+					113 text PASSED
+				114 container 0.07s
+					115 container
+						116 image
+						117 text 0.07s
+				118 container Then the practice status is "Saved: follow-up"
+					119 container
+						120 image
+						121 text Then the practice status is "Saved: follow-up"
+				122 container PASSED
+					123 text PASSED
+				124 container 0.02s
+					125 container
+						126 image
+						127 text 0.02s
+				128 container And the UI tester records the "saved-before-refresh" checkpoint
+					129 container
+						130 image
+						131 text And the UI tester records the "saved-before-refresh" checkpoint
+				132 container PASSED
+					133 text PASSED
+				134 container 1 0.06s
+					135 text 1
+					136 container
+						137 image
+						138 text 0.06s
+				139 container When the UI tester refreshes the practice page
+					140 container
+						141 image
+						142 text When the UI tester refreshes the practice page
+				143 container PASSED
+					144 text PASSED
+				145 container 0.04s
+					146 container
+						147 image
+						148 text 0.04s
+				149 container Then the UI tester finds the restored word "follow-up"
+					150 container
+						151 image
+						152 text Then the UI tester finds the restored word "follow-up"
+				153 container FAILED
+					154 text FAILED
+				155 container 0.05s
+					156 container
+						157 image
+						158 text 0.05s
+				159 container ✗ Assertion failed · restored practice word after refresh expected follow-up actual "" (empty string)
+					160 heading ✗ Assertion failed · restored practice word after refresh, Value: 2, ID: ✗-assertion-failed-·-restored-practice-word-after-refresh
+						181 text ✗ Assertion failed · restored practice word after refresh
+					182 text expected  follow-up
+actual    "" (empty string)
+				183 container 2026-11-02 19:52:57
+					184 button 2026-11-02 19:52:57
+				185 container ✗ RuntimeError: restored practice word after refresh: expected "follow-up", got "" workday_practice.feature:19 → helpers/world.rb:15 helpers/world.rb:15 CurrentSDK::World#check_equal features/…/workday_practice_steps.rb:33 "the UI tester finds the restored word {string}" features/support/env.rb:39 block (3 levels) in <top (required)> features/support/env.rb:32 block (2 levels) in <top (required)> features/support/env.rb:29 block in <top (required)> bundle:25 Kernel#load bundle:25 <main> workday_practice.feature:19 the UI tester finds the restored word "follow-up" Full backtrace · 90 frames · 82 framework frames not shown above /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/helpers/world.rb:15:in 'CurrentSDK::World#check_equal' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/tester_ui/workday_practice_steps.rb:33:in `"the UI tester finds the restored word {string}"' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:39:in 'block (3 levels) in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright.rb:99:in 'Playwright.create' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:32:in 'block (2 levels) in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/reportportal-cucumber-ruby-2.0.2/lib/reportportal_cucumber/automation/app_log.rb:50:in 'AppLog.with_logger' /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:29:in 'block in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/hook.rb:21:in 'Cucumber::Glue::Hook#invoke' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime/support_code.rb:132:in 'block (2 levels) in Cucumber::Runtime::SupportCode#find_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!' /opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in 'Kernel#load' /opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in '<top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Kernel.load' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Bundler::CLI::Exec#kernel_load' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:23:in 'Bundler::CLI::Exec#run' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:452:in 'Bundler::CLI#exec' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/command.rb:28:in 'Bundler::Thor::Command#run' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in 'Bundler::Thor::Invocation#invoke_command' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor.rb:538:in 'Bundler::Thor.dispatch' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:35:in 'Bundler::CLI.dispatch' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/base.rb:584:in 'Bundler::Thor::Base::ClassMethods#start' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:29:in 'Bundler::CLI.start' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:28:in 'block in <top (required)>' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/friendly_errors.rb:117:in 'Bundler.with_friendly_errors' /opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:20:in '<top (required)>' /opt/homebrew/opt/ruby@3.4/bin/bundle:25:in 'Kernel#load' /opt/homebrew/opt/ruby@3.4/bin/bundle:25:in '<main>' features/tester_ui/workday_practice.feature:19:in `the UI tester finds the restored word "follow-up"'
+					186 container
+						187 heading ✗ RuntimeError: restored practice word after refresh: expected "follow-up", got "", Value: 2, ID: ✗-runtimeerror-restored-practice-word-after-refresh-expected-follow-up-got
+							188 text ✗ RuntimeError: restored practice word after refresh: expected "follow-up", got ""
+						189 text workday_practice.feature:19
+						190 text  → 
+						191 text helpers/world.rb:15
+						192 text helpers/world.rb:15                      CurrentSDK::World#check_equal
+features/…/workday_practice_steps.rb:33  "the UI tester finds the restored word {string}"
+features/support/env.rb:39               block (3 levels) in <top (required)>
+features/support/env.rb:32               block (2 levels) in <top (required)>
+features/support/env.rb:29               block in <top (required)>
+bundle:25                                Kernel#load
+bundle:25                                <main>
+workday_practice.feature:19              the UI tester finds the restored word "follow-up"
+						193 text Full backtrace · 90 frames · 82 framework frames not shown above
+						194 text /Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/tester_ui/workday_practice_steps.rb:33:in `"the UI tester finds the restored word {string}"'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:39:in 'block (3 levels) in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/playwright-ruby-client-1.62.0/lib/playwright.rb:99:in 'Playwright.create'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:32:in 'block (2 levels) in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/reportportal-cucumber-ruby-2.0.2/lib/reportportal_cucumber/automation/app_log.rb:50:in 'AppLog.with_logger'
+/Users/nick/Documents/crr-qa-2.0.1/tmp/trial/rp-trial-2.0.2/features/support/env.rb:29:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/hook.rb:21:in 'Cucumber::Glue::Hook#invoke'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime/support_code.rb:132:in 'block (2 levels) in Cucumber::Runtime::SupportCode#find_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '<top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in 'Kernel#load'
+/opt/homebrew/lib/ruby/gems/3.4.0/bin/cucumber:25:in '<top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Kernel.load'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:59:in 'Bundler::CLI::Exec#kernel_load'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli/exec.rb:23:in 'Bundler::CLI::Exec#run'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:452:in 'Bundler::CLI#exec'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/command.rb:28:in 'Bundler::Thor::Command#run'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/invocation.rb:127:in 'Bundler::Thor::Invocation#invoke_command'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor.rb:538:in 'Bundler::Thor.dispatch'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:35:in 'Bundler::CLI.dispatch'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/vendor/thor/lib/thor/base.rb:584:in 'Bundler::Thor::Base::ClassMethods#start'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/cli.rb:29:in 'Bundler::CLI.start'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:28:in 'block in <top (required)>'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/lib/bundler/friendly_errors.rb:117:in 'Bundler.with_friendly_errors'
+/opt/homebrew/lib/ruby/gems/3.4.0/gems/bundler-2.6.6/exe/bundle:20:in '<top (required)>'
+/opt/homebrew/opt/ruby@3.4/bin/bundle:25:in 'Kernel#load'
+/opt/homebrew/opt/ruby@3.4/bin/bundle:25:in '<main>'
+features/tester_ui/workday_practice.feature:19:in `the UI tester finds the restored word "follow-up"'
+				195 container 2026-11-02 19:52:57
+					196 button 2026-11-02 19:52:57
+				165 container After hook
+					166 container
+						197 image
+						168 text After hook
+				169 container PASSED
+					170 text PASSED
+				171 container 1 0.05s
+					172 text 1
+					173 container
+						174 image
+						175 text 0.05s
+				198 container Failure evidence: Recover the last saved word after an accidental refresh - restored practice word after refresh Last browser action (passed): Refresh the practice page RuntimeError: restored practice word after refresh: expected "follow-up", got "" Captured by the framework After hook, not the closed failed step. recover-the-last-saved-word-after-an-accidental-refresh-restored-practice-word-after-refresh-11a96e63.png · PNG · 1100 × 740 · 32 KB
+					199 text Failure evidence: Recover the last saved word after an accidental refresh - restored practice word after refresh
+					200 text Last browser action (passed): Refresh the practice page
+					201 text RuntimeError: restored practice word after refresh: expected "follow-up", got ""
+					202 text Captured by the framework After hook, not the closed failed step.
+					203 container
+						204 text recover-the-last-saved-word-after-an-accidental-refresh-restored-practice-word-after-refresh-11a96e63.png  · PNG · 1100 × 740 · 32 KB
+				205 container image/png
+					206 image image/png
+				207 container 2026-11-02 19:52:57
+					208 button 2026-11-02 19:52:57
+			176 container
+				177 text 1 - 7 of 7
+				178 text 50
+				179 text per page
+			209 button
+			22 container
+				23 text Build :  5.15.6
+			24 container
+				25 text © Report Portal  2026 All rights reserved
+			26 link Description: Fork us on GitHub |, Value: github.com/reportportal
+			27 link Description: Documentation |, Value: reportportal.io/docs
+			28 link Description: Chat with us on Slack |, Value: slack.epmrpp.reportportal.io/
+			29 link Description: Contact us |, Value: mailto:support@reportportal.io
+			30 link Description: EPAM |, Value: epam.com/
+			31 link Description: Privacy Policy, Value: privacy.epam.com/core/interaction/showpolicy?type=PrivacyPolicy
+	210 container
+		211 container
+			212 text ATTACHMENT
+			213 link Description: attachment, Value: blob:http://rp-2607.localhost:18080/1293243e-2f07-4a1d-a241-93425829f86a
+			214 container
+				215 button Close
+				216 container
+					217 image
+					218 text Rotate
+	2 container popper-container
+		3 button
+		4 button 图片翻译
+		5 button 语音翻译
+			6 image Capa_1
+		7 button (disabled) 添加到收藏夹
+		8 button 快捷设置
+		9 button 关闭(Esc)
+		10 text 请输入需要翻译的文本。
+
+The focused UI element is 0 AXWebArea Report Portal, URL: rp-2607.localhost:18080/ui/#superadmin_personal/launches/all/3848/31589/31609/log
