@@ -48,7 +48,7 @@ RSpec.describe "Scoped Ledger rich routing" do
   end
 
   def plain_cards
-    ["\u2713 GET /card \u2192 200\n\n`https://example.test/card`\n\n_Response_ \u00b7 4 B\n\n```text\nsafe\n```",
+    ["\u2713 GET /card \u2192 200\n\n_Response_ \u00b7 4 B\n\n```text\nsafe\n```\n\n`https://example.test/card`",
      "\u2713 Assertion passed \u00b7 Order &lt;other&gt; \u00b7 expected `001.2300`",
      "## \u2717 Assertion failed \u00b7 Failure\n\n```text\nexpected  expected\nactual    actual\n```"]
   end

@@ -120,10 +120,13 @@ module Automation
       meta.unshift(status_pill) if accent && level != :info
       meta << "expected #{inline_code(@expected_status)}" unless @expected_status.nil?
       meta << "error #{inline_code(@error)}" unless @error.nil?
-      parts = [title, meta.join(" \u00b7 ")]
+      parts = [title]
       budget = { bytes: MAX_PREVIEW_BYTES, lines: MAX_PREVIEW_LINES }
-      append_card_section(parts, "Request", @request, budget, accent: accent)
-      append_card_section(parts, "Response", @response, budget, accent: accent)
+      append_card_body(parts, "Response", @response, budget, accent: accent)
+      parts << meta.join(" \u00b7 ")
+      append_card_body(parts, "Request", @request, budget, accent: accent)
+      append_card_headers(parts, "Request", @request, budget, accent: accent)
+      append_card_headers(parts, "Response", @response, budget, accent: accent)
       parts.join("\n\n")
     end
 
@@ -150,23 +153,33 @@ module Automation
       ReportportalCucumber::Presentation::Accent.pill(@status_text, tone: tone)
     end
 
-    def append_card_section(parts, label, section, budget, accent: false)
+    def append_card_headers(parts, label, section, budget, accent: false)
       headers = fetch(section, :headers)
-      if headers.is_a?(Hash) && !headers.empty?
-        content = headers.map { |key, value| "#{key}: #{value}" }.join("\n")
-        caption = "#{label} headers \u00b7 #{headers.length}"
-        parts << "_#{caption}_" unless accent
-        parts << card_fence(content, "text", budget, fold: accent ? caption : nil)
-      end
+      return unless headers.is_a?(Hash) && !headers.empty?
+
+      content = headers.flat_map do |key, value|
+        values = value.is_a?(Array) ? value : [value]
+        values.map { |item| "#{key}: #{item}" }
+      end.join("\n")
+      caption = "#{label} headers \u00b7 #{headers.length}"
+      parts << "_#{caption}_" unless accent
+      parts << card_fence(content, "text", budget, fold: accent ? caption : nil)
+    end
+
+    def append_card_body(parts, label, section, budget, accent: false)
       body = fetch(section, :body)
       return if body.nil?
 
       json = ledger_json(body)
       content = json || body.to_s
       metadata = ["_#{label}_"]
+      headers = fetch(section, :headers)
       if headers.is_a?(Hash)
         type = headers.find { |key, _value| key.to_s.downcase == "content-type" }
-        metadata << inline_code(type.last) if type
+        if type
+          value = type.last
+          metadata << inline_code(value.is_a?(Array) ? value.join(", ") : value) unless value.is_a?(Array) && value.empty?
+        end
       end
       bytes = body.is_a?(String) ? body.bytesize : JSON.generate(body).bytesize
       metadata << ReportportalCucumber::Presentation::Units.bytes(bytes)

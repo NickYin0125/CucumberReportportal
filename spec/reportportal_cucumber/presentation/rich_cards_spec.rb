@@ -115,7 +115,7 @@ RSpec.describe "RP-only Ledger accents" do
     rich = http.to_markdown(presentation: "rich")
     expect(rich.scan(/^data$/).length).to eq(plain.scan(/^data$/).length)
     expect(rich.scan('[preview truncated]').length).to eq(plain.scan('[preview truncated]').length)
-    expect(rich.scan(/^data$/).length).to eq(98)
+    expect(rich.scan(/^data$/).length).to eq(100)
     check_guard(plain, rich)
   end
 
