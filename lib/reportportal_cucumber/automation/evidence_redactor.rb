@@ -40,11 +40,12 @@ module Automation
     PERCENT_ESCAPE = /%[0-9a-f]{2}/i.freeze
     PLAIN_TOKEN = /[^\s"'<>]+/.freeze
     JSON_UNICODE_ESCAPE = /\\u([0-9a-f]{4})/i.freeze
+    COMPLETE_MASK = /\A(?:\\?["']\[REDACTED\]\\?["']|\[REDACTED\][\]},)]*)\z/.freeze
     MAX_PERCENT_DECODE_PASSES = 3
     private_constant :BOUNDARY_KEY_PATTERN, :BOUNDARY_ENCODED_KEY_PATTERN,
                      :BOUNDARY_KEY_SEPARATOR, :BOUNDARY_KEY_CHUNK_CHARS,
                      :BOUNDARY_ESCAPED_QUOTE_PATTERN, :BOUNDARY_ESCAPED_VALUE_PATTERN,
-                     :PERCENT_ESCAPE, :PLAIN_TOKEN, :JSON_UNICODE_ESCAPE, :MAX_PERCENT_DECODE_PASSES
+                     :PERCENT_ESCAPE, :PLAIN_TOKEN, :JSON_UNICODE_ESCAPE, :COMPLETE_MASK, :MAX_PERCENT_DECODE_PASSES
 
     # @param sensitive_keys [Array<String, Symbol>] Additional sensitive key names.
     # @return [EvidenceRedactor]
@@ -451,10 +452,33 @@ module Automation
       return false unless text.match?(PERCENT_ESCAPE)
 
       decoded = json_unescaped(percent_decoded(text))
-      decoded.to_enum(:scan, @key_value_pattern).any? do
+      exposed_value = decoded.to_enum(:scan, @key_value_pattern).any? do
         match = Regexp.last_match
-        value = match[0][(match[1].length + match[2].length)..].delete("\\\"'")
-        !value.empty? && !value.start_with?(MASK)
+        value = match[0][(match[1].length + match[2].length)..]
+        !value.match?(COMPLETE_MASK)
+      end
+      return true if exposed_value
+      return true if decoded.to_enum(:scan, BEARER_PATTERN).any? do
+        !Regexp.last_match(0).sub(/\ABearer[ \t]+/i, "").match?(COMPLETE_MASK)
+      end
+
+      # Quoted JSON keys use the same normalization as structured evidence, not
+      # just the narrower plain-text regex (e.g. "pass word" is a sensitive key).
+      [BOUNDARY_KEY_PATTERN, BOUNDARY_ENCODED_KEY_PATTERN].any? do |pattern|
+        scanner = StringScanner.new(decoded)
+        exposed = false
+        while scanner.skip_until(pattern)
+          start = scanner.pos - scanner.matched_size
+          next unless boundary_sensitive_key?(decoded, start, scanner.pos, encoded: pattern == BOUNDARY_ENCODED_KEY_PATTERN)
+
+          scanner.skip(BOUNDARY_KEY_SEPARATOR)
+          value = scanner.scan(@boundary_value_pattern)
+          unless value&.match?(COMPLETE_MASK)
+            exposed = true
+            break
+          end
+        end
+        exposed
       end
     end
 
