@@ -58,6 +58,8 @@ RSpec.describe Automation::FailureRedactor, "default policy reuse" do
       embedded_frame_newline: ["#{tag} failure", ["C:\\project\\#{tag}.rb:1\npassword=#{frame_secret}", *frames], [frame_secret]],
       url_credentials: ["request https://alice:#{message_secret}@example.test/path?token=#{message_secret}&count=12",
                         ["https://alice:#{frame_secret}@[broken/path##{fragment}", *frames], [message_secret, frame_secret]],
+      whitespace_url_credentials: ["request https://alice:#{message_secret}@example.test/path?token=#{message_secret}&count=12",
+                                   ["https://example.test/bad path##{fragment}", *frames], [message_secret, frame_secret]],
       binary: [("#{tag}\xFF\npassword=#{message_secret}".b), [("frame\xFE token=#{frame_secret}".b), *frames], [message_secret, frame_secret]],
       trailing_empty: ["#{tag} headline\n", [*frames, ""], []],
       empty: ["", [], []],

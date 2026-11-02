@@ -37,9 +37,14 @@ module Automation
     BOUNDARY_ESCAPED_VALUE_PATTERN = Regexp.new(
       "\\G#{escaped_quote}(?:#{escaped_body})*(?:#{escaped_quote}|\\z)", Regexp::MULTILINE
     ).freeze
+    PERCENT_ESCAPE = /%[0-9a-f]{2}/i.freeze
+    PLAIN_TOKEN = /[^\s"'<>]+/.freeze
+    JSON_UNICODE_ESCAPE = /\\u([0-9a-f]{4})/i.freeze
+    MAX_PERCENT_DECODE_PASSES = 3
     private_constant :BOUNDARY_KEY_PATTERN, :BOUNDARY_ENCODED_KEY_PATTERN,
                      :BOUNDARY_KEY_SEPARATOR, :BOUNDARY_KEY_CHUNK_CHARS,
-                     :BOUNDARY_ESCAPED_QUOTE_PATTERN, :BOUNDARY_ESCAPED_VALUE_PATTERN
+                     :BOUNDARY_ESCAPED_QUOTE_PATTERN, :BOUNDARY_ESCAPED_VALUE_PATTERN,
+                     :PERCENT_ESCAPE, :PLAIN_TOKEN, :JSON_UNICODE_ESCAPE, :MAX_PERCENT_DECODE_PASSES
 
     # @param sensitive_keys [Array<String, Symbol>] Additional sensitive key names.
     # @return [EvidenceRedactor]
@@ -120,7 +125,17 @@ module Automation
     def cross_unit_credential?(units)
       parts = units.map { |part| valid_utf8(part) }
       return false if parts.length < 2
+      return true if credential_crosses_units?(parts)
 
+      # A percent-encoded key may end one unit while its value starts the next.
+      return false unless parts.any? { |part| part.match?(PERCENT_ESCAPE) }
+
+      credential_crosses_units?(parts.map { |part| percent_decoded(part) })
+    end
+
+    private
+
+    def credential_crosses_units?(parts)
       # Assembly and lexical scans still scale with input; only key decoding is bounded.
       source = parts.join("\n")
       boundaries = []
@@ -158,8 +173,6 @@ module Automation
       end
       false
     end
-
-    private
 
     def crosses_boundary?(boundaries, start, finish)
       boundary = boundaries.bsearch { |position| position >= start }
@@ -382,17 +395,77 @@ module Automation
     end
 
     def redact_plain_text(text)
+      raise UnsafeInput if encoded_credential_split?(text)
+
       url_pattern = %r{(?:https?:)?//[^\s"'<>]+}i
       cursor = 0
       output = +""
       text.to_enum(:scan, url_pattern).each do
         match = Regexp.last_match
-        output << redact_plain_segment(text[cursor...match.begin(0)])
+        output << redact_plain_text_segment(text[cursor...match.begin(0)])
         output << redact_url(match[0])
         cursor = match.end(0)
       end
-      output << redact_plain_segment(text[cursor..])
+      output << redact_plain_text_segment(text[cursor..])
+      # Fail closed when decoding still reveals a credential, such as a key and
+      # value split by whitespace or a newline inside an incomplete encoded token.
+      raise UnsafeInput if encoded_credential_exposed?(output)
+
       output
+    end
+
+    def redact_plain_text_segment(text)
+      safe = redact_plain_segment(text)
+      return safe unless safe.match?(PERCENT_ESCAPE)
+
+      # Whitespace can end a URL token early, leaving its encoded query or fragment
+      # here. Give such tokens the URL component rules instead of literal matching.
+      safe.gsub(PLAIN_TOKEN) do |token|
+        token.match?(PERCENT_ESCAPE) ? redact_encoded_text_token(token) : token
+      end
+    end
+
+    def redact_encoded_text_token(token)
+      base, fragment = token.split("#", 2)
+      safe = base.split("?", -1).map { |part| redact_fragment_query(part) }.join("?")
+      fragment.nil? ? safe : "#{safe}##{redact_fragment(fragment)}"
+    rescue ArgumentError, EncodingError
+      MASK
+    end
+
+    def encoded_credential_split?(text)
+      return false unless text.match?(PERCENT_ESCAPE)
+
+      # Token rules cannot see a value that follows an encoded key after whitespace.
+      text.split(/\s+/).each_cons(2).any? do |token, following|
+        token.match?(PERCENT_ESCAPE) &&
+          credential_crosses_units?([percent_decoded(token), percent_decoded(following)])
+      end
+    end
+
+    def encoded_credential_exposed?(text)
+      return false unless text.match?(PERCENT_ESCAPE)
+
+      decoded = percent_decoded(text)
+      decoded = decoded.gsub(JSON_UNICODE_ESCAPE) do
+        codepoint = Regexp.last_match(1).to_i(16)
+        codepoint.between?(0xd800, 0xdfff) ? Regexp.last_match(0) : codepoint.chr(Encoding::UTF_8)
+      end
+      decoded.to_enum(:scan, @key_value_pattern).any? do
+        match = Regexp.last_match
+        value = match[0][(match[1].length + match[2].length)..].delete("\\\"'")
+        !value.empty? && !value.start_with?(MASK)
+      end
+    end
+
+    def percent_decoded(text)
+      decoded = text
+      MAX_PERCENT_DECODE_PASSES.times do
+        break unless decoded.match?(PERCENT_ESCAPE)
+
+        decoded = valid_utf8(URI::DEFAULT_PARSER.unescape(decoded))
+      end
+      decoded
     end
 
     def redact_plain_segment(text)
