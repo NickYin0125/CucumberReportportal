@@ -1,0 +1,34 @@
+{
+  "status": "READY_FOR_AUTHORIZED_ORIGINAL_CONTAINER_PREFLIGHT",
+  "final_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "timings_started": false,
+  "manifest": "/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/harness-manifest-v5.json",
+  "previous_preparation_preserved": true,
+  "manifest_sha256": "ce15110b98a13bb22184a4ee1d98ca5866161e83edf26c66f08a4010ee94b1db",
+  "master_authorization_sha256": "a46bf5acc1573724b597ac701960c9aa0665b3190722c5d1288057eefc49b60c",
+  "quiet_conditions": {
+    "original_container_criterion": {
+      "consecutive": 3,
+      "maximum_cpu_percent": 35,
+      "maximum_spread_percentage_points": 15,
+      "eligible_containers": [
+        "rp2607-control-plane",
+        "typewords-local-typewords-1"
+      ]
+    },
+    "host_load_diagnostic": {
+      "recorded_comparison": "1-minute loadavg <= hw.ncpu",
+      "origin": "Later third-party focused_window3.rb preflight; not original G11/Decision25 or original container criterion",
+      "gates_execution": false,
+      "acceptance_threshold": false,
+      "master_clarification": "Host-load<=CPU from later third-party preflight is NOT a normative owner gate; record it separately as a diagnostic, not a new release criterion",
+      "master_disclosed_recent_host_load": "approximately 17 on 8 CPUs before this window"
+    }
+  },
+  "supplementary_speed_gate": false,
+  "isolation": "Both original permitted background containers paused by Master for both arms; original corpus/method/counts/gates unchanged",
+  "deadline_policy": "Stop incomplete by 15:22:14 UTC, 60 seconds before the external 15:23:14 UTC restore watchdog; no reduced samples",
+  "remaining_prerequisites": [
+    "Original container quiet criterion passes; host load recorded diagnostically only"
+  ]
+}

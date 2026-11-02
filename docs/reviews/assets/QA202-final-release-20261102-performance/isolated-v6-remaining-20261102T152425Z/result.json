@@ -1,0 +1,478 @@
+{
+  "status": "PASS",
+  "frozen21": {
+    "status": "PASS_RETAINED_V5",
+    "window": "isolated-v5-20261102T150814Z"
+  },
+  "F07": {
+    "status": "PASS",
+    "results": {
+      "baseline-plain": {
+        "raw_seconds": [
+          0.6784000000006927,
+          0.6363309999997,
+          0.6169789169998694
+        ],
+        "median_seconds": 0.6363309999997
+      },
+      "candidate-plain": {
+        "raw_seconds": [
+          0.643294708999747,
+          0.6135714590000134,
+          0.6531068340009369
+        ],
+        "median_seconds": 0.643294708999747
+      },
+      "candidate-rich": {
+        "raw_seconds": [
+          0.6154889589997765,
+          0.6438683340002171,
+          0.6446296250014711
+        ],
+        "median_seconds": 0.6438683340002171
+      }
+    }
+  },
+  "all_presentation": {
+    "status": "PASS",
+    "modes": {
+      "plain": {
+        "Fallback.render": {
+          "count": 22600,
+          "p95_ms": 0.2823750000970904
+        },
+        "AttachmentCaption.format": {
+          "count": 3000,
+          "p95_ms": 0.011375001122360118
+        },
+        "MarkdownText.code": {
+          "count": 7250,
+          "p95_ms": 0.004416000592755154
+        },
+        "AttachmentCaption.kind": {
+          "count": 3000,
+          "p95_ms": 0.0010829990060301498
+        },
+        "ImageDimensions.read": {
+          "count": 3000,
+          "p95_ms": 0.005333000444807112
+        },
+        "Units.bytes": {
+          "count": 3350,
+          "p95_ms": 0.0026669986255001277
+        },
+        "MarkdownText.fence": {
+          "count": 5100,
+          "p95_ms": 0.23308300114877056
+        },
+        "Units.count": {
+          "count": 3300,
+          "p95_ms": 0.0010829990060301498
+        },
+        "LedgerJson.format": {
+          "count": 1350,
+          "p95_ms": 0.042499999835854396
+        },
+        "MarkdownText.inline": {
+          "count": 5900,
+          "p95_ms": 0.0030840001272736117
+        },
+        "MarkdownText.html": {
+          "count": 6300,
+          "p95_ms": 0.0018329992599319667
+        },
+        "MarkdownText.cell": {
+          "count": 3200,
+          "p95_ms": 0.0025000008463393897
+        },
+        "FailureCard.format": {
+          "count": 1050,
+          "p95_ms": 0.996750000922475
+        },
+        "Units.duration": {
+          "count": 150,
+          "p95_ms": 0.0012500004231696948
+        },
+        "AttachmentCaption.slug": {
+          "count": 300,
+          "p95_ms": 0.16687499919498805
+        }
+      },
+      "rich": {
+        "Fallback.render": {
+          "count": 27250,
+          "p95_ms": 0.2266669998789439
+        },
+        "AttachmentCaption.format": {
+          "count": 4800,
+          "p95_ms": 0.025291999918408692
+        },
+        "MarkdownText.code": {
+          "count": 10300,
+          "p95_ms": 0.0043340005504433066
+        },
+        "AttachmentCaption.kind": {
+          "count": 4800,
+          "p95_ms": 0.0010000003385357559
+        },
+        "ImageDimensions.read": {
+          "count": 4800,
+          "p95_ms": 0.0030829996831016615
+        },
+        "Units.bytes": {
+          "count": 5450,
+          "p95_ms": 0.0014170000213198364
+        },
+        "Accent.pill": {
+          "count": 3200,
+          "p95_ms": 0.003167000613757409
+        },
+        "MarkdownText.inline": {
+          "count": 11000,
+          "p95_ms": 0.0029579987312899902
+        },
+        "MarkdownText.html": {
+          "count": 11600,
+          "p95_ms": 0.001708000127109699
+        },
+        "Accent.guard": {
+          "count": 6450,
+          "p95_ms": 0.000583999280934222
+        },
+        "MarkdownText.fence": {
+          "count": 5950,
+          "p95_ms": 0.2275000006193295
+        },
+        "Units.count": {
+          "count": 3750,
+          "p95_ms": 0.0009169998520519584
+        },
+        "LedgerJson.format": {
+          "count": 1950,
+          "p95_ms": 0.04383300074550789
+        },
+        "MarkdownText.cell": {
+          "count": 3200,
+          "p95_ms": 0.002749999111983925
+        },
+        "Accent.table_header": {
+          "count": 1700,
+          "p95_ms": 0.002791999577311799
+        },
+        "FailureCard.format": {
+          "count": 1050,
+          "p95_ms": 0.985124999715481
+        },
+        "Accent.title": {
+          "count": 250,
+          "p95_ms": 0.004999999873689376
+        },
+        "Units.duration": {
+          "count": 400,
+          "p95_ms": 0.0007500002539018169
+        },
+        "Accent.details": {
+          "count": 350,
+          "p95_ms": 0.024540999220334925
+        },
+        "AttachmentCaption.slug": {
+          "count": 300,
+          "p95_ms": 0.007459000698872842
+        }
+      }
+    }
+  },
+  "supplement": {
+    "status": "DIAGNOSTIC_MEASURED",
+    "absolute_cost": {
+      "plain": {
+        "baseline": {
+          "role": "baseline",
+          "mode": "plain",
+          "source_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+          "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+          "boundaries": {
+            "renderer_only": {
+              "count": 150,
+              "p95_ms": 0.10129199836228509,
+              "median_ms": 0.025041999833774753,
+              "maximum_ms": 1.714207999611972
+            },
+            "redaction_plus_rendering": {
+              "count": 150,
+              "p95_ms": 0.8562919992982643,
+              "median_ms": 0.42012500125565566,
+              "maximum_ms": 5.5536670006404165
+            }
+          },
+          "per_input": [
+            {
+              "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+              "resolved_mode": "plain",
+              "passed_mode": "plain",
+              "output_sha256": "257963dfdbb0a2c5d972196f3e9a34cb368b09aa9fdcd4147baffea369404b66",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.06741600009263493
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 1.0773750000225846
+                }
+              }
+            },
+            {
+              "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+              "resolved_mode": "plain",
+              "passed_mode": "plain",
+              "output_sha256": "5ec39f93779a8e42f0e9950de217824c870efafeb94134dce9e9dbddec1eda81",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.15020799946796615
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.8540420003555482
+                }
+              }
+            },
+            {
+              "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+              "resolved_mode": "plain",
+              "passed_mode": "plain",
+              "output_sha256": "30272375569bf084da2ad9a02e88a71c43353df29d5772d2ba81b14b02676fa8",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.1443330002075527
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.6645000012213131
+                }
+              }
+            }
+          ]
+        },
+        "candidate": {
+          "role": "candidate",
+          "mode": "plain",
+          "source_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+          "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+          "boundaries": {
+            "renderer_only": {
+              "count": 150,
+              "p95_ms": 0.06945799941604491,
+              "median_ms": 0.022915999579709023,
+              "maximum_ms": 0.10312500126019586
+            },
+            "redaction_plus_rendering": {
+              "count": 150,
+              "p95_ms": 0.4241659989929758,
+              "median_ms": 0.1579590007168008,
+              "maximum_ms": 5.174083999008872
+            }
+          },
+          "per_input": [
+            {
+              "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+              "resolved_mode": "plain",
+              "passed_mode": "plain",
+              "output_sha256": "257963dfdbb0a2c5d972196f3e9a34cb368b09aa9fdcd4147baffea369404b66",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.08175000039045699
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.6687090008199448
+                }
+              }
+            },
+            {
+              "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+              "resolved_mode": "plain",
+              "passed_mode": "plain",
+              "output_sha256": "5ec39f93779a8e42f0e9950de217824c870efafeb94134dce9e9dbddec1eda81",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.031083000067155808
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.36958300006517675
+                }
+              }
+            },
+            {
+              "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+              "resolved_mode": "plain",
+              "passed_mode": "plain",
+              "output_sha256": "30272375569bf084da2ad9a02e88a71c43353df29d5772d2ba81b14b02676fa8",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.025499999537714757
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.4241659989929758
+                }
+              }
+            }
+          ]
+        }
+      },
+      "rich": {
+        "baseline": {
+          "role": "baseline",
+          "mode": "rich",
+          "source_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+          "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+          "boundaries": {
+            "renderer_only": {
+              "count": 150,
+              "p95_ms": 0.15512499885517173,
+              "median_ms": 0.049665999540593475,
+              "maximum_ms": 4.272250000212807
+            },
+            "redaction_plus_rendering": {
+              "count": 150,
+              "p95_ms": 0.7643749995622784,
+              "median_ms": 0.4378749999887077,
+              "maximum_ms": 4.559582999718259
+            }
+          },
+          "per_input": [
+            {
+              "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+              "resolved_mode": "rich",
+              "passed_mode": "rich",
+              "output_sha256": "de7899beb1965fe07579b59a3ca78c75c4d71da29f46fb6a4eeec1d1ef15acf9",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.149583000165876
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.8327080013259547
+                }
+              }
+            },
+            {
+              "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+              "resolved_mode": "rich",
+              "passed_mode": "rich",
+              "output_sha256": "ed08f5bc83376cab7e4578c201958017eb2717983d22a8b277625ed22121089a",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.1914590011438122
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.7947089998197043
+                }
+              }
+            },
+            {
+              "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+              "resolved_mode": "rich",
+              "passed_mode": "rich",
+              "output_sha256": "a84312e45f80ecdff2306428c0a90f813ba83352058f606851fd3e3c39164f70",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.09545800094201695
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.6883330006530741
+                }
+              }
+            }
+          ]
+        },
+        "candidate": {
+          "role": "candidate",
+          "mode": "rich",
+          "source_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+          "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+          "boundaries": {
+            "renderer_only": {
+              "count": 150,
+              "p95_ms": 0.05912500091653783,
+              "median_ms": 0.024540999220334925,
+              "maximum_ms": 0.09216699982061982
+            },
+            "redaction_plus_rendering": {
+              "count": 150,
+              "p95_ms": 0.3533330000209389,
+              "median_ms": 0.1537080006528413,
+              "maximum_ms": 4.563917000268702
+            }
+          },
+          "per_input": [
+            {
+              "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+              "resolved_mode": "rich",
+              "passed_mode": "rich",
+              "output_sha256": "257963dfdbb0a2c5d972196f3e9a34cb368b09aa9fdcd4147baffea369404b66",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.0810410001577111
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.4439170006662607
+                }
+              }
+            },
+            {
+              "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+              "resolved_mode": "rich",
+              "passed_mode": "rich",
+              "output_sha256": "5ec39f93779a8e42f0e9950de217824c870efafeb94134dce9e9dbddec1eda81",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.04704200000560377
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.3357919995323755
+                }
+              }
+            },
+            {
+              "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+              "resolved_mode": "rich",
+              "passed_mode": "rich",
+              "output_sha256": "30272375569bf084da2ad9a02e88a71c43353df29d5772d2ba81b14b02676fa8",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 50,
+                  "p95_ms": 0.03150000156892929
+                },
+                "redaction_plus_rendering": {
+                  "count": 50,
+                  "p95_ms": 0.3533330000209389
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "blocking_speed_threshold": null
+  },
+  "execution_deadline_utc": "2026-11-02T15:33:25Z",
+  "watchdog_restore_utc": "2026-11-02T15:34:25Z",
+  "actual_execution_end_utc": "2026-11-02T15:27:51Z"
+}

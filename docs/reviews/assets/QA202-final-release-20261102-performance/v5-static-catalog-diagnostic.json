@@ -1,0 +1,28 @@
+{
+  "scope": "Static fixture catalog evaluation only; no SDK loaded, no timing clock read, no benchmark rerun",
+  "expected_sources": [
+    {
+      "path": "features/presentation_ledger/f13_numeric.feature",
+      "original_exists": true,
+      "staged_exists": false,
+      "original_sha256": "7af3d9828d9ef4887d253ccd5828d6be8a9bd259620f70c5936831bc6a2f9bfb"
+    },
+    {
+      "path": "features/presentation_ledger/f14_escaping.feature",
+      "original_exists": true,
+      "staged_exists": false,
+      "original_sha256": "08e22d57438d97889bb333c2a1908c3c882f474274346576639e984dedbaa182"
+    }
+  ],
+  "catalog_error": {
+    "class": "Errno::ENOENT",
+    "message": "No such file or directory @ rb_sysopen - /Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/harness-root-v5/features/presentation_ledger/f13_numeric.feature",
+    "backtrace": [
+      "/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/harness-root-v5/script/acceptance/presentation_ledger_developer/fixtures.rb:74:in 'IO.read'",
+      "/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/harness-root-v5/script/acceptance/presentation_ledger_developer/fixtures.rb:74:in 'block in LedgerDeveloper.catalog'",
+      "/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/harness-root-v5/script/acceptance/presentation_ledger_developer/fixtures.rb:72:in 'Array#each'",
+      "/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/harness-root-v5/script/acceptance/presentation_ledger_developer/fixtures.rb:72:in 'LedgerDeveloper.catalog'",
+      "-e:1:in '<main>'"
+    ]
+  }
+}

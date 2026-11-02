@@ -1,0 +1,193 @@
+{
+  "schema": "sdk202-independent-final-performance/5",
+  "formal_result": "NOT RUN",
+  "release_performance_accepted": false,
+  "candidate_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "baseline_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "isolated_attempts": 1,
+  "retries": 0,
+  "v4_preserved": true,
+  "stop_reason": "ReleasePerfDriver202::Invalid: Fixture driver failed: wall-1-baseline-plain",
+  "harness_cause": "Fixture catalog requires f13_numeric.feature and f14_escaping.feature; both absent from frozen staging. First missing read is f13_numeric.feature. Static no-clock diagnostic reproduced ENOENT; baseline SDK probe succeeded; no F07 scenario ran.",
+  "frozen21": {
+    "status": "PASS",
+    "rounds": 2,
+    "arms": 8,
+    "samples_per_arm_per_boundary": 1050,
+    "actual_measured_samples": 16800,
+    "warmups_per_input": 10,
+    "measurements_per_input": 50,
+    "comparisons": [
+      {
+        "boundary": "renderer_only",
+        "mode": "plain",
+        "baseline_p95_ms": 0.9654999994381797,
+        "candidate_p95_ms": 0.9271250000892906,
+        "regression_percent": -3.9746244817420395,
+        "regression_pass": true,
+        "renderer_under_2ms": true,
+        "round": 1
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "plain",
+        "baseline_p95_ms": 5.898957999306731,
+        "candidate_p95_ms": 3.573292000510264,
+        "regression_percent": -39.4250306421878,
+        "regression_pass": true,
+        "renderer_under_2ms": null,
+        "round": 1
+      },
+      {
+        "boundary": "renderer_only",
+        "mode": "rich",
+        "baseline_p95_ms": 1.6087080002762377,
+        "candidate_p95_ms": 0.9609579992684303,
+        "regression_percent": -40.265231533415616,
+        "regression_pass": true,
+        "renderer_under_2ms": true,
+        "round": 1
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "rich",
+        "baseline_p95_ms": 6.574375000127475,
+        "candidate_p95_ms": 3.6044169992237585,
+        "regression_percent": -45.17475806971964,
+        "regression_pass": true,
+        "renderer_under_2ms": null,
+        "round": 1
+      },
+      {
+        "boundary": "renderer_only",
+        "mode": "plain",
+        "baseline_p95_ms": 0.9759169988683425,
+        "candidate_p95_ms": 0.9332909994554939,
+        "regression_percent": -4.367789418800683,
+        "regression_pass": true,
+        "renderer_under_2ms": true,
+        "round": 2
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "plain",
+        "baseline_p95_ms": 5.996250001771841,
+        "candidate_p95_ms": 3.525416999764275,
+        "regression_percent": -41.206303961266734,
+        "regression_pass": true,
+        "renderer_under_2ms": null,
+        "round": 2
+      },
+      {
+        "boundary": "renderer_only",
+        "mode": "rich",
+        "baseline_p95_ms": 1.719084000797011,
+        "candidate_p95_ms": 0.9651670006860513,
+        "regression_percent": -43.855739438062635,
+        "regression_pass": true,
+        "renderer_under_2ms": true,
+        "round": 2
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "rich",
+        "baseline_p95_ms": 6.4175000006798655,
+        "candidate_p95_ms": 3.5776670010818634,
+        "regression_percent": -44.25139071752477,
+        "regression_pass": true,
+        "renderer_under_2ms": null,
+        "round": 2
+      }
+    ],
+    "raw_files": [
+      "isolated-v5-20261102T150814Z/round1-baseline-plain.json",
+      "isolated-v5-20261102T150814Z/round1-candidate-plain.json",
+      "isolated-v5-20261102T150814Z/round2-baseline-plain.json",
+      "isolated-v5-20261102T150814Z/round2-candidate-plain.json",
+      "isolated-v5-20261102T150814Z/round1-baseline-rich.json",
+      "isolated-v5-20261102T150814Z/round1-candidate-rich.json",
+      "isolated-v5-20261102T150814Z/round2-baseline-rich.json",
+      "isolated-v5-20261102T150814Z/round2-candidate-rich.json"
+    ]
+  },
+  "remaining": {
+    "F07": "NOT RUN",
+    "all_presentation_replay": "NOT RUN",
+    "supplementary_absolute_url_cost": "NOT RUN"
+  },
+  "conditions": {
+    "load_samples": 20,
+    "total_background_cpu_percent_range": [
+      0.0,
+      0.0
+    ],
+    "all_same_background_paused": true,
+    "background_identities": [
+      {
+        "name": "rp2607-control-plane",
+        "id": "62b472cb962c823d4b2f396f072f000bba8c218268d1c83871da57a6ceadd837",
+        "paused": true,
+        "running": true
+      },
+      {
+        "name": "typewords-local-typewords-1",
+        "id": "28f90a328c7d29c38242a51df3594a5849bd5d5450800af50baec776b9a1f8b2",
+        "paused": true,
+        "running": true
+      }
+    ],
+    "host_load_diagnostic_range": [
+      21.1,
+      22.99
+    ],
+    "host_cpu_count": 8,
+    "host_load_is_not_a_gate": true
+  },
+  "timing_start": {
+    "utc": "2026-11-02T15:10:34Z",
+    "timed": true
+  },
+  "ended_utc": "2026-11-02T15:11:54Z",
+  "completion_signal": "v5-performance-pause-done",
+  "guard_receipt": "v5-performance-pause-receipt.ndjson",
+  "restores": [
+    {
+      "event": "restore",
+      "utc": "2026-11-02T15:11:54Z",
+      "name": "typewords-local-typewords-1",
+      "success": true,
+      "error": null
+    },
+    {
+      "event": "restore",
+      "utc": "2026-11-02T15:11:55Z",
+      "name": "rp2607-control-plane",
+      "success": true,
+      "error": null
+    }
+  ],
+  "watchdog_restore_utc": "2026-11-02T15:23:14Z",
+  "deadline_reached": false,
+  "post_stop_proof": {
+    "frozen_source_harness_corpus_match": true,
+    "dependency_files": 2356,
+    "dependency_manifest_sha256": "3a015e3a12387b249ede5ebd6cdb5b638eb916c95c036ff4755cefb081e1536b",
+    "sdk_head": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+    "sdk_worktree_clean": true,
+    "restoration_receipt": "v5-performance-pause-receipt.ndjson",
+    "completion_signal": "v5-performance-pause-done"
+  },
+  "source_manifests": {
+    "baseline": "c751cd9304e8e88016948a1c9948dd36a8975472f16044172c49bf855f9e0382",
+    "candidate": "23dca543c9e679c7a06874c2e6935430929da3947af502cb71edc75fc919777e"
+  },
+  "image_id": "sha256:316dd4f6b6de632d5ade7bdb78fc33f7e82db8a87785e93a8a2c8d81706d3fe7",
+  "dependency_volume": "ledger-qa202-9bf3356-dependencies",
+  "dependency_sha256": "3a015e3a12387b249ede5ebd6cdb5b638eb916c95c036ff4755cefb081e1536b",
+  "corpus_file_sha256": "d8b2f24a9d531d9114e02ed960ad50618a42c98d8fdfb22308be7ff285421177",
+  "ordered_corpus_sha256": "a99b8d138ce4b63d63b531698bf33ffcb0b0ca263136ac20517e4c72a1bd1d4f",
+  "harness_manifest_sha256": "ce15110b98a13bb22184a4ee1d98ca5866161e83edf26c66f08a4010ee94b1db",
+  "authorization_sha256": "a46bf5acc1573724b597ac701960c9aa0665b3190722c5d1288057eefc49b60c",
+  "measurements_and_postchecks_ended_before_restore": true,
+  "files_left_uncommitted": true
+}

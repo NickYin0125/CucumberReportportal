@@ -1,12 +1,115 @@
 # SDK 2.0.2 Independent Final Performance QA
 
-Formal result: **NOT RUN**. Release-performance acceptance is not granted.
+Formal aggregate result: **PASS / ACCEPT (performance scope only)**.
 
 Candidate: `8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7`.
 Accepted comparison baseline: `3f20313c20b25071fbc49b31e1c6bc772bd599e4`.
-No SDK edit, merge, tag, release or push is authorized or performed by this reviewer.
+SDK source remains clean at the candidate SHA. This reviewer made no SDK edits,
+Git-index changes, commits, pushes, merges, tags or release operations. Separate
+contract, security and UI acceptance remain outside this performance verdict.
 
-## Final Observation
+## Aggregate Measurements
+
+Two explicitly authorized, disclosed windows provide complete coverage:
+**v5** supplies both complete frozen21 matched rounds; **v6** supplies the
+previously incomplete F07 and Presentation replay plus supplementary URL costs.
+No passed frozen21 test was rerun, no favorable round was selected, and no
+ratio compares samples from different windows. All original thresholds remain
+unchanged. Both windows used the same immutable runtimes, pinned environment,
+and the same two container identities paused for both arms.
+
+Frozen21: 21 unchanged ordered inputs, 10 warmups and 50 measurements per input
+per boundary per arm, 1,050 samples per arm/boundary, two counterbalanced rounds,
+16,800 measured calls. Correct `presentation: mode` configuration and the actual
+resolved/passed mode are asserted for every input. Every comparison passed the
+candidate <= baseline x 1.10 gate; all candidate renderer p95 values were <2 ms.
+
+| Round | Mode | Boundary | Baseline p95 ms | Candidate p95 ms | Change |
+| --- | --- | --- | ---: | ---: | ---: |
+| 1 | plain | renderer | 0.965500 | 0.927125 | -3.97% |
+| 1 | plain | redaction + render | 5.898958 | 3.573292 | -39.43% |
+| 1 | rich | renderer | 1.608708 | 0.960958 | -40.27% |
+| 1 | rich | redaction + render | 6.574375 | 3.604417 | -45.17% |
+| 2 | plain | renderer | 0.975917 | 0.933291 | -4.37% |
+| 2 | plain | redaction + render | 5.996250 | 3.525417 | -41.21% |
+| 2 | rich | renderer | 1.719084 | 0.965167 | -43.86% |
+| 2 | rich | redaction + render | 6.417500 | 3.577667 | -44.25% |
+
+F07: all nine 50-step runs completed in the original three rotated orders.
+Medians: baseline/plain **0.636331 s**, candidate/plain **0.643295 s (+1.09%)**,
+candidate/rich **0.643868 s (+1.18%)**. Both candidate medians passed +10%.
+
+F01-F18 Presentation replay, including real four-worker F06, passed every
+observed entry-point p95 <2 ms separately in each mode. Plain: 15 entry points,
+68,850 samples, maximum **0.996750 ms**. Rich: 20 entry points, 108,550 samples,
+maximum **0.985125 ms**. FailureCard retained 1,050 samples in each mode.
+The original runner's unsupported native F16c record remains explicit and
+unchanged; no frozen21 case was excluded or replaced.
+
+Supplementary encoded-URL costs are diagnostic only, never corpus replacements
+or new speed gates. Absolute p95 values (150 samples per arm/boundary):
+
+| Mode | Arm | Renderer ms | Full Formatter ms |
+| --- | --- | ---: | ---: |
+| plain | baseline | 0.101292 | 0.856292 |
+| plain | candidate | 0.069458 | 0.424166 |
+| rich | baseline | 0.155125 | 0.764375 |
+| rich | candidate | 0.059125 | 0.353333 |
+
+All raw samples, per-input proofs, medians and maxima are retained. Source checks
+are complete; no extra tests were run after the final request.
+
+## Windows And History
+
+V4 remains immutable **NOT RUN**: original container quiet gate failed in 18
+samples (28.37%-100.69%, no eligible triple). No unexpected containers appeared.
+V5's overall raw result remains **NOT RUN** because its first F07 driver failed
+with `Errno::ENOENT` before any F07 scenario ran. The QA package omitted existing
+`f13_numeric.feature` and `f14_escaping.feature`, which the catalog loads even
+for an F07-only selection. Its already completed frozen21 PASS is unchanged.
+
+The test-harness-only packaging fix copied both original files byte for byte.
+Seven separate v6 untimed validity executions passed before the new timing grant:
+three F07 arms, plain/rich F01-F18, and plain/rich F06. Their performance sample
+count is zero. Timed v6 uses the original timing observer, not the untimed one.
+
+Original quiet gate: <=35% total eligible-container CPU for three consecutive
+samples, spread <=15 points, only RP/Typewords; around-run checks remain enforced.
+V5: 20 load records; v6: 37. All measured background CPU values were **0%** and
+both identical container identities remained paused. Host load was recorded
+only as diagnostic per Master's explicit pre-timing clarification; v6 range
+16.80-24.72 on 8 CPUs. No threshold was silently relaxed.
+
+V5 measurements ended at **15:11:54 UTC**; RP restoration completed 15:11:55 UTC.
+V6 timing started **15:25:32 UTC**, ended **15:27:51 UTC**, and both services
+restored successfully at 15:27:51 UTC before prose. Approximate pause durations:
+221 s + 206 s = **427 s**. No watchdog cutoff was reached. In preserved v5 data,
+`execution_stop_utc` means scheduled deadline, not observed stop; v6 explicitly
+uses `execution_deadline_utc` (15:33:25) and `actual_execution_end_utc` (15:27:51).
+
+## Proof And Delivery
+
+[Aggregate result](/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/final-aggregate-result-v6.json)
+SHA-256: `2a3db399ffac51b29942ff7c9c9c979a0b4e86bc951d063a063bd223ca158db9`.
+[Hash proof](/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/final-hash-proof-v6.json)
+SHA-256: `8299a2fadd2ec6910b1e78d5ea6fc64baee9fcbfa17dee1aa207fd71319d5df0`.
+
+The hash proof binds source manifests, corpus, image, dependency volume,
+authorizations, v5 retained evidence, v6 timing package/entry and raw results.
+Sources were verified against frozen Git blobs, SDK loading was guarded, and
+dependency bytes were rechecked before/after execution. Runtime and harness
+fingerprints remain identical where retained v5 measurements depend on them.
+No other reviewers' conclusions or Master's diagnostic numbers supplied this
+independent verdict.
+
+[Final exact owned inventory](/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/owned-files-final-v6.json).
+New and modified owned files remain uncommitted for Master's serialized scan and
+staging. Earlier Master-committed evidence remains unchanged.
+
+The sections below retain the earlier v4 checkpoint context. Their historical
+NOT RUN statements do not replace the completed aggregate result above.
+
+## Historical V4 Observation
 
 The single authorized V4 attempt stopped at the original container quiet gate,
 before any benchmark or F07 execution. The immutable preflight contains 18
@@ -42,8 +145,8 @@ all source/image/dependency/corpus hashes, and the authorization/harness binding
 Post-stop verification reconfirmed unchanged frozen source, harness, corpus,
 image and all 2,356 dependency files. The SDK remained clean at the final SHA.
 See [post-stop proof](/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/post-stop-proof-v4.json).
-The quiet window has ended. Performance acceptance is not granted; any later
-isolated attempt requires separate explicit authorization and new evidence paths.
+At that checkpoint performance acceptance was not granted. Subsequent isolated
+attempts v5 and v6 received separate explicit authorization and new evidence paths.
 This failed preflight must remain immutable.
 
 ## Authorized V4 Window
@@ -149,15 +252,11 @@ the resolved Config mode and actual FailureCard argument for every frozen input.
 Evidence destination:
 `docs/reviews/assets/QA202-final-release-20261102-performance/`.
 Preparation manifests, actual-mode validation, authorization, conditions, raw
-samples, per-input proofs and formal results belong there. Required timing
-results remain NOT RUN until independently executed in an authorized stable
-window. Earlier failed records are preserved and are not superseded by a green
-claim in this report.
+samples, per-input proofs and formal results belong there. Earlier failed records
+remain unchanged; the current aggregate explicitly discloses their scope and
+the separately authorized successful coverage, without rewriting their verdicts.
 
-All owned files are intentionally uncommitted for Master's serialized secret
-scan and staging. [owned-files-final-v4.json](/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/owned-files-final-v4.json)
-is the final exact absolute-path inventory, including frozen source snapshots,
-all preserved preparation revisions and the immutable V4 preflight. Earlier
-inventories and preflight-readiness summaries remain historical. V4 readiness,
-the completed window result and `final-result-v4.json` supersede them without
-overwriting them. No shared Git index, commit, or push operation was performed.
+[owned-files-final-v4.json](/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/owned-files-final-v4.json)
+is the historical v4 inventory. All earlier inventories and readiness summaries
+are preserved. The current exact inventory is linked above. No shared Git index,
+commit, or push operation was performed by this reviewer.

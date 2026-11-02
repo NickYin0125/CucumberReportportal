@@ -1,0 +1,111 @@
+{
+  "status": "NOT RUN",
+  "final_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "baseline_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "frozen21": {
+    "status": "PASS",
+    "comparisons": [
+      {
+        "boundary": "renderer_only",
+        "mode": "plain",
+        "baseline_p95_ms": 0.9654999994381797,
+        "candidate_p95_ms": 0.9271250000892906,
+        "regression_percent": -3.9746244817420395,
+        "regression_pass": true,
+        "renderer_under_2ms": true
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "plain",
+        "baseline_p95_ms": 5.898957999306731,
+        "candidate_p95_ms": 3.573292000510264,
+        "regression_percent": -39.4250306421878,
+        "regression_pass": true,
+        "renderer_under_2ms": null
+      },
+      {
+        "boundary": "renderer_only",
+        "mode": "rich",
+        "baseline_p95_ms": 1.6087080002762377,
+        "candidate_p95_ms": 0.9609579992684303,
+        "regression_percent": -40.265231533415616,
+        "regression_pass": true,
+        "renderer_under_2ms": true
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "rich",
+        "baseline_p95_ms": 6.574375000127475,
+        "candidate_p95_ms": 3.6044169992237585,
+        "regression_percent": -45.17475806971964,
+        "regression_pass": true,
+        "renderer_under_2ms": null
+      },
+      {
+        "boundary": "renderer_only",
+        "mode": "plain",
+        "baseline_p95_ms": 0.9759169988683425,
+        "candidate_p95_ms": 0.9332909994554939,
+        "regression_percent": -4.367789418800683,
+        "regression_pass": true,
+        "renderer_under_2ms": true
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "plain",
+        "baseline_p95_ms": 5.996250001771841,
+        "candidate_p95_ms": 3.525416999764275,
+        "regression_percent": -41.206303961266734,
+        "regression_pass": true,
+        "renderer_under_2ms": null
+      },
+      {
+        "boundary": "renderer_only",
+        "mode": "rich",
+        "baseline_p95_ms": 1.719084000797011,
+        "candidate_p95_ms": 0.9651670006860513,
+        "regression_percent": -43.855739438062635,
+        "regression_pass": true,
+        "renderer_under_2ms": true
+      },
+      {
+        "boundary": "redaction_plus_rendering",
+        "mode": "rich",
+        "baseline_p95_ms": 6.4175000006798655,
+        "candidate_p95_ms": 3.5776670010818634,
+        "regression_percent": -44.25139071752477,
+        "regression_pass": true,
+        "renderer_under_2ms": null
+      }
+    ],
+    "rounds": 2,
+    "gating": "Each matched round independently; no favorable-round selection"
+  },
+  "F07": "NOT RUN",
+  "all_presentation": "NOT RUN",
+  "supplement": "NOT RUN",
+  "quiet_conditions": {
+    "original_container_criterion": {
+      "consecutive": 3,
+      "maximum_cpu_percent": 35,
+      "maximum_spread_percentage_points": 15,
+      "eligible_containers": [
+        "rp2607-control-plane",
+        "typewords-local-typewords-1"
+      ]
+    },
+    "host_load_diagnostic": {
+      "recorded_comparison": "1-minute loadavg <= hw.ncpu",
+      "origin": "Later third-party focused_window3.rb preflight; not original G11/Decision25 or original container criterion",
+      "gates_execution": false,
+      "acceptance_threshold": false,
+      "master_clarification": "Host-load<=CPU from later third-party preflight is NOT a normative owner gate; record it separately as a diagnostic, not a new release criterion",
+      "master_disclosed_recent_host_load": "approximately 17 on 8 CPUs before this window"
+    }
+  },
+  "execution_stop_utc": "2026-11-02T15:22:14Z",
+  "watchdog_restore_utc": "2026-11-02T15:23:14Z",
+  "reason": "ReleasePerfDriver202::Invalid: Fixture driver failed: wall-1-baseline-plain",
+  "ended_utc": "2026-11-02T15:11:54Z",
+  "background_restore_signal": "/private/tmp/rp-release-20261102/performance-pause-done"
+}

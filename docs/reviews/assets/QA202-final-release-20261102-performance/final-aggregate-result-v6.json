@@ -1,0 +1,498 @@
+{
+  "schema": "sdk202-independent-aggregate-performance/6",
+  "formal_result": "PASS",
+  "performance_acceptance": "ACCEPT",
+  "scope": "Performance only; does not certify separate contract/UI/security criteria or authorize agent release operations",
+  "candidate_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "baseline_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "two_disclosed_windows": {
+    "v5": {
+      "scope": "Both complete frozen21 matched rounds",
+      "status": "PASS",
+      "window": "isolated-v5-20261102T150814Z",
+      "raw_overall_window_status": "NOT RUN due to subsequent fixture packaging failure",
+      "comparisons": [
+        {
+          "boundary": "renderer_only",
+          "mode": "plain",
+          "baseline_p95_ms": 0.9654999994381797,
+          "candidate_p95_ms": 0.9271250000892906,
+          "regression_percent": -3.9746244817420395,
+          "regression_pass": true,
+          "renderer_under_2ms": true,
+          "round": 1
+        },
+        {
+          "boundary": "redaction_plus_rendering",
+          "mode": "plain",
+          "baseline_p95_ms": 5.898957999306731,
+          "candidate_p95_ms": 3.573292000510264,
+          "regression_percent": -39.4250306421878,
+          "regression_pass": true,
+          "renderer_under_2ms": null,
+          "round": 1
+        },
+        {
+          "boundary": "renderer_only",
+          "mode": "rich",
+          "baseline_p95_ms": 1.6087080002762377,
+          "candidate_p95_ms": 0.9609579992684303,
+          "regression_percent": -40.265231533415616,
+          "regression_pass": true,
+          "renderer_under_2ms": true,
+          "round": 1
+        },
+        {
+          "boundary": "redaction_plus_rendering",
+          "mode": "rich",
+          "baseline_p95_ms": 6.574375000127475,
+          "candidate_p95_ms": 3.6044169992237585,
+          "regression_percent": -45.17475806971964,
+          "regression_pass": true,
+          "renderer_under_2ms": null,
+          "round": 1
+        },
+        {
+          "boundary": "renderer_only",
+          "mode": "plain",
+          "baseline_p95_ms": 0.9759169988683425,
+          "candidate_p95_ms": 0.9332909994554939,
+          "regression_percent": -4.367789418800683,
+          "regression_pass": true,
+          "renderer_under_2ms": true,
+          "round": 2
+        },
+        {
+          "boundary": "redaction_plus_rendering",
+          "mode": "plain",
+          "baseline_p95_ms": 5.996250001771841,
+          "candidate_p95_ms": 3.525416999764275,
+          "regression_percent": -41.206303961266734,
+          "regression_pass": true,
+          "renderer_under_2ms": null,
+          "round": 2
+        },
+        {
+          "boundary": "renderer_only",
+          "mode": "rich",
+          "baseline_p95_ms": 1.719084000797011,
+          "candidate_p95_ms": 0.9651670006860513,
+          "regression_percent": -43.855739438062635,
+          "regression_pass": true,
+          "renderer_under_2ms": true,
+          "round": 2
+        },
+        {
+          "boundary": "redaction_plus_rendering",
+          "mode": "rich",
+          "baseline_p95_ms": 6.4175000006798655,
+          "candidate_p95_ms": 3.5776670010818634,
+          "regression_percent": -44.25139071752477,
+          "regression_pass": true,
+          "renderer_under_2ms": null,
+          "round": 2
+        }
+      ],
+      "actual_execution_end_utc": "2026-11-02T15:11:54Z",
+      "execution_deadline_utc": "2026-11-02T15:22:14Z",
+      "legacy_key_note": "V5 execution_stop_utc denotes deadline, not observed stop; original unchanged"
+    },
+    "v6": {
+      "scope": "Previously incomplete F07, F01-F18/F06 replay and supplementary absolute URL costs only",
+      "status": "PASS",
+      "window": "isolated-v6-remaining-20261102T152425Z",
+      "timing_start": {
+        "utc": "2026-11-02T15:25:32Z",
+        "run_scope": "remaining_only",
+        "frozen21_rerun": false
+      },
+      "actual_execution_end_utc": "2026-11-02T15:27:51Z",
+      "execution_deadline_utc": "2026-11-02T15:33:25Z",
+      "F07": {
+        "baseline-plain": {
+          "raw_seconds": [
+            0.6784000000006927,
+            0.6363309999997,
+            0.6169789169998694
+          ],
+          "median_seconds": 0.6363309999997,
+          "change_percent": 0.0
+        },
+        "candidate-plain": {
+          "raw_seconds": [
+            0.643294708999747,
+            0.6135714590000134,
+            0.6531068340009369
+          ],
+          "median_seconds": 0.643294708999747,
+          "change_percent": 1.0943532532675881
+        },
+        "candidate-rich": {
+          "raw_seconds": [
+            0.6154889589997765,
+            0.6438683340002171,
+            0.6446296250014711
+          ],
+          "median_seconds": 0.6438683340002171,
+          "change_percent": 1.1844989479564472
+        }
+      },
+      "presentation_summary": {
+        "plain": {
+          "entry_points": 15,
+          "total_samples": 68850,
+          "maximum_entry": "FailureCard.format",
+          "maximum_p95_ms": 0.996750000922475,
+          "all_below_2_ms": true
+        },
+        "rich": {
+          "entry_points": 20,
+          "total_samples": 108550,
+          "maximum_entry": "FailureCard.format",
+          "maximum_p95_ms": 0.985124999715481,
+          "all_below_2_ms": true
+        }
+      },
+      "supplementary_absolute_cost": {
+        "status": "DIAGNOSTIC_MEASURED",
+        "absolute_cost": {
+          "plain": {
+            "baseline": {
+              "role": "baseline",
+              "mode": "plain",
+              "source_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+              "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 150,
+                  "p95_ms": 0.10129199836228509,
+                  "median_ms": 0.025041999833774753,
+                  "maximum_ms": 1.714207999611972
+                },
+                "redaction_plus_rendering": {
+                  "count": 150,
+                  "p95_ms": 0.8562919992982643,
+                  "median_ms": 0.42012500125565566,
+                  "maximum_ms": 5.5536670006404165
+                }
+              },
+              "per_input": [
+                {
+                  "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+                  "resolved_mode": "plain",
+                  "passed_mode": "plain",
+                  "output_sha256": "257963dfdbb0a2c5d972196f3e9a34cb368b09aa9fdcd4147baffea369404b66",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.06741600009263493
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 1.0773750000225846
+                    }
+                  }
+                },
+                {
+                  "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+                  "resolved_mode": "plain",
+                  "passed_mode": "plain",
+                  "output_sha256": "5ec39f93779a8e42f0e9950de217824c870efafeb94134dce9e9dbddec1eda81",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.15020799946796615
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.8540420003555482
+                    }
+                  }
+                },
+                {
+                  "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+                  "resolved_mode": "plain",
+                  "passed_mode": "plain",
+                  "output_sha256": "30272375569bf084da2ad9a02e88a71c43353df29d5772d2ba81b14b02676fa8",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.1443330002075527
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.6645000012213131
+                    }
+                  }
+                }
+              ]
+            },
+            "candidate": {
+              "role": "candidate",
+              "mode": "plain",
+              "source_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+              "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 150,
+                  "p95_ms": 0.06945799941604491,
+                  "median_ms": 0.022915999579709023,
+                  "maximum_ms": 0.10312500126019586
+                },
+                "redaction_plus_rendering": {
+                  "count": 150,
+                  "p95_ms": 0.4241659989929758,
+                  "median_ms": 0.1579590007168008,
+                  "maximum_ms": 5.174083999008872
+                }
+              },
+              "per_input": [
+                {
+                  "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+                  "resolved_mode": "plain",
+                  "passed_mode": "plain",
+                  "output_sha256": "257963dfdbb0a2c5d972196f3e9a34cb368b09aa9fdcd4147baffea369404b66",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.08175000039045699
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.6687090008199448
+                    }
+                  }
+                },
+                {
+                  "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+                  "resolved_mode": "plain",
+                  "passed_mode": "plain",
+                  "output_sha256": "5ec39f93779a8e42f0e9950de217824c870efafeb94134dce9e9dbddec1eda81",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.031083000067155808
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.36958300006517675
+                    }
+                  }
+                },
+                {
+                  "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+                  "resolved_mode": "plain",
+                  "passed_mode": "plain",
+                  "output_sha256": "30272375569bf084da2ad9a02e88a71c43353df29d5772d2ba81b14b02676fa8",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.025499999537714757
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.4241659989929758
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "rich": {
+            "baseline": {
+              "role": "baseline",
+              "mode": "rich",
+              "source_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+              "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 150,
+                  "p95_ms": 0.15512499885517173,
+                  "median_ms": 0.049665999540593475,
+                  "maximum_ms": 4.272250000212807
+                },
+                "redaction_plus_rendering": {
+                  "count": 150,
+                  "p95_ms": 0.7643749995622784,
+                  "median_ms": 0.4378749999887077,
+                  "maximum_ms": 4.559582999718259
+                }
+              },
+              "per_input": [
+                {
+                  "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+                  "resolved_mode": "rich",
+                  "passed_mode": "rich",
+                  "output_sha256": "de7899beb1965fe07579b59a3ca78c75c4d71da29f46fb6a4eeec1d1ef15acf9",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.149583000165876
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.8327080013259547
+                    }
+                  }
+                },
+                {
+                  "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+                  "resolved_mode": "rich",
+                  "passed_mode": "rich",
+                  "output_sha256": "ed08f5bc83376cab7e4578c201958017eb2717983d22a8b277625ed22121089a",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.1914590011438122
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.7947089998197043
+                    }
+                  }
+                },
+                {
+                  "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+                  "resolved_mode": "rich",
+                  "passed_mode": "rich",
+                  "output_sha256": "a84312e45f80ecdff2306428c0a90f813ba83352058f606851fd3e3c39164f70",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.09545800094201695
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.6883330006530741
+                    }
+                  }
+                }
+              ]
+            },
+            "candidate": {
+              "role": "candidate",
+              "mode": "rich",
+              "source_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+              "purpose": "Absolute encoded-URL cost only; no acceptance threshold or passthrough-versus-sanitization speed gate",
+              "boundaries": {
+                "renderer_only": {
+                  "count": 150,
+                  "p95_ms": 0.05912500091653783,
+                  "median_ms": 0.024540999220334925,
+                  "maximum_ms": 0.09216699982061982
+                },
+                "redaction_plus_rendering": {
+                  "count": 150,
+                  "p95_ms": 0.3533330000209389,
+                  "median_ms": 0.1537080006528413,
+                  "maximum_ms": 4.563917000268702
+                }
+              },
+              "per_input": [
+                {
+                  "input_id": "5895937dc8650845f9fc65a1cd5af704833a922b61330bb87ca1195f1702f3bc",
+                  "resolved_mode": "rich",
+                  "passed_mode": "rich",
+                  "output_sha256": "257963dfdbb0a2c5d972196f3e9a34cb368b09aa9fdcd4147baffea369404b66",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.0810410001577111
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.4439170006662607
+                    }
+                  }
+                },
+                {
+                  "input_id": "032db7a7e859b7ce611229b5b04343834980097915700115277ff5f22c1cc0f5",
+                  "resolved_mode": "rich",
+                  "passed_mode": "rich",
+                  "output_sha256": "5ec39f93779a8e42f0e9950de217824c870efafeb94134dce9e9dbddec1eda81",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.04704200000560377
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.3357919995323755
+                    }
+                  }
+                },
+                {
+                  "input_id": "7b4fe77e8e218eca84c6126b8fcb57e2a0892ae078a19b8d92f4b5efb3236b21",
+                  "resolved_mode": "rich",
+                  "passed_mode": "rich",
+                  "output_sha256": "30272375569bf084da2ad9a02e88a71c43353df29d5772d2ba81b14b02676fa8",
+                  "boundaries": {
+                    "renderer_only": {
+                      "count": 50,
+                      "p95_ms": 0.03150000156892929
+                    },
+                    "redaction_plus_rendering": {
+                      "count": 50,
+                      "p95_ms": 0.3533330000209389
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "blocking_speed_threshold": null
+      },
+      "load_samples": 37,
+      "background_cpu_range": [
+        0.0,
+        0.0
+      ],
+      "paused_background_unchanged": true,
+      "host_load_diagnostic_range": [
+        16.8,
+        24.72
+      ]
+    }
+  },
+  "unchanged_limits": {
+    "matched_frozen21_each_boundary": "candidate p95 <= baseline p95 * 1.10 per mode per round",
+    "renderer_and_presentation_p95": "<2 ms",
+    "F07": "median of 3 rotated runs <= baseline * 1.10",
+    "container_quiet": "<=35%, 3 consecutive, spread<=15, only allowed RP/Typewords containers",
+    "host_load": "Diagnostic only",
+    "supplement": "Diagnostic absolute costs only, no blocking speed threshold"
+  },
+  "history_preserved": {
+    "v4": "NOT RUN original quiet gate failure",
+    "v5": "First F07 driver ENOENT due to absent staged F13/F14 files; raw failure and complete frozen21 PASS unchanged",
+    "v6_untimed": "7 PASS_UNTIMED, zero stopwatch samples; packaging corrected by byte-identical copies"
+  },
+  "favorable_round_selection": false,
+  "repeat_of_passed_frozen21": false,
+  "SDK_changes": false,
+  "restore_events": [
+    {
+      "event": "restore",
+      "utc": "2026-11-02T15:27:51Z",
+      "name": "typewords-local-typewords-1",
+      "success": true,
+      "error": null
+    },
+    {
+      "event": "restore",
+      "utc": "2026-11-02T15:27:51Z",
+      "name": "rp2607-control-plane",
+      "success": true,
+      "error": null
+    }
+  ],
+  "pause_durations_seconds": {
+    "v5": 221,
+    "v6": 206,
+    "total_approximate": 427
+  },
+  "hash_proof": "final-hash-proof-v6.json",
+  "no_tests_after_v6_requested": true,
+  "no_index_commit_push_merge_tag_release_operations": true
+}

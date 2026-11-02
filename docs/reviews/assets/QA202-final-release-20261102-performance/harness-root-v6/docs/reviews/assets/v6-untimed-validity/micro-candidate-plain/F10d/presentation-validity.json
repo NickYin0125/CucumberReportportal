@@ -1,0 +1,42 @@
+{
+  "schema": "untimed-presentation-functional-replay/1",
+  "performance_acceptance": "NOT_ASSESSED",
+  "timing_collection": "DISABLED",
+  "timing_samples_collected": 0,
+  "observed_calls": {
+    "Fallback.render": 10,
+    "MarkdownText.inline": 1,
+    "MarkdownText.html": 1,
+    "LedgerJson.format": 3,
+    "MarkdownText.code": 1,
+    "MarkdownText.fence": 2
+  },
+  "replay": {
+    "Fallback.render": {
+      "inputs": 10,
+      "untimed_invocations": 600
+    },
+    "MarkdownText.inline": {
+      "inputs": 1,
+      "untimed_invocations": 60
+    },
+    "MarkdownText.html": {
+      "inputs": 1,
+      "untimed_invocations": 60
+    },
+    "LedgerJson.format": {
+      "inputs": 3,
+      "untimed_invocations": 180
+    },
+    "MarkdownText.code": {
+      "inputs": 1,
+      "untimed_invocations": 60
+    },
+    "MarkdownText.fence": {
+      "inputs": 2,
+      "untimed_invocations": 120
+    }
+  },
+  "replay_errors": {},
+  "note": "Same captured calls and 10+50 invocations per input, but no timing clock or performance sample"
+}

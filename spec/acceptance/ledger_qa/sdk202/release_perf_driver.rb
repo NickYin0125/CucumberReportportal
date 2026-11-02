@@ -9,7 +9,7 @@ module ReleasePerfDriver202
   QA = File.expand_path("../../../..", __dir__)
   SDK = "/Users/nick/Documents/crr-2.0.2"
   OUT = File.join(QA, "docs/reviews/assets/QA202-final-release-20261102-performance")
-  REVISION = "v4"
+  REVISION = "v5"
   STAGE = File.join(OUT, "harness-root-#{REVISION}")
   MANIFEST = File.join(OUT, "harness-manifest-#{REVISION}.json")
   SCRIPTS = "spec/acceptance/ledger_qa/sdk202"
@@ -189,12 +189,14 @@ module ReleasePerfDriver202
       end
     end
     verify!
-    master_receipt = File.join(OUT, "master-authorization-v4.json")
+    master_receipt = File.join(OUT, "master-authorization-#{REVISION}.json")
     ReleasePerf202.gate!(read(master_receipt))
     write(File.join(OUT, "readiness-#{REVISION}.json"), status: "READY_FOR_AUTHORIZED_ORIGINAL_CONTAINER_PREFLIGHT", final_sha: ReleasePerf202::FINAL,
       timings_started: false, manifest: MANIFEST, previous_preparation_preserved: true,
       manifest_sha256: Digest::SHA256.file(MANIFEST).hexdigest, master_authorization_sha256: Digest::SHA256.file(master_receipt).hexdigest,
       quiet_conditions: QUIET_CONDITIONS, supplementary_speed_gate: false,
+      isolation: "Both original permitted background containers paused by Master for both arms; original corpus/method/counts/gates unchanged",
+      deadline_policy: "Stop incomplete by 15:22:14 UTC, 60 seconds before the external 15:23:14 UTC restore watchdog; no reduced samples",
       remaining_prerequisites: ["Original container quiet criterion passes; host load recorded diagnostically only"])
     puts "READY #{REVISION}: Master authorization bound before timing; original container gate enforced, host load and URL costs diagnostic only"
   end
@@ -213,6 +215,16 @@ module ReleasePerfDriver202
   end
 
   def self.load_sample
+    paused = nil
+    if @isolated_window
+      paused = command("docker", "inspect", "--format", "{{.Name}} {{.Id}} {{.State.Paused}} {{.State.Running}}", *ALLOWED_CONTAINERS).lines.map do |line|
+        name, id, is_paused, running = line.split
+        { "name" => name.delete_prefix("/"), "id" => id, "paused" => is_paused == "true", "running" => running == "true" }
+      end
+      raise Invalid, "Isolated background no longer paused; incomplete" unless paused.length == 2 && paused.all? { |r| r["paused"] && r["running"] }
+      @paused_identity ||= paused
+      raise Invalid, "Paused background identity changed" unless @paused_identity == paused
+    end
     rows = command("docker", "stats", "--no-stream", "--format", "{{.Name}} {{.CPUPerc}} {{.MemUsage}}").lines.map do |line|
       name, cpu, *memory = line.split
       { "name" => name, "cpu_percent" => Float(cpu.delete_suffix("%")), "memory" => memory.join(" ") }
@@ -220,7 +232,8 @@ module ReleasePerfDriver202
     { "utc" => Time.now.utc.iso8601, "containers" => rows, "total_cpu_percent" => rows.sum { |r| r.fetch("cpu_percent") },
       "host_loadavg" => command("sysctl", "-n", "vm.loadavg").strip,
       "host_ncpu" => Integer(command("sysctl", "-n", "hw.ncpu").strip),
-      "host_process_cpu" => command("ps", "-Ao", "pid,comm,pcpu").lines.sort_by { |line| -line.split.last.to_f }.first(20) }
+      "host_process_cpu" => command("ps", "-Ao", "pid,comm,pcpu").lines.sort_by { |line| -line.split.last.to_f }.first(20),
+      "paused_background" => paused }
   end
 
   def self.original_container_quiet?(samples)
@@ -274,7 +287,7 @@ module ReleasePerfDriver202
     raise Invalid, "Grant older than 30 minutes" unless (0..1800).cover?(Time.now.utc - Time.parse(receipt.fetch("granted_at_utc")))
     verify!
     ready = read(File.join(OUT, "readiness-#{REVISION}.json"))
-    raise Invalid, "V4 clarification/proof absent" unless receipt["harness_revision"] == REVISION && receipt["host_load_role"] == "diagnostic_only" &&
+    raise Invalid, "Authorized clarification/proof absent" unless receipt["harness_revision"] == REVISION && receipt["host_load_role"] == "diagnostic_only" &&
       ready.fetch("manifest_sha256") == Digest::SHA256.file(MANIFEST).hexdigest &&
       ready.fetch("master_authorization_sha256") == Digest::SHA256.file(receipt_path).hexdigest && ready["timings_started"] == false
     window = File.join(OUT, receipt.fetch("quiet_window_id"))
@@ -286,6 +299,19 @@ module ReleasePerfDriver202
       "frozen21" => "NOT RUN", "F07" => "NOT RUN", "all_presentation" => "NOT RUN", "supplement" => "NOT RUN" }
     results["quiet_conditions"] = QUIET_CONDITIONS
     begin
+      @isolated_window = true
+      stop_at = Time.parse(receipt.fetch("execution_stop_utc"))
+      restore_at = Time.parse(receipt.fetch("watchdog_restore_utc"))
+      raise Invalid, "Insufficient isolated-window deadline" unless stop_at > Time.now.utc && restore_at - stop_at >= 60
+      results["execution_stop_utc"] = stop_at.iso8601
+      results["watchdog_restore_utc"] = restore_at.iso8601
+      @deadline_timer = Thread.new do
+        sleep [stop_at - Time.now.utc, 0].max
+        Open3.capture3("docker", "kill", "ledger-qa202-final-performance")
+        Thread.main.raise(Invalid, "Isolated-window execution deadline reached; incomplete, no sample reduction or retry")
+      end
+      receipt_bytes = File.binread(receipt.fetch("pause_receipt_path"))
+      File.open(File.join(window, "pause-receipt-before.ndjson"), File::WRONLY | File::CREAT | File::EXCL, 0o600) { |f| f.write(receipt_bytes) }
       raise Invalid, "Dependency bytes drift" unless dependencies == read(File.join(OUT, "dependencies.json"))
       settling = []
       18.times do |i|
@@ -394,8 +420,13 @@ module ReleasePerfDriver202
       results["status"] = "NOT RUN"
       results["reason"] = "#{error.class}: #{error.message}"
     ensure
+      @deadline_timer.kill if @deadline_timer
       results["ended_utc"] = Time.now.utc.iso8601
+      results["background_restore_signal"] = "/private/tmp/rp-release-20261102/performance-pause-done"
       write(File.join(window, "result.json"), results)
+      signal = JSON.generate(utc: Time.now.utc.iso8601, event: "performance_window_ended_restore_now", result: results["status"], window: File.basename(window)) + "\n"
+      File.open(results["background_restore_signal"], File::WRONLY | File::CREAT | File::EXCL, 0o600) { |f| f.write(signal) }
+      puts "RESTORE RP/TYPEWORDS NOW: completion signal written; no further measurements will run"
       puts JSON.generate(results)
     end
   end

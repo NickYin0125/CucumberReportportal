@@ -1,0 +1,62 @@
+{
+  "schema": "untimed-presentation-functional-replay/1",
+  "performance_acceptance": "NOT_ASSESSED",
+  "timing_collection": "DISABLED",
+  "timing_samples_collected": 0,
+  "observed_calls": {
+    "Fallback.render": 36,
+    "MarkdownText.inline": 2,
+    "MarkdownText.html": 2,
+    "MarkdownText.code": 10,
+    "MarkdownText.fence": 3,
+    "AttachmentCaption.format": 3,
+    "AttachmentCaption.kind": 3,
+    "ImageDimensions.read": 3,
+    "Units.bytes": 3,
+    "LedgerJson.format": 1
+  },
+  "replay": {
+    "Fallback.render": {
+      "inputs": 16,
+      "untimed_invocations": 960
+    },
+    "MarkdownText.inline": {
+      "inputs": 2,
+      "untimed_invocations": 120
+    },
+    "MarkdownText.html": {
+      "inputs": 2,
+      "untimed_invocations": 120
+    },
+    "MarkdownText.code": {
+      "inputs": 10,
+      "untimed_invocations": 600
+    },
+    "MarkdownText.fence": {
+      "inputs": 3,
+      "untimed_invocations": 180
+    },
+    "AttachmentCaption.format": {
+      "inputs": 3,
+      "untimed_invocations": 180
+    },
+    "AttachmentCaption.kind": {
+      "inputs": 3,
+      "untimed_invocations": 180
+    },
+    "ImageDimensions.read": {
+      "inputs": 3,
+      "untimed_invocations": 180
+    },
+    "Units.bytes": {
+      "inputs": 3,
+      "untimed_invocations": 180
+    },
+    "LedgerJson.format": {
+      "inputs": 1,
+      "untimed_invocations": 60
+    }
+  },
+  "replay_errors": {},
+  "note": "Same captured calls and 10+50 invocations per input, but no timing clock or performance sample"
+}
