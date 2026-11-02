@@ -1,0 +1,1151 @@
+{
+  "conclusion": "success",
+  "databaseId": 41475973067,
+  "headSha": "29ce2a4b5d8ca6b8119de97a7e3ae967bc66ddef",
+  "jobs": [
+    {
+      "completedAt": "2026-11-02T15:53:30Z",
+      "conclusion": "success",
+      "databaseId": 125381514539,
+      "name": "preflight",
+      "startedAt": "2026-11-02T15:53:15Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:53:16Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:53:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:22Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:53:16Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:22Z",
+          "conclusion": "success",
+          "name": "Require an unchanged stable tag on its approved release line",
+          "number": 3,
+          "startedAt": "2026-11-02T15:53:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:23Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 6,
+          "startedAt": "2026-11-02T15:53:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:23Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 7,
+          "startedAt": "2026-11-02T15:53:23Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125381514539"
+    },
+    {
+      "completedAt": "2026-11-02T15:59:06Z",
+      "conclusion": "success",
+      "databaseId": 125381719907,
+      "name": "validate / test (Ruby 3.4)",
+      "startedAt": "2026-11-02T15:53:42Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:53:44Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:53:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:51Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:53:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:55Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 3,
+          "startedAt": "2026-11-02T15:53:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:56Z",
+          "conclusion": "success",
+          "name": "Record the locked source runtime",
+          "number": 4,
+          "startedAt": "2026-11-02T15:53:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:56Z",
+          "conclusion": "success",
+          "name": "Run azure/setup-helm@v5",
+          "number": 5,
+          "startedAt": "2026-11-02T15:53:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:56Z",
+          "conclusion": "success",
+          "name": "Select portable Helm executable",
+          "number": 6,
+          "startedAt": "2026-11-02T15:53:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:57Z",
+          "conclusion": "success",
+          "name": "Build locked Helm dependency on a fresh runner",
+          "number": 7,
+          "startedAt": "2026-11-02T15:53:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:58Z",
+          "conclusion": "success",
+          "name": "Validate Helm deployment profiles without deploying",
+          "number": 8,
+          "startedAt": "2026-11-02T15:53:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:58Z",
+          "conclusion": "success",
+          "name": "Prepare synthetic RSpec fault diagnostics",
+          "number": 9,
+          "startedAt": "2026-11-02T15:53:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:50Z",
+          "conclusion": "success",
+          "name": "Run full RSpec including installed packaging checks",
+          "number": 10,
+          "startedAt": "2026-11-02T15:53:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:51Z",
+          "conclusion": "success",
+          "name": "Retain synthetic RSpec fault diagnostics",
+          "number": 11,
+          "startedAt": "2026-11-02T15:57:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:56Z",
+          "conclusion": "success",
+          "name": "Run full offline Cucumber profile",
+          "number": 12,
+          "startedAt": "2026-11-02T15:57:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:59Z",
+          "conclusion": "success",
+          "name": "Run release dependency isolation regressions",
+          "number": 13,
+          "startedAt": "2026-11-02T15:57:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:58:00Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 26,
+          "startedAt": "2026-11-02T15:57:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:58:00Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 27,
+          "startedAt": "2026-11-02T15:58:00Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125381719907"
+    },
+    {
+      "completedAt": "2026-11-02T15:56:40Z",
+      "conclusion": "success",
+      "databaseId": 125381719987,
+      "name": "validate / legacy (Ruby 3.3, Cucumber 10)",
+      "startedAt": "2026-11-02T15:53:32Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:53:34Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:53:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:53:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Verify immutable released maintenance baseline",
+          "number": 3,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Check out the reviewed immutable legacy test drivers",
+          "number": 4,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Record immutable legacy production hashes before execution",
+          "number": 5,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:44Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 6,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:55Z",
+          "conclusion": "success",
+          "name": "Resolve this legacy runtime without changing its gemspec",
+          "number": 7,
+          "startedAt": "2026-11-02T15:53:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:55Z",
+          "conclusion": "success",
+          "name": "Run azure/setup-helm@v5",
+          "number": 8,
+          "startedAt": "2026-11-02T15:53:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:56Z",
+          "conclusion": "success",
+          "name": "Build the baseline locked Helm dependency without deployment",
+          "number": 9,
+          "startedAt": "2026-11-02T15:53:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:56Z",
+          "conclusion": "success",
+          "name": "Prepare synthetic RSpec fault diagnostics",
+          "number": 10,
+          "startedAt": "2026-11-02T15:53:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:30Z",
+          "conclusion": "success",
+          "name": "Run the legacy RSpec suite with explicit test-only fixture normalization",
+          "number": 11,
+          "startedAt": "2026-11-02T15:53:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:31Z",
+          "conclusion": "success",
+          "name": "Run the full released baseline offline Cucumber profile",
+          "number": 12,
+          "startedAt": "2026-11-02T15:56:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:31Z",
+          "conclusion": "success",
+          "name": "Require unchanged baseline production source",
+          "number": 13,
+          "startedAt": "2026-11-02T15:56:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:32Z",
+          "conclusion": "success",
+          "name": "Retain the exact legacy dependency resolution",
+          "number": 14,
+          "startedAt": "2026-11-02T15:56:31Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:33Z",
+          "conclusion": "success",
+          "name": "Retain synthetic RSpec fault diagnostics",
+          "number": 15,
+          "startedAt": "2026-11-02T15:56:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:33Z",
+          "conclusion": "success",
+          "name": "Post Check out the reviewed immutable legacy test drivers",
+          "number": 29,
+          "startedAt": "2026-11-02T15:56:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:33Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 30,
+          "startedAt": "2026-11-02T15:56:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:33Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 31,
+          "startedAt": "2026-11-02T15:56:33Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125381719987"
+    },
+    {
+      "completedAt": "2026-11-02T15:58:05Z",
+      "conclusion": "success",
+      "databaseId": 125381720028,
+      "name": "validate / test (Ruby 3.3)",
+      "startedAt": "2026-11-02T15:53:32Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:53:35Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:53:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:42Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:53:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:47Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 3,
+          "startedAt": "2026-11-02T15:53:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:48Z",
+          "conclusion": "success",
+          "name": "Record the locked source runtime",
+          "number": 4,
+          "startedAt": "2026-11-02T15:53:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:49Z",
+          "conclusion": "success",
+          "name": "Run azure/setup-helm@v5",
+          "number": 5,
+          "startedAt": "2026-11-02T15:53:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:49Z",
+          "conclusion": "success",
+          "name": "Select portable Helm executable",
+          "number": 6,
+          "startedAt": "2026-11-02T15:53:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:49Z",
+          "conclusion": "success",
+          "name": "Build locked Helm dependency on a fresh runner",
+          "number": 7,
+          "startedAt": "2026-11-02T15:53:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:51Z",
+          "conclusion": "success",
+          "name": "Validate Helm deployment profiles without deploying",
+          "number": 8,
+          "startedAt": "2026-11-02T15:53:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:51Z",
+          "conclusion": "success",
+          "name": "Prepare synthetic RSpec fault diagnostics",
+          "number": 9,
+          "startedAt": "2026-11-02T15:53:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:45Z",
+          "conclusion": "success",
+          "name": "Run full RSpec including installed packaging checks",
+          "number": 10,
+          "startedAt": "2026-11-02T15:53:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:46Z",
+          "conclusion": "success",
+          "name": "Retain synthetic RSpec fault diagnostics",
+          "number": 11,
+          "startedAt": "2026-11-02T15:57:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:52Z",
+          "conclusion": "success",
+          "name": "Run full offline Cucumber profile",
+          "number": 12,
+          "startedAt": "2026-11-02T15:57:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:55Z",
+          "conclusion": "success",
+          "name": "Run release dependency isolation regressions",
+          "number": 13,
+          "startedAt": "2026-11-02T15:57:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:55Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 26,
+          "startedAt": "2026-11-02T15:57:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:55Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 27,
+          "startedAt": "2026-11-02T15:57:55Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125381720028"
+    },
+    {
+      "completedAt": "2026-11-02T15:56:44Z",
+      "conclusion": "success",
+      "databaseId": 125381720096,
+      "name": "validate / legacy (Ruby 3.3, Cucumber 9)",
+      "startedAt": "2026-11-02T15:53:32Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:53:35Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:53:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:42Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:53:35Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:42Z",
+          "conclusion": "success",
+          "name": "Verify immutable released maintenance baseline",
+          "number": 3,
+          "startedAt": "2026-11-02T15:53:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:44Z",
+          "conclusion": "success",
+          "name": "Check out the reviewed immutable legacy test drivers",
+          "number": 4,
+          "startedAt": "2026-11-02T15:53:42Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:44Z",
+          "conclusion": "success",
+          "name": "Record immutable legacy production hashes before execution",
+          "number": 5,
+          "startedAt": "2026-11-02T15:53:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:46Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 6,
+          "startedAt": "2026-11-02T15:53:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:57Z",
+          "conclusion": "success",
+          "name": "Resolve this legacy runtime without changing its gemspec",
+          "number": 7,
+          "startedAt": "2026-11-02T15:53:46Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:58Z",
+          "conclusion": "success",
+          "name": "Run azure/setup-helm@v5",
+          "number": 8,
+          "startedAt": "2026-11-02T15:53:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:59Z",
+          "conclusion": "success",
+          "name": "Build the baseline locked Helm dependency without deployment",
+          "number": 9,
+          "startedAt": "2026-11-02T15:53:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:59Z",
+          "conclusion": "success",
+          "name": "Prepare synthetic RSpec fault diagnostics",
+          "number": 10,
+          "startedAt": "2026-11-02T15:53:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:32Z",
+          "conclusion": "success",
+          "name": "Run the legacy RSpec suite with explicit test-only fixture normalization",
+          "number": 11,
+          "startedAt": "2026-11-02T15:53:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:32Z",
+          "conclusion": "success",
+          "name": "Run the full released baseline offline Cucumber profile",
+          "number": 12,
+          "startedAt": "2026-11-02T15:56:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:32Z",
+          "conclusion": "success",
+          "name": "Require unchanged baseline production source",
+          "number": 13,
+          "startedAt": "2026-11-02T15:56:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:34Z",
+          "conclusion": "success",
+          "name": "Retain the exact legacy dependency resolution",
+          "number": 14,
+          "startedAt": "2026-11-02T15:56:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:36Z",
+          "conclusion": "success",
+          "name": "Retain synthetic RSpec fault diagnostics",
+          "number": 15,
+          "startedAt": "2026-11-02T15:56:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:36Z",
+          "conclusion": "success",
+          "name": "Post Check out the reviewed immutable legacy test drivers",
+          "number": 29,
+          "startedAt": "2026-11-02T15:56:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:36Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 30,
+          "startedAt": "2026-11-02T15:56:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:56:36Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 31,
+          "startedAt": "2026-11-02T15:56:36Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125381720096"
+    },
+    {
+      "completedAt": "2026-11-02T15:57:17Z",
+      "conclusion": "success",
+      "databaseId": 125381720114,
+      "name": "validate / legacy (Ruby 3.1, Cucumber 10)",
+      "startedAt": "2026-11-02T15:53:32Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:53:34Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:53:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:53:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Verify immutable released maintenance baseline",
+          "number": 3,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Check out the reviewed immutable legacy test drivers",
+          "number": 4,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Record immutable legacy production hashes before execution",
+          "number": 5,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:43Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 6,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:55Z",
+          "conclusion": "success",
+          "name": "Resolve this legacy runtime without changing its gemspec",
+          "number": 7,
+          "startedAt": "2026-11-02T15:53:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:56Z",
+          "conclusion": "success",
+          "name": "Run azure/setup-helm@v5",
+          "number": 8,
+          "startedAt": "2026-11-02T15:53:55Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:57Z",
+          "conclusion": "success",
+          "name": "Build the baseline locked Helm dependency without deployment",
+          "number": 9,
+          "startedAt": "2026-11-02T15:53:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:57Z",
+          "conclusion": "success",
+          "name": "Prepare synthetic RSpec fault diagnostics",
+          "number": 10,
+          "startedAt": "2026-11-02T15:53:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:04Z",
+          "conclusion": "success",
+          "name": "Run the legacy RSpec suite with explicit test-only fixture normalization",
+          "number": 11,
+          "startedAt": "2026-11-02T15:53:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:05Z",
+          "conclusion": "success",
+          "name": "Run the full released baseline offline Cucumber profile",
+          "number": 12,
+          "startedAt": "2026-11-02T15:57:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:05Z",
+          "conclusion": "success",
+          "name": "Require unchanged baseline production source",
+          "number": 13,
+          "startedAt": "2026-11-02T15:57:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:06Z",
+          "conclusion": "success",
+          "name": "Retain the exact legacy dependency resolution",
+          "number": 14,
+          "startedAt": "2026-11-02T15:57:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Retain synthetic RSpec fault diagnostics",
+          "number": 15,
+          "startedAt": "2026-11-02T15:57:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Post Check out the reviewed immutable legacy test drivers",
+          "number": 29,
+          "startedAt": "2026-11-02T15:57:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 30,
+          "startedAt": "2026-11-02T15:57:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 31,
+          "startedAt": "2026-11-02T15:57:08Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125381720114"
+    },
+    {
+      "completedAt": "2026-11-02T15:57:11Z",
+      "conclusion": "success",
+      "databaseId": 125381720258,
+      "name": "validate / legacy (Ruby 3.1, Cucumber 9)",
+      "startedAt": "2026-11-02T15:53:39Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:53:41Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:53:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:49Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:53:41Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:49Z",
+          "conclusion": "success",
+          "name": "Verify immutable released maintenance baseline",
+          "number": 3,
+          "startedAt": "2026-11-02T15:53:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:50Z",
+          "conclusion": "success",
+          "name": "Check out the reviewed immutable legacy test drivers",
+          "number": 4,
+          "startedAt": "2026-11-02T15:53:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:50Z",
+          "conclusion": "success",
+          "name": "Record immutable legacy production hashes before execution",
+          "number": 5,
+          "startedAt": "2026-11-02T15:53:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:53:51Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 6,
+          "startedAt": "2026-11-02T15:53:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:54:03Z",
+          "conclusion": "success",
+          "name": "Resolve this legacy runtime without changing its gemspec",
+          "number": 7,
+          "startedAt": "2026-11-02T15:53:51Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:54:04Z",
+          "conclusion": "success",
+          "name": "Run azure/setup-helm@v5",
+          "number": 8,
+          "startedAt": "2026-11-02T15:54:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:54:04Z",
+          "conclusion": "success",
+          "name": "Build the baseline locked Helm dependency without deployment",
+          "number": 9,
+          "startedAt": "2026-11-02T15:54:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:54:04Z",
+          "conclusion": "success",
+          "name": "Prepare synthetic RSpec fault diagnostics",
+          "number": 10,
+          "startedAt": "2026-11-02T15:54:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:05Z",
+          "conclusion": "success",
+          "name": "Run the legacy RSpec suite with explicit test-only fixture normalization",
+          "number": 11,
+          "startedAt": "2026-11-02T15:54:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:06Z",
+          "conclusion": "success",
+          "name": "Run the full released baseline offline Cucumber profile",
+          "number": 12,
+          "startedAt": "2026-11-02T15:57:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:06Z",
+          "conclusion": "success",
+          "name": "Require unchanged baseline production source",
+          "number": 13,
+          "startedAt": "2026-11-02T15:57:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:07Z",
+          "conclusion": "success",
+          "name": "Retain the exact legacy dependency resolution",
+          "number": 14,
+          "startedAt": "2026-11-02T15:57:06Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Retain synthetic RSpec fault diagnostics",
+          "number": 15,
+          "startedAt": "2026-11-02T15:57:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Post Check out the reviewed immutable legacy test drivers",
+          "number": 29,
+          "startedAt": "2026-11-02T15:57:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 30,
+          "startedAt": "2026-11-02T15:57:08Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:57:08Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 31,
+          "startedAt": "2026-11-02T15:57:08Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125381720258"
+    },
+    {
+      "completedAt": "2026-11-02T15:59:17Z",
+      "conclusion": "success",
+      "databaseId": 125384942973,
+      "name": "validate / gate",
+      "startedAt": "2026-11-02T15:59:09Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:59:13Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:59:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:13Z",
+          "conclusion": "success",
+          "name": "Require every current and legacy matrix cell",
+          "number": 2,
+          "startedAt": "2026-11-02T15:59:13Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:13Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 3,
+          "startedAt": "2026-11-02T15:59:13Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125384942973"
+    },
+    {
+      "completedAt": "2026-11-02T15:59:50Z",
+      "conclusion": "success",
+      "databaseId": 125385055733,
+      "name": "validate / bundle",
+      "startedAt": "2026-11-02T15:59:20Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:59:23Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:59:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:30Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:59:23Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:30Z",
+          "conclusion": "success",
+          "name": "Isolate release dependencies before Ruby setup",
+          "number": 3,
+          "startedAt": "2026-11-02T15:59:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:32Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 4,
+          "startedAt": "2026-11-02T15:59:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:43Z",
+          "conclusion": "success",
+          "name": "Install locked release dependencies outside source",
+          "number": 5,
+          "startedAt": "2026-11-02T15:59:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:44Z",
+          "conclusion": "success",
+          "name": "Run azure/setup-helm@v5",
+          "number": 6,
+          "startedAt": "2026-11-02T15:59:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:44Z",
+          "conclusion": "success",
+          "name": "Prepare the locked chart for packaging without deployment",
+          "number": 7,
+          "startedAt": "2026-11-02T15:59:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:45Z",
+          "conclusion": "success",
+          "name": "Build verified release bundle",
+          "number": 8,
+          "startedAt": "2026-11-02T15:59:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:47Z",
+          "conclusion": "success",
+          "name": "Preserve validated release bundle",
+          "number": 9,
+          "startedAt": "2026-11-02T15:59:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:47Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 18,
+          "startedAt": "2026-11-02T15:59:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T15:59:47Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "startedAt": "2026-11-02T15:59:47Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125385055733"
+    },
+    {
+      "completedAt": "2026-11-02T16:00:27Z",
+      "conclusion": "success",
+      "databaseId": 125385364658,
+      "name": "publish",
+      "startedAt": "2026-11-02T15:59:52Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-02T15:59:56Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-02T15:59:53Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T16:00:03Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v6",
+          "number": 2,
+          "startedAt": "2026-11-02T15:59:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T16:00:03Z",
+          "conclusion": "success",
+          "name": "Recheck stable tag and fixed release-line ancestry before publication",
+          "number": 3,
+          "startedAt": "2026-11-02T16:00:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T16:00:05Z",
+          "conclusion": "success",
+          "name": "Run ruby/setup-ruby@v1",
+          "number": 4,
+          "startedAt": "2026-11-02T16:00:03Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T16:00:05Z",
+          "conclusion": "success",
+          "name": "Run actions/download-artifact@v7",
+          "number": 5,
+          "startedAt": "2026-11-02T16:00:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T16:00:22Z",
+          "conclusion": "success",
+          "name": "Verify, resume draft, upload and publish GitHub release",
+          "number": 6,
+          "startedAt": "2026-11-02T16:00:05Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T16:00:22Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v6",
+          "number": 12,
+          "startedAt": "2026-11-02T16:00:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-02T16:00:22Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "startedAt": "2026-11-02T16:00:22Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067/job/125385364658"
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41475973067"
+}
