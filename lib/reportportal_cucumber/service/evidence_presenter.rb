@@ -138,16 +138,19 @@ module ReportportalCucumber
           status, name_text, details = snapshot.values_at(:status, :name, :details)
           title = card_title(name_text)
           expected_text = assertion_value(snapshot[:expected], string: snapshot[:expected_string])
+          delta = top_level_delta(snapshot[:expected], snapshot[:actual])
           if status == "PASS"
             title = "\u2713 Assertion passed \u00b7 #{title}"
             if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
               title += " \u00b7 expected #{card_code(expected_text)}"
             end
             parts = [title]
+            parts << delta if delta
           else
             parts = ["## \u2717 Assertion failed \u00b7 #{title}"]
+            parts << delta if delta
             actual_text = assertion_value(snapshot[:actual], string: snapshot[:actual_string])
-            limit = DETAILS_LIMIT - parts.first.bytesize - 72 - (details.nil? ? 0 : 256)
+            limit = DETAILS_LIMIT - parts.join("\n\n").bytesize - 72 - (details.nil? ? 0 : 256)
             comparison = comparison_block(expected_text, actual_text, limit)
             append_card_fence(parts, comparison, "text")
           end
@@ -199,6 +202,23 @@ module ReportportalCucumber
           JSON.parse(text)
         rescue JSON::ParserError
           text
+        end
+
+        # Compare only bounded, already-sanitized snapshots, never caller objects.
+        def top_level_delta(expected_text, actual_text)
+          expected, actual = [expected_text, actual_text].map { |text| parsed_diagnostic(text) }
+          return unless expected.is_a?(Hash) && actual.is_a?(Hash)
+
+          changed = (expected.keys & actual.keys).reject do |key|
+            left, right = expected[key], actual[key]
+            left == right || (left.is_a?(Hash) && right.is_a?(Hash)) || (left.is_a?(Array) && right.is_a?(Array))
+          end
+          groups = { "missing in actual" => expected.keys - actual.keys,
+                     "extra in actual" => actual.keys - expected.keys, "changed" => changed }
+          line = groups.filter_map do |label, keys|
+            "#{label}: #{keys.sort.map { |key| card_code(key) }.join(', ')}" unless keys.empty?
+          end.join(" \u00b7 ")
+          line unless line.empty?
         end
 
         def ledger_json(value)
