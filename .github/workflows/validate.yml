@@ -279,8 +279,6 @@ jobs:
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
       BUNDLE_FROZEN: "true"
-      BUNDLE_PATH: ${{ runner.temp }}/release-gems
-      BUNDLE_APP_CONFIG: ${{ runner.temp }}/release-bundle-config
       RELEASE_TAG: ${{ github.ref_name }}
       RELEASE_SHA: ${{ github.sha }}
     steps:
@@ -289,6 +287,11 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Isolate release dependencies before Ruby setup
+        run: |
+          echo "BUNDLE_PATH=$RUNNER_TEMP/release-gems" >> "$GITHUB_ENV"
+          echo "BUNDLE_APP_CONFIG=$RUNNER_TEMP/release-bundle-config" >> "$GITHUB_ENV"
 
       - uses: ruby/setup-ruby@v1
         with:

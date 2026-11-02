@@ -9,6 +9,7 @@ RSpec.describe "Release dependency isolation" do
   let(:validation) { YAML.load_file(File.join(root, ".github/workflows/validate.yml")) }
   let(:job) { validation.fetch("jobs").fetch("bundle") }
   let(:steps) { job.fetch("steps") }
+  let(:isolation) { steps.find { |step| step["name"] == "Isolate release dependencies before Ruby setup" } }
   let(:install) { steps.find { |step| step["name"] == "Install locked release dependencies outside source" } }
 
   it "keeps setup-ruby's in-checkout cache out of the release bundle job" do
@@ -17,16 +18,28 @@ RSpec.describe "Release dependency isolation" do
     expect(setup.dig("with", "bundler-cache")).to be(false)
     expect(job.fetch("env")).to include(
       "BUNDLE_GEMFILE" => "${{ github.workspace }}/Gemfile",
-      "BUNDLE_FROZEN" => "true",
-      "BUNDLE_PATH" => "${{ runner.temp }}/release-gems",
-      "BUNDLE_APP_CONFIG" => "${{ runner.temp }}/release-bundle-config"
+      "BUNDLE_FROZEN" => "true"
     )
     expect(job.fetch("env")).not_to have_key("BUNDLE_IGNORE_CONFIG")
     expect(install.fetch("run")).to eq("bundle install --jobs 4")
+    expect(isolation.fetch("run")).to include('"BUNDLE_PATH=$RUNNER_TEMP/release-gems" >> "$GITHUB_ENV"',
+                                             '"BUNDLE_APP_CONFIG=$RUNNER_TEMP/release-bundle-config" >> "$GITHUB_ENV"')
+    expect(steps.index(isolation)).to be < steps.index(setup)
     expect(steps.index(setup)).to be < steps.index(install)
     build = steps.find { |step| step["name"] == "Build verified release bundle" }
     expect(steps.index(install)).to be < steps.index(build)
     expect(job.fetch("needs")).to eq("gate")
+  end
+
+  it "uses only GitHub-supported contexts in job-level environments" do
+    # runner is available in steps, not while GitHub expands job-level env.
+    allowed = %w[github needs strategy matrix vars secrets inputs]
+    validation.fetch("jobs").each_value do |entry|
+      entry.fetch("env", {}).each_value do |value|
+        contexts = value.to_s.scan(/\$\{\{\s*(\w+)\./).flatten
+        expect(contexts - allowed).to be_empty
+      end
+    end
   end
 
   it "runs these executable regressions on the current matrix, not the frozen legacy driver" do
@@ -48,6 +61,13 @@ RSpec.describe "Release dependency isolation" do
           value.gsub("${{ github.workspace }}", @source_root).gsub("${{ runner.temp }}", @runner_temp)
         end.merge("BUNDLE_USER_HOME" => File.join(@runner_temp, "bundler-user"),
                   "BUNDLE_CACHE_PATH" => File.join(@runner_temp, "offline-cache"))
+        environment_file = File.join(@runner_temp, "github-env")
+        stdout, stderr, status = Open3.capture3(
+          {"RUNNER_TEMP" => @runner_temp, "GITHUB_ENV" => environment_file},
+          "/bin/bash", "-e", "-o", "pipefail", "-c", isolation.fetch("run")
+        )
+        raise "Workflow path initialization failed: #{stdout}\n#{stderr}" unless status.success?
+        @environment.merge!(File.readlines(environment_file, chomp: true).to_h { |line| line.split("=", 2) })
         prepare_source
         example.run
       end

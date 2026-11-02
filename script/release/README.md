@@ -141,6 +141,13 @@ tag pipeline. The retained evidence does not include the exact publisher shell
 invocation; account metadata alone cannot distinguish a CLI from a UI upload.
 Existing tags/assets are untouched by this investigation.
 
+The first WP4 candidate placed `runner.temp` in job-level `env`, where GitHub
+does not permit the `runner` context; run `41439805953` was rejected before any
+job started. The corrected workflow exports the two paths through `GITHUB_ENV`
+in a shell step before Ruby setup. A regression test executes that exact step
+and rejects unsupported job-level contexts. This follows GitHub's
+[context availability rules](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#context-availability).
+
 The release CLI remains deliberately strict:
 
 ```text
