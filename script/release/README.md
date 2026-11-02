@@ -80,6 +80,67 @@ and the original/driver files are audited and retained explicitly. The `gate` jo
 cell; tag-only `bundle` runs after that gate and preserves one immutable artifact
 ID. Helm lint/template/dependency checks never deploy anything.
 
+### 2.x release dependency isolation
+
+The tag-only `bundle` job installs its locked dependencies under
+`$RUNNER_TEMP/release-gems`, with Bundler's local configuration under
+`$RUNNER_TEMP/release-bundle-config`. It deliberately disables `setup-ruby`'s
+`bundler-cache` in that job: cache mode sets a local `vendor/bundle` path inside
+the checkout, overriding an environment-only path change. The current test
+matrix keeps its cache; the immutable legacy job and drivers are unchanged.
+`BUNDLE_FROZEN=true` and the explicit source Gemfile remain mandatory. No ignore
+rule, clean-source check, tag/ancestry check or artifact verification is relaxed.
+
+The executable regressions use disposable Git repositories and a real offline
+gem install to prove that dependencies and configuration stay outside the source,
+the lockfile stays unchanged, and tracked edits, staged edits, deletions and
+untracked files (including the old `vendor/bundle` layout) still fail closed.
+They run as a separate required step in the current Ruby 3.3/3.4 matrix:
+
+```sh
+bundle exec rspec script/release/spec spec/release
+```
+
+### Historical failure diagnosis (WP4)
+
+All three downloaded failed-job logs show `setup-ruby` installing/restoring gems
+under the checkout's `vendor/bundle`, followed by `Build verified release bundle`
+failing with `Release source must be clean, including untracked files`. That
+directory is not ignored by any of the three tagged sources; `.bundle/` and the
+locked Helm dependency archive are ignored. The logs do not print Git status,
+but the unignored dependency tree is sufficient to reproduce the rejection.
+
+| Tag | Failed run | Actual failing job/step |
+| --- | --- | --- |
+| v2.0.0 | [41166822749](https://github.com/NickYin0125/CucumberReportportal/actions/runs/41166822749) | `validate / bundle`, release build after a dependency-cache hit |
+| v2.0.1 | [41311746972](https://github.com/NickYin0125/CucumberReportportal/actions/runs/41311746972) | `validate / bundle`, release build after a dependency-cache hit |
+| v1.3.2 | [41312720332](https://github.com/NickYin0125/CucumberReportportal/actions/runs/41312720332) | `validate / test`, release build after 1,519 passing RSpec examples and one passing Cucumber scenario / three steps |
+
+The v1.3.2 job restored a fallback cache, installed its locked Cucumber 10.2.0
+dependencies and cleaned stale gems before passing its tests. Its job name does
+not indicate a test failure. This diagnosis does not change the 1.x workflow.
+
+GitHub metadata records [v2.0.1](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.1)
+as published at `2026-11-01T13:39:59Z` and
+[v1.3.2](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.2)
+at `2026-11-01T13:49:49Z`. Both release authors and all four asset uploaders are
+`NickYin0125`; both failed tag workflows skipped `publish`. These were therefore
+owner-account publications outside those failed workflows, not successful
+`github-actions` publications. The owner authorized recovery from clean local
+worktrees against the same immutable tags using the existing build/publish tools.
+The retained local recovery bundles have all four published asset SHA-256 values
+identical to GitHub's asset digests, including these provenance manifests:
+
+| Bundle | Commit | Manifest SHA-256 |
+| --- | --- | --- |
+| 2.0.1 | `ef38224b28b451dc4cc94ac314906ac4ecee459a` | `68e46598113ec29154d77bb3e97f584db29d123036587b3792884a1973685ae7` |
+| 1.3.2 | `19174a5ecaf1aa9fb65480f0a21d74ed65c89a8d` | `f9a75135395102454a2376c185ff4e9c905977ee5313bc32c8fac24527d29366` |
+
+This corroborates owner-authorized local bundle recovery, not a successful cloud
+tag pipeline. The retained evidence does not include the exact publisher shell
+invocation; account metadata alone cannot distinguish a CLI from a UI upload.
+Existing tags/assets are untouched by this investigation.
+
 The release CLI remains deliberately strict:
 
 ```text

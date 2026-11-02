@@ -98,6 +98,9 @@ jobs:
       - name: Run full offline Cucumber profile
         run: bundle exec cucumber
 
+      - name: Run release dependency isolation regressions
+        run: bundle exec rspec script/release/spec
+
   legacy:
     name: legacy (Ruby ${{ matrix.ruby }}, Cucumber ${{ matrix.cucumber }})
     runs-on: ubuntu-latest
@@ -276,6 +279,8 @@ jobs:
     env:
       BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
       BUNDLE_FROZEN: "true"
+      BUNDLE_PATH: ${{ runner.temp }}/release-gems
+      BUNDLE_APP_CONFIG: ${{ runner.temp }}/release-bundle-config
       RELEASE_TAG: ${{ github.ref_name }}
       RELEASE_SHA: ${{ github.sha }}
     steps:
@@ -288,7 +293,11 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.3"
-          bundler-cache: true
+          # Cache mode forces vendor/bundle inside the clean release checkout.
+          bundler-cache: false
+
+      - name: Install locked release dependencies outside source
+        run: bundle install --jobs 4
 
       - uses: azure/setup-helm@v5
         with:
