@@ -53,7 +53,8 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     it "redacts exactly two units for a normal #{mode} failure emission" do
       formatter.instance_variable_set(:@config, ReportportalCucumber::Config.new("rp.presentation" => mode))
       redactor = Automation::EvidenceRedactor.new
-      allow(Automation::EvidenceRedactor).to receive(:new).and_return(redactor)
+      failure_redactor = Automation::FailureRedactor.new(redactor: redactor)
+      allow(Automation::FailureRedactor).to receive(:new).and_return(failure_redactor)
       expect(redactor).to receive(:redact_text).with(error.message).once.and_call_original
       expect(redactor).to receive(:redact_text).with(error.backtrace.join("\n")).once.and_call_original
       formatter.send(:emit_error_log, item_uuid: "step-1", error: error, timestamp: timestamp)
