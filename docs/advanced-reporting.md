@@ -7,7 +7,7 @@ minimal Scenario or ordinary PNG/JSON/text reporting.
 
 ## Presentation
 
-SDK 2.0.2 retains Ledger plain cards by default: project-first failures with
+SDK 2.0.2 retains plain cards by default: project-first failures with
 redacted backtrace evidence, attachment metadata, compact JSON, argument captions,
 numeric table alignment, one-line Outline values, and assertion/HTTP/evidence
 cards. Numeric values, status levels, log counts, ownership, IDs and original
@@ -22,20 +22,48 @@ RP_PRESENTATION=rich RP_RUN_CONTEXT=true bundle exec cucumber --profile rp
 `RP_PRESENTATION` defaults to `plain`; invalid values warn once and use plain.
 `rich` accents **ReportPortal log messages only**, not native Cucumber
 HTML/messages, terminal summaries, caller AppLog text, names, descriptions or
-Launch metadata. It folds full backtraces, attachment previews over 20 lines,
-DocStrings over 20 lines, HTTP headers and HTTP bodies over 12 lines. Table
-headers are accented only for tables with at most six columns. Existing preview
-bounds still apply, with full original attachment bytes retained separately.
-Client-generated `<br>` is allowed in table cells; user markup is escaped.
+Launch metadata. At TRACE through WARN it folds attachment previews over 20
+lines, DocStrings over 20 lines, HTTP headers and HTTP bodies over 12 lines.
+Table headers are accented only for tables with at most six columns. Existing
+preview bounds still apply, with full original attachment bytes retained separately.
+Client-generated `<br>` is allowed in table cells; user markup inside generated
+cards is escaped.
 
-Every ERROR first line stays byte-identical. Added markup is limited to 1,024
-bytes per message; exceeding that budget or changing an ERROR first line keeps
-the plain card. Helper exceptions retain the original baseline with one warning,
-not a partially formatted card. Rendering does not change Scenario outcomes.
+Rich never adds decoration to ERROR or FATAL: the entire message is byte-identical
+to plain, including failure cards, failed assertions, failure evidence, ERROR HTTP
+exchanges and error-level attachment captions. No added pills or backtrace folds
+appear at these levels, because RP's Stack Trace tab displays them as raw text.
+Existing video markup and caller text remain unmodified by this option; this is
+not an HTML-stripping policy. TRACE through WARN markup is limited to 1,024 added
+bytes per message; exceeding that budget keeps the plain card. Helper exceptions
+retain the original safe fallback text with one warning, not a partially formatted
+card. Rendering does not change Scenario outcomes.
+
+Assertion cards make empty and boundary whitespace visible in `expected` and
+`actual`: `"" (empty string)`, `"   " (3 spaces)`, and
+`" a " (leading/trailing whitespace)`. Other strings remain as-is. When both
+values are JSON objects, a line before the comparison lists sorted
+top-level keys in `missing in actual`, `extra in actual` and `changed` groups,
+omitting empty groups. This is not a recursive diff: equal key sets with only
+nested changes add no line. The delta can also appear when the caller declares
+a passing observation with differing objects; ordinary equal passing values add
+no line. The diagnostic does not perform an assertion.
+
+HTTP cards at every level show title, response subtitle/body, URL, request
+subtitle/body, request headers, then response headers. Headers use one
+`name: value` line per value, repeating the name for multi-value headers;
+content-type subtitles show media type strings, not array notation. Redaction
+and the shared **16 KiB / 100 lines** preview budget remain unchanged, as do the
+terminal summary and native Cucumber body. See the
+[HTTP recipe](best-practices.md#api-tests-observe-real-calls-then-assert) for limits
+and full-body attachment guidance.
 
 `RP_RUN_CONTEXT` defaults to `false`. When enabled it adds only the documented
 SDK/runtime/CI attributes and a one-line description if none was supplied;
-explicit values win. The 2.x `workers` attribute is opt-in metadata from `PARALLEL_TEST_GROUPS` when present; the off-mode legacy worker behavior is unchanged.
+explicit values win. The description uses available workers, `branch@sha` and
+build only; SDK, Cucumber and Ruby versions remain Launch attributes, not repeated
+description text. The 2.x `workers` attribute is opt-in metadata from
+`PARALLEL_TEST_GROUPS` when present; the off-mode legacy worker behavior is unchanged.
 `RP_RUN_CONTEXT` has no effect when `RP_LAUNCH_UUID` is supplied, because the
 CI-owned Launch is created outside the SDK. The `workers` attribute appears
 only when the reporting process creates its own Launch; workers joining an
@@ -264,6 +292,22 @@ is not server confirmation. Omitting `target:` chooses only the current open
 action. A late call never falls back to a Scenario, Launch, later Step, or Hook.
 An After screenshot must deliberately target its open After Hook.
 
+**R02 remains unresolved (not fixed).** The current API cannot select the
+Scenario as a capture target during After. The owner chose to preserve the API,
+After ownership and hook status, not to add retargeting. In ReportPortal,
+**Hide all passed logs** hides evidence under a passed After Hook even if that
+evidence is ERROR and the Scenario failed. Turn the filter off and expand After
+to inspect it. Never attach to an already-closed Step or fail a Hook just to
+bypass the viewer filter.
+
+The current SDK example uses existing `rp_attach` during After for one RP caption
+with its PNG, rather than duplicate screenshot/diagnostic rows. This deliberately
+omits the failure screenshot from native HTML: the uniquely named local file,
+original failure exception and native failure records remain unchanged.
+`rp_attach` routes to the current open Hook; it neither adds a Scenario-target
+API nor fixes R02. Consumers needing a native screenshot can deliberately choose
+the AppLog/native route instead, accepting its separate native evidence records.
+
 Each artifact accepts `path:` or `bytes:`, plus optional `name:` and `mime:`.
 Path-backed artifacts stream; in-memory bytes are limited to 1 MiB. A call accepts
 at most 16 artifacts; larger batches are rejected, not truncated. Admissions share
@@ -284,8 +328,14 @@ Failure/assertion diagnostic text is credential-redacted before clipping. Inputs
 over 64 KiB, malformed JSON-shaped diagnostics, and URLs that cannot be parsed
 safely are replaced with a fixed omission marker. The bounded policy also covers
 transport-error warning text and spool exception metadata. It does not sanitize
-raw files/video, ordinary AppLog text/JSON, low-level `rp_log`, automatic
-Step/manual-Step exception logs/backtraces, or native Cucumber failure payloads.
+raw files/video, ordinary AppLog text/JSON, low-level `rp_log`, or native Cucumber
+failure payloads. SDK-generated RP failure cards redact the message and backtrace
+independently: an ambiguous message can be withheld without discarding safe frames.
+The card names the exception class and includes the plain line
+`Message withheld: unsafe or ambiguous input`; the backtrace tail retains the
+redacted frame evidence without presentation rewriting. Cross-boundary credential
+risks still use the whole-input safety path. Original exceptions and native
+Cucumber failure records are not modified by this RP rendering.
 A safe `rp_evidence` diagnostic followed by re-raising the original error can
 therefore still leave that error in separate failure channels. The sanitizer
 does not mutate or suppress original failures.

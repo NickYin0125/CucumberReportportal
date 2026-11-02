@@ -406,3 +406,17 @@ Owner answer: 保持现有 API 和 After 归属，仅补充过滤警告，R02 �
 Do not extend the runtime capture API or move After-hook evidence to a Scenario.
 Document the passed-log filter interaction and record R02 as not fixed. All
 other work packages continue under Decision 27.
+
+### WP2 Screenshot Scope Clarification
+
+Owner-confirmed on 2026-11-02.
+
+Owner answer: RP 合并为一个带截图条目，原生 HTML 不再附截图
+
+The current example uses the existing `rp_attach` API for one RP caption-and-PNG
+entry under the open After Hook. Native HTML no longer receives that failure
+screenshot; the uniquely named local PNG, original failure exception and native
+failure records remain unchanged. This is a screenshot-routing tradeoff for WP2,
+not a runtime API extension. The prior R02 clarification remains in force:
+preserve After ownership and hook status, warn that "Hide all passed logs" hides
+evidence under a passed After Hook, and keep R02 unresolved (not fixed).

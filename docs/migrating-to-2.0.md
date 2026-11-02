@@ -1,8 +1,8 @@
 # Migrating to SDK 2.0 and Cucumber 12
 
-**Status:** SDK 2.0.1 is a source candidate, not a published release. No new tag,
+**Status:** SDK 2.0.2 is a source candidate, not a published release. No new tag,
 GitHub release or RubyGems publication is authorized by these instructions.
-SDK 1.3.2 is the separate Ledger candidate for Cucumber 9/10; an existing
+SDK 2.0.1 and the separate SDK 1.3.2 for Cucumber 9/10 are released; an existing
 released 1.3.1 archive/lockfile remains a valid rollback baseline.
 
 ## Compatibility and release lines
@@ -10,25 +10,25 @@ released 1.3.1 archive/lockfile remains a valid rollback baseline.
 | Line | Ruby requirement | Cucumber requirement | Dependency family | CI source |
 | --- | --- | --- | --- | --- |
 | SDK 1.x, released 1.3.1 | `>=3.1` | `>=9,<11` | Legacy expressions `>=17,<19` | Immutable v1.3.1 commit; local `maintenance/1.x` is frozen there |
-| SDK 1.x, candidate 1.3.2 | `>=3.1` | `>=9,<11` | Unchanged legacy expressions `>=17,<19` | `maintenance/presentation-ledger-1.3.2` |
-| SDK 2.x, candidate 2.0.1 | `>=3.3` | `>=12.0.1, ~>12.0` | Core 20 / Query 16 and compatible Cucumber dependencies | `codex/presentation-ledger-2.0.1`; release ancestry/promotion separately approved |
+| SDK 1.x, released 1.3.2 | `>=3.1` | `>=9,<11` | Unchanged legacy expressions `>=17,<19` | Released `v1.3.2`; no 1.x changes in this candidate |
+| SDK 2.x, candidate 2.0.2 | `>=3.3` | `>=12.0.1, ~>12.0` | Core 20 / Query 16 and compatible Cucumber dependencies | `codex/failure-redaction-2.0.2`; release ancestry/promotion separately approved |
 
 Cucumber 11 is intentionally outside both contracts. The declared dependency
 range does not certify every future release. The current lockfile pins Cucumber
-12.0.1; the exact planned CI rows and observed checks are in
-[release readiness](cucumber-12-release-readiness.md).
+12.0.1; the historical CI rows and observed migration checks are in
+[release readiness](cucumber-12-release-readiness.md), not fresh 2.0.2 validation.
 
 The companion chart stays **Helm 1.3.1**, with **ReportPortal 26.0.7** and the
-existing locked upstream chart. SDK 2.0.1 does not require new containers,
+existing locked upstream chart. SDK 2.0.2 does not require new containers,
 Kubernetes changes, storage migrations, a database upgrade or an RP redeployment.
 Historical deployment evidence remains evidence for its original source/version,
 not a fresh Cucumber 12 certification.
 
-SDK 2.0.1 adds Ledger presentation without changing the 2.x dependency contract.
+SDK 2.0.1 introduced readable cards; 2.0.2 refines them without changing the 2.x dependency contract.
 `RP_PRESENTATION=rich` and `RP_RUN_CONTEXT=true` are independent opt-ins; defaults
 remain `plain` and `false`. See the
 [configuration reference](configuration.md#presentation-and-run-context).
-Historical migration evidence below is not a fresh 2.0.1 regression claim.
+Historical migration evidence below is not a fresh 2.0.2 regression claim.
 
 ## Update dependencies deliberately
 
@@ -40,14 +40,14 @@ incidental availability as Ruby standard gems or another gem's dependencies.
 Let Cucumber 12 resolve its compatible Core, Query, Expressions and Messages
 family. In particular, do not retain the 1.x expressions `<19` workaround.
 
-Until an approved 2.0.1 archive is actually released, a **local source-validation
+Until an approved 2.0.2 archive is actually released, a **local source-validation
 Gemfile**, in a separate consumer project, can contain:
 
 ```ruby
 source "https://rubygems.org"
 
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.1", path: ENV.fetch("SDK_SOURCE")
+gem "reportportal-cucumber-ruby", "= 2.0.2", path: ENV.fetch("SDK_SOURCE")
 ```
 
 Set `SDK_SOURCE` to the absolute candidate checkout containing the gemspec, not
@@ -58,7 +58,7 @@ bundle update cucumber reportportal-cucumber-ruby
 bundle exec ruby -e 'require "reportportal_cucumber"; puts "Ruby=#{RUBY_VERSION} SDK=#{ReportportalCucumber::VERSION} Cucumber=#{Gem.loaded_specs.fetch("cucumber").version}"'
 ```
 
-Expected for the current candidate: SDK `2.0.1`, Cucumber `12.0.1`, Ruby `>=3.3`.
+Expected for the current candidate: SDK `2.0.2`, Cucumber `12.0.1`, Ruby `>=3.3`.
 Inspect and commit the resulting consumer lockfile only after its own tests pass.
 Source validation is not an installed-gem packaging check. To test a matching
 candidate archive, remove `path:` while keeping the exact pin and follow the

@@ -2,11 +2,26 @@
 
 ## 2.0.2 - Unreleased
 
-### Failure Evidence Safety
+### Failure Evidence Safety And Readability
 
-- Redact the failure message and backtrace independently so an ambiguous message does not discard safe frame evidence. When the backtrace unit is omitted, redact its original entries individually without splitting embedded newlines.
-- Keep the existing whole-input safety path for credentials that cross redaction-unit boundaries. Failure cards render only already-redacted parts; plain and rich ERROR first lines remain identical.
-- Known limitation: when a failure message cannot be redacted safely (for example, it looks like escaped JSON), the message is withheld. The exception class and safe backtrace are still shown.
+- F1: Redact the failure message and backtrace independently so an ambiguous message does not discard safe frame evidence. Keep backslash text, RSpec regex-match messages and Windows paths in Errno messages; withhold ambiguous multiline RSpec eq diffs, JSON with escaped quotes and escaped JSON secrets. Retain all safe frames in those cases. If the backtrace unit is omitted, redact its original entries individually without splitting embedded newlines. Preserve the whole-input safety path for cross-boundary credentials. A withheld message keeps the exception class and a plain `Message withheld: unsafe or ambiguous input` line before the frame evidence; redaction is not weakened.
+- F2: Rich never adds decoration to ERROR or FATAL messages: the entire message is byte-identical to plain, including failure cards, failed assertions, failure evidence, ERROR HTTP exchanges and error-level attachment captions. TRACE through WARN retain rich accents. Existing video markup and caller text are not stripped or modified by presentation.
+- F3: Quote and label empty, whitespace-only and leading/trailing-whitespace assertion strings in expected/actual values, including `"" (empty string)`, `"   " (3 spaces)` and `" a " (leading/trailing whitespace)`. Other strings remain as-is.
+- F4: Show HTTP outcomes first at every level: title, response subtitle/body, URL, request subtitle/body, request headers, response headers. Render each header value on its own `name: value` line, repeating multi-value header names, with plain media type subtitles instead of array notation. Keep the shared 16 KiB / 100 lines preview bounds, redaction, native Cucumber body and terminal summary unchanged.
+- F5: Before a JSON-object comparison, list sorted top-level keys that are missing in actual, extra in actual or changed, omitting empty groups. This also applies to caller-declared passing observations with differing objects; equal passing values add no line. This is not a recursive diff; equal key sets with only nested changes add no line.
+- F6: Generated run-context descriptions keep available workers, `branch@sha` and build without repeating SDK/Cucumber/Ruby versions. Version attributes are retained, and a non-empty explicit description still wins.
+
+### Examples And User Guides
+
+- Refresh `examples/current_sdk` with unique Scenario/checkpoint screenshot filenames and one RP caption-and-PNG entry via existing `rp_attach` under After, titled by the Scenario and failed check with the last passed browser action in details. By explicit owner choice, native HTML no longer includes that failure screenshot; the local PNG, original failure exception and native failure records are retained.
+- R02 remains unresolved (not fixed): preserve the current API, After ownership and hook status. ReportPortal's **Hide all passed logs** hides this evidence when After passed, even if its log is ERROR or its Scenario failed. Document disabling that filter rather than retargeting to a Scenario or closed Step.
+- Remove the duplicate API response snapshot, label the non-fatal diagnostic as diagnostic-only, include `<word>` in the metadata Outline title, and install `playwright-core` with an explicit project-local npm prefix so a parent package cannot capture installation.
+- Correct the 2.x Cucumber troubleshooting guidance, explain shared HTTP preview bounds beside the recipe, remove internal presentation terminology from user guides, and document Node >=20 for Ruby client 1.62.0 / Playwright CLI 1.62.1 using versioned upstream sources.
+
+### Release Pipeline And Verification Status
+
+- Keep release-bundle dependencies and Bundler configuration outside the source checkout so dependency installation cannot contaminate source packaging; retain locked dependencies and existing release safety gates. The pipeline implementation passed 88 targeted tests; actual cloud tag publication remains unverified and is not authorized by this work. No existing release, tag or 1.x branch is changed by this candidate.
+- These Unreleased notes describe the candidate work, not completed live QA. The 2.0.2 live trial re-run, independent re-review, acceptance checks and a future tag-driven release remain separate pending validation; no new Launch results or successful publication are claimed here.
 
 ## 2.0.1 - Unreleased
 

@@ -8,7 +8,7 @@ ReportPortal.
 ## Release Line Compatibility
 
 This checkout prepares **SDK 2.0.2**, an unpublished failure-evidence safety
-candidate retaining Ledger presentation. Use a matching maintainer-supplied or locally built archive; no new
+and readability candidate. Use a matching maintainer-supplied or locally built archive; no new
 tag, GitHub release or RubyGems publication is implied.
 
 | SDK line | Ruby | Cucumber | Candidate source |
@@ -74,10 +74,12 @@ requires all of them to be cached. See [installation details](docs/getting-start
 
 ## Presentation Opt-ins
 
-Ledger's plain cards are the default. Set `RP_PRESENTATION=rich` only for RP log
-accents and folded evidence; the default is `plain`, and an invalid value warns
-once and uses plain. Native Cucumber HTML/messages, terminal output, user AppLog
-text, names and descriptions do not acquire rich markup.
+Plain cards are the default. Set `RP_PRESENTATION=rich` only for TRACE through
+WARN RP log accents and folded previews; the default is `plain`, and an invalid
+value warns once and uses plain. Rich never adds decoration to ERROR or FATAL:
+the entire message is byte-identical to plain. Existing video markup and caller
+text remain unmodified by this option. Native Cucumber HTML/messages, terminal
+output, names and descriptions do not acquire rich markup.
 
 Structured AppLog HTTP and assertion logs retain their existing native Cucumber
 and terminal bodies; only the RP subscriber selects the new plain or rich cards.
@@ -85,6 +87,8 @@ and terminal bodies; only the RP subscriber selects the new plain or rich cards.
 `RP_RUN_CONTEXT=true` separately enables allowlisted Launch metadata; it defaults
 to `false` and never overwrites explicit attributes or a non-empty description.
 On 2.x, `workers` is included only when `PARALLEL_TEST_GROUPS` is present.
+Generated descriptions contain available workers, `branch@sha` and build;
+SDK, Cucumber and Ruby versions remain Launch attributes, not repeated prose.
 See [configuration](docs/configuration.md#presentation-and-run-context) and
 [Presentation](docs/advanced-reporting.md#presentation) for boundaries and examples.
 
@@ -139,6 +143,8 @@ for configuration, Cucumber profiles, and the first-report checklist.
 Start with [API, UI, and logger best practices](docs/best-practices.md). For a
 runnable HTTP + Chromium project, use the
 [current SDK example](examples/current_sdk/README.md) after the minimal Scenario.
+Its pinned Playwright tooling needs **Node >=20**; see the
+[versioned prerequisites](docs/getting-started.md#4-add-apiui-evidence).
 
 | Need | Recommended call | Where it appears |
 | --- | --- | --- |
@@ -155,6 +161,15 @@ terminal-only unless `report: true` (or legacy `attach: true`) is supplied.
 Use one route per artifact to avoid submitting it twice. Publish Step evidence
 before that Step closes; an After-hook screenshot belongs to the After Hook.
 Keep file-backed evidence until reporting finalization settles.
+
+The current example deliberately uses existing `rp_attach` for one RP caption
+with its PNG under After. Native HTML no longer includes that failure screenshot;
+the uniquely named local file, original failure exception and native failure
+records remain unchanged. In RP, **Hide all passed logs** hides this evidence
+when the After Hook passed, even if the Scenario failed and the log is ERROR.
+Turn that filter off to inspect it. **R02 remains unresolved (not fixed)**:
+the API, After ownership and hook status are unchanged; there is no Scenario
+retargeting. See [capture choices](docs/best-practices.md#choose-step-evidence-or-after-hook-evidence).
 
 Example of Step logs and a Gherkin table rendered in ReportPortal:
 
