@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "securerandom"
+require_relative "../helpers/command_support"
+CurrentSDK::Commands.prepare
+profile = ARGV.shift || "offline"
+abort "Unknown profile" unless %w[offline api ui intentional live].include?(profile)
+abort "Unexpected arguments" unless ARGV.empty?
+ENV["REPORT_DIR"] ||= File.join("artifacts", profile, "#{Time.now.utc.strftime('%Y%m%dT%H%M%SZ')}-#{SecureRandom.hex(3)}")
+abort "REPORT_DIR must be new or empty; existing evidence is never removed" if
+  Dir.exist?(ENV.fetch("REPORT_DIR")) && !Dir.empty?(ENV.fetch("REPORT_DIR"))
+FileUtils.mkdir_p(ENV.fetch("REPORT_DIR"))
+if ENV["RP_ENABLED"].to_s.match?(/\A(?:true|1|yes|on)\z/i)
+  abort "Opt-in RP requires RP_ENDPOINT, RP_PROJECT and RP_API_KEY" unless
+    %w[RP_ENDPOINT RP_PROJECT RP_API_KEY].all? { |key| !ENV[key].to_s.strip.empty? }
+  abort "Use HTTPS, or explicitly opt in to loopback HTTP with RP_ALLOW_LOCAL_HTTP=true" unless
+    CurrentSDK::Commands.safe_reporting_endpoint?(ENV.fetch("RP_ENDPOINT"), allow_local_http: ENV["RP_ALLOW_LOCAL_HTTP"] == "true")
+end
+command = [RbConfig.ruby, Gem.bin_path("cucumber", "cucumber"), "--profile", profile]
+system(*command)
+status = $?.exitstatus || 1
+summary = File.join(ENV.fetch("REPORT_DIR"), "summary.txt")
+if File.file?(summary)
+  puts File.readlines(summary).select { |line| line.match?(/\A(?:\d+ scenarios?\b|\d+ steps?\b|\d+m[\d.]+s\s*\z)/) }
+end
+puts "Profile #{profile}: exit #{status}; reports: #{File.expand_path(ENV.fetch('REPORT_DIR'))}"
+exit status

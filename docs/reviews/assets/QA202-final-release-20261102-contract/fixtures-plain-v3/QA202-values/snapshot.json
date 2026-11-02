@@ -1,0 +1,316 @@
+{
+  "persistence": "live_readback",
+  "launches": [
+    {
+      "owner": "superadmin",
+      "description": "",
+      "id": 4042,
+      "uuid": "00c46ad8-1db2-4429-bf26-d54bdd50ad83",
+      "name": "ledger-developer-final-release-8f44c10-plain-QA202-values",
+      "number": 1,
+      "startTime": 1793630037002,
+      "endTime": 1793630037182,
+      "lastModified": 1793630037266,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "attributes": [],
+      "mode": "DEFAULT",
+      "analysing": [],
+      "approximateDuration": 0.0,
+      "hasRetries": false,
+      "rerun": false,
+      "retentionPolicy": "REGULAR"
+    }
+  ],
+  "items": [
+    {
+      "id": 33030,
+      "uuid": "5cb1f8c2-34c9-47df-b69f-bf9cb99f4126",
+      "name": "Feature: Final QA values",
+      "parameters": [],
+      "attributes": [],
+      "type": "SUITE",
+      "startTime": 1793630037016,
+      "endTime": 1793630037181,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 4042,
+      "uniqueId": "auto:45717101cfdcdb4c7de9958a03ece4bd",
+      "testCaseHash": -762433770,
+      "patternTemplates": [],
+      "path": "33030",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33031,
+      "uuid": "97e0d769-a212-487f-832f-329922b1ae46",
+      "name": "Scenario: Final values",
+      "codeRef": "features/QA202-values.feature:3",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793630037017,
+      "endTime": 1793630037168,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {}
+      },
+      "parent": 33030,
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 4042,
+      "uniqueId": "f699928ef68de0826bfb5944d1af65dcacb6438b",
+      "testCaseId": "features/QA202-values.feature:3",
+      "testCaseHash": -1973249538,
+      "patternTemplates": [],
+      "path": "33030.33031",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33032,
+      "uuid": "7b2d36cb-2145-49d3-94bc-aee51837b8e9",
+      "name": "Given QA202 values",
+      "parameters": [],
+      "attributes": [],
+      "type": "STEP",
+      "startTime": 1793630037044,
+      "endTime": 1793630037098,
+      "status": "PASSED",
+      "statistics": {
+        "executions": {},
+        "defects": {}
+      },
+      "parent": 33031,
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4042,
+      "uniqueId": "auto:2d22c43e52ce761f56a970fec2c29075",
+      "testCaseHash": 1683573749,
+      "patternTemplates": [],
+      "path": "33030.33031.33032",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 22248,
+      "time": "2026-11-02T14:33:57.067Z",
+      "message": "## ✗ Assertion failed · QA202 empty\n\n```text\nexpected  \"\" (empty string)\nactual    \"\" (empty string)\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22249,
+      "time": "2026-11-02T14:33:57.072Z",
+      "message": "## ✗ Assertion failed · QA202 spaces\n\n```text\nexpected  \"   \" (3 spaces)\nactual    \" \" (1 space)\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22250,
+      "time": "2026-11-02T14:33:57.073Z",
+      "message": "## ✗ Assertion failed · QA202 edges\n\n```text\nexpected  \" a \" (leading/trailing whitespace)\nactual    \"b \" (leading/trailing whitespace)\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22251,
+      "time": "2026-11-02T14:33:57.074Z",
+      "message": "## ✗ Assertion failed · QA202 tabs\n\n```text\nexpected  \"\\t\" (whitespace only)\nactual    \"\\n\" (whitespace only)\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22252,
+      "time": "2026-11-02T14:33:57.075Z",
+      "message": "## ✗ Assertion failed · QA202 ordinary\n\n```text\nexpected  abc\nactual    abc\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22253,
+      "time": "2026-11-02T14:33:57.076Z",
+      "message": "## ✗ Assertion failed · QA202 delta\n\nmissing in actual: `missing` · extra in actual: `extra` · changed: `change`\n\n```text\nexpected  { \"z\": 1, \"missing\": 2, \"change\": 3 }\nactual    { \"z\": 1, \"extra\": 4, \"change\": 5 }\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22254,
+      "time": "2026-11-02T14:33:57.077Z",
+      "message": "## ✗ Assertion failed · QA202 nested\\_only\n\n```text\nexpected  {\n            \"nested\": { \"a\": 1 }\n          }\nactual    {\n            \"nested\": { \"a\": 2 }\n          }\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22255,
+      "time": "2026-11-02T14:33:57.078Z",
+      "message": "## ✗ Assertion failed · QA202 equal\n\n```text\nexpected  { \"a\": 1 }\nactual    { \"a\": 1 }\n```",
+      "level": "error",
+      "itemId": 33032
+    },
+    {
+      "id": 22256,
+      "time": "2026-11-02T14:33:57.079Z",
+      "message": "## ✗ Assertion failed · QA202 oversized details\n\n```text\nexpected  a\nactual    b\n```\n\n_Details_ `data` = `[diagnostic omitted: unsafe or oversized input]`",
+      "level": "error",
+      "itemId": 33032
+    }
+  ],
+  "files": [],
+  "queries": [
+    {
+      "launch_id": 4042,
+      "items_by_launch": [
+        {
+          "id": 33030,
+          "uuid": "5cb1f8c2-34c9-47df-b69f-bf9cb99f4126",
+          "name": "Feature: Final QA values",
+          "parameters": [],
+          "attributes": [],
+          "type": "SUITE",
+          "startTime": "2026-11-02T14:33:57.016Z",
+          "endTime": "2026-11-02T14:33:57.181Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-final-release-8f44c10-plain-QA202-values",
+              "number": 1
+            }
+          },
+          "hasChildren": true,
+          "hasStats": true,
+          "launchId": 4042,
+          "uniqueId": "auto:45717101cfdcdb4c7de9958a03ece4bd",
+          "testCaseHash": -762433770,
+          "patternTemplates": [],
+          "path": "33030",
+          "hasNestedSteps": false
+        },
+        {
+          "id": 33031,
+          "uuid": "97e0d769-a212-487f-832f-329922b1ae46",
+          "name": "Scenario: Final values",
+          "codeRef": "features/QA202-values.feature:3",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T14:33:57.017Z",
+          "endTime": "2026-11-02T14:33:57.168Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {
+              "total": 1,
+              "passed": 1
+            },
+            "defects": {}
+          },
+          "parent": 33030,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-final-release-8f44c10-plain-QA202-values",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 33030,
+                "name": "Feature: Final QA values"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": true,
+          "launchId": 4042,
+          "uniqueId": "f699928ef68de0826bfb5944d1af65dcacb6438b",
+          "testCaseId": "features/QA202-values.feature:3",
+          "testCaseHash": -1973249538,
+          "patternTemplates": [],
+          "path": "33030.33031",
+          "hasNestedSteps": true
+        },
+        {
+          "id": 33032,
+          "uuid": "7b2d36cb-2145-49d3-94bc-aee51837b8e9",
+          "name": "Given QA202 values",
+          "parameters": [],
+          "attributes": [],
+          "type": "STEP",
+          "startTime": "2026-11-02T14:33:57.044Z",
+          "endTime": "2026-11-02T14:33:57.098Z",
+          "status": "PASSED",
+          "statistics": {
+            "executions": {},
+            "defects": {}
+          },
+          "parent": 33031,
+          "pathNames": {
+            "launchPathName": {
+              "name": "ledger-developer-final-release-8f44c10-plain-QA202-values",
+              "number": 1
+            },
+            "itemPaths": [
+              {
+                "id": 33030,
+                "name": "Feature: Final QA values"
+              },
+              {
+                "id": 33031,
+                "name": "Scenario: Final values"
+              }
+            ]
+          },
+          "hasChildren": false,
+          "hasStats": false,
+          "launchId": 4042,
+          "uniqueId": "auto:2d22c43e52ce761f56a970fec2c29075",
+          "testCaseHash": 1683573749,
+          "patternTemplates": [],
+          "path": "33030.33031.33032",
+          "hasNestedSteps": false
+        }
+      ],
+      "forbidden_prefix": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      },
+      "secret_marker": {
+        "content": [],
+        "page": {
+          "number": 1,
+          "size": 1,
+          "totalElements": 0,
+          "totalPages": 0
+        }
+      }
+    }
+  ]
+}

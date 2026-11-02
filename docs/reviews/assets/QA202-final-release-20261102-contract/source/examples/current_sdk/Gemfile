@@ -1,0 +1,8 @@
+source "https://rubygems.org"
+
+require_relative "helpers/sdk_version"
+
+# Install the matching SDK candidate or release archive before resolving this consumer.
+gem "reportportal-cucumber-ruby", "= #{CurrentSDK::SDK_VERSION}"
+gem "cucumber", ENV.fetch("CUCUMBER_VERSION", "~> 12.0"), ">= 12.0.1"
+gem "playwright-ruby-client", "= 1.62.0"

@@ -1,0 +1,1434 @@
+{
+  "source_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "contract_verdict": "ACCEPT_NONVISUAL_CONTRACT_SCOPE",
+  "release_verdict": "PENDING_MASTER_AGGREGATION_OF_INDEPENDENT_VISUAL_AND_PERFORMANCE_GATES",
+  "checks": [
+    {
+      "criterion": "G8",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "metadata_or_log_leaks": 0,
+        "marker_queries": 69,
+        "query_totals": [
+          0
+        ]
+      }
+    },
+    {
+      "criterion": "G8.encoded-and-original-deferred",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "encoded_cases": 81,
+        "original_probe_sha256": "41e78b94f257ec6c6c032d2e7a5ffa51be40e518c380140d1e6b8ad7af62ef81",
+        "safe_frames_per_case": 62
+      }
+    },
+    {
+      "criterion": "FINALIZATION",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "hanging_count": 0,
+        "launch_count": 69
+      }
+    },
+    {
+      "criterion": "ATTACHMENT.IDENTITY",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "files": 49,
+        "wire_checks": [
+          {
+            "path": "fixtures-default-v3/F01/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain/F01/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v2/F01/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F01/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F04/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "received": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F04-frozen/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "received": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F10a/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F10b/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F10c/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F10d/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F10e/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F11a/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F11b/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F11c/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F11d/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F11e/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F11f/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F12/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F14/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F14-negative/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/F18/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "9d79f8c5d59c19c665bf3bdbd1a479c99b05422cf6b593b2f81ee8e424065aa7",
+                2952,
+                "text/plain"
+              ],
+              [
+                "cbfa280ac4fecfda26c5cecea6fe2708a6bec7d3d94bf970f2556fdee65fe689",
+                49168,
+                "application/json"
+              ],
+              [
+                "d4585f00edc111a1c3f25ab78e7a606b848f93118ba5231993d18bd365ee0d07",
+                49152,
+                "text/plain"
+              ],
+              [
+                "d73c0897df1e13fa96d258834e9f680a36af2e0b2b9b2fca1f43b9ee03415491",
+                352,
+                "application/json"
+              ]
+            ],
+            "received": [
+              [
+                "9d79f8c5d59c19c665bf3bdbd1a479c99b05422cf6b593b2f81ee8e424065aa7",
+                2952,
+                "text/plain"
+              ],
+              [
+                "cbfa280ac4fecfda26c5cecea6fe2708a6bec7d3d94bf970f2556fdee65fe689",
+                49168,
+                "application/json"
+              ],
+              [
+                "d4585f00edc111a1c3f25ab78e7a606b848f93118ba5231993d18bd365ee0d07",
+                49152,
+                "text/plain"
+              ],
+              [
+                "d73c0897df1e13fa96d258834e9f680a36af2e0b2b9b2fca1f43b9ee03415491",
+                352,
+                "application/json"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/QA202-captions/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/QA202-http/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-plain-v3/QA202-values/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F01/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "b7fbbc9639c01b3aab5d06a74ea5bf1a45b6252ba650873aa94e89b36452159e",
+                71,
+                "text/plain"
+              ],
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F04/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "received": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F04-frozen/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "received": [
+              [
+                "8c472e5064d09cd6d7f8aca0ce5da74e4ff29073ac5f8f45ae96093f46bed1a9",
+                36612,
+                "image/jpeg"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F10a/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F10b/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F10c/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F10d/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F10e/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F11a/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F11b/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F11c/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F11d/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F11e/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F11f/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F12/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "c57f34b4dfa1011fb9adb64d9fdcf60b50db1acb3741956d2cc4fe771a645f6e",
+                75,
+                "application/json"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F14/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F14-negative/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/F18/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "9d79f8c5d59c19c665bf3bdbd1a479c99b05422cf6b593b2f81ee8e424065aa7",
+                2952,
+                "text/plain"
+              ],
+              [
+                "cbfa280ac4fecfda26c5cecea6fe2708a6bec7d3d94bf970f2556fdee65fe689",
+                49168,
+                "application/json"
+              ],
+              [
+                "d4585f00edc111a1c3f25ab78e7a606b848f93118ba5231993d18bd365ee0d07",
+                49152,
+                "text/plain"
+              ],
+              [
+                "d73c0897df1e13fa96d258834e9f680a36af2e0b2b9b2fca1f43b9ee03415491",
+                352,
+                "application/json"
+              ]
+            ],
+            "received": [
+              [
+                "9d79f8c5d59c19c665bf3bdbd1a479c99b05422cf6b593b2f81ee8e424065aa7",
+                2952,
+                "text/plain"
+              ],
+              [
+                "cbfa280ac4fecfda26c5cecea6fe2708a6bec7d3d94bf970f2556fdee65fe689",
+                49168,
+                "application/json"
+              ],
+              [
+                "d4585f00edc111a1c3f25ab78e7a606b848f93118ba5231993d18bd365ee0d07",
+                49152,
+                "text/plain"
+              ],
+              [
+                "d73c0897df1e13fa96d258834e9f680a36af2e0b2b9b2fca1f43b9ee03415491",
+                352,
+                "application/json"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/FINAL-security/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/QA202-captions/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ],
+              [
+                "e0670cf624674df9a2485177d68ca12d3dc501db2249e05c325a999c22db2bc0",
+                5421,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/QA202-http/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "fixtures-rich-v3/QA202-values/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F13/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F16a/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F16b/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F16c/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F16d/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F16e/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F16f/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-plain/F20/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F13/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F16a/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F16b/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F16c/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F16d/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F16e/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F16f/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "p1-rich/F20/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "security-plain/FINAL-security/wire.json",
+            "equal": true,
+            "sent": [],
+            "received": [],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "trials/api-plain/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "a1fc01e1b30a8d057cb87d37aa34608d55aa0d58133b243dac836cc538e36d3d",
+                58,
+                "application/json"
+              ]
+            ],
+            "received": [
+              [
+                "a1fc01e1b30a8d057cb87d37aa34608d55aa0d58133b243dac836cc538e36d3d",
+                58,
+                "application/json"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "trials/api-rich/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "a1fc01e1b30a8d057cb87d37aa34608d55aa0d58133b243dac836cc538e36d3d",
+                58,
+                "application/json"
+              ]
+            ],
+            "received": [
+              [
+                "a1fc01e1b30a8d057cb87d37aa34608d55aa0d58133b243dac836cc538e36d3d",
+                58,
+                "application/json"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "trials/independent-api/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "c7cc2840d307e18f58ea8a52b06addf23c8b8d7dd6be02894964f773cb6cf411",
+                73,
+                "application/json"
+              ]
+            ],
+            "received": [
+              [
+                "c7cc2840d307e18f58ea8a52b06addf23c8b8d7dd6be02894964f773cb6cf411",
+                73,
+                "application/json"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "trials/independent-ui/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "5dcbf5f4e9ef74e0e3f275d4eba2fdf5d5144e32b6c19cf6ed0fc0c3ee57f1f3",
+                34771,
+                "image/png"
+              ],
+              [
+                "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+                32910,
+                "image/png"
+              ],
+              [
+                "fbc85a97706e1090d426ef10605343334a63fcce89cb256aaa5c5d8485ce6fb6",
+                34144,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "5dcbf5f4e9ef74e0e3f275d4eba2fdf5d5144e32b6c19cf6ed0fc0c3ee57f1f3",
+                34771,
+                "image/png"
+              ],
+              [
+                "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+                32910,
+                "image/png"
+              ],
+              [
+                "fbc85a97706e1090d426ef10605343334a63fcce89cb256aaa5c5d8485ce6fb6",
+                34144,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "trials/ui-plain/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+                36216,
+                "image/png"
+              ],
+              [
+                "b389e179128700133f52ac33a848233fc14790743c5b6b6a25bfb19532ba550e",
+                34272,
+                "image/png"
+              ],
+              [
+                "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+                34734,
+                "image/png"
+              ],
+              [
+                "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+                32910,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+                36216,
+                "image/png"
+              ],
+              [
+                "b389e179128700133f52ac33a848233fc14790743c5b6b6a25bfb19532ba550e",
+                34272,
+                "image/png"
+              ],
+              [
+                "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+                34734,
+                "image/png"
+              ],
+              [
+                "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+                32910,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          },
+          {
+            "path": "trials/ui-rich/wire.json",
+            "equal": true,
+            "sent": [
+              [
+                "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+                36216,
+                "image/png"
+              ],
+              [
+                "b389e179128700133f52ac33a848233fc14790743c5b6b6a25bfb19532ba550e",
+                34272,
+                "image/png"
+              ],
+              [
+                "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+                34734,
+                "image/png"
+              ],
+              [
+                "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+                32910,
+                "image/png"
+              ]
+            ],
+            "received": [
+              [
+                "202b3b32d2b97ae165a95ad9031f90b7453078b4bd601edcbb87d81eef0db63d",
+                36216,
+                "image/png"
+              ],
+              [
+                "b389e179128700133f52ac33a848233fc14790743c5b6b6a25bfb19532ba550e",
+                34272,
+                "image/png"
+              ],
+              [
+                "b8026463df8099d99c98348f7ddcd1c756e539df50d3fbe48fc79c2c4f15e4f7",
+                34734,
+                "image/png"
+              ],
+              [
+                "c08ab96b7e29c6c6ac287302f07745533dc9b42ff407cdb3bf6cc29662afbaac",
+                32910,
+                "image/png"
+              ]
+            ],
+            "same_log_message_level_owner_and_download": true,
+            "request_failures": 0
+          }
+        ]
+      }
+    },
+    {
+      "criterion": "P1.1",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "raw_frames": 62,
+        "raw_sha256": "3fd9692c6e95a2e7e1868111ad41fd5f2584f95098c67d18ccc9756d66eca75d",
+        "baseline_sha256": "3fd9692c6e95a2e7e1868111ad41fd5f2584f95098c67d18ccc9756d66eca75d",
+        "baseline_input_file_sha256": "9b48b2ebfe9ec42ba63031de4eeb2621235940ae4c577de2848ffe3b1e0acd0f"
+      }
+    },
+    {
+      "criterion": "P1.2",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "native_F16c": "N/A: Ruby cannot raise a non-Exception",
+        "supplementary_adapter": "UNIT/protocol only; native failed step remains an Exception",
+        "title_length": 200
+      }
+    },
+    {
+      "criterion": "P1.3",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "total": 62,
+        "hidden_framework": 56,
+        "hidden_runner": 2
+      }
+    },
+    {
+      "criterion": "P1.4",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "frozen_shown": 4,
+        "no_project_fallback": "Focused failure_card_spec checks first three framework frames; F16b native retains its real project step frame"
+      }
+    },
+    {
+      "criterion": "P1.5",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Continuation and project-frame captions observed in live F16a"
+    },
+    {
+      "criterion": "P1.7",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Live F16f failure redacted"
+    },
+    {
+      "criterion": "P1.10",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Fresh frozen F04 exact message equality across two executions"
+    },
+    {
+      "criterion": "P1.6",
+      "status": "PENDING",
+      "expected": null,
+      "actual": "Independent browser reviewer owns DOM/screenshots; not inspected here"
+    },
+    {
+      "criterion": "P1.8",
+      "status": "PENDING",
+      "expected": null,
+      "actual": "Independent browser reviewer owns DOM/screenshots; not inspected here"
+    },
+    {
+      "criterion": "P1.9",
+      "status": "PENDING",
+      "expected": null,
+      "actual": "Independent browser reviewer owns DOM/screenshots; not inspected here"
+    },
+    {
+      "criterion": "P8.1",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Exact golden bytes"
+    },
+    {
+      "criterion": "P8.2",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Long expected omitted; nested and eight-key details fenced; Decision27 changed-key summary retained"
+    },
+    {
+      "criterion": "P8.3",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Every actual continuation retains ten-space label indentation"
+    },
+    {
+      "criterion": "P8.4",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Exact updated Decision7/27 HTTP golden; outcome-first order and raw byte counts"
+    },
+    {
+      "criterion": "P8.5",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Evidence golden and empty-action title"
+    },
+    {
+      "criterion": "P8.6",
+      "status": "PASS",
+      "expected": null,
+      "actual": "No INFO headings across every fresh launch"
+    },
+    {
+      "criterion": "P8.7",
+      "status": "PASS",
+      "expected": null,
+      "actual": "URL redacted in title and meta, both modes"
+    },
+    {
+      "criterion": "P8.8",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "equal_ignoring_timestamps": true,
+        "sha256": [
+          "004aaf9963df3def57d6e6fb5c02f24017746aea0be1b5778a09581a47e8f88e",
+          "004aaf9963df3def57d6e6fb5c02f24017746aea0be1b5778a09581a47e8f88e"
+        ],
+        "F12": "Native rp_evidence has no terminal line; native plain/rich process comparison retained",
+        "raw_timestamp_comparison": "False by design; preserved original observation, timestamps excluded only as criterion specifies"
+      }
+    },
+    {
+      "criterion": "P8.9",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Oversized details omission marker and bound retained"
+    },
+    {
+      "criterion": "D27.assertion-values",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Empty/whitespace labels and top-level missing/extra/changed keys"
+    },
+    {
+      "criterion": "D27.http-order-headers",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Outcome before transport; each non-sensitive repeated header value retained on a separate line"
+    },
+    {
+      "criterion": "P10.4-D27a",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "pairs": 30,
+        "scope": "Whole ERROR/FATAL messages byte-identical, not only first line"
+      }
+    },
+    {
+      "criterion": "P10.5",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Every paired log within plain+1024 bytes"
+    },
+    {
+      "criterion": "P10.6",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "differences": [],
+        "rule": "Strip only generated HTML; approved passed-assertion, HTTP-title and attachment-kind reorderings only; preserve code/user angle brackets"
+      }
+    },
+    {
+      "criterion": "P10.7",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "different": [],
+        "normalization": "Native channel events omit UUIDs/timings; full original NDJSON retained. Terminal ignores timestamps/duration only. Fixture Launch metadata differ solely by harness mode-labelled name. P10.7 compares all required metadata, not server-generated auto uniqueIds; those were not submitted by either SDK run and remain in original wire/API captures."
+      }
+    },
+    {
+      "criterion": "P10.1",
+      "status": "PASS",
+      "expected": null,
+      "actual": "RP_PRESENTATION unset; live Launch 4078"
+    },
+    {
+      "criterion": "P10.2",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Invalid mode warns exactly once and falls back to plain"
+    },
+    {
+      "criterion": "P10.3",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "extracted_client_tags": 218,
+        "invalid": [],
+        "allowed_styles": [
+          "font:600 13.5px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:#2B2B2D",
+          "font:600 10.5px system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#6B6B6D",
+          "display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#276E50;background:#E6F5EE",
+          "display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#B23B3B;background:#FBEAEA",
+          "display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#8A5A00;background:#FFF3D6",
+          "display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#0F6C7A;background:#E3F4F7"
+        ]
+      }
+    },
+    {
+      "criterion": "P10.8-nonvisual",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "folds": 19,
+        "visual_DOM": "PENDING independent browser reviewer"
+      }
+    },
+    {
+      "criterion": "P10.9",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Eight-column F13 has no TH spans; separately labeled four-column control correctly uses TH"
+    },
+    {
+      "criterion": "P10.10",
+      "status": "PENDING",
+      "expected": null,
+      "actual": "Independent browser reviewer owns rendering/contrast; no browser operated here"
+    },
+    {
+      "criterion": "P10.11",
+      "status": "PENDING",
+      "expected": null,
+      "actual": "Independent browser reviewer owns rendering/contrast; no browser operated here"
+    },
+    {
+      "criterion": "F18.P5.5",
+      "status": "PASS",
+      "expected": null,
+      "actual": "Exact preview-limit markers retained and full attachment bytes downloaded"
+    },
+    {
+      "criterion": "G8.live-safe-frames",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "failure_cards": 16,
+        "contiguous_safe_frames_per_card": 62,
+        "omission": "Only unsafe URL frame may be omitted; safe frames never discarded"
+      }
+    },
+    {
+      "criterion": "RAW_CURL",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "messages": 16,
+        "sha256": "3c76a51af479b23550448410822272a5a698d8a5a08a55a5b71dc2774742ba65",
+        "secrets": "Synthetic SAFE_CURL_FIXTURE only; ordinary AppLog preservation is intentional"
+      }
+    },
+    {
+      "criterion": "SIX_TRIALS",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "launch_ids": [
+          4016,
+          4017,
+          4018,
+          4019,
+          4022,
+          4023
+        ],
+        "inputs": "Original consumer inputs unchanged; actual installed gem and SDK_REF pinned to final SHA"
+      }
+    },
+    {
+      "criterion": "CI",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "commit": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+        "pr_run": 41462363187,
+        "push_run": 41462349016,
+        "six_matrix_cells": "success",
+        "gate": "success",
+        "artifact_bundle": "skipped by workflow"
+      }
+    },
+    {
+      "criterion": "FOCUSED_RSPEC",
+      "status": "PASS",
+      "expected": null,
+      "actual": {
+        "duration": 4.508825,
+        "example_count": 362,
+        "failure_count": 0,
+        "pending_count": 0,
+        "errors_outside_of_examples_count": 0
+      }
+    },
+    {
+      "criterion": "G11",
+      "status": "PENDING",
+      "expected": null,
+      "actual": "Performance owned by separate agent; no timings collected here"
+    }
+  ],
+  "new_launch_count": 69,
+  "no_merge_tag_publish_push_commit": true
+}

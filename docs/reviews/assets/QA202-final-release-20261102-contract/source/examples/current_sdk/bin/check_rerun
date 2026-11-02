@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "securerandom"
+require "digest"
+require_relative "../helpers/command_support"
+CurrentSDK::Commands.prepare
+directory = File.expand_path(ENV.fetch("RP_SPOOL_DIR", "artifacts/reportportal-spool"))
+FileUtils.mkdir_p(directory)
+sentinel = File.join(directory, "example-rerun-sentinel-#{SecureRandom.hex(6)}.txt")
+File.write(sentinel, "Synthetic acceptance sentinel; preserve existing spool evidence.\n")
+original = Digest::SHA256.file(sentinel).hexdigest
+2.times do
+  abort "Verification rerun failed" unless system(RbConfig.ruby, "bin/verify")
+  abort "Existing spool evidence changed" unless Digest::SHA256.file(sentinel).hexdigest == original
+end
+puts "Two verification runs passed; preserved sentinel: #{sentinel}"

@@ -1,0 +1,15 @@
+<%
+require "shellwords"
+directory = ENV.fetch("REPORT_DIR", "artifacts/offline")
+formats = "--publish-quiet --require features --format progress --out #{Shellwords.escape(directory + '/progress.txt')} " \
+  "--format summary --out #{Shellwords.escape(directory + '/summary.txt')} " \
+  "--format html --out #{Shellwords.escape(directory + '/cucumber.html')} " \
+  "--format message --out #{Shellwords.escape(directory + '/messages.ndjson')} " \
+  "--format ReportportalCucumber::Cucumber::Formatter --out #{Shellwords.escape(directory + '/reportportal.txt')}"
+%>
+default: --profile offline
+offline: <%= formats %> --tags 'not @intentional_failure and not @live'
+api: <%= formats %> --tags '@api'
+ui: <%= formats %> --tags '@ui and not @intentional_failure and not @live'
+intentional: <%= formats %> --tags '@intentional_failure'
+live: <%= formats %> --tags '@live'

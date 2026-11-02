@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ledger-developer-f11a",
+    "uri": "features/F11a.feature",
+    "keyword": "Feature",
+    "name": "Ledger developer F11a",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      },
+      {
+        "name": "@ledger_developer",
+        "line": 1
+      },
+      {
+        "name": "@F11",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "ledger-developer-f11a;f11a",
+        "keyword": "Scenario",
+        "name": "F11a",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ledger HTTP a",
+            "line": 4,
+            "output": [
+              "### Request\n- `POST` `https://api.example.test/api/orders`\n- Headers:\n```text\nContent-Type: application/json\nAccept: application/json\nX-Request-Id: ledger-42\nX-Fixture: F11a\n```\n- Body:\n```json\n{\n  \"account\": \"JPM-PRIME\",\n  \"side\": \"BUY\",\n  \"notional\": 5000000\n}\n```\n\n### Response\n- Status: `201`\n- Headers:\n```text\nContent-Type: application/json\n```\n- Body:\n```json\n{\n  \"orderId\": \"ORD-20261031-0042\",\n  \"status\": \"ACCEPTED\"\n}\n```\n\n- Duration: `84` ms"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/script/acceptance/presentation_ledger_developer/support.rb:199"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6768000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          },
+          {
+            "name": "@ledger_developer",
+            "line": 1
+          },
+          {
+            "name": "@F11",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

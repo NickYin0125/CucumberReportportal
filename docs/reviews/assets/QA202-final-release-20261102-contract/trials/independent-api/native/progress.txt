@@ -1,0 +1,120 @@
+Using the tester_api profile...
+
+Boundary contract: a practice word of exactly 80 characters must be accepted.
+.
+### Request
+- `POST` `http://127.0.0.1:59075/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:59075"]
+content-type: ["application/json"]
+content-length: ["91"]
+```
+- Body:
+```json
+{
+  "word": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}
+```
+
+### Response
+- Status: `201`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["104"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "saved": true
+}
+```
+
+- Duration: `0.82` ms
+.
+## Assertion: API tester creation status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 201 | 201 |
+
+## Assertion: API tester saved word contract
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| {"word":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","saved":true} | {"word":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","saved":true} |
+.
+### Request
+- `GET` `http://127.0.0.1:59075/api/practice?word=focus`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:59075"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["45"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "focus",
+  "length": 5,
+  "kind": "practice"
+}
+```
+
+- Duration: `0.92` ms
+.
+## Assertion: API tester metadata status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+
+## Assertion: API tester consumer metadata contract
+
+**Outcome:** FAIL
+
+| Expected | Actual |
+| --- | --- |
+| {"word":"focus","length":5,"kind":"practice","difficulty":"easy"} | {"word":"focus","length":5,"kind":"practice"} |
+F
+
+(::) failed steps (::)
+
+API tester consumer metadata contract: expected {"word" => "focus", "length" => 5, "kind" => "practice", "difficulty" => "easy"}, got {"word" => "focus", "length" => 5, "kind" => "practice"} (RuntimeError)
+./features/tester_api/workplace_steps.rb:33:in 'ApiTesterWorkplaceSteps#api_tester_compare'
+./features/tester_api/workplace_steps.rb:68:in `"the API tester expects the following metadata contract:"'
+./features/support/env.rb:45:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+-e:1:in 'Kernel#load'
+-e:1:in '<main>'
+features/tester_api/workplace_contracts.feature:11:in `the API tester expects the following metadata contract:'
+
+Failing Scenarios:
+cucumber -p tester_api features/tester_api/workplace_contracts.feature:9 # Scenario: Metadata includes the difficulty required by the consuming application
+
+2 scenarios (1 failed, 1 passed)
+5 steps (1 failed, 4 passed)
+0m0.432s

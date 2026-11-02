@@ -1,0 +1,230 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "json"
+require "digest"
+require "securerandom"
+require_relative "../helpers/command_support"
+CurrentSDK::Commands.prepare
+# Acceptance is deliberately no-RP, even if the parent shell has credentials.
+ENV["RP_ENABLED"] = "false"
+ENV["RP_CLIENT_JOIN"] = "false"
+ENV["RP_REQUIRE_COMPLETE_REPORTING"] = "false"
+base = File.expand_path(ENV.fetch("VERIFY_OUTPUT", "artifacts/acceptance"))
+root = File.join(base, "#{Time.now.utc.strftime('%Y%m%dT%H%M%SZ')}-#{SecureRandom.hex(3)}")
+FileUtils.mkdir_p(root)
+
+def spool_inventory(directory)
+  Dir.glob(File.join(directory, "**/*"), File::FNM_DOTMATCH).sort.filter_map do |path|
+    next if %w[. ..].include?(File.basename(path))
+
+    [path, File.file?(path) ? Digest::SHA256.file(path).hexdigest : "directory"]
+  end.to_h
+end
+
+spool = File.expand_path(ENV.fetch("RP_SPOOL_DIR", "artifacts/reportportal-spool"))
+spool_before = spool_inventory(spool)
+
+def require_check(condition, message)
+  raise message unless condition
+end
+
+def execute(script, output, env = {}, *arguments)
+  FileUtils.mkdir_p(File.dirname(output))
+  system(env, RbConfig.ruby, script, *arguments, out: output, err: [:child, :out])
+  $?.exitstatus || 1
+end
+
+def canonical_messages(messages, relevant)
+  starts = messages.filter_map { |entry| entry["testCaseStarted"] }.to_h do |entry|
+    [entry.fetch("id"), "#{entry.fetch('testCaseId')}:#{entry.fetch('attempt')}"]
+  end
+  messages.select { |entry| (entry.keys & relevant).any? }.map do |entry|
+    kind, payload = entry.first
+    # Independent native formatters generate run/start IDs and timestamps.
+    # Reconcile the actual scenario/attempt owner, retaining Step IDs and bodies.
+    normalized = payload.reject { |key, _| %w[timestamp testRunStartedId].include?(key) }
+    normalized["id"] = starts.fetch(payload.fetch("id")) if kind == "testCaseStarted"
+    if payload.key?("testCaseStartedId")
+      normalized["testCaseStartedId"] = starts.fetch(payload.fetch("testCaseStartedId"))
+    end
+    if kind == "testStepFinished" && payload.dig("testStepResult", "status") == "FAILED"
+      result = normalized.fetch("testStepResult").dup
+      # HTML 22.3.0 escapes '<' in rendered backtraces to literal 'x3C'.
+      # Normalize only failure trace text; compare evidence bodies unchanged.
+      result["message"] = result["message"].gsub("<", "x3C") if result["message"]
+      if result["exception"]
+        exception = result.fetch("exception").dup
+        exception["stackTrace"] = exception["stackTrace"].gsub("<", "x3C") if exception["stackTrace"]
+        result["exception"] = exception
+      end
+      normalized["testStepResult"] = result
+    end
+    {kind => normalized}
+  end
+end
+
+def inspect_report(directory, failed:)
+  messages = File.readlines(File.join(directory, "messages.ndjson")).map { |line| JSON.parse(line) }
+  outcomes = messages.filter_map { |entry| entry["testStepFinished"] }
+  errors = outcomes.select { |entry| entry.dig("testStepResult", "status") == "FAILED" }
+  require_check(failed ? errors.length == 1 : errors.empty?, "Unexpected failed step count")
+  require_check(outcomes.all? { |entry| %w[PASSED FAILED].include?(entry.dig("testStepResult", "status")) }, "Skipped/undefined/pending steps")
+  runs = messages.filter_map { |entry| entry["testCaseStarted"] }
+  require_check(runs.length == (failed ? 1 : 5), "Unexpected scenario count")
+  require_check(messages.any? { |entry| entry.dig("testRunFinished", "success") == !failed }, "Wrong native run outcome")
+  cases = messages.filter_map { |entry| entry["testCase"] }.to_h { |entry| [entry.fetch("id"), entry] }
+  started = runs.to_h { |entry| [entry.fetch("id"), entry] }
+  pickles = messages.filter_map { |entry| entry["pickle"] }.to_h { |entry| [entry.fetch("id"), entry] }
+  pickle_steps = pickles.values.flat_map { |pickle| pickle.fetch("steps") }
+                       .to_h { |step| [step.fetch("id"), step.fetch("text")] }
+  owner_step = lambda do |event|
+    test_case = cases.fetch(started.fetch(event.fetch("testCaseStartedId")).fetch("testCaseId"))
+    test_case.fetch("testSteps").find { |step| step["id"] == event.fetch("testStepId") }
+  end
+  owner_text = ->(event) { pickle_steps.fetch(owner_step.call(event).fetch("pickleStepId")) }
+  owner_key = ->(event) { event.values_at("testCaseStartedId", "testStepId") }
+  runs.each do |run|
+    steps = cases.fetch(run.fetch("testCaseId")).fetch("testSteps")
+    finished = outcomes.select { |entry| entry["testCaseStartedId"] == run.fetch("id") }
+    require_check(finished.map { |entry| entry.fetch("testStepId") }.sort == steps.map { |step| step.fetch("id") }.sort,
+                  "Missing or duplicate Step/Hook outcomes")
+    require_check(steps.count { |step| step.key?("hookId") } == 1, "Expected only the unchanged After hook")
+  end
+  business_steps = outcomes.count { |entry| owner_step.call(entry).key?("pickleStepId") }
+  require_check(business_steps == (failed ? 2 : 20), "Unexpected business step count")
+  attachments = messages.filter_map { |entry| entry["attachment"] }
+  require_check(attachments.length == (failed ? 3 : 38), "Unexpected native attachment count")
+  attachments.each do |attachment|
+    require_check(owner_step.call(attachment), "Evidence has no matching Step/Hook")
+    require_check(attachment["mediaType"] == "text/x.cucumber.log+plain", "Unexpected native binary/routing evidence")
+    first = messages.index { |entry| entry["testStepStarted"] && owner_key.call(entry["testStepStarted"]) == owner_key.call(attachment) }
+    last = messages.index { |entry| entry["testStepFinished"] && owner_key.call(entry["testStepFinished"]) == owner_key.call(attachment) }
+    index = messages.index { |entry| entry["attachment"] == attachment }
+    require_check(first && last && first < index && index < last, "Native evidence was emitted outside its owner's lifetime")
+  end
+  logs = attachments
+  require_check(logs.none? { |log| log["body"].include?("API response snapshot") }, "Duplicate API response snapshot remains")
+  html = File.read(File.join(directory, "cucumber.html"))
+  require_check(html.bytesize > 1000 && html.downcase.include?("cucumber"), "Missing native HTML")
+  embedded = html.match(/window\.CUCUMBER_MESSAGES\s*=\s*(\[.*?\]);\s*<\/script>/m)
+  require_check(embedded, "Unsupported native HTML message embedding")
+  html_messages = JSON.parse(embedded[1])
+  relevant = %w[pickle hook testCase testCaseStarted testStepStarted testStepFinished attachment testRunFinished]
+  html_evidence = canonical_messages(html_messages, relevant)
+  native_evidence = canonical_messages(messages, relevant)
+  require_check(html_evidence == native_evidence, "HTML evidence/Step owners differ from NDJSON")
+  require_check(File.file?(File.join(directory, "progress.txt")), "Missing distinct progress output")
+  if failed
+    require_check(errors.first.to_json.include?("TimeoutError") && errors.first.to_json.include?("Deliberately missing button"), "Original Playwright failure was replaced")
+    trace = errors.first.dig("testStepResult", "exception", "stackTrace").to_s
+    require_check(trace.include?("ui_steps.rb:") && trace.include?("world.rb:"), "Original browser backtrace is missing")
+    require_check(owner_text.call(errors.first) == "I click the deliberately missing practice button", "Wrong failed Step")
+    pngs = Dir.glob(File.join(directory, "*.png"))
+    require_check(pngs.length == 1, "Expected one local screenshot, not a native attachment")
+    png = pngs.first
+    require_check(File.basename(png).match?(/\Amissing-locator-preserves-its-playwright-error-and-screenshot-click-deliberately-missing-practice-button-[0-9a-f]{8}\.png\z/),
+                  "Screenshot name must contain scenario, checkpoint and random suffix")
+    bytes = File.binread(png)
+    require_check(bytes.start_with?("\x89PNG\r\n\x1a\n".b), "Invalid screenshot payload")
+    test_case = cases.fetch(runs.first.fetch("testCaseId"))
+    hook = test_case.fetch("testSteps").find { |step| step.key?("hookId") }
+    hook_result = outcomes.find { |entry| entry["testStepId"] == hook.fetch("id") }
+    require_check(hook_result.dig("testStepResult", "status") == "PASSED", "After status changed")
+    failure_index = messages.index { |entry| entry["testStepFinished"] == errors.first }
+    hook_start = messages.index do |entry|
+      event = entry["testStepStarted"]
+      event && event["testCaseStartedId"] == runs.first.fetch("id") && event["testStepId"] == hook.fetch("id")
+    end
+    hook_finish = messages.index { |entry| entry["testStepFinished"] == hook_result }
+    require_check(hook_start && failure_index < hook_start && hook_start < hook_finish,
+                  "After hook did not run after the original failed Step completed")
+    require_check(logs.none? { |log| owner_step.call(log).key?("hookId") || log["body"].include?("Failure evidence:") },
+                  "RP-only failure evidence leaked into native reports")
+    require_check(logs.map { |log| owner_text.call(log) }.tally == {
+                    "I open the local practice page" => 2, "I click the deliberately missing practice button" => 1
+                  }, "Wrong native failure-run log owners")
+  else
+    http = logs.select { |log| log["body"].start_with?("### Request\n") }
+    api_actions = outcomes.select { |entry| owner_step.call(entry).key?("pickleStepId") &&
+      owner_text.call(entry).match?(/\A(?:the local API is healthy|I POST|I GET|I submit)/) }
+    require_check(http.length == 8 && http.map(&owner_key).sort == api_actions.map(&owner_key).sort,
+                  "Expected exactly one HTTP exchange on each of eight API actions")
+    require_check(http.all? { |log| log["body"].include?("### Response") && log["body"].include?("```json") }, "Missing HTTP response evidence")
+    http.each do |log|
+      action = owner_text.call(log)
+      method, path, status = case action
+                            when "the local API is healthy" then ["GET", "/health", 200]
+                            when /\AI GET metadata for "([^"]+)"\z/ then ["GET", "/api/practice?word=#{$1}", 200]
+                            when "I submit an empty practice word expecting status 400" then ["POST", "/api/practice", 400]
+                            else ["POST", "/api/practice", 201]
+                            end
+      require_check(log["body"].include?("- `#{method}`") && log["body"].include?("#{path}`") &&
+                    log["body"].include?("- Status: `#{status}`"), "HTTP exchange content does not match its action owner")
+    end
+    expected_400 = http.select { |log| log["body"].include?("- Status: `400`") }
+    require_check(expected_400.length == 1 && owner_text.call(expected_400.first) == "I submit an empty practice word expecting status 400", "400 evidence attached to wrong Step")
+    debug = logs.select { |log| log["body"].start_with?("API helper is sending") }
+    require_check(debug.length == 8 && debug.map(&owner_key).sort == http.map(&owner_key).sort, "Wrong DEBUG helper count/owners")
+    diagnostic = logs.select { |log| log["body"].start_with?("Diagnostic only (non-fatal):") }
+    require_check(diagnostic.length == 1 && owner_text.call(diagnostic.first) == "I record a non-fatal diagnostic comparison",
+                  "Wrong diagnostic-only count/owner")
+    require_check(logs.none? { |log| log["body"].include?("Optional diagnostic, not a business assertion") }, "Old failing diagnostic remains")
+    outline_names = runs.map { |run| pickles.fetch(cases.fetch(run.fetch("testCaseId")).fetch("pickleId")).fetch("name") }
+                        .grep(/\AQuery practice word metadata/).sort
+    require_check(outline_names == ["Query practice word metadata (focus)", "Query practice word metadata (persevere)"], "Outline names lost the example word")
+    require_check(Dir.glob(File.join(directory, "*.png")).empty?, "Unexpected pass-run failure screenshot")
+  end
+  {scenarios: runs.length, steps: business_steps, failed_steps: errors.length, attachments: attachments.length,
+   local_screenshots: failed ? 1 : 0, native_screenshots: 0, after_hook_passed: true,
+   html_messages_match: true, html_bytes: html.bytesize,
+   rp_formatter_output_created: File.file?(File.join(directory, "reportportal.txt"))}
+end
+
+runtime = File.join(root, "runtime.json")
+require_check(execute("bin/runtime", runtime).zero?, "Installed runtime check failed; see #{runtime}")
+fixture = File.join(root, "fixture.txt")
+require_check(execute("bin/check_fixture", fixture).zero?, "Fixture contract check failed; see #{fixture}")
+configuration = File.join(root, "config.txt")
+require_check(execute("bin/check_config", configuration).zero?, "Endpoint policy checks failed; see #{configuration}")
+self_tests = File.join(root, "self-tests.txt")
+require_check(execute("test/self_test.rb", self_tests).zero?, "Example self-tests failed; see #{self_tests}")
+results = {}
+%w[offline intentional].each do |profile|
+  directory = File.join(root, profile)
+  log = File.join(root, "#{profile}-console.txt")
+  exit_status = execute("bin/run", log, {"REPORT_DIR" => directory, "NO_COLOR" => nil}, profile)
+  expected = profile == "intentional" ? 1 : 0
+  require_check(exit_status == expected, "#{profile}: exit #{exit_status}, expected #{expected}; see #{log}")
+  results[profile] = inspect_report(directory, failed: expected == 1).merge(exit_status: exit_status)
+  transcript = File.read(log)
+  console = transcript.gsub(/\e\[[\d;]*m/, "")
+  require_check(transcript.match?(/\e\[36m\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}  INFO   /), "Missing timestamped cyan INFO console presentation")
+  require_check(!console.match?(/```|^### (?:Request|Response)|^API response snapshot\s*$/), "Rich report body leaked to console")
+  if expected.zero?
+    require_check(console.match?(/  INFO   POST .*status=400/), "Expected 400 was not INFO")
+    require_check(console.include?("  DEBUG  API helper is sending"), "Missing DEBUG console presentation")
+    require_check(console.lines.count { |line| line.include?("  INFO   Diagnostic only (non-fatal):") } == 1,
+                  "Diagnostic-only demo must be exactly one INFO observation")
+    require_check(!console.match?(/  (?:ERROR|FATAL)\s/), "Passing suite contains failure-level diagnostics")
+  else
+    require_check(console.lines.count { |line| line.include?("  ERROR  Failure evidence:") } == 1,
+                  "Expected one terminal-only failure summary")
+  end
+end
+no_color = File.join(root, "no-color")
+no_color_log = File.join(root, "no-color-console.txt")
+require_check(execute("bin/run", no_color_log, {"REPORT_DIR" => no_color, "NO_COLOR" => "1"}, "offline").zero?, "NO_COLOR ordinary suite failed")
+plain = File.read(no_color_log)
+require_check(!plain.include?("\e["), "NO_COLOR console still contains ANSI escapes")
+require_check(plain.match?(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}  DEBUG  /) &&
+              plain.match?(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}  INFO   /), "NO_COLOR lost timestamped one-line logs")
+require_check(!plain.match?(/```|^### (?:Request|Response)/), "NO_COLOR leaked rich evidence to console")
+results["no_color"] = inspect_report(no_color, failed: false).merge(exit_status: 0, ansi: false)
+require_check(spool_inventory(spool) == spool_before, "Disabled RP changed existing spool evidence")
+results["reportportal"] = "explicitly disabled; real endpoint/UI not tested by this verifier"
+File.write(File.join(root, "acceptance.json"), JSON.pretty_generate(results))
+puts JSON.pretty_generate(results)
+puts "Evidence directory: #{root}"
+puts "Acceptance passed: ordinary suite exit 0; intentional exit 1 with original error and local PNG; native reports have no failure PNG."

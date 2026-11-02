@@ -1,0 +1,193 @@
+# frozen_string_literal: true
+
+require "stringio"
+require "tempfile"
+
+module ReportportalCucumber
+  module Cucumber
+    # World DSL exposed to step definitions.
+    module World
+      # @param message [String]
+      # @param level_arg [String, Symbol, nil]
+      # @param level [String, Symbol]
+      # @param attachment [Hash, nil]
+      # @param timestamp [Time]
+      # @param mirror [Boolean]
+      # @return [void]
+      def rp_log(message, level_arg = nil, level: :info, attachment: nil, timestamp: Time.now, mirror: true)
+        runtime = ReportportalCucumber.current_runtime
+        return unless runtime
+
+        resolved_level = level_arg || level
+        mirror_console_log(message: message, level: resolved_level, runtime: runtime) if mirror
+        runtime.emit_world_log(message: message, level: resolved_level, timestamp: timestamp, attachment: attachment)
+      end
+
+      # @param io_or_bytes [#read, String]
+      # @param name [String, nil]
+      # @param mime [String, nil]
+      # @param mime_type [String, nil]
+      # @param message [String, nil]
+      # @param level [String, Symbol]
+      # @return [void]
+      def rp_attach(io_or_bytes, name: nil, mime: nil, mime_type: nil, message: nil, level: :info)
+        runtime = ReportportalCucumber.current_runtime
+        return unless runtime
+
+        attachment = build_attachment_payload(io_or_bytes, name: name, mime: mime_type || mime)
+        attachment[:auto_name] = true unless name.instance_of?(String)
+        attachment[:caption_style] = "default" if message.nil?
+
+        runtime.emit_world_attachment(
+          message: message || "Attachment: #{attachment.fetch(:name)}",
+          level: level,
+          timestamp: Time.now,
+          attachment: attachment
+        )
+      end
+
+      # @param name [String]
+      # @yieldreturn [Object]
+      # @return [Object]
+      def rp_step(name, &block)
+        runtime = ReportportalCucumber.current_runtime
+        return block.call unless runtime && block
+
+        runtime.with_manual_step(name, &block)
+      end
+
+      # @return [Object, nil] Opaque handle for the currently open action.
+      def rp_capture_target
+        ReportportalCucumber.current_runtime&.rp_capture_target
+      rescue StandardError => error
+        ReportportalCucumber.logger.warn("ReportPortal capture target unavailable: #{error.class}")
+        nil
+      end
+
+      # @param action [Object]
+      # @param error [Object]
+      # @param url [String, nil]
+      # @param details [Object, nil]
+      # @param artifacts [Array<Hash>]
+      # @param target [Object, nil]
+      # @return [Boolean]
+      def rp_evidence(action:, error:, url: nil, details: nil, artifacts: [], target: nil)
+        current_runtime = ReportportalCucumber.current_runtime
+        owner_runtime = Runtime::Context::CaptureTarget.owner_for(target) if target.is_a?(Runtime::Context::CaptureTarget)
+        if owner_runtime && current_runtime && !current_runtime.equal?(owner_runtime)
+          ReportportalCucumber.logger.warn("ReportPortal evidence rejected: target belongs to a different active runtime")
+          return false
+        end
+        runtime = target.nil? ? current_runtime : (current_runtime || owner_runtime)
+        return false unless runtime
+
+        runtime.rp_evidence(action: action, error: error, url: url, details: details,
+                            artifacts: artifacts, target: target)
+      rescue StandardError => reporting_error
+        ReportportalCucumber.logger.warn("ReportPortal evidence unavailable: #{reporting_error.class}")
+        false
+      end
+
+      private
+
+      # @param source [String, File, Tempfile, StringIO, #read]
+      # @param name [String, nil]
+      # @param mime [String, nil]
+      # @return [Hash]
+      def build_attachment_payload(source, name:, mime:)
+        name = nil unless name.nil? || name.instance_of?(String)
+        mime = nil unless mime.nil? || mime.instance_of?(String)
+        if (path = attachment_path(source))
+          filename = name || File.basename(path)
+          content_type = Transport::MultipartHelper.content_type_for(
+            filename: mime_detection_filename(filename: filename, path: path),
+            declared_type: mime
+          )
+          return {
+            name: filename,
+            mime: content_type,
+            path: path
+          }
+        end
+
+        bytes = source.instance_of?(StringIO) ? source.string : source
+        filename = name || Service::PayloadBuilder.default_attachment_name(mime)
+        content_type = Transport::MultipartHelper.content_type_for(filename: filename, declared_type: mime)
+
+        {
+          name: filename,
+          mime: content_type,
+          bytes: bytes
+        }
+      end
+
+      # @param source [Object]
+      # @return [String, nil]
+      def attachment_path(source)
+        path = source if source.instance_of?(String)
+        path = source.path if source.instance_of?(File) || source.instance_of?(Tempfile)
+        return nil unless path && File.file?(path)
+
+        File.expand_path(path)
+      rescue ArgumentError, SystemCallError
+        nil
+      end
+
+      # @param filename [String]
+      # @param path [String]
+      # @return [String]
+      def mime_detection_filename(filename:, path:)
+        File.extname(filename.to_s).empty? ? File.basename(path) : filename
+      end
+
+      # @param message [Object]
+      # @param level [String, Symbol]
+      # @param runtime [Object]
+      # @return [void]
+      def mirror_console_log(message:, level:, runtime:)
+        return unless console_mirror_enabled?(runtime)
+
+        normalized_level = level.to_s.upcase
+        prefix = "[RP-MIRROR] [#{normalized_level}] "
+        output = "#{prefix}#{message}"
+        output = colorize_console_mirror(output, normalized_level) if console_mirror_color?
+        puts(output)
+      end
+
+      # @param runtime [Object]
+      # @return [Boolean]
+      def console_mirror_enabled?(runtime)
+        config = runtime.respond_to?(:config) ? runtime.config : nil
+        return config.console_mirror? if config.respond_to?(:console_mirror?)
+
+        value = ENV["RP_CONSOLE_MIRROR"].to_s.strip
+        !value.empty? && !%w[0 false no off].include?(value.downcase)
+      end
+
+      # @return [Boolean]
+      def console_mirror_color?
+        $stdout.tty? && ENV["NO_COLOR"].to_s.empty?
+      end
+
+      # @param output [String]
+      # @param level [String]
+      # @return [String]
+      def colorize_console_mirror(output, level)
+        color =
+          case level
+          when "FATAL", "ERROR"
+            31
+          when "WARN", "WARNING"
+            33
+          when "INFO"
+            34
+          when "DEBUG", "TRACE"
+            90
+          else
+            36
+          end
+        "\e[#{color}m#{output}\e[0m"
+      end
+    end
+  end
+end

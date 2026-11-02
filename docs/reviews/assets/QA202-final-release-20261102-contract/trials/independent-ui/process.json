@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/ruby/3.4.2/bin/ruby",
+    "-rbundler/setup",
+    "-e",
+    "load Gem.bin_path(\"cucumber\", \"cucumber\")",
+    "--",
+    "--profile",
+    "tester_ui"
+  ],
+  "exit": 1,
+  "signal": null,
+  "stdout": "2026-11-02 22:32:51.873  INFO   UI action: Open local practice page (Attached to Report)\n2026-11-02 22:32:51.905  INFO   PASS: practice heading (Attached to Report)\n2026-11-02 22:32:51.943  INFO   UI action: Save practice word using Enter (Attached to Report)\n2026-11-02 22:32:52.017  INFO   UI action: Correct and resave practice word using Enter (Attached to Report)\n2026-11-02 22:32:52.081  INFO   PASS: practice status (Attached to Report)\n2026-11-02 22:32:52.137  INFO   UI tester checkpoint: corrected-word-saved (Attached to Report) (file: corrected-word-saved.png)\n2026-11-02 22:32:52.142  INFO   Checkpoint browser state (Attached to Report) (json payload)\n2026-11-02 22:32:52.817  INFO   UI action: Open local practice page (Attached to Report)\n2026-11-02 22:32:52.856  INFO   PASS: practice heading (Attached to Report)\n2026-11-02 22:32:52.914  INFO   UI action: Save practice word using Enter (Attached to Report)\n2026-11-02 22:32:52.980  INFO   PASS: practice status (Attached to Report)\n2026-11-02 22:32:53.101  INFO   UI tester checkpoint: saved-before-refresh (Attached to Report) (file: saved-before-refresh.png)\n2026-11-02 22:32:53.106  INFO   Checkpoint browser state (Attached to Report) (json payload)\n2026-11-02 22:32:53.161  INFO   UI action: Refresh the practice page (Attached to Report)\n2026-11-02 22:32:53.225  ERROR  FAIL: restored practice word after refresh (Attached to Report)\n2026-11-02 22:32:53.309  ERROR  Failure evidence: Recover the last saved word after an accidental refresh - restored practice word after refresh (file: recover-the-last-saved-word-after-an-accidental-refresh-restored-practice-word-after-refresh-a89f1351.png)\n",
+  "stderr": ""
+}

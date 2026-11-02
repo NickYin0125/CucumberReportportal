@@ -1,0 +1,15 @@
+{
+  "command": [
+    "/opt/homebrew/Cellar/ruby/3.4.2/bin/ruby",
+    "-rbundler/setup",
+    "-e",
+    "load Gem.bin_path(\"cucumber\", \"cucumber\")",
+    "--",
+    "--profile",
+    "tester_api"
+  ],
+  "exit": 1,
+  "signal": null,
+  "stdout": "2026-11-02 22:32:50.068  INFO   POST http://127.0.0.1:59075/api/practice status=201 0.82ms (Attached to Report)\n2026-11-02 22:32:50.105  INFO   PASS: API tester creation status (Attached to Report)\n2026-11-02 22:32:50.106  INFO   PASS: API tester saved word contract (Attached to Report)\n2026-11-02 22:32:50.258  INFO   GET http://127.0.0.1:59075/api/practice?word=focus status=200 0.92ms (Attached to Report)\n2026-11-02 22:32:50.307  INFO   PASS: API tester metadata status (Attached to Report)\n2026-11-02 22:32:50.308  ERROR  FAIL: API tester consumer metadata contract (Attached to Report)\n",
+  "stderr": ""
+}

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Independent trial of SDK 2.0.2: builds the client from the release-candidate
+# commit, installs the example's dependencies once, then reports four Launches.
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+: "${RP_API_KEY:?Export RP_API_KEY (your ReportPortal API key) first}"
+export RP_ENDPOINT="${RP_ENDPOINT:-http://rp-2607.localhost:18080}"
+export RP_PROJECT="${RP_PROJECT:-superadmin_personal}"
+SDK_REPO="https://github.com/NickYin0125/CucumberReportportal.git"
+SDK_REF="${SDK_REF:-9bf3356cff350d8e2ba11bad1c33aa89881ac456}" # PR #8 head
+
+if [ -z "${SDK_GEM_ARCHIVE:-}" ]; then
+  build_dir="$(pwd)/.local/sdk-source"
+  if [ ! -d "$build_dir/.git" ]; then
+    git clone --quiet "$SDK_REPO" "$build_dir"
+  fi
+  git -C "$build_dir" fetch --quiet origin "$SDK_REF"
+  git -C "$build_dir" checkout --quiet --detach "$SDK_REF"
+  (cd "$build_dir" && gem build --quiet reportportal-cucumber-ruby.gemspec)
+  SDK_GEM_ARCHIVE="$build_dir/reportportal-cucumber-ruby-2.0.2.gem"
+fi
+
+if ! bundle check >/dev/null 2>&1 || [ ! -x node_modules/.bin/playwright-core ]; then
+  ruby bin/setup "$SDK_GEM_ARCHIVE"
+fi
+
+stamp="$(date +%Y%m%d-%H%M)"
+for mode in plain rich; do
+  context=false
+  [ "$mode" = rich ] && context=true
+  for suite in api ui; do
+    label="API"
+    [ "$suite" = ui ] && label="UI"
+    echo "== $label / $mode"
+    RP_ENABLED=true RP_PRESENTATION="$mode" RP_RUN_CONTEXT="$context" \
+      RP_LAUNCH="Trial 2.0.2 · $label · $mode" \
+      RP_ATTRIBUTES="trial:2.0.2,suite:$suite,presentation:$mode,run:$stamp" \
+      REPORT_DIR="artifacts/$stamp-$suite-$mode" \
+      bundle exec cucumber --profile "trial_$suite" || echo "   (non-zero exit is expected: each suite has deliberate failures)"
+  done
+done
+echo "Done. In ReportPortal, open the four Launches named 'Trial 2.0.2 · …' with attribute run:$stamp."

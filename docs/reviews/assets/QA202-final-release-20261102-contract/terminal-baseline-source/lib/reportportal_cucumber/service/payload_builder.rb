@@ -1,0 +1,761 @@
+# frozen_string_literal: true
+
+require_relative "../presentation/attachment_caption"
+require_relative "../presentation/ledger_json"
+
+module ReportportalCucumber
+  module Service
+    # Pure builders for ReportPortal request payloads and identity values.
+    module PayloadBuilder
+      module_function
+
+      PREVIEW_MAX_BYTES = 16 * 1024
+      PREVIEW_MAX_LINES = 100
+
+      MIME_EXTENSION_MAP = {
+        "application/json" => ".json",
+        "application/pdf" => ".pdf",
+        "application/octet-stream" => ".bin",
+        "image/jpeg" => ".jpg",
+        "image/png" => ".png",
+        "text/plain" => ".txt",
+        "video/mp4" => ".mp4"
+      }.freeze
+      ITEM_TYPE_MAP = {
+        "suite" => "SUITE",
+        "story" => "STORY",
+        "test" => "TEST",
+        "scenario" => "SCENARIO",
+        "step" => "STEP",
+        "before_class" => "BEFORE_CLASS",
+        "before_groups" => "BEFORE_GROUPS",
+        "before_method" => "BEFORE_METHOD",
+        "before_suite" => "BEFORE_SUITE",
+        "before_test" => "BEFORE_TEST",
+        "after_class" => "AFTER_CLASS",
+        "after_groups" => "AFTER_GROUPS",
+        "after_method" => "AFTER_METHOD",
+        "after_suite" => "AFTER_SUITE",
+        "after_test" => "AFTER_TEST"
+      }.freeze
+
+      # @param value [Time, String, Integer, Float, nil]
+      # @return [String]
+      def unix_ms(value)
+        time =
+          case value
+          when nil
+            Time.now
+          when Time
+            value
+          when Integer
+            Time.at(value / 1000.0)
+          when Float
+            Time.at(value)
+          else
+            parsed = value.to_s
+            return parsed if parsed.match?(/\A\d+\z/)
+
+            Time.parse(parsed)
+          end
+
+        (time.to_r * 1000).to_i.to_s
+      end
+
+      # @param name [String]
+      # @param start_time [Time, String, Integer, Float]
+      # @param description [String, nil]
+      # @param attributes [Array<Hash>, nil]
+      # @param mode [String, nil]
+      # @param rerun [Boolean]
+      # @param rerun_of [String, nil]
+      # @param uuid [String, nil]
+      # @return [Hash]
+      def build_launch_start(name:, start_time:, description:, attributes:, mode:, rerun:, rerun_of:, uuid:)
+        {
+          "name" => name,
+          "startTime" => unix_ms(start_time),
+          "description" => description.to_s,
+          "attributes" => normalize_attributes(attributes),
+          "mode" => mode,
+          "rerun" => !!rerun,
+          "rerunOf" => rerun_of,
+          "uuid" => uuid
+        }.compact
+      end
+
+      # @param launch_uuid [String]
+      # @param end_time [Time, String, Integer, Float]
+      # @param status [String, Symbol, nil]
+      # @param attributes [Array<Hash>, nil]
+      # @return [Hash]
+      def build_launch_finish(launch_uuid:, end_time:, status: nil, attributes: nil)
+        {
+          "endTime" => unix_ms(end_time),
+          "status" => normalize_status(status),
+          "attributes" => normalize_attributes(attributes)
+        }.compact
+      end
+
+      # @param name [String]
+      # @param start_time [Time, String, Integer, Float]
+      # @param type [String]
+      # @param launch_uuid [String]
+      # @param description [String, nil]
+      # @param attributes [Array<Hash>, nil]
+      # @param code_ref [String, nil]
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @param parent_uuid [String, nil]
+      # @param has_stats [Boolean]
+      # @param retry [Boolean]
+      # @param uuid [String, nil]
+      # @param test_case_id [String, nil]
+      # @param unique_id [String, nil]
+      # @return [Hash]
+      def build_item_start(name:, start_time:, type:, launch_uuid:, description:, attributes:, code_ref:, parameters:,
+                           parent_uuid: nil, has_stats:, retry:, uuid:, test_case_id:, unique_id:)
+        retry_flag = binding.local_variable_get(:retry)
+        {
+          "name" => name,
+          "startTime" => unix_ms(start_time),
+          "type" => normalize_item_type(type),
+          "launchUuid" => launch_uuid,
+          "parentUuid" => parent_uuid,
+          "description" => description,
+          "attributes" => normalize_attributes(attributes),
+          "codeRef" => code_ref,
+          "parameters" => parameters.nil? ? nil : normalize_parameters(parameters),
+          "hasStats" => has_stats,
+          "retry" => !!retry_flag,
+          "uuid" => uuid,
+          "testCaseId" => test_case_id,
+          "uniqueId" => unique_id
+        }.compact
+      end
+
+      # @param item_uuid [String]
+      # @param launch_uuid [String]
+      # @param end_time [Time, String, Integer, Float]
+      # @param status [String, Symbol, nil]
+      # @return [Hash]
+      def build_item_finish(item_uuid:, launch_uuid:, end_time:, status: nil)
+        {
+          "endTime" => unix_ms(end_time),
+          "launchUuid" => launch_uuid,
+          "status" => normalize_status(status)
+        }.compact
+      end
+
+      # @param launch_uuid [String, nil]
+      # @param item_uuid [String, nil]
+      # @param time [Time, String, Integer, Float]
+      # @param message [String]
+      # @param level [String, Symbol, Integer]
+      # @param file_name [String, nil]
+      # @return [Hash]
+      def build_log_entry(launch_uuid:, item_uuid:, time:, message:, level:, file_name: nil)
+        entry = {
+          "launchUuid" => launch_uuid,
+          "itemUuid" => item_uuid,
+          "time" => unix_ms(time),
+          "message" => safe_log_text(message),
+          "level" => normalize_log_level(level)
+        }.compact
+        entry["file"] = { "name" => file_name } if file_name
+        entry
+      end
+
+      # @param records [Array<#to_h, Hash>]
+      # @param presentation [String] Explicit queue configuration; defaults to "plain".
+      # @param rendered_messages [Hash, nil] Flush-local messages keyed by sequence, final filename and mode.
+      # @yield [record] Optional message-local presentation failure state.
+      # @return [Hash]
+      def build_log_batch(records, presentation: "plain", rendered_messages: nil)
+        used_names = {}
+        entries = []
+        files = []
+
+        Array(records).each do |record|
+          payload = record.respond_to?(:to_h) ? record.to_h : record
+          attachment = normalize_attachment(payload[:attachment] || payload["attachment"])
+          filename = attachment && unique_filename(attachment.fetch(:name), used_names)
+          fallback_state = yield(record) if block_given?
+          sequence = payload[:sequence] || payload["sequence"]
+          cache_key = rendered_messages && sequence && [sequence, filename, presentation]
+          message = if cache_key && rendered_messages.key?(cache_key)
+                      rendered_messages.fetch(cache_key).dup
+                    else
+                      rendered = enrich_log_message(
+                        payload[:message] || payload["message"], attachment && attachment.merge(name: filename),
+                        fallback_state: fallback_state, presentation: presentation,
+                        level: normalize_log_level(payload[:level] || payload["level"])
+                      )
+                      rendered_messages[cache_key] = rendered.dup.freeze if cache_key
+                      rendered
+                    end
+          entries << build_log_entry(
+            launch_uuid: payload[:launch_uuid] || payload["launch_uuid"],
+            item_uuid: payload[:item_uuid] || payload["item_uuid"],
+            time: payload[:timestamp] || payload["timestamp"],
+            message: message,
+            level: payload[:level] || payload["level"],
+            file_name: filename
+          )
+
+          next unless attachment
+
+          file = {
+            name: filename,
+            mime: attachment.fetch(:mime)
+          }
+          if attachment[:path]
+            file[:path] = attachment.fetch(:path)
+          else
+            file[:bytes] = attachment.fetch(:bytes).dup.force_encoding(Encoding::BINARY)
+          end
+          files << file
+        end
+
+        validate_log_batch!(entries: entries, files: files)
+        { entries: entries, files: files }
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [Boolean]
+      def video_attachment?(attachment)
+        return false unless attachment
+
+        mime = attachment[:mime] || attachment["mime"]
+        name = attachment[:name] || attachment["name"]
+        mime.to_s.downcase == "video/mp4" || File.extname(name.to_s).downcase == ".mp4"
+      end
+
+      # @param message [String, nil]
+      # @param url [String]
+      # @param width [Integer]
+      # @return [String]
+      def build_video_markdown_message(message:, url:, width: 640)
+        uri = URI.parse(url.to_s)
+        unless uri.is_a?(URI::HTTP) && uri.host && !uri.host.empty?
+          raise ArgumentError, "Video URL must be an absolute HTTP(S) URL"
+        end
+
+        base = safe_log_text(message).strip
+        video = "UI Failure Playback:\n\n" \
+                "<video width=\"#{Integer(width)}\" controls preload=\"metadata\">" \
+                "<source src=\"#{CGI.escapeHTML(uri.to_s)}\" type=\"video/mp4\"></video>\n\n" \
+                "[Open video](<#{uri}>)"
+        return video if base.empty?
+
+        "#{base}\n\n#{video}"
+      rescue URI::InvalidURIError
+        raise ArgumentError, "Video URL must be an absolute HTTP(S) URL"
+      end
+
+      # @param feature_uri [String]
+      # @param scenario_line [Integer, String]
+      # @return [String]
+      def build_code_ref(feature_uri:, scenario_line:)
+        "#{feature_uri}:#{scenario_line}"
+      end
+
+      # @param explicit_id [String, nil]
+      # @param code_ref [String]
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @return [String]
+      def build_test_case_id(explicit_id: nil, code_ref:, parameters: nil)
+        base = explicit_id.nil? || explicit_id.to_s.strip.empty? ? code_ref : explicit_id.to_s.strip
+        append_parameters_identifier(base, parameters)
+      end
+
+      # @param code_ref [String]
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @return [String]
+      def build_unique_id(code_ref:, parameters: nil)
+        Digest::SHA1.hexdigest(
+          JSON.generate(
+            code_ref: code_ref,
+            parameters: normalize_parameters(parameters)
+          )
+        )
+      end
+
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @return [Array<Hash>, nil]
+      def normalize_parameters(parameters)
+        case parameters
+        when nil
+          nil
+        when Array
+          parameters.map do |item|
+            hash = stringify_hash(item)
+            if hash.key?("key")
+              {
+                "key" => hash["key"].to_s,
+                "value" => hash["value"].to_s
+              }
+            else
+              key, value = hash.first
+              {
+                "key" => key.to_s,
+                "value" => value.to_s
+              }
+            end
+          end
+        when Hash
+          parameters.map do |key, value|
+            {
+              "key" => key.to_s,
+              "value" => value.to_s
+            }
+          end
+        else
+          [{ "key" => "value", "value" => parameters.to_s }]
+        end
+      end
+
+      # @param status [String, Symbol, nil]
+      # @return [String, nil]
+      def normalize_status(status)
+        return nil if status.nil?
+
+        case status.to_s.downcase
+        when "passed", "pass", "success"
+          "passed"
+        when "failed", "failure", "pending", "undefined", "ambiguous"
+          "failed"
+        when "skipped"
+          "skipped"
+        when "interrupted", "aborted"
+          "interrupted"
+        else
+          status.to_s.downcase
+        end
+      end
+
+      # @param type [String, Symbol]
+      # @return [String]
+      def normalize_item_type(type)
+        normalized = type.to_s.strip.downcase.gsub(/[^a-z0-9]+/, "_").sub(/\A_+/, "").sub(/_+\z/, "")
+        ITEM_TYPE_MAP.fetch(normalized, type.to_s.upcase)
+      end
+
+      # @param level [String, Symbol, Integer]
+      # @return [String, Integer]
+      def normalize_log_level(level)
+        return level if level.is_a?(Integer)
+
+        value = level.to_s.downcase
+        return value unless value.empty?
+
+        "info"
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [Hash, nil]
+      def normalize_attachment(attachment)
+        return nil if attachment.nil?
+
+        payload = attachment.respond_to?(:to_h) ? attachment.to_h : attachment
+        name = payload[:name] || payload["name"]
+        mime = payload[:mime] || payload["mime"]
+        bytes = payload[:bytes] || payload["bytes"]
+        path = payload[:path] || payload["path"] || payload[:file_path] || payload["file_path"]
+
+        path = normalize_attachment_path(path)
+        name ||= File.basename(path) if path
+        name = Transport::MultipartHelper.safe_filename(name)
+        mime = Transport::MultipartHelper.content_type_for(
+          filename: mime_detection_filename(name: name, path: path),
+          declared_type: mime
+        )
+        name = Transport::MultipartHelper.ensure_filename_extension(
+          name: name,
+          content_type: mime,
+          fallback: default_attachment_name(mime)
+        )
+
+        result = {
+          name: name,
+          mime: mime
+        }
+        style = payload[:caption_style] || payload["caption_style"]
+        result[:caption_style] = style if %w[default evidence baseline].include?(style)
+        baseline_name = payload[:baseline_name] || payload["baseline_name"]
+        result[:baseline_name] = baseline_name if baseline_name.is_a?(String)
+        if path
+          result[:path] = path
+        else
+          result[:bytes] = normalize_attachment_bytes(bytes: bytes, mime: mime)
+        end
+        result
+      end
+
+      # @param message [String, nil]
+      # @param attachment [Hash, nil]
+      # @param fallback_state [Hash, nil] Queue-local latch; never persisted or sent.
+      # @param presentation [String] "plain" or RP-only "rich".
+      # @param level [Symbol, String, Integer] Unchanged wire severity.
+      # @return [String]
+      def enrich_log_message(message, attachment, fallback_state: nil, presentation: "plain", level: :info)
+        return baseline_log_message(message, attachment) unless attachment
+        return baseline_log_message(message, attachment) if attachment[:caption_style] == "baseline"
+
+        Presentation::Fallback.render(fallback: -> { baseline_log_message(message, attachment) }, state: fallback_state) do
+          preview = ledger_attachment_preview(attachment, presentation: presentation)
+          mime = attachment.fetch(:mime)
+          normalized_mime = mime.to_s.split(';', 2).first.to_s.strip.downcase
+          header = attachment_header(attachment) if %w[image/png image/jpeg].include?(normalized_mime)
+          caption_data = {
+            name: attachment.fetch(:name), mime: mime, size: attachment_size(attachment), header: header,
+            lines: preview[:lines], evidence: attachment[:caption_style] == "evidence"
+          }
+          caption = Presentation::AttachmentCaption.format(**caption_data)
+          base = safe_log_text(message).strip unless %w[default evidence].include?(attachment[:caption_style])
+          plain = [base, caption, preview[:text]].compact.reject(&:empty?).join("\n\n")
+          next plain unless presentation == "rich"
+
+          # Numeric/custom wire levels remain untouched; conservatively protect
+          # their first line too, rather than guessing their severity.
+          guard_level = normalize_log_level(level)
+          guard_level = :error unless %w[trace debug info warn error fatal].include?(guard_level)
+          # An ERROR caption on the first line must remain byte-identical. When
+          # caller text comes first, only the generated caption is accented.
+          caption_level = base.to_s.empty? ? guard_level : :info
+          rich_caption = Presentation::AttachmentCaption.format(**caption_data, presentation: "rich", level: caption_level)
+          rich = [base, rich_caption, preview[:rich_text] || preview[:text]].compact.reject(&:empty?).join("\n\n")
+          Presentation::Accent.guard(plain: plain, rich: rich, level: guard_level)
+        end
+      end
+
+      # Exact pre-Ledger message, with no new presentation helper calls.
+      # @param message [String, nil]
+      # @param attachment [Hash, nil]
+      # @return [String]
+      def baseline_log_message(message, attachment)
+        base = safe_log_text(message).strip
+        attachment = attachment.merge(name: attachment[:baseline_name]) if attachment && attachment[:baseline_name]
+        preview = baseline_attachment_preview(attachment)
+        parts = []
+        parts << base unless base.empty?
+        parts << preview unless preview.to_s.strip.empty?
+        return "Attachment" if parts.empty?
+
+        parts.join("\n\n")
+      end
+
+      # @param attributes [Array<Hash>, nil]
+      # @return [Array<Hash>]
+      def normalize_attributes(attributes)
+        Array(attributes).map { |item| stringify_hash(item).compact }.reject(&:empty?)
+      end
+
+      # @param media_type [String, nil]
+      # @param owner_name [String, nil] Owning item's display name; nil preserves the legacy default.
+      # @param index [Integer] Per-owner default-name index, assigned before batching.
+      # @return [String]
+      def default_attachment_name(media_type, owner_name: nil, index: 0)
+        baseline = "attachment#{mime_extension(media_type)}"
+        return baseline if owner_name.nil?
+
+        Presentation::Fallback.render(fallback: -> { baseline }) do
+          slug = Presentation::AttachmentCaption.slug(owner_name)
+          suffix = index.zero? ? "" : "-#{index}"
+          "#{slug}#{suffix}#{mime_extension(media_type)}"
+        end
+      end
+
+      # @param base [String]
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @return [String]
+      def append_parameters_identifier(base, parameters)
+        pairs = identifier_pairs(parameters)
+        return base if pairs.empty?
+
+        "#{base}[#{pairs.map { |key, value| "#{key}=#{value}" }.join(',')}]"
+      end
+
+      # @param parameters [Hash, Array<Hash>, nil]
+      # @return [Array<Array<String>>]
+      def identifier_pairs(parameters)
+        case parameters
+        when nil
+          []
+        when Hash
+          parameters.map { |key, value| [key.to_s, value.to_s] }
+        when Array
+          parameters.flat_map do |item|
+            hash = stringify_hash(item)
+            if hash.key?("key")
+              [[hash["key"].to_s, hash["value"].to_s]]
+            else
+              hash.map { |key, value| [key.to_s, value.to_s] }
+            end
+          end
+        else
+          [["value", parameters.to_s]]
+        end
+      end
+
+      # @param entries [Array<Hash>]
+      # @param files [Array<Hash>]
+      # @return [void]
+      def validate_log_batch!(entries:, files:)
+        referenced_files = entries.filter_map { |entry| entry.dig("file", "name") }
+        actual_files = files.map { |file| file.fetch(:name) }
+        return if referenced_files == actual_files && actual_files.uniq.length == actual_files.length
+
+        raise ArgumentError, "Multipart log payload mismatch between json_request_part and file parts"
+      end
+
+      # @param value [Hash]
+      # @return [Hash]
+      def stringify_hash(value)
+        value.each_with_object({}) { |(key, item), memo| memo[key.to_s] = item }
+      end
+
+      # @param bytes [Object]
+      # @param mime [String]
+      # @return [String]
+      def normalize_attachment_bytes(bytes:, mime:)
+        raw =
+          if bytes.respond_to?(:read)
+            data = bytes.read
+            bytes.rewind if bytes.respond_to?(:rewind)
+            data
+          else
+            bytes.to_s
+          end
+
+        raw
+      end
+
+      # @param path [String, nil]
+      # @return [String, nil]
+      def normalize_attachment_path(path)
+        return nil if path.to_s.strip.empty?
+
+        expanded = File.expand_path(path.to_s)
+        raise ArgumentError, "Attachment file does not exist: #{expanded}" unless File.file?(expanded)
+        raise ArgumentError, "Attachment file is not readable: #{expanded}" unless File.readable?(expanded)
+
+        expanded
+      end
+
+      # @param name [String]
+      # @param path [String, nil]
+      # @return [String]
+      def mime_detection_filename(name:, path:)
+        path && File.extname(name.to_s).empty? ? File.basename(path) : name
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [String, nil]
+      def attachment_preview(attachment)
+        Presentation::Fallback.render(fallback: -> { baseline_attachment_preview(attachment) }) do
+          ledger_attachment_preview(attachment)[:text]
+        end
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [String, nil] Pre-Ledger preview, independent of shared helpers.
+      def baseline_attachment_preview(attachment)
+        return nil unless attachment
+
+        json = json_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
+        text = text_attachment?(mime: attachment.fetch(:mime), name: attachment.fetch(:name))
+        return nil unless json || text
+
+        raw = preview_source(attachment)
+        truncated = raw.bytesize > PREVIEW_MAX_BYTES
+        content = safe_utf8(raw.byteslice(0, PREVIEW_MAX_BYTES))
+        content = pretty_json(content, presentation: false) if json && !truncated
+        content, display_truncated = bounded_preview(content)
+        preview = fenced_preview(content.rstrip, json ? "json" : "text")
+        return preview unless truncated || display_truncated
+
+        "#{preview}\n\nPreview truncated. Full log is attached as `#{attachment.fetch(:name)}`."
+      end
+
+      # @param attachment [Hash, nil]
+      # @return [Hash] Bounded preview and complete text-only line count.
+      def ledger_attachment_preview(attachment, presentation: "plain")
+        return {} unless attachment
+
+        mime = attachment.fetch(:mime).to_s.split(';', 2).first.to_s.strip.downcase
+        json = mime == "application/json" || mime.end_with?("+json")
+        text = mime.start_with?("text/")
+        return {} unless json || text
+
+        raw = preview_source(attachment)
+        byte_cut = raw.bytesize > PREVIEW_MAX_BYTES
+        content = safe_utf8(raw.byteslice(0, PREVIEW_MAX_BYTES))
+        displayed, cut, reason, consumed = bounded_preview(content)
+        reason ||= :bytes if byte_cut
+        complete = !byte_cut && !cut
+        if json && complete
+          pretty = pretty_json(content)
+          candidate, pretty_cut = bounded_preview(pretty)
+          displayed = candidate unless pretty_cut
+        end
+        block = Presentation::MarkdownText.fence(displayed.rstrip, json ? "json" : "text", limit: PREVIEW_MAX_BYTES)
+        raise ArgumentError, "No bounded preview fence" unless block
+
+        rich = if presentation == "rich" && displayed.rstrip.lines.count > 20
+                 Presentation::Accent.details(
+                   summary: "Preview \u00b7 #{displayed.rstrip.lines.count} lines", body: displayed.rstrip,
+                   language: json ? "json" : "text", limit: PREVIEW_MAX_BYTES
+                 )
+               end
+        if !complete
+          note = if reason == :lines
+                   "_Preview \u00b7 first 100 lines \u00b7 full file attached_"
+                 else
+                   shown = [consumed || PREVIEW_MAX_BYTES, PREVIEW_MAX_BYTES].min
+                   "_Preview \u00b7 first #{Presentation::Units.bytes(shown)} of #{Presentation::Units.bytes(attachment_size(attachment))} \u00b7 full file attached_"
+                 end
+          block += "\n\n#{note}"
+          rich += "\n\n#{note}" if rich
+        end
+        # P5's exact JSON golden has no line count, even for a complete preview.
+        { text: block, rich_text: rich, lines: complete && text && !json ? content.each_line.count : nil }
+      end
+
+      # @param attachment [Hash]
+      # @return [Integer] Original size, never preview or escaped-text size.
+      def attachment_size(attachment)
+        attachment[:path] ? File.size(attachment.fetch(:path)) : attachment.fetch(:bytes).bytesize
+      end
+
+      # @param attachment [Hash]
+      # @return [String] At most 64 KiB; binary evidence itself stays untouched.
+      def attachment_header(attachment)
+        limit = Presentation::ImageDimensions::HEADER_LIMIT
+        if attachment[:path]
+          File.open(attachment.fetch(:path), "rb") { |io| io.read(limit) || "" }
+        else
+          attachment.fetch(:bytes).byteslice(0, limit)
+        end
+      end
+
+      # @param attachment [Hash]
+      # @return [String]
+      def preview_source(attachment)
+        if attachment[:path]
+          File.open(attachment.fetch(:path), "rb") { |io| io.read(PREVIEW_MAX_BYTES + 1) || "" }
+        else
+          attachment.fetch(:bytes).to_s.byteslice(0, PREVIEW_MAX_BYTES + 1)
+        end
+      end
+
+      # @param attachment [Hash]
+      # @return [String, nil]
+      def text_preview(attachment)
+        attachment_preview(attachment)
+      end
+
+      # @param content [String]
+      # @return [Array(String, Boolean, Symbol, Integer)] Text, clipping flag/reason, consumed source bytes.
+      def bounded_preview(content)
+        byte_truncated = content.bytesize > PREVIEW_MAX_BYTES
+        snippet = safe_utf8(content.byteslice(0, PREVIEW_MAX_BYTES))
+        preview = String.new(capacity: [snippet.bytesize, PREVIEW_MAX_BYTES].min, encoding: Encoding::UTF_8)
+        lines = 0
+        consumed = 0
+        snippet.each_char do |character|
+          rendered = character == "\0" ? '\u0000' : character
+          return [preview, true, :lines, consumed] if lines >= PREVIEW_MAX_LINES
+          return [preview, true, :bytes, consumed] if preview.bytesize + rendered.bytesize > PREVIEW_MAX_BYTES
+
+          preview << rendered
+          consumed += character.bytesize
+          lines += 1 if character == "\n"
+        end
+        [preview, byte_truncated, byte_truncated ? :bytes : nil, consumed]
+      end
+
+      # @param content [String]
+      # @param language [String]
+      # @return [String]
+      def fenced_preview(content, language)
+        fences = ["`", "~"].map do |character|
+          longest = content.scan(/#{Regexp.escape(character)}+/).map(&:length).max || 0
+          character * [3, longest + 1].max
+        end
+        fence = fences.min_by(&:length)
+        "#{fence}#{language}\n#{content}\n#{fence}"
+      end
+
+      # @param value [Object]
+      # @return [String]
+      def safe_utf8(value)
+        text = value.to_s.dup
+        text.force_encoding(Encoding::UTF_8) if text.encoding == Encoding::BINARY
+        text.encode("UTF-8", invalid: :replace, undef: :replace, replace: "?").scrub("?")
+      end
+
+      # PostgreSQL cannot persist literal NUL in a log message. Escape only
+      # display text; the multipart attachment remains byte-for-byte original.
+      # @param value [Object]
+      # @return [String]
+      def safe_log_text(value)
+        safe_utf8(value).gsub("\0") { '\u0000' }
+      end
+
+      # @param content [String]
+      # @return [String]
+      # @param presentation [Boolean] False is the exact baseline pretty-printer.
+      def pretty_json(content, presentation: true)
+        begin
+          parsed = JSON.parse(content.to_s)
+        rescue JSON::ParserError
+          return content.to_s
+        end
+        return JSON.pretty_generate(parsed) unless presentation
+
+        Presentation::LedgerJson.format(parsed) || JSON.pretty_generate(parsed)
+      end
+
+      # @param mime [String]
+      # @param name [String, nil]
+      # @return [Boolean]
+      def json_attachment?(mime:, name: nil)
+        mime.to_s.downcase == "application/json" || File.extname(name.to_s).downcase == ".json"
+      end
+
+      # @param mime [String]
+      # @param name [String, nil]
+      # @return [Boolean]
+      def text_attachment?(mime:, name: nil)
+        mime.to_s.downcase.start_with?("text/") || %w[.log .txt].include?(File.extname(name.to_s).downcase)
+      end
+
+      # @param media_type [String, nil]
+      # @return [String]
+      def mime_extension(media_type)
+        normalized = media_type.to_s.downcase
+        return MIME_EXTENSION_MAP[normalized] if MIME_EXTENSION_MAP.key?(normalized)
+
+        detected = MIME::Types[normalized].first
+        extension = detected&.preferred_extension.to_s
+        extension.empty? ? "" : ".#{extension}"
+      end
+
+      # @param filename [String]
+      # @param used_names [Hash<String, Boolean>]
+      # @return [String]
+      def unique_filename(filename, used_names)
+        extension = File.extname(filename)
+        stem = extension.empty? ? filename : filename.delete_suffix(extension)
+        candidate = filename
+        count = 0
+        while used_names.key?(candidate)
+          count += 1
+          candidate = "#{stem}-#{count}#{extension}"
+        end
+        used_names[candidate] = true
+        candidate
+      end
+    end
+  end
+end

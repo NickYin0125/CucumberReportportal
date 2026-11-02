@@ -1,0 +1,282 @@
+[
+  {
+    "id": "final-encoded-security",
+    "uri": "features/FINAL-security.feature",
+    "keyword": "Feature",
+    "name": "Final encoded security",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@reportportal_live",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "final-encoded-security;original-deferred",
+        "keyword": "Scenario",
+        "name": "original-deferred",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe original-deferred",
+            "line": 4,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `https://example.test/bad path#%7B%22password%22%3A%22%5BREDACTED%5D%22%7D`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "request https://alice:FROZEN_MESSAGE_SECRET@example.test/path?token=FROZEN_MESSAGE_SECRET&count=12 (RuntimeError)\nhttps://example.test/bad path#%7B%22pass%5Cu0077ord%22%3A%22FROZEN_FRAME_SECRET%22%7D\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:4:in `final encoded probe original-deferred'",
+              "duration": 2704000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": "final-encoded-security;encoded-0",
+        "keyword": "Scenario",
+        "name": "encoded-0",
+        "description": "",
+        "line": 6,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe encoded-0",
+            "line": 7,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `https://example.test/%7B%22password%22%3A%22%5BREDACTED%5D%22%7D`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Final encoded encoded-0 (RuntimeError)\nhttps://example.test/%7B%22%70%61%73%73%77%6F%72%64%22%3A%22%51%41%5F%46%49%4E%41%4C%5F%45%4E%43%4F%44%45%44%5F%53%45%43%52%45%54%22%7D\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:7:in `final encoded probe encoded-0'",
+              "duration": 2967000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": "final-encoded-security;encoded-15",
+        "keyword": "Scenario",
+        "name": "encoded-15",
+        "description": "",
+        "line": 9,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe encoded-15",
+            "line": 10,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `https://example.test/bad path#%7B%22password%22%3A%22%5BREDACTED%5D%22%7D`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Final encoded encoded-15 (RuntimeError)\nhttps://example.test/bad path#%7B%22%70%61%73%73%77%6F%72%64%22%3A%22%5B%52%45%44%41%43%54%45%44%5D%51%41%5F%46%49%4E%41%4C%5F%45%4E%43%4F%44%45%44%5F%53%45%43%52%45%54%22%7D\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:10:in `final encoded probe encoded-15'",
+              "duration": 2437000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": "final-encoded-security;encoded-23",
+        "keyword": "Scenario",
+        "name": "encoded-23",
+        "description": "",
+        "line": 12,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe encoded-23",
+            "line": 13,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `[REDACTED] [evidence omitted: unsafe or oversized input]`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Final encoded encoded-23 (RuntimeError)\nhttps://example.test/bad path#%25%32%35%25%33%37%25%34%32%25%32%35%25%33%32%25%33%32%25%32%35%25%33%37%25%33%30%25%32%35%25%33%36%25%33%31%25%32%35%25%33%37%25%33%33%25%32%35%25%33%37%25%33%33%25%32%35%25%33%37%25%33%37%25%32%35%25%33%36%25%34%36%25%32%35%25%33%37%25%33%32%25%32%35%25%33%36%25%33%34%25%32%35%25%33%32%25%33%32%25%32%35%25%33%33%25%34%31%25%32%35%25%33%32%25%33%32%25%32%35%25%33%35%25%34%32%25%32%35%25%33%35%25%33%32%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%34%25%33%31%25%32%35%25%33%34%25%33%33%25%32%35%25%33%35%25%33%34%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%35%25%34%34%25%32%35%25%33%35%25%33%31%25%32%35%25%33%34%25%33%31%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%36%25%32%35%25%33%34%25%33%39%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%31%25%32%35%25%33%34%25%34%33%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%34%25%34%36%25%32%35%25%33%34%25%33%34%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%35%25%34%36%25%32%35%25%33%35%25%33%33%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%35%25%33%32%25%32%35%25%33%34%25%33%35%25%32%35%25%33%35%25%33%34%25%32%35%25%33%32%25%33%32%25%32%35%25%33%37%25%34%34\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:13:in `final encoded probe encoded-23'",
+              "duration": 4088000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": "final-encoded-security;encoded-47",
+        "keyword": "Scenario",
+        "name": "encoded-47",
+        "description": "",
+        "line": 15,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe encoded-47",
+            "line": 16,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `[REDACTED] [evidence omitted: unsafe or oversized input]`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Final encoded encoded-47 (RuntimeError)\nhttps://example.test/bad path#%25%32%35%25%33%37%25%34%32%25%32%35%25%33%32%25%33%32%25%32%35%25%33%37%25%33%30%25%32%35%25%33%36%25%33%31%25%32%35%25%33%37%25%33%33%25%32%35%25%33%37%25%33%33%25%32%35%25%33%32%25%33%30%25%32%35%25%33%37%25%33%37%25%32%35%25%33%36%25%34%36%25%32%35%25%33%37%25%33%32%25%32%35%25%33%36%25%33%34%25%32%35%25%33%32%25%33%32%25%32%35%25%33%33%25%34%31%25%32%35%25%33%32%25%33%32%25%32%35%25%33%35%25%34%32%25%32%35%25%33%35%25%33%32%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%34%25%33%31%25%32%35%25%33%34%25%33%33%25%32%35%25%33%35%25%33%34%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%35%25%34%34%25%32%35%25%33%35%25%33%31%25%32%35%25%33%34%25%33%31%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%36%25%32%35%25%33%34%25%33%39%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%31%25%32%35%25%33%34%25%34%33%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%34%25%34%36%25%32%35%25%33%34%25%33%34%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%35%25%34%36%25%32%35%25%33%35%25%33%33%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%35%25%33%32%25%32%35%25%33%34%25%33%35%25%32%35%25%33%35%25%33%34%25%32%35%25%33%32%25%33%32%25%32%35%25%33%37%25%34%34\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:16:in `final encoded probe encoded-47'",
+              "duration": 3544000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": "final-encoded-security;encoded-71",
+        "keyword": "Scenario",
+        "name": "encoded-71",
+        "description": "",
+        "line": 18,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe encoded-71",
+            "line": 19,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `[REDACTED] [evidence omitted: unsafe or oversized input]`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Final encoded encoded-71 (RuntimeError)\nhttps://example.test/bad path#%25%32%35%25%33%37%25%34%32%25%32%35%25%33%32%25%33%32%25%32%35%25%33%37%25%33%30%25%32%35%25%33%36%25%33%31%25%32%35%25%33%37%25%33%33%25%32%35%25%33%37%25%33%33%25%32%35%25%33%35%25%34%33%25%32%35%25%33%35%25%34%33%25%32%35%25%33%37%25%33%35%25%32%35%25%33%33%25%33%30%25%32%35%25%33%33%25%33%30%25%32%35%25%33%33%25%33%37%25%32%35%25%33%33%25%33%37%25%32%35%25%33%36%25%34%36%25%32%35%25%33%37%25%33%32%25%32%35%25%33%36%25%33%34%25%32%35%25%33%32%25%33%32%25%32%35%25%33%33%25%34%31%25%32%35%25%33%32%25%33%32%25%32%35%25%33%35%25%34%32%25%32%35%25%33%35%25%33%32%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%34%25%33%31%25%32%35%25%33%34%25%33%33%25%32%35%25%33%35%25%33%34%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%35%25%34%34%25%32%35%25%33%35%25%33%31%25%32%35%25%33%34%25%33%31%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%36%25%32%35%25%33%34%25%33%39%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%31%25%32%35%25%33%34%25%34%33%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%34%25%34%36%25%32%35%25%33%34%25%33%34%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%35%25%34%36%25%32%35%25%33%35%25%33%33%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%35%25%33%32%25%32%35%25%33%34%25%33%35%25%32%35%25%33%35%25%33%34%25%32%35%25%33%32%25%33%32%25%32%35%25%33%37%25%34%34\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:19:in `final encoded probe encoded-71'",
+              "duration": 4617000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": "final-encoded-security;bearer-72",
+        "keyword": "Scenario",
+        "name": "bearer-72",
+        "description": "",
+        "line": 21,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe bearer-72",
+            "line": 22,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `https://example.test/Bearer%20%5BREDACTED%5D`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Final encoded bearer-72 (RuntimeError)\nhttps://example.test/%42%65%61%72%65%72%20%51%41%5F%46%49%4E%41%4C%5F%45%4E%43%4F%44%45%44%5F%53%45%43%52%45%54\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:22:in `final encoded probe bearer-72'",
+              "duration": 2747000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": "final-encoded-security;bearer-80",
+        "keyword": "Scenario",
+        "name": "bearer-80",
+        "description": "",
+        "line": 24,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "final encoded probe bearer-80",
+            "line": 25,
+            "output": [
+              "curl --request GET 'https://api.example.test/words?token=SAFE_CURL_FIXTURE' --header 'Authorization: Bearer SAFE_CURL_FIXTURE'",
+              "### Request\n- `GET` `[REDACTED] [evidence omitted: unsafe or oversized input]`\n\n### Response\n- Status: `200`\n- Body:\n```json\n{\n  \"outcome\": \"synthetic URL evidence only; no network request\"\n}\n```\n"
+            ],
+            "match": {
+              "location": "/Users/nick/Documents/crr-qa-2.0.2/spec/acceptance/ledger_qa/sdk202/final_release_probe_support.rb:5"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "Final encoded bearer-80 (RuntimeError)\nhttps://example.test/bad path#%25%32%35%25%33%34%25%33%32%25%32%35%25%33%36%25%33%35%25%32%35%25%33%36%25%33%31%25%32%35%25%33%37%25%33%32%25%32%35%25%33%36%25%33%35%25%32%35%25%33%37%25%33%32%25%32%35%25%33%32%25%33%30%25%32%35%25%33%35%25%33%31%25%32%35%25%33%34%25%33%31%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%36%25%32%35%25%33%34%25%33%39%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%31%25%32%35%25%33%34%25%34%33%25%32%35%25%33%35%25%34%36%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%34%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%34%25%34%36%25%32%35%25%33%34%25%33%34%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%34%25%32%35%25%33%35%25%34%36%25%32%35%25%33%35%25%33%33%25%32%35%25%33%34%25%33%35%25%32%35%25%33%34%25%33%33%25%32%35%25%33%35%25%33%32%25%32%35%25%33%34%25%33%35%25%32%35%25%33%35%25%33%34\n/project/FROZEN/support.rb:65:in 'inner_failure'\n/project/FROZEN/support.rb:59:in 'deep_failure'\n/project/FROZEN/support.rb:136:in 'step'\n/project/FROZEN/features/audit.feature:5:in 'failure'\n/ruby/gems/cucumber/FROZEN/runner.rb:1:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:2:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:3:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:4:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:5:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:6:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:7:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:8:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:9:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:10:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:11:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:12:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:13:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:14:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:15:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:16:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:17:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:18:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:19:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:20:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:21:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:22:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:23:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:24:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:25:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:26:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:27:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:28:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:29:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:30:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:31:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:32:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:33:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:34:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:35:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:36:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:37:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:38:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:39:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:40:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:41:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:42:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:43:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:44:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:45:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:46:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:47:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:48:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:49:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:50:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:51:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:52:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:53:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:54:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:55:in 'run'\n/ruby/gems/cucumber/FROZEN/runner.rb:56:in 'run'\n-e:1:in 'run'\n<internal:kernel>:90:in 'require'\nfeatures/FINAL-security.feature:25:in `final encoded probe bearer-80'",
+              "duration": 4336000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@reportportal_live",
+            "line": 1
+          }
+        ]
+      }
+    ]
+  }
+]

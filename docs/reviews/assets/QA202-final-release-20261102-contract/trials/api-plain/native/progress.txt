@@ -1,0 +1,1533 @@
+Using the trial_api profile...
+
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.76` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["20"]
+```
+- Body:
+```json
+{
+  "word": "persevere"
+}
+```
+
+### Response
+- Status: `201`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["33"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "persevere",
+  "saved": true
+}
+```
+
+- Duration: `0.69` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 201 | 201 |
+.
+## Assertion: JSON field word
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| persevere | persevere |
+
+## Assertion: JSON field saved
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| true | true |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.74` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending GET /api/practice?word=persevere
+
+### Request
+- `GET` `http://127.0.0.1:55104/api/practice?word=persevere`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["49"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "persevere",
+  "length": 9,
+  "kind": "practice"
+}
+```
+
+- Duration: `1.31` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+## Assertion: JSON field word
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| persevere | persevere |
+
+## Assertion: JSON field length
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 9 | 9 |
+
+## Assertion: JSON field kind
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| practice | practice |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `1.27` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending GET /api/practice?word=focus
+
+### Request
+- `GET` `http://127.0.0.1:55104/api/practice?word=focus`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["45"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "focus",
+  "length": 5,
+  "kind": "practice"
+}
+```
+
+- Duration: `0.84` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+## Assertion: JSON field word
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| focus | focus |
+
+## Assertion: JSON field length
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 5 | 5 |
+
+## Assertion: JSON field kind
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| practice | practice |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.73` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["11"]
+```
+- Body:
+```json
+{
+  "word": ""
+}
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["25"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "word_required"
+}
+```
+
+- Duration: `0.74` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+## Assertion: JSON field error
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| word_required | word_required |
+.
+Diagnostic only (non-fatal): validation rejection observed; expected 400 was asserted separately
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.66` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["31"]
+```
+- Body:
+```json
+{
+  "word": "résumé 中文 ✓"
+}
+```
+
+### Response
+- Status: `201`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["43"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "résumé 中文 ✓",
+  "saved": true
+}
+```
+
+- Duration: `0.81` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 201 | 201 |
+.
+## Assertion: JSON field word
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| résumé 中文 ✓ | résumé 中文 ✓ |
+
+## Assertion: JSON field saved
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| true | true |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.77` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending GET /api/practice?word=na%C3%AFve
+
+### Request
+- `GET` `http://127.0.0.1:55104/api/practice?word=na%C3%AFve`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["46"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "naïve",
+  "length": 5,
+  "kind": "practice"
+}
+```
+
+- Duration: `0.75` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+## Assertion: JSON field word
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| naïve | naïve |
+
+## Assertion: JSON field length
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 5 | 5 |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.81` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["12"]
+```
+- Body:
+```json
+{
+  "word": ""
+}
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["25"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "word_required"
+}
+```
+
+- Duration: `0.73` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+## Assertion: JSON field error
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| word_required | word_required |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.69` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["15"]
+```
+- Body:
+```json
+{
+  "word": "   "
+}
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["25"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "word_required"
+}
+```
+
+- Duration: `1.99` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+## Assertion: JSON field error
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| word_required | word_required |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.71` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["12"]
+```
+- Body:
+```json
+{
+  "word": 42
+}
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["25"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "word_required"
+}
+```
+
+- Duration: `2.28` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+## Assertion: JSON field error
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| word_required | word_required |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.74` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["2"]
+```
+- Body:
+```json
+{}
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["25"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "word_required"
+}
+```
+
+- Duration: `0.76` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+## Assertion: JSON field error
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| word_required | word_required |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.82` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["13"]
+```
+- Body:
+```json
+[
+  "persevere"
+]
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["25"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "word_required"
+}
+```
+
+- Duration: `0.93` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+## Assertion: JSON field error
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| word_required | word_required |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.68` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+Generated oversized word
+
+```json
+{
+  "length": 81,
+  "limit": 80
+}
+```
+
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["92"]
+```
+- Body:
+```json
+{
+  "word": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+}
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["25"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "word_required"
+}
+```
+
+- Duration: `2.24` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.71` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["22"]
+```
+- Body:
+```text
+[REDACTED] [evidence omitted: unsafe or oversized input]
+```
+
+### Response
+- Status: `400`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["35"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "invalid_json_or_request"
+}
+```
+
+- Duration: `0.73` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 400 | 400 |
+.
+## Assertion: JSON field error
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| invalid_json_or_request | invalid_json_or_request |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.59` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending DELETE /api/practice
+
+### Request
+- `DELETE` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `405`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["30"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "method_not_allowed"
+}
+```
+
+- Duration: `0.72` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 405 | 405 |
+.
+API helper is sending GET /api/unknown
+
+### Request
+- `GET` `http://127.0.0.1:55104/api/unknown`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `404`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["21"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "error": "not_found"
+}
+```
+
+- Duration: `0.76` ms
+.
+## Assertion: response status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 404 | 404 |
+.
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.65` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending GET /api/practice?word=focus
+
+### Request
+- `GET` `http://127.0.0.1:55104/api/practice?word=focus`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["45"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "focus",
+  "length": 5,
+  "kind": "practice"
+}
+```
+
+- Duration: `3.52` ms
+.
+## Assertion: metadata contract
+
+**Outcome:** FAIL
+
+| Expected | Actual |
+| --- | --- |
+| {"word":"focus","length":5,"kind":"practice","difficulty":"easy"} | {"word":"focus","length":5,"kind":"practice"} |
+F
+API helper is sending GET /health
+
+### Request
+- `GET` `http://127.0.0.1:55104/health`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+```
+
+### Response
+- Status: `200`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["16"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "healthy": true
+}
+```
+
+- Duration: `0.63` ms
+
+## Assertion: health status
+
+**Outcome:** PASS
+
+| Expected | Actual |
+| --- | --- |
+| 200 | 200 |
+.
+API helper is sending POST /api/practice
+
+### Request
+- `POST` `http://127.0.0.1:55104/api/practice`
+- Headers:
+```text
+accept-encoding: ["gzip;q=1.0,deflate;q=0.6,identity;q=0.3"]
+accept: ["*/*"]
+user-agent: ["Ruby"]
+host: ["127.0.0.1:55104"]
+content-type: ["application/json"]
+content-length: ["20"]
+```
+- Body:
+```json
+{
+  "word": "line one"
+}
+```
+
+### Response
+- Status: `201`
+- Headers:
+```text
+content-type: ["application/json"]
+content-length: ["32"]
+connection: ["close"]
+```
+- Body:
+```json
+{
+  "word": "line one",
+  "saved": true
+}
+```
+
+- Duration: `1.06` ms
+.
+Comparing the saved word with a 2-line expectation
+
+## Assertion: saved word
+
+**Outcome:** FAIL
+
+| Expected | Actual |
+| --- | --- |
+| line one line two | line one |
+F
+
+(::) failed steps (::)
+
+metadata contract: expected "{\n  \"word\": \"focus\",\n  \"length\": 5,\n  \"kind\": \"practice\",\n  \"difficulty\": \"easy\"\n}", got "{\n  \"word\": \"focus\",\n  \"length\": 5,\n  \"kind\": \"practice\"\n}" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/step_definitions/independent_api_steps.rb:24:in `"the response body matches this JSON exactly:"'
+./features/support/env.rb:45:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+-e:1:in 'Kernel#load'
+-e:1:in '<main>'
+features/independent/api_contracts.feature:64:in `the response body matches this JSON exactly:'
+
+saved word: expected "line one\nline two", got "line one" (RuntimeError)
+./helpers/world.rb:15:in 'CurrentSDK::World#check_equal'
+./features/step_definitions/independent_api_steps.rb:30:in `"the saved word equals this text:"'
+./features/support/env.rb:45:in 'block (2 levels) in <top (required)>'
+./features/support/env.rb:29:in 'block in <top (required)>'
+-e:1:in 'Kernel#load'
+-e:1:in '<main>'
+features/independent/api_contracts.feature:80:in `the saved word equals this text:'
+
+Failing Scenarios:
+cucumber -p trial_api features/independent/api_contracts.feature:62 # Scenario: Metadata contract matches the published example exactly
+cucumber -p trial_api features/independent/api_contracts.feature:75 # Scenario: Saved word echoes the submitted text verbatim
+
+16 scenarios (2 failed, 14 passed)
+63 steps (2 failed, 61 passed)
+0m7.890s

@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../helpers/fixture_server"
+require "net/http"
+
+fixture = CurrentSDK::FixtureServer.new.start
+begin
+  uri = URI(fixture.url)
+  observations = []
+  cases = [["GET", "/health", nil, 200], ["GET", "/api/practice?word=focus", nil, 200],
+           ["POST", "/api/practice", '{"word":"focus"}', 201],
+           ["POST", "/api/practice", '{"word":""}', 400],
+           ["POST", "/api/practice", '{', 400], ["DELETE", "/api/practice", nil, 405],
+           ["GET", "/missing", nil, 404], ["POST", "/api/practice", "x" * 8193, 413]]
+  cases.each do |method, path, body, expected|
+    request = Net::HTTP.const_get(method.capitalize).new(path)
+    request.body = body if body
+    response = Net::HTTP.start(uri.host, uri.port, nil, open_timeout: 2, read_timeout: 3) { |http| http.request(request) }
+    raise "#{method} #{path}: #{response.code}, expected #{expected}" unless response.code.to_i == expected
+    observations << "#{method} #{path} => #{expected}"
+  end
+  socket = TCPSocket.new(uri.host, uri.port)
+  begin
+    socket.write("GET / HTTP/1.1\r\nX-Large: #{'x' * 17000}\r\n\r\n")
+    line = Timeout.timeout(3) { socket.gets }
+    raise "Header bound failed" unless line.include?("413")
+    observations << "oversized headers => 413"
+  ensure
+    socket.close
+  end
+  puts observations
+ensure
+  fixture.stop
+end
+puts "Fixture stopped cleanly."
