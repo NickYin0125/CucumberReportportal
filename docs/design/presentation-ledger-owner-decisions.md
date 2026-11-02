@@ -242,3 +242,181 @@ a guarantee of fixed parameter ordering in the ReportPortal UI. The request and
 response DTOs declare Lists; server persistence uses a Set. Do not describe the
 response contract as an unordered Set. All other acceptance and
 no-merge/no-tag/no-publication requirements remain unchanged.
+
+## Post-Release Scope
+
+The owner's final decision on 2026-11-01 approved releases 2.0.1 and 1.3.2.
+PR #8 remains an unreleased 2.0.2 draft: synchronize the released 2.0.1
+baseline and reconcile Decision 19 before its next review. This synchronization
+does not certify or publish the split-redaction candidate.
+
+Decision 19 below is exclusively the released 1.x failure-content contract.
+Decisions 20-26 are retained historical WP records, not current release gates
+or 2.0.2 acceptance. Their references to two-unit Decision 19 describe its
+superseded text, not the current 1.x contract.
+
+## Decision 19: 1.x Failure-Log Content
+
+Owner-confirmed on 2026-11-01.
+
+19. On 1.x, the failure log carries the same text v1.3.1 sent, shown in the
+    Ledger failure card. Failure-log redaction is not added in 1.3.2: the 2.x
+    redactor omits the whole failure for common inputs (any backslash in the
+    message), which hid failures that v1.3.1 showed (Launch 3778 versus
+    Launches 3637 and 3731). Decision 15's P1.2 exception is withdrawn on 1.x,
+    and G8 on 1.x means "nothing is sent that v1.3.1 would not have sent".
+    2.x is unchanged; its whole-failure omission is a separate backlog item.
+
+## Decision 20: Cross-Unit Credential Safety Path
+
+Owner-confirmed on 2026-11-01.
+
+Question: 已复现跨 message/backtrace 边界的凭据泄露风险。是否允许仅在检测到跨边界凭据时保留整体脱敏安全路径，并单独验证其调用数？普通失败仍按 Decision 19 拆分，正常路径保持两次调用；不会放宽任何脱敏规则。
+
+Owner answer: 允许这个受测的安全例外（推荐）
+
+A detected credential spanning redaction-unit boundaries may use the existing
+whole-input safety path instead of independent redaction. This narrow path
+must have its own security and call-count tests. Ordinary failures still use
+Decision 19's two-unit redaction and normal/per-frame call counts. No weaker
+filtering or general byte-equivalence waiver is authorized.
+
+## Decision 21: Draft-Only Release-Tooling Integration
+
+Owner-confirmed on 2026-11-01.
+
+Question: WP4 要等你合并 #7，但最终条件又要求 #7 仍为草稿。是否允许将 #7 的功能分支以 merge commit 合入 #6，直接验证组合状态，同时不改任何受保护分支、四个 PR 都保留草稿？
+
+Owner answer: 允许合入功能分支，四个 PR 保持草稿（推荐）
+
+Merge the reviewed `maintenance/release-ancestry-1.x` feature branch into
+`maintenance/presentation-ledger-1.3.2` using a merge commit. Resolve only
+release-tooling, release-workflow and related-spec conflicts. The combined
+state must pass verification; protected branches remain unchanged, all four
+PRs remain draft, and no PR merge, tag or publication is authorized.
+
+## Decision 22: Recorded Failure Corpus, Not a Recreated 41-Case Set
+
+Owner-confirmed on 2026-11-01.
+
+The 41-case set doesn't exist as a file; it came from a summary. Don't recreate it. For the no-regression check, use every failure (message plus backtrace) recorded in the committed wp5-ci-final-20261101 captures on the qa/ branches (F01–F20, including all F14 escaping inputs), the frozen F04 62-frame failure, and the WP2 probe corpus. Generate the baseline by running the tested runtime (3f20313 for 2.x, f41888a for 1.x) in its own worktree, and store the outputs with SHA-256. Wherever the baseline didn't return the omission marker, the new output must be byte-identical.
+
+This replaces only the nonexistent 41-case input list. Preserve input
+provenance, original captures and all failures. N1 independently continues to
+compare against actual v1.3.1 at `4ca2f77`.
+
+## Decision 23: Dated Release-Notes Test Compatibility
+
+Owner-confirmed on 2026-11-01.
+
+Question: WP1 的日期变更触发了既有测试：它强制 CHANGELOG 必须写 Unreleased，因此“只改 CHANGELOG”与“PR #5 CI 绿色”无法同时满足。是否允许另加一个仅测试的提交，让该断言严格接受有效发布日期，并将绑定证明范围明确扩展为 CHANGELOG 与该测试文件？运行时代码仍完全不变。
+
+Owner answer: 允许仅测试的兼容修复并更新证明（推荐）
+
+Keep the original WP1 date-only commit and its proof intact. A separate
+test-only commit may make `spec/packaging/presentation_docs_spec.rb` accept
+Unreleased or a strictly valid ISO calendar date, with positive and negative
+tests. The updated binding must show exactly CHANGELOG and this spec changed
+from `173c603`; all runtime, dependency, Helm and workflow bytes remain
+unchanged. This does not authorize a release or weaken runtime verification.
+
+## Decision 24: Encoded and Incomplete Cross-Boundary Credentials
+
+Owner-confirmed on 2026-11-01 after a new synthetic security probe.
+
+Question: 新探针发现：不完整 JSON 中的 Unicode 转义凭据名（例如 pass\\u0077ord）跨 message/backtrace 边界时，当前候选守卫未识别，合成凭据值会残留。是否允许进一步加固 Decision 20 的边界识别，覆盖这类编码/不完整输入，并增加回归测试？仍只在检测到跨边界凭据风险时走整体安全路径，正常路径维持两次调用，不放宽脱敏。
+
+Owner answer: 允许安全加固并重新验收（推荐）
+
+Extend only the Decision 20 safety guard to recognize encoded or incomplete
+cross-unit credential syntax. Keep existing redaction policy unchanged and add
+explicit regression probes. Ordinary input retains two redact_text calls;
+per-entry fallback retains 2 + N calls; detected cross-unit credential risk
+uses the separately tested whole-input safety path. Preserve the original
+failed observation. No candidate certification or release is authorized by
+this approval.
+
+## Decision 25: Comparable G11 Timing Boundaries
+
+Owner-confirmed on 2026-11-01.
+
+Question: 核对旧 G11 脚本后发现，它只计时 FailureCard 渲染，未计入 formatter 中的脱敏；本轮要求计入二者。是否同时保留旧口径对照，并在同一语料、同一环境下重测旧版与新版的“脱敏＋渲染”完整链路，对两种可比口径都执行超过 10% 即停止的规则？不会用排除脱敏后的数字冒充完整链路性能。
+
+Owner answer: 同口径重测并保留历史值（推荐）
+
+Retain the historical renderer-only values and raw evidence. Re-measure the
+old and new runtimes on the same corpus and environment for both renderer-only
+and complete redaction-plus-rendering paths. Apply the more-than-10% stop
+rule separately to each comparable timing boundary; never compare a
+renderer-only sample with a complete-pipeline sample or label the former
+as inclusive redaction timing. The required Cucumber 9 alternating wall-time
+comparison remains unchanged.
+
+## Decision 26: Synchronize the WP1 Feature Head into 2.0.2
+
+Owner-confirmed on 2026-11-01.
+
+Question: PR #5 新增了你批准的日期校验测试提交，而 2.0.2 分支建于该提交之前。是否允许用 merge commit 将 #5 功能分支同步进 #8，仅协调包装测试中的日期断言，避免你先合并 #5 后 #8 再出现冲突？不合并任何 PR、不推受保护分支，仍全部保留草稿。
+
+Owner answer: 允许同步功能分支（推荐）
+
+Merge the PR #5 feature branch into the PR #8 feature branch with a merge
+commit, reconciling only the package documentation/date assertions. Preserve
+the dated 2.0.1 history, the Unreleased 2.0.2 section and the strict positive
+and negative date checks. No runtime edits are authorized by this integration
+decision; all four PRs remain draft and protected refs remain untouched.
+
+## Decision 27: 2.0.2 Readability Fixes From the 2.0.1 User Trial
+
+Owner-confirmed on 2026-11-02.
+
+27. SDK 2.0.2 fixes the client issues found in the independent 2.0.1 trial
+    (Launches 3837-3842). These amend the Ledger proposal and acceptance
+    criteria:
+
+    a. Rich presentation never adds HTML to ERROR or FATAL log messages; they
+       are byte-identical to plain. ReportPortal's Stack Trace tab shows these
+       messages as raw text. Rich accents remain for TRACE to WARN messages.
+       This replaces the rule that allowed a pill on the second line of ERROR
+       cards and the rich backtrace fold.
+    b. Assertion values that are empty, whitespace-only, or start or end with
+       whitespace are shown quoted with a label, for example `"" (empty
+       string)`. All other strings are still shown as-is.
+    c. HTTP cards show the outcome before transport detail: title, response
+       body, URL, request body, request headers, response headers. Headers
+       render one `name: value` line per value; the content-type subtitle
+       shows the plain media type. No value is changed or dropped.
+    d. When both assertion values are JSON objects, one line before the
+       comparison names the top-level keys that are missing, extra or
+       changed. This is not a general diff.
+    e. The generated run-context description no longer repeats versions that
+       are already Launch attributes.
+    f. The shipped example (examples/current_sdk) and user docs are corrected
+       as listed in the 2.0.2 work packages.
+
+    The plain default, redaction, raw evidence bytes, item ownership and
+    statuses are unchanged. The 1.x line is not changed.
+
+### R02 Scope Clarification
+
+Owner-confirmed on 2026-11-02 after inspecting the current capture-target API.
+
+Owner answer: 保持现有 API 和 After 归属，仅补充过滤警告，R02 标记未修复（推荐，改动最小）
+
+Do not extend the runtime capture API or move After-hook evidence to a Scenario.
+Document the passed-log filter interaction and record R02 as not fixed. All
+other work packages continue under Decision 27.
+
+### WP2 Screenshot Scope Clarification
+
+Owner-confirmed on 2026-11-02.
+
+Owner answer: RP 合并为一个带截图条目，原生 HTML 不再附截图
+
+The current example uses the existing `rp_attach` API for one RP caption-and-PNG
+entry under the open After Hook. Native HTML no longer receives that failure
+screenshot; the uniquely named local PNG, original failure exception and native
+failure records remain unchanged. This is a screenshot-routing tradeoff for WP2,
+not a runtime API extension. The prior R02 clarification remains in force:
+preserve After ownership and hook status, warn that "Hide all passed logs" hides
+evidence under a passed After Hook, and keep R02 unresolved (not fixed).

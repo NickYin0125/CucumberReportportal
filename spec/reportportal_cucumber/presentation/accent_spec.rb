@@ -186,11 +186,11 @@ RSpec.describe ReportportalCucumber::Presentation::Accent do
       expect(described_class.guard(plain: plain, rich: limit + "\u00b7", level: :info)).to equal(plain)
     end
 
-    [:error, "error", "ERROR", "ErRoR"].each do |level|
-      it "requires byte-identical first lines for #{level.inspect}" do
+    [:error, :fatal, "error", "ERROR", "ErRoR", "FATAL"].each do |level|
+      it "returns the entire plain object for #{level.inspect}" do
         plain = "## \u2717 Failed <raw>\n\nOriginal body".freeze
         rich = plain.lines.first + "\n" + described_class.details(summary: "Body", body: "Original body")
-        expect(described_class.guard(plain: plain, rich: rich, level: level)).to equal(rich)
+        expect(described_class.guard(plain: plain, rich: rich, level: level)).to equal(plain)
         expect(described_class.guard(plain: plain, rich: rich.sub("Failed", "Failure"), level: level)).to equal(plain)
         expect(described_class.guard(plain: plain, rich: rich.sub("<raw>", "&lt;raw&gt;"), level: level)).to equal(plain)
       end
@@ -207,9 +207,9 @@ RSpec.describe ReportportalCucumber::Presentation::Accent do
       end
     end
 
-    it "compares just the first line, including empty and no-newline messages" do
+    it "preserves the whole message, including empty and no-newline messages" do
       [["", ""], ["", "\nbody"], ["Failure", "Failure\nbody"], ["Failure\nbody", "Failure"]].each do |plain, rich|
-        expect(described_class.guard(plain: plain, rich: rich, level: :error)).to equal(rich)
+        expect(described_class.guard(plain: plain, rich: rich, level: :error)).to equal(plain)
       end
       plain = "Failure"
       expect(described_class.guard(plain: plain, rich: "Changed", level: :error)).to equal(plain)
@@ -221,7 +221,7 @@ RSpec.describe ReportportalCucumber::Presentation::Accent do
       expect(described_class.guard(plain: plain, rich: rich, level: :error)).to equal(plain)
     end
 
-    %i[trace debug info warn fatal].each do |level|
+    %i[trace debug info warn].each do |level|
       it "permits deliberate non-ERROR title changes at #{level}" do
         plain = "Plain title".freeze
         rich = described_class.title("Styled title")

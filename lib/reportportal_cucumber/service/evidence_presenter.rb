@@ -138,31 +138,30 @@ module ReportportalCucumber
           status, name_text, details = snapshot.values_at(:status, :name, :details)
           title = card_title(name_text)
           expected_text = assertion_value(snapshot[:expected], string: snapshot[:expected_string])
+          delta = top_level_delta(snapshot[:expected], snapshot[:actual])
           if status == "PASS"
             title = "\u2713 Assertion passed \u00b7 #{title}"
             if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
               title += " \u00b7 expected #{card_code(expected_text)}"
             end
             parts = [title]
+            parts << delta if delta
           else
             parts = ["## \u2717 Assertion failed \u00b7 #{title}"]
+            parts << delta if delta
             actual_text = assertion_value(snapshot[:actual], string: snapshot[:actual_string])
-            limit = DETAILS_LIMIT - parts.first.bytesize - 72 - (details.nil? ? 0 : 256)
+            limit = DETAILS_LIMIT - parts.join("\n\n").bytesize - 72 - (details.nil? ? 0 : 256)
             comparison = comparison_block(expected_text, actual_text, limit)
             append_card_fence(parts, comparison, "text")
           end
           append_card_details(parts, nil, details, string: snapshot[:details_string]) unless details.nil?
           plain = parts.join("\n\n")
-          return plain unless accent
+          return plain unless accent && status == "PASS"
 
-          if status == "PASS"
-            heading = "#{Presentation::Accent.pill('PASS', tone: :pass)} #{card_title(name_text, accent: true)}"
-            heading += " \u00b7 expected #{card_code(expected_text)}" if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
-            parts[0] = heading
-          else
-            parts.insert(1, Presentation::Accent.pill('FAIL', tone: :fail))
-          end
-          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: status == "PASS" ? :info : :error)
+          heading = "#{Presentation::Accent.pill('PASS', tone: :pass)} #{card_title(name_text, accent: true)}"
+          heading += " \u00b7 expected #{card_code(expected_text)}" if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
+          parts[0] = heading
+          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: :info)
         end
 
         def failure_card(action, error, url, names, details, diagnostic, accent: false)
@@ -179,20 +178,22 @@ module ReportportalCucumber
           message = safe_string(error.message, VALUE_LIMIT)
           append_card_fence(parts, message, "text") unless message.empty?
           append_card_details(parts, details, diagnostic) unless details.nil?
-          plain = parts.join("\n\n")
-          return plain unless accent
-
-          pill = Presentation::Accent.pill('FAIL', tone: :fail)
-          if meta.empty?
-            parts.insert(1, pill)
-          else
-            parts[1] = "#{pill} #{parts[1]}"
-          end
-          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: :error)
+          parts.join("\n\n")
         end
 
         def assertion_value(text, string:)
-          return text if string
+          if string
+            label = if text.empty?
+                      "empty string"
+                    elsif text.match?(/\A +\z/)
+                      Presentation::Units.count(text.length, "space")
+                    elsif text.match?(/\A[[:space:]]+\z/)
+                      "whitespace only"
+                    elsif text.match?(/\A[[:space:]]|[[:space:]]\z/)
+                      "leading/trailing whitespace"
+                    end
+            return label ? "#{JSON.generate(text)} (#{label})" : text
+          end
 
           bounded(ledger_json(parsed_diagnostic(text)), VALUE_LIMIT)
         end
@@ -201,6 +202,23 @@ module ReportportalCucumber
           JSON.parse(text)
         rescue JSON::ParserError
           text
+        end
+
+        # Compare only bounded, already-sanitized snapshots, never caller objects.
+        def top_level_delta(expected_text, actual_text)
+          expected, actual = [expected_text, actual_text].map { |text| parsed_diagnostic(text) }
+          return unless expected.is_a?(Hash) && actual.is_a?(Hash)
+
+          changed = (expected.keys & actual.keys).reject do |key|
+            left, right = expected[key], actual[key]
+            left == right || (left.is_a?(Hash) && right.is_a?(Hash)) || (left.is_a?(Array) && right.is_a?(Array))
+          end
+          groups = { "missing in actual" => expected.keys - actual.keys,
+                     "extra in actual" => actual.keys - expected.keys, "changed" => changed }
+          line = groups.filter_map do |label, keys|
+            "#{label}: #{keys.sort.map { |key| card_code(key) }.join(', ')}" unless keys.empty?
+          end.join(" \u00b7 ")
+          line unless line.empty?
         end
 
         def ledger_json(value)

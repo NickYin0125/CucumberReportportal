@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "reportportal_cucumber/automation/failure_redactor"
 
 RSpec.describe ReportportalCucumber::Presentation::FailureCard do
   let(:cwd) { "/project" }
@@ -17,7 +18,11 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
   end
 
   def card(error: self.error, message: error.message, backtrace: self.backtrace, cwd: self.cwd)
-    described_class.format(error: error, message: message, backtrace: backtrace, cwd: cwd)
+    evidence = Automation::FailureRedactor.new.redact(message: message, frames: backtrace.split("\n", -1))
+    return evidence.baseline if evidence.fallback_only
+
+    described_class.format(error: error, message: evidence.message, backtrace: evidence.backtrace,
+                           baseline: evidence.baseline, cwd: cwd)
   end
 
   it "renders the project-first card and preserves all 62 original tail lines exactly" do
@@ -147,27 +152,28 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
       .to eq("## \u2717 RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;")
   end
 
-  it "redacts complete original evidence before title escaping or truncation" do
+  it "renders only redacted evidence and preserves frames when a message is withheld" do
     result = card(message: 'api_key=SECRET123 failed', backtrace: "/project/support.rb:1:in 'token=SECRET123'")
     expect(result).not_to include("SECRET123")
     expect(result).to include("api\\_key=\\[REDACTED\\]", "token=[REDACTED]")
     result = card(message: 'failed {"\\u0070assword":"SECRET123"}')
-    expect(result).to eq(Automation::EvidenceRedactor::OMITTED)
+    expect(result).to start_with("## \u2717 RuntimeError\n\nMessage withheld: unsafe or ambiguous input")
+    expect(result).to end_with("```text\n#{backtrace}\n```")
+    expect(result).not_to include("SECRET123")
   end
 
   it "uses a supplied redacted baseline without constructing another redactor" do
     expect(Automation::EvidenceRedactor).not_to receive(:new)
-    result = described_class.format(error: error, message: "api_key=SECRET123", backtrace: "support.rb:1",
+    result = described_class.format(error: error, message: "api_key=[REDACTED]", backtrace: "support.rb:1",
                                     baseline: "api_key=[REDACTED]\nsupport.rb:1", cwd: cwd)
     expect(result).not_to include("SECRET123")
     expect(result).to include("api\\_key=\\[REDACTED\\]", "support.rb:1")
   end
 
-  it "redacts once when called directly without a supplied baseline" do
-    redactor = Automation::EvidenceRedactor.new
-    allow(Automation::EvidenceRedactor).to receive(:new).and_return(redactor)
-    expect(redactor).to receive(:redact_text).with("#{error.message}\n#{backtrace}").once.and_call_original
-    expect(card).to include("Full backtrace")
+  it "makes no redaction calls when rendering already-safe parts" do
+    expect(Automation::EvidenceRedactor).not_to receive(:new)
+    expect(described_class.format(error: error, message: error.message, backtrace: backtrace, cwd: cwd))
+      .to include("Full backtrace")
   end
 
   it "keeps a secret assigned across the message/frame boundary redacted" do
@@ -186,11 +192,10 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
     expect(expected).not_to include("secret first", "secret second")
   end
 
-  it "returns supplied structural redaction exactly rather than rebuilding it" do
-    expect(Automation::EvidenceRedactor).not_to receive(:new)
-    result = described_class.format(error: error, message: "first\nsecond", backtrace: "support.rb:1",
-                                    baseline: "[REDACTED]", cwd: cwd)
-    expect(result).to eq("[REDACTED]")
+  it "retains a safe structural fallback when rendering raises" do
+    allow(ReportportalCucumber::Presentation::MarkdownText).to receive(:inline).and_raise(ArgumentError)
+    expect(described_class.format(error: error, message: "[REDACTED]", backtrace: "", baseline: "[REDACTED]", cwd: cwd))
+      .to eq("[REDACTED]")
   end
 
   it "splits safe evidence without losing trailing empty message or backtrace lines" do
@@ -204,7 +209,8 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
   end
 
   it "preserves the redacted baseline on oversized evidence or unsafe fences" do
-    expect(card(message: "x" * 65_537)).to eq(Automation::EvidenceRedactor::OMITTED)
+    expect(card(message: "x" * 65_537)).to start_with("## \u2717 RuntimeError\n\nMessage withheld:")
+    expect(card(message: "x" * 65_537)).to end_with("```text\n#{backtrace}\n```")
     message = "`" * 32 + "~" * 32
     logger = double("logger", warn: nil)
     allow(ReportportalCucumber).to receive(:logger).and_return(logger)

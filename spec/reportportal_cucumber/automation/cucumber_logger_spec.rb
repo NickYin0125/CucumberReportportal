@@ -79,6 +79,20 @@ RSpec.describe "Automation::CucumberLogger" do
     expect(world.rp_attachments).to be_empty
   end
 
+  it "preserves caller-provided reproduction curl messages on the ordinary log routes" do
+    world = TripleTrackWorldSpy.new(rp_active: true)
+    logger = Automation::CucumberLogger.new(world: world, output: StringIO.new)
+    curl = "curl 'https://example.test/Bearer%2520TEST_TOKEN' -H 'Authorization: Bearer TEST_TOKEN' " \
+           "--data-raw '{\"password\":\"[REDACTED]TEST_SECRET\"}'"
+    message = "Reproduce request:\n\n```bash\n#{curl}\n```"
+
+    logger.info(message, report: true)
+
+    expect(world.logs).to eq([[message]])
+    expect(world.rp_logs.length).to eq(1)
+    expect(world.rp_logs.first.first).to eq([message])
+  end
+
   it "keeps large JSON out of terminal output while attaching Markdown-fenced JSON to Cucumber" do
     world = TripleTrackWorldSpy.new
     logger = build_logger(world)

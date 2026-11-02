@@ -7,21 +7,21 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-This checkout prepares **SDK 2.0.1**, an unpublished Ledger presentation
-candidate. Use a matching maintainer-supplied or locally built archive; no new
-tag, GitHub release or RubyGems publication is implied.
+**SDK 2.0.2** improves failure-evidence safety and readability. Distribution uses
+the versioned Gem archive, checksums and provenance in the
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2).
+RubyGems.org publication is separate and is not performed by this release.
 
-| SDK line | Ruby | Cucumber | Candidate source |
+| SDK line | Ruby | Cucumber | Release line |
 | --- | --- | --- | --- |
-| 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/presentation-ledger-1.3.2` |
-| 2.x / **2.0.1** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/presentation-ledger-2.0.1` |
+| 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/1.x`, tag `v1.3.2` |
+| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/cucumber-12`, tag `v2.0.2` |
 
 Cucumber 11 remains unsupported. Existing published archives and their dated
 evidence are unchanged. Helm **1.3.1** / ReportPortal **26.0.7** stay independently
 versioned; this SDK update requires no infrastructure upgrade.
 For Cucumber 12 migration and CI-owned parallel Launches, see the
-[migration guide](docs/migrating-to-2.0.md). This candidate branch is not an
-approved release ancestry ref; publication remains a separate operation.
+[migration guide](docs/migrating-to-2.0.md).
 
 **New here?** Follow the five steps below. The
 [complete getting-started guide](docs/getting-started.md) runs one Scenario without
@@ -31,7 +31,7 @@ a browser or a ReportPortal server before connecting your real project.
 | --- | --- |
 | Ruby | `>= 3.3` |
 | Cucumber | `>= 12.0.1, ~> 12.0` |
-| Package | `reportportal-cucumber-ruby` **2.0.1**, matching candidate archive |
+| Package | `reportportal-cucumber-ruby` **2.0.2**, verified release archive |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -39,19 +39,21 @@ The SDK records tests and evidence. Your framework makes HTTP requests, performs
 assertions, and owns browser/screenshot/video lifecycles. Logging an ERROR does
 not fail a Scenario.
 
-## 1. Install the candidate gem
+## 1. Install the Gem
 
-Obtain `reportportal-cucumber-ruby-2.0.1.gem` from the maintainer or use the
+Obtain `reportportal-cucumber-ruby-2.0.2.gem` from the
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2),
+verify its supplied checksum and provenance, or use the
 [isolated source-packaging workflow](examples/current_sdk/README.md#source-and-packaging-verification).
-There is no candidate release-download URL or assumed registry publication.
+Do not assume the SDK version is available from a public Gem registry.
 
 From **your automation project root**, using the verified archive's absolute path:
 
 ```sh
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.1.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.2.gem
 mkdir -p vendor/cache
-cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.1.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.1.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.2.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.2.gem --no-document
 ```
 
 Add these entries to that project's `Gemfile`, then run `bundle install` from the
@@ -60,7 +62,7 @@ same directory:
 ```ruby
 source "https://rubygems.org"
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.1"
+gem "reportportal-cucumber-ruby", "= 2.0.2"
 ```
 
 Verify, still from **your project root**:
@@ -69,15 +71,17 @@ Verify, still from **your project root**:
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected output: `2.0.1`. Installation may download dependencies; offline setup
-requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-candidate).
+Expected output: `2.0.2`. Installation may download dependencies; offline setup
+requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-gem).
 
 ## Presentation Opt-ins
 
-Ledger's plain cards are the default. Set `RP_PRESENTATION=rich` only for RP log
-accents and folded evidence; the default is `plain`, and an invalid value warns
-once and uses plain. Native Cucumber HTML/messages, terminal output, user AppLog
-text, names and descriptions do not acquire rich markup.
+Plain cards are the default. Set `RP_PRESENTATION=rich` only for TRACE through
+WARN RP log accents and folded previews; the default is `plain`, and an invalid
+value warns once and uses plain. Rich never adds decoration to ERROR or FATAL:
+the entire message is byte-identical to plain. Existing video markup and caller
+text remain unmodified by this option. Native Cucumber HTML/messages, terminal
+output, names and descriptions do not acquire rich markup.
 
 Structured AppLog HTTP and assertion logs retain their existing native Cucumber
 and terminal bodies; only the RP subscriber selects the new plain or rich cards.
@@ -85,6 +89,8 @@ and terminal bodies; only the RP subscriber selects the new plain or rich cards.
 `RP_RUN_CONTEXT=true` separately enables allowlisted Launch metadata; it defaults
 to `false` and never overwrites explicit attributes or a non-empty description.
 On 2.x, `workers` is included only when `PARALLEL_TEST_GROUPS` is present.
+Generated descriptions contain available workers, `branch@sha` and build;
+SDK, Cucumber and Ruby versions remain Launch attributes, not repeated prose.
 See [configuration](docs/configuration.md#presentation-and-run-context) and
 [Presentation](docs/advanced-reporting.md#presentation) for boundaries and examples.
 
@@ -139,6 +145,8 @@ for configuration, Cucumber profiles, and the first-report checklist.
 Start with [API, UI, and logger best practices](docs/best-practices.md). For a
 runnable HTTP + Chromium project, use the
 [current SDK example](examples/current_sdk/README.md) after the minimal Scenario.
+Its pinned Playwright tooling needs **Node >=20**; see the
+[versioned prerequisites](docs/getting-started.md#4-add-apiui-evidence).
 
 | Need | Recommended call | Where it appears |
 | --- | --- | --- |
@@ -155,6 +163,15 @@ terminal-only unless `report: true` (or legacy `attach: true`) is supplied.
 Use one route per artifact to avoid submitting it twice. Publish Step evidence
 before that Step closes; an After-hook screenshot belongs to the After Hook.
 Keep file-backed evidence until reporting finalization settles.
+
+The current example deliberately uses existing `rp_attach` for one RP caption
+with its PNG under After. Native HTML no longer includes that failure screenshot;
+the uniquely named local file, original failure exception and native failure
+records remain unchanged. In RP, **Hide all passed logs** hides this evidence
+when the After Hook passed, even if the Scenario failed and the log is ERROR.
+Turn that filter off to inspect it. **R02 remains unresolved (not fixed)**:
+the API, After ownership and hook status are unchanged; there is no Scenario
+retargeting. See [capture choices](docs/best-practices.md#choose-step-evidence-or-after-hook-evidence).
 
 Example of Step logs and a Gherkin table rendered in ReportPortal:
 

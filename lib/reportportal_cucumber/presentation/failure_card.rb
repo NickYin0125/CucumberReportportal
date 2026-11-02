@@ -17,53 +17,28 @@ module ReportportalCucumber
       BYTE_LIMIT = Automation::EvidenceRedactor::MAX_INPUT_BYTES
 
       class << self
-        # Redacts the entire original message before adding Markdown. This order
-        # keeps generated Markdown escapes out of raw-diagnostic JSON validation.
-        # The original evidence is never clipped to make room for presentation.
+        # Formats already-redacted parts without applying a second safety policy.
         # @param error [Object] Original failure; only Exceptions get a class title.
-        # @param message [String] Original extracted exception message.
-        # @param backtrace [String] Original joined backtrace, without normalization.
+        # @param message [String] Redacted exception message or omission marker.
+        # @param backtrace [String] Redacted joined backtrace.
         # @param cwd [String] Project root used only for displayed locations.
         # @param presentation [String] "plain" or RP-only "rich".
-        # @param baseline [String, nil] Complete evidence already redacted by the formatter.
+        # @param baseline [String, nil] Safe fallback supplied by the formatter.
         # @return [String] Bounded card, or the exact redacted baseline on failure.
         def format(error:, message:, backtrace:, cwd: Dir.pwd, presentation: "plain", baseline: nil)
-          raw = [message, backtrace].reject(&:empty?).join("\n")
-          baseline = Automation::EvidenceRedactor.new.redact_text(raw) if baseline.nil?
-          empty_redaction = baseline.empty?
+          baseline ||= [message, backtrace].reject(&:empty?).join("\n")
           baseline = "Step failed" if baseline.empty?
           Fallback.render(fallback: -> { baseline }) do
-            next baseline if baseline == Automation::EvidenceRedactor::OMITTED
-            next baseline if empty_redaction && !raw.empty?
-
-            # Split only the already-safe whole input. Re-redacting each part
-            # loses credentials whose syntax spans the message/frame boundary.
-            next baseline unless baseline.count("\n") == raw.count("\n")
-
-            safe_message, safe_backtrace = redacted_parts(baseline, message, backtrace)
-
-            card = render(error, safe_message, safe_backtrace, cwd)
-            next baseline if card.bytesize > BYTE_LIMIT
-            next card unless presentation == "rich"
-
-            rich = render(error, safe_message, safe_backtrace, cwd, accent: true)
-            Accent.guard(plain: card, rich: rich, level: :error)
+            card = render(error, message, backtrace, cwd)
+            card.bytesize > BYTE_LIMIT ? baseline : card
           end
         end
 
         private
 
-        def redacted_parts(baseline, message, backtrace)
-          return ["", ""] if message.empty? && backtrace.empty?
-          return ["", baseline] if message.empty?
-          return [baseline, ""] if backtrace.empty?
-
-          lines = baseline.split("\n", -1)
-          boundary = message.count("\n") + 1
-          [lines.take(boundary).join("\n"), lines.drop(boundary).join("\n")]
-        end
-
-        def render(error, message, backtrace, cwd, accent: false)
+        def render(error, message, backtrace, cwd)
+          withheld = message == Automation::EvidenceRedactor::OMITTED
+          message = "" if withheld
           message_lines = message.lines(chomp: true)
           first = message_lines.index { |line| !line.strip.empty? }
           headline = first ? message_lines[first] : ""
@@ -73,6 +48,7 @@ module ReportportalCucumber
           return "Step failed" if title_text.empty? && backtrace.empty?
 
           sections = [title(title_text.empty? ? "Step failed" : title_text)]
+          sections << "Message withheld: unsafe or ambiguous input" if withheld
           frames = backtrace.lines(chomp: true).map { |line| frame(line, cwd) }
           feature = frames.find { |entry| entry[:feature] }
           projects = frames.select { |entry| entry[:kind] == :project && !entry[:feature] }
@@ -92,12 +68,8 @@ module ReportportalCucumber
           end
           unless backtrace.empty?
             caption = tail_caption(frames, shown)
-            if accent
-              sections << Accent.details(summary: caption, body: backtrace, limit: BYTE_LIMIT)
-            else
-              sections << "_#{caption}_"
-              sections << fenced(backtrace)
-            end
+            sections << "_#{caption}_"
+            sections << fenced(backtrace)
           end
           sections.join("\n\n")
         end
@@ -117,6 +89,10 @@ module ReportportalCucumber
         end
 
         def frame(line, cwd)
+          if line == Automation::EvidenceRedactor::OMITTED
+            return { location: line, method: "", kind: :omitted, feature: false }
+          end
+
           match = line.match(/\A(.+?):(\d+)(?::in ['`](.*)['`])?\z/)
           path = match ? match[1] : line
           location = display_path(path, cwd)

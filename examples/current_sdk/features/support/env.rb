@@ -24,6 +24,7 @@ CurrentSDK::FIXTURE = CurrentSDK::FixtureServer.new
 BeforeAll { CurrentSDK::FIXTURE.start }
 
 Around do |scenario, block|
+  @scenario_name = scenario.name
   logger = Automation::CucumberLogger.new(world: self, color: ENV["NO_COLOR"].to_s.empty?)
   AppLog.with_logger(logger) do
     if scenario.source_tag_names.include?("@ui")

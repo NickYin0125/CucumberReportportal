@@ -90,11 +90,11 @@ the conflict is rejected. See [shared Launches](ci.md#parallel-workers-and-a-sha
 
 ## Presentation and run context
 
-Available in SDK 2.0.1; both additions are opt-in and off by default.
+Available in SDK 2.0.2 (introduced in 2.0.1); both options remain opt-in and off by default.
 
 | Environment variable | YAML key | Default | Type / use |
 | --- | --- | --- | --- |
-| `RP_PRESENTATION` | `presentation` | `plain` | Exact `plain` or `rich`; rich decorates client-built RP log cards only |
+| `RP_PRESENTATION` | `presentation` | `plain` | Exact `plain` or `rich`; rich decorates client-built TRACE through WARN RP log cards only |
 | `RP_RUN_CONTEXT` | `run_context` | `false` | Strict Boolean; add allowlisted Launch metadata and a default description |
 
 An invalid `RP_PRESENTATION` value, including `fancy`, logs one constant warning
@@ -106,16 +106,21 @@ default:
   presentation: plain
   run_context: false
 profiles:
-  ledger:
+  readable:
     presentation: rich
     run_context: true
 ```
 
 Rich mode never changes native Cucumber messages/HTML, terminal summaries,
-arbitrary AppLog text, item names/descriptions, or Launch metadata. It preserves
-every ERROR log's first line and adds at most 1,024 bytes per message; a budget
-or first-line guard retains the plain card. A presentation exception instead
-restores the original pre-Ledger baseline with one nonreflective warning.
+arbitrary AppLog text, item names/descriptions, or Launch metadata. Rich never
+adds decoration to ERROR or FATAL: the entire message is byte-identical to plain,
+including failure cards, failed assertions, failure evidence, ERROR HTTP exchanges
+and error-level attachment captions. There are no added pills or backtrace folds
+at these levels. Existing video markup and caller text remain unmodified by the
+presentation option; it does not strip HTML already present in those messages.
+TRACE through WARN accents add at most 1,024 bytes per message; exceeding that
+budget retains the plain card. A presentation exception instead restores the
+original safe fallback text with one nonreflective warning.
 
 `RP_RUN_CONTEXT` has no effect when `RP_LAUNCH_UUID` is supplied, because the
 CI-owned Launch is created outside the SDK. The `workers` attribute appears
@@ -134,7 +139,10 @@ value from left to right:
 
 Values are trimmed, capped at 128 characters, and omitted when empty. Explicit
 attribute keys win; a non-empty explicit Launch description is retained.
-Otherwise a one-line Cucumber/Ruby/branch description is generated, including the worker count when supplied.
+Otherwise a one-line description contains available workers, `branch@sha` and
+build (for example, `4 workers · main@abc1234 · build 42`). Missing context is
+omitted; with none available, the generated description is empty. SDK, Cucumber
+and Ruby versions remain Launch attributes and are not repeated in the description.
 With the switch off, existing Launch metadata and legacy worker behavior are unchanged.
 No environment dump or implicit CI API lookup occurs. See
 [Presentation](advanced-reporting.md#presentation) for the card and channel contract.

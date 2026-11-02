@@ -24,13 +24,13 @@ RSpec.describe Automation::HttpExchange, "Ledger cards" do
     expect(result.to_markdown).to eq(<<~MARKDOWN.chomp)
       \u2713 POST /api/orders \u2192 201 \u00b7 84 ms
 
-      `https://api.example.test/api/orders`
+      _Response_ \u00b7 `application/json` \u00b7 51 B
 
-      _Request headers \u00b7 1_
-
-      ```text
-      Content-Type: application/json
+      ```json
+      { "orderId": "ORD-20261031-0042", "status": "ACCEPTED" }
       ```
+
+      `https://api.example.test/api/orders`
 
       _Request_ \u00b7 `application/json` \u00b7 55 B
 
@@ -38,16 +38,16 @@ RSpec.describe Automation::HttpExchange, "Ledger cards" do
       { "account": "JPM-PRIME", "side": "BUY", "notional": 5000000 }
       ```
 
+      _Request headers \u00b7 1_
+
+      ```text
+      Content-Type: application/json
+      ```
+
       _Response headers \u00b7 1_
 
       ```text
       content-type: application/json
-      ```
-
-      _Response_ \u00b7 `application/json` \u00b7 51 B
-
-      ```json
-      { "orderId": "ORD-20261031-0042", "status": "ACCEPTED" }
       ```
     MARKDOWN
     expect(result.summary).to eq("POST https://api.example.test/api/orders status=201 84ms")

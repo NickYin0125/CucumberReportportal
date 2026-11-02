@@ -1,32 +1,32 @@
 # Getting started
 
-**Version scope:** this guide installs the unpublished SDK **2.0.1** candidate
-from a matching maintainer-supplied or locally built archive, not an invented
-release URL. Use Ruby `>=3.3` and Cucumber `>=12.0.1, ~>12.0`; see the
+**Version scope:** this guide installs SDK **2.0.2** from the
+[GitHub release archive](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2)
+or a matching locally built archive. Use Ruby `>=3.3` and Cucumber `>=12.0.1, ~>12.0`; see the
 [migration guide](migrating-to-2.0.md) when moving from 1.x.
 
-Follow **install the candidate, run one local Scenario, integrate an existing
+Follow **install the Gem, run one local Scenario, integrate an existing
 project, add API/UI evidence, then run in CI**. Steps 1-2 need only Ruby, Bundler
 and the gems. Browser tooling, Node, ReportPortal and an SDK source checkout are
 not required to consume a supplied archive.
 
-## 1. Install the candidate
+## 1. Install the Gem
 
 From **a directory where you keep projects**, create a fresh consumer project.
-Set the archive path to the exact candidate supplied by your maintainer; verify
-its checksum and source provenance before installation. There is no assumed
-2.0.1 tag, release asset or RubyGems publication.
+Set the archive path to the downloaded Gem; verify its checksum and source
+provenance before installation. This release does not publish to RubyGems.org;
+install the local archive rather than assuming a registry download is available.
 
 ```sh
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.1.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.2.gem
 mkdir -p rp-smoke/vendor/cache rp-smoke/features/support rp-smoke/features/step_definitions
 cd rp-smoke
-cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.1.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.1.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.2.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.2.gem --no-document
 ```
 
-Expected: the candidate archive is in `rp-smoke/vendor/cache`, and RubyGems
-installs `reportportal-cucumber-ruby-2.0.1` plus missing dependencies.
+Expected: the verified archive is in `rp-smoke/vendor/cache`, and RubyGems
+installs `reportportal-cucumber-ruby-2.0.2` plus missing dependencies.
 
 Create **`rp-smoke/Gemfile`**:
 
@@ -34,7 +34,7 @@ Create **`rp-smoke/Gemfile`**:
 source "https://rubygems.org"
 
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.1"
+gem "reportportal-cucumber-ruby", "= 2.0.2"
 ```
 
 From **`rp-smoke/`**:
@@ -45,7 +45,7 @@ bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber:
 ```
 
 Expected: Bundler resolves supported Cucumber 12 and the installed or cached
-candidate; the version check prints `2.0.1`. Commit `Gemfile.lock` in your
+archive; the version check prints `2.0.2`. Commit `Gemfile.lock` in your
 real test project. Existing published archives remain unchanged.
 
 First-time installs need network access. `gem install --local` and
@@ -204,6 +204,8 @@ can infer its YAML profile from `-p`/`--profile`. See the
    test; Given/When/Then and Before/After Hooks do not add statistical tests.
 3. Open the Scenario's Log View and expand the relevant Step or Hook to see its
    logs/attachments. Include DEBUG/TRACE in the filter when looking for those levels.
+   Turn off **Hide all passed logs** to inspect failure evidence under a passed
+   After Hook; that filter hides it even when the Scenario failed or the log is ERROR.
 4. Refresh after batching/backend processing. Log visibility can lag behind test
    execution; the default flush interval is one second.
 5. Compare the report with native HTML/messages and the final reporting result.
@@ -217,6 +219,25 @@ a runnable browser example, install and copy the
 [current SDK example](../examples/current_sdk/README.md), which makes real loopback
 HTTP calls and drives Chromium. Browser dependencies are optional additions at
 this stage. The main SDK does not install or own browsers.
+
+For this example, **Node >=20** is required. The pinned
+`playwright-ruby-client` **1.62.0** declares
+`COMPATIBLE_PLAYWRIGHT_VERSION = '1.62.1'` in its
+[version source](https://github.com/YusukeIwaki/playwright-ruby-client/blob/1.62.0/lib/playwright/version.rb).
+The matching `playwright-core` **1.62.1**
+[package manifest](https://github.com/microsoft/playwright/blob/v1.62.1/packages/playwright-core/package.json)
+declares `engines.node: ">=20"`, matching the trial's installed
+`node_modules/playwright-core/package.json`. This is a browser-example prerequisite,
+not a dependency of the minimal Ruby-only Scenario above.
+
+The current example sends its failure screenshot through existing `rp_attach`
+as one RP caption-and-PNG entry owned by the open After Hook. Native HTML no
+longer includes that failure screenshot. The unique local screenshot file,
+original failure exception and native failure records are retained. **R02 remains
+unresolved (not fixed)**: the API and After ownership are unchanged, with no
+Scenario retargeting or hook-status change. **Hide all passed logs** hides this
+evidence if After passed; disable the filter to inspect it. See
+[capture choices](best-practices.md#choose-step-evidence-or-after-hook-evidence).
 
 ## 5. Configure CI
 
@@ -237,11 +258,10 @@ reporting layer.
 | Two formatters try to own STDOUT | Give every additional formatter its own `--out`; create parent directories before the run. |
 | ERROR log but a passing Scenario | Add an actual assertion or raise. `AppLog.http` and `AppLog.assertion` are diagnostics. |
 | Screenshot appears under After | That is the expected owner for After-hook capture. For Step ownership, capture/publish inside the still-open Step. |
+| After failure screenshot is missing in RP | Turn off **Hide all passed logs**: a passed After Hook's evidence is hidden even when its log is ERROR or its Scenario failed. R02 remains unresolved; do not retarget a closed Step or change the Hook's status. |
+| Current example has no failure screenshot in native HTML | Intentional RP-only tradeoff: inspect the unique local PNG or the single caption-and-PNG entry under After in RP; original native failure records are retained. |
 | Required reporting exits `2` | Inspect missing configuration or the incomplete reporting summary; a failing report is distinct from a failed business Scenario. |
-| Cucumber 11 / parameter message-builder failure | Keep Cucumber `>=9,<11` and the SDK's expressions `<19` constraint; run through the project's Bundler environment. |
-
-For SDK 2.x, use Cucumber `>=12.0.1, ~>12.0` instead and remove that legacy
-expressions pin. Do not force a Cucumber 9/10 dependency into the 2.x bundle.
+| Unsupported Cucumber / parameter message-builder failure | Use Cucumber `>=12.0.1, ~>12.0` through the project's Bundler environment and remove the legacy expressions `<19` pin. Cucumber 9/10 belongs to SDK 1.x, not this 2.x bundle; Cucumber 11 is unsupported. |
 
 For spool/replay, receipts, video, and history settings, continue to
 [advanced reporting](advanced-reporting.md).

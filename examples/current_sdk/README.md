@@ -1,17 +1,16 @@
 # Current SDK API/UI example
 
-A small independent Cucumber project targeting **`reportportal-cucumber-ruby` 2.0.1**
+A small independent Cucumber project targeting **`reportportal-cucumber-ruby` 2.0.2**
 and **Cucumber 12**.
 It makes real loopback HTTP requests and optionally drives real Chromium against
 a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-SDK 2.0.1 is in preparation, not published or approved by this guide. Use this
-example and an explicitly selected 2.0.1 candidate archive from the same source.
+Use this example and the verified SDK 2.0.2 archive from the same release.
 The shared SDK version definition keeps setup/runtime checks aligned. Older
 published archives and their dated verification evidence are retained unchanged;
-use the SDK 1.3.2 candidate on `maintenance/presentation-ledger-1.3.2` for
+use SDK 1.3.2 on `maintenance/1.x` (tag `v1.3.2`) for
 Cucumber 9/10.
 
 ## Install the consumer
@@ -20,9 +19,9 @@ Use Ruby `>=3.3`, Bundler `>=2.6`, and Cucumber `>=12.0.1,<13`. Node/npm and the
 Playwright CLI/browser are needed for UI, not for the API-only run. The sample pins
 Playwright Ruby to 1.62.0; setup derives its CLI version from the installed binding.
 
-Use the `codex/presentation-ledger-2.0.1` checkout for the sample files. Obtain a matching
-candidate archive from your maintainer, or build one with the maintainer workflow
-below. There is intentionally no 2.0.1 release-download URL before approval.
+Use the `v2.0.2` checkout for the sample files. Obtain the matching archive and
+checksums from the [GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2),
+or build a candidate with the maintainer workflow below.
 No root development bundle is required to consume a supplied archive.
 
 From **any working directory**, set the two absolute paths to your checkout and
@@ -31,7 +30,7 @@ gems or changing your Bundler configuration:
 
 ```sh
 sample_source=/absolute/path/to/CucumberReportportal
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.1.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.2.gem
 sample_work=$(mktemp -d "${TMPDIR:-/tmp}/current-sdk-consumer.XXXXXX")
 cp -R "$sample_source/examples/current_sdk" "$sample_work/project"
 cd "$sample_work/project"
@@ -46,12 +45,35 @@ ruby bin/setup "$SDK_GEM_ARCHIVE"
 ```
 
 Expected: isolated normal gem installation, version-pinned Bundler resolution, matching
-Node Playwright CLI installation, and Chromium installation. Use a supported Node
-runtime (the previous lab used Node 20+). Review the
+Node Playwright CLI installation, and Chromium installation. UI setup requires
+**Node >=20** for the pinned `playwright-core` 1.62.1 CLI, paired with
+`playwright-ruby-client` 1.62.0. Review the
 [Ruby Playwright setup guide](https://playwright-ruby-client.vercel.app/docs/article/getting_started)
 if your OS needs browser packages. `bin/setup` can require network access for all
 three dependency layers. Existing tools can be reused with `SKIP_BROWSER_SETUP=true`,
 an absolute `PLAYWRIGHT_CLI_EXECUTABLE_PATH`, and `PLAYWRIGHT_BROWSERS_PATH`.
+Before reusing a CLI, check the Node version and compare these two CLI versions:
+
+```sh
+node --version
+bundle exec ruby -rplaywright/version -e 'puts "Required CLI: #{Playwright::COMPATIBLE_PLAYWRIGHT_VERSION}"'
+"$PLAYWRIGHT_CLI_EXECUTABLE_PATH" --version
+```
+
+The required and installed CLI versions must match exactly (1.62.1 for this
+example); a different working Playwright installation is not automatically
+compatible. Its matching Chromium must also exist in `PLAYWRIGHT_BROWSERS_PATH`.
+If they differ, use a supported Node version, clear the old CLI override, and
+install the pinned CLI/browser rather than silently reusing the mismatch:
+
+```sh
+unset SKIP_BROWSER_SETUP PLAYWRIGHT_CLI_EXECUTABLE_PATH
+ruby bin/setup "$SDK_GEM_ARCHIVE"
+```
+
+The npm install explicitly uses `--prefix` with the consumer's working directory,
+so it cannot select a parent project's `package.json`. No `package.json` is needed
+or shipped by this example.
 
 **Copy outside the checkout before execution.** Scripts reject running under the
 SDK source example directory; generated reports/node_modules there could otherwise
@@ -93,15 +115,20 @@ bundle exec ruby bin/verify
 
 The runner preserves the native Cucumber exit. `intentional` is not an all-pass
 suite. Only the verifier recognizes its precise failed-Step count, original
-Playwright TimeoutError, and valid After-hook screenshot as the expected negative
-case. It rejects other failures/skipped/undefined/pending steps, forces RP off,
-and checks native HTML/messages ownership, compact/color console output, and
-spool retention. These are executable expectations, not a claim they ran on your
-machine or against your RP service.
+Playwright TimeoutError, unchanged passed After hook, and valid local screenshot
+as the expected negative case. It rejects other failures/skipped/undefined/pending steps, forces RP off,
+and checks exact evidence counts/owners, native HTML/messages agreement,
+compact/color console output, and spool retention. It also runs the example's
+self-tests, including one captioned PNG at the RP queue boundary with After
+ownership, without connecting to RP. These are executable expectations, not a
+claim they ran on your machine or against your RP service.
 
 Each run prints its unique `artifacts/<profile>/<run>/` path. Open `cucumber.html`
 and expand the API action to see request/response Markdown/JSON. For `intentional`,
-inspect the original failed Step and **After Hook** PNG plus `failure-routing.json`.
+inspect the original failed Step in native HTML and the local PNG in the report
+directory. Failure PNG names contain the scenario slug, failed checkpoint and a
+random suffix, for example `save-a-practice-word-practice-status-a1b2c3d4.png`.
+Native HTML/messages deliberately do **not** contain the failure screenshot.
 `progress.txt`, `summary.txt`, and `messages.ndjson` are retained. The RP
 formatter's distinct `reportportal.txt` destination may be absent; it is not an
 RP log stream or receipt. `NO_COLOR=1` disables sample console colors.
@@ -117,10 +144,12 @@ bundle exec ruby bin/check_fixture
 bundle exec ruby bin/check_config
 bundle exec ruby bin/check_rerun
 bundle exec ruby bin/runtime
+bundle exec ruby test/self_test.rb
 ```
 
 Expected: fixture HTTP/size contracts, credential-free endpoint policy, safe
-rerun/spool preservation, and installed runtime/version/SHA manifest respectively.
+rerun/spool preservation, installed runtime/version/SHA manifest, and example
+self-tests respectively.
 `check_rerun` preserves its synthetic spool sentinel. `bin/runtime` can compare
 the complete installed `lib/**/*.rb` file inventory against `SDK_SOURCE_ROOT`
 when you explicitly set it; do not use that check to equate the published release
@@ -140,7 +169,7 @@ Expected: the **Current SDK examples** Launch (or your `RP_LAUNCH` override)
 contains the 4 API Scenarios and their action-owned evidence. Full `offline`
 contributes 5 passed Scenarios across two Feature suites. Refresh after batching,
 include DEBUG to find deep helper logs, and inspect the expected 400 at INFO.
-The optional diagnostic comparison can be ERROR while its separately asserted
+The optional diagnostic-only observation is INFO and explicitly non-fatal; its
 expected-rejection Scenario remains PASSED.
 
 For an explicitly selected loopback development RP endpoint, **from the same
@@ -159,9 +188,20 @@ consumers. Use HTTPS for real networks. `RP_ALLOW_LOCAL_HTTP` is sample-specific
 
 Run `intentional` separately with RP enabled when checking browser-failure
 ownership: it deliberately exits `1`, and its screenshot belongs to After, not
-the completed failing Step. The PNG follows AppLog's native event route; the
-structured `rp_evidence` diagnostic targets the open Hook without attaching
-the same PNG twice. A rejected target never silently retargets to another action.
+the completed failing Step. One direct `rp_attach` call emits an ERROR entry
+containing the scenario/failed-check caption and PNG. The last **passed** browser
+action appears in its details, not its title. The terminal summary uses
+`AppLog.error(report: false)` and creates no extra RP/native record. There is no
+`rp_evidence` call, native failure attachment, or `failure-routing.json` entry.
+This RP-only screenshot route is intentional: native HTML/messages retain the
+original exception and backtrace but no failure PNG. With RP disabled or absent,
+the PNG remains a local file and no RP evidence is emitted.
+
+**R02 is not fixed.** Evidence remains owned by the current open After hook,
+whose status stays PASSED. RP's **Hide all passed logs** hides this After-hook
+evidence even though the screenshot entry is ERROR. Turn that filter off to see
+it. The example does not retarget the Scenario or closed failed Step, extend the
+capture API, or change hook status.
 See [best practices](../../docs/best-practices.md) and the
 [CI reporting policy](../../docs/ci.md#choose-the-reporting-policy).
 
@@ -248,12 +288,12 @@ bundle exec ruby bin/verify
 Expected: setup accepts a candidate with the shared consumer version, and runtime
 verification loads that normally installed gem from the isolated GEM_HOME and
 checks its source hashes. This proves the candidate packaging lane when it passes;
-it does not publish 2.0.1, replace legacy releases, or prove real RP/video ingestion.
+it does not publish 2.0.2, replace legacy releases, or prove real RP/video ingestion.
 
 To verify the minimum target runtime, use a fresh external copy/lockfile and set
 `CUCUMBER_VERSION='= 12.0.1'` on both setup and verification commands. The default
 `~> 12.0` can resolve later compatible 12.x releases. Cucumber 9, 10, 11, 12.0.0,
-and 13 are intentionally incompatible with SDK 2.0.1; use the legacy maintenance
+and 13 are intentionally incompatible with SDK 2.0.2; use the legacy maintenance
 checkout for its independent 9/10 lanes. Do not reuse a lockfile across lanes.
 The sample supports a
 `Gemfile.source` for source debugging only; if selected through `BUNDLE_GEMFILE`,
@@ -261,4 +301,4 @@ set `SDK_SOURCE_ROOT` to a gemspec-containing checkout. It is not packaging proo
 
 The [archived 2026-10-12 verification](verification.md) records earlier candidate
 runs, toolchain details, HTML backtrace normalization, and limitations. Its older
-candidate version/results must not be relabeled as fresh 2.0.1 acceptance.
+candidate version/results must not be relabeled as fresh 2.0.2 acceptance.

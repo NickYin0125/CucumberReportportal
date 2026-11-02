@@ -90,6 +90,53 @@ RSpec.describe ReportportalCucumber::Service::EvidencePresenter do
     expect(expected).to eq(currency: "USD", notional: 5_000_000)
   end
 
+  %w[plain rich].each do |mode|
+    it "shows sorted top-level missing, extra and scalar-changed keys before the #{mode} comparison" do
+      expected = { z: 1, difficulty: "easy", a: 2, length: 4, nested: { value: 1 } }.freeze
+      actual = { length: 5, nested: { value: 2 }, zz: true, aa: false }.freeze
+      result = assertion(expected: expected, actual: actual, presentation: mode)[:markdown]
+      delta = 'missing in actual: `a`, `difficulty`, `z` · extra in actual: `aa`, `zz` · changed: `length`'
+      expect(result.lines[2].chomp).to eq(delta)
+      expect(result.index(delta)).to be < result.index("```text")
+      expect(fenced_blocks(result).first.last).to include('"nested": { "value": 1 }', '"nested": { "value": 2 }')
+      expect(expected[:nested]).to eq(value: 1)
+    end
+
+    it "accepts JSON object strings but does not add a general nested diff in #{mode}" do
+      result = assertion(expected: '{"difficulty":"easy","length":4}', actual: '{"length":5}', presentation: mode)[:markdown]
+      expect(result).to include('missing in actual: `difficulty` · changed: `length`')
+      [{ a: { x: 1 } }, { a: [1, { x: 1 }] }].each do |expected|
+        actual = expected[:a].is_a?(Array) ? { a: [2] } : { a: { y: 2 } }
+        output = assertion(expected: expected, actual: actual, presentation: mode)[:markdown]
+        expect(output).not_to include("missing in actual:", "extra in actual:", "changed:")
+      end
+    end
+  end
+
+  it "reports top-level type changes without altering the original comparison" do
+    output = assertion(expected: { a: {}, b: [1] }, actual: { a: [], b: nil })[:markdown]
+    expect(output).to include('changed: `a`, `b`')
+  end
+
+  it "also explains different objects in a caller-declared passing observation without changing its outcome" do
+    result = assertion(expected: { a: 1 }, actual: { a: 2 }, passed: true)
+    expect(result[:markdown]).to include('changed: `a`')
+    expect(result[:summary]).to eq("PASS: Limits")
+  end
+
+  it "omits the key delta for scalars, arrays, invalid JSON and equal objects" do
+    [[1, 2], [[], []], ["{bad", {}], [{}, {}], [{ a: 1 }, { a: 1 }]].each do |expected, actual|
+      output = assertion(expected: expected, actual: actual)[:markdown]
+      expect(output).not_to include("missing in actual:", "extra in actual:", "changed:")
+    end
+  end
+
+  it "compares only redacted values and keeps hostile keys literal in the delta" do
+    output = assertion(expected: { password: "FIRST_SECRET", "<script>*" => 1 }, actual: { password: "SECOND_SECRET" })[:markdown]
+    expect(output).to include('missing in actual: `<script>*`')
+    expect(output).not_to include("FIRST_SECRET", "SECOND_SECRET", "changed:")
+  end
+
   [1.0, -0.0, 1.2345678901234567, 1.0e30, 9_007_199_254_740_993, true, false, nil].each do |value|
     it "preserves the JSON scalar spelling for #{value.inspect}" do
       comparison = fenced_blocks(assertion(expected: value, actual: value)[:markdown]).first.last
@@ -97,10 +144,34 @@ RSpec.describe ReportportalCucumber::Service::EvidencePresenter do
     end
   end
 
-  it "does not coerce numeric-looking strings, blanks, or surrounding spaces" do
-    ["001.2300", "+7", "98.10%", "1e3", "", " 42 "].each do |value|
+  it "does not coerce numeric-looking strings" do
+    ["001.2300", "+7", "98.10%", "1e3"].each do |value|
       expect(fenced_blocks(assertion(expected: value, actual: value)[:markdown]).first.last)
         .to eq("expected  #{value}\nactual    #{value}")
+    end
+  end
+
+  {
+    "" => '"" (empty string)',
+    " " => '" " (1 space)',
+    "   " => '"   " (3 spaces)',
+    " a " => '" a " (leading/trailing whitespace)',
+    " a" => '" a" (leading/trailing whitespace)',
+    "a " => '"a " (leading/trailing whitespace)',
+    "\t\n" => '"\t\n" (whitespace only)',
+    "a\n" => '"a\n" (leading/trailing whitespace)',
+    "\u00a0a" => "\"\u00a0a\" (leading/trailing whitespace)"
+  }.each do |value, display|
+    %w[plain rich].each do |mode|
+      it "labels both assertion values for #{value.inspect} in #{mode} without changing input or native baseline" do
+        original = value.dup.freeze
+        args = { name: "Whitespace", expected: original, actual: original, passed: false, presentation: mode }
+        result = described_class.assertion(**args, alternate: true)
+        expect(fenced_blocks(result[:markdown]).first.last).to eq("expected  #{display}\nactual    #{display}")
+        baseline = described_class.send(:assertion_markdown, "FAIL", "Whitespace", original, original, nil, presentation: false)
+        expect(result[:native_markdown]).to eq(baseline)
+        expect(original).to eq(value)
+      end
     end
   end
 

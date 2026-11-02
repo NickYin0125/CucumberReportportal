@@ -93,7 +93,7 @@ even when they were uploaded.
 
 ### Preview terminal and report routing
 
-AppLog 1.3.1 prints local date/time, milliseconds and aligned levels, without a
+AppLog prints local date/time, milliseconds and aligned levels, without a
 source prefix. TTY colors remain automatic; `NO_COLOR=1` disables auto-color.
 
 ```text
@@ -126,6 +126,18 @@ Instrument the client at the request boundary. Record the actual method, URL,
 status, relevant headers/body, and elapsed time; return the response unchanged so
 Steps can assert the business contract. `AppLog.http` performs **no HTTP request**
 and **no assertion**.
+
+The `AppLog.http` preview has a shared **16 KiB / 100 lines** budget across
+request and response bodies and headers, not a separate allowance per section.
+Redaction runs before preview clipping; clipped content is marked
+`[preview truncated]`. The RP card spends that budget response-first: title,
+response subtitle/body, URL, request subtitle/body, request headers, then response
+headers. Headers show one `name: value` line per value (including repeated names
+for multi-value headers); content-type subtitles show media type strings, not
+arrays. Values and credential redaction are preserved within the existing bounds;
+the compact terminal summary and native Cucumber body format are unchanged.
+Full HTTP bodies are not attached automatically. If a full body is required,
+save a redacted file and attach it explicitly.
 
 Put this small GET client in **`lib/clients/observed_http.rb`**. It uses Ruby's
 standard library and is suitable for a synthetic test endpoint; adapt headers
@@ -229,6 +241,9 @@ The logger works with any UI driver. The snippets here use the same Playwright
 Ruby API as the current example. Your project must install
 `playwright-ruby-client`, its compatible Node CLI/browser, and create `@page`.
 The SDK adds no Playwright dependency and does not capture anything automatically.
+The example pins Ruby client **1.62.0**, compatible with `playwright-core`
+**1.62.1**, requiring **Node >=20**; see the
+[versioned prerequisites](getting-started.md#4-add-apiui-evidence).
 
 Keep locators and actions in page objects. For example, in
 **`lib/pages/trade_page.rb`**:
@@ -261,6 +276,12 @@ not add retry/wait behavior to browser actions.
 Use one default capture policy. Installing both examples below without a guard
 can produce duplicate screenshots. An After hook cannot use a target saved from
 the failed Step after that Step has closed.
+
+**R02 remains unresolved (not fixed).** During After, `rp_capture_target` refers
+to the open After Hook, not the Scenario. The API, ownership and hook status stay
+unchanged. RP's **Hide all passed logs** hides this evidence when After passed,
+even if the Scenario failed and its evidence log is ERROR. Disable the filter to
+inspect After; never fail the Hook or attach to a closed Step as a workaround.
 
 For **Step-owned evidence**, put this module in
 **`features/support/ui_evidence.rb`**. It assumes your framework has a live
@@ -306,9 +327,10 @@ The PNG follows AppLog's native-report route and is forwarded once to RP. The
 With `RP_ENABLED=false`, native evidence still works and `rp_evidence` returns
 false. A capture failure remains secondary and the original action still fails.
 
-For **After-hook evidence instead**, add to **`features/support/hooks.rb`** with
-`fileutils`/`securerandom` loaded. Your browser lifecycle must keep `@page` open
-through After and close it in the enclosing Around ensure:
+For **one RP-only After-hook screenshot entry instead**, add to
+**`features/support/hooks.rb`** with `fileutils`/`securerandom` loaded. Your browser
+lifecycle must keep `@page` open through After and close it in the enclosing Around
+ensure. This route deliberately does not attach the screenshot to native HTML:
 
 ```ruby
 After do |scenario|
@@ -319,20 +341,29 @@ After do |scenario|
     FileUtils.mkdir_p(directory)
     path = File.join(directory, "failure-#{SecureRandom.hex(6)}.png")
     @page.screenshot(path: path, fullPage: true, timeout: 5000)
-    AppLog.error("Failed Scenario screenshot", report: true, file: path)
-    rp_evidence(action: scenario.name, error: scenario.exception,
-                url: @page.url, target: rp_capture_target)
+    caption = Automation::EvidenceRedactor.new.redact_text("Failed Scenario: #{scenario.name}")
+    rp_attach(path, name: File.basename(path), mime: "image/png",
+              message: caption, level: :error)
   rescue StandardError => evidence_error
     warn("After-hook evidence unavailable: #{evidence_error.class}")
   end
 end
 ```
 
-This target belongs to **After**, and its screenshot belongs there too. The
+This entry belongs to **After**, and its screenshot belongs there too. The
 [current SDK support setup](../examples/current_sdk/features/support/env.rb) and
 [World helpers](../examples/current_sdk/helpers/world.rb) show the complete
-Around/After/cleanup lifecycle in a runnable consumer. Each Scenario creates its
-own BrowserContext. Teardown closes page/context/browser even on failure; cleanup
+Around/After/cleanup lifecycle in a runnable consumer. The example uses existing
+`rp_attach` for one RP caption-and-PNG entry, named for the Scenario and failed
+check, with the last passed browser action in its details. Its local PNG filename
+contains a Scenario slug, checkpoint and short unique suffix. Native HTML no
+longer includes that failure screenshot; the original failure exception and native
+failure records remain unchanged, and the unique local screenshot is retained
+even with RP disabled. This is an explicit example tradeoff, not a change to
+AppLog's native attachment capability. If native screenshots are required, choose
+the AppLog/native route instead of adding it as a duplicate RP submission.
+Each Scenario creates its own BrowserContext. Teardown closes page/context/browser
+even on failure; cleanup
 errors are surfaced on otherwise successful runs while an original test failure
 keeps precedence. Avoid converting a failed locator into a newly raised generic
 `RuntimeError`, suppressing it, or making a screenshot failure replace it.

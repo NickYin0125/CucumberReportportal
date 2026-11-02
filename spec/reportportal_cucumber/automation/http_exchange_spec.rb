@@ -208,7 +208,7 @@ RSpec.describe Automation::HttpExchange do
       end
 
       expect(markdown).to include("Request", "Response")
-      expect(json_bodies).to eq([{ "order" => { "id" => 42 } }, { "accepted" => true }])
+      expect(json_bodies).to eq([{ "accepted" => true }, { "order" => { "id" => 42 } }])
     end
 
     it "treats expected client errors as informational and unexpected server errors as errors" do
@@ -270,7 +270,7 @@ RSpec.describe Automation::HttpExchange do
         expect(block[:fence].length).to be > longest_run
       end
       expect(blocks.map { |block| block[:content] }).to eq([
-        "X-Untrusted: #{header}", request_body, response_body
+        response_body, request_body, "X-Untrusted: #{header}"
       ])
       expect(prose).to include("Request", "Response", "19 ms")
       expect(prose).not_to include("<script>", "<img")
@@ -284,7 +284,7 @@ RSpec.describe Automation::HttpExchange do
 
       expect(markdown.encoding).to eq(Encoding::UTF_8)
       expect(markdown.valid_encoding?).to be(true)
-      expect(blocks.last[:content]).to include("diagnostic", "end")
+      expect(blocks.first[:content]).to include("diagnostic", "end")
       expect(markdown).not_to include("binary-secret")
       expect(body.bytes).to eq(original_bytes)
       expect(body.encoding).to eq(Encoding::BINARY)
@@ -334,7 +334,7 @@ RSpec.describe Automation::HttpExchange do
 
     markdown = build_exchange(response: { status: 200, headers: {}, body: body }).to_markdown
     blocks, = split_markdown_fenced_blocks(markdown)
-    preview = blocks.last[:content]
+    preview = blocks.first[:content]
 
     expect(preview.bytesize).to be <= max_bytes + described_class::TRUNCATION_MARKER.bytesize + 8
     expect(preview.lines.count).to be <= max_lines + 1
@@ -405,9 +405,9 @@ RSpec.describe Automation::HttpExchange do
     body = "\u{1F642}" * max_bytes
     markdown = build_exchange(response: { status: 200, headers: {}, body: body }).to_markdown
     blocks, = split_markdown_fenced_blocks(markdown)
-    preview = blocks.last[:content]
+    preview = blocks.first[:content]
 
-    expect(preview.bytesize).to be <= max_bytes + 8
+    expect(preview.bytesize).to be <= max_bytes + described_class::TRUNCATION_MARKER.bytesize + 1
     expect(preview.valid_encoding?).to be(true)
     expect(preview).to include(described_class::TRUNCATION_MARKER)
   end
@@ -418,7 +418,7 @@ RSpec.describe Automation::HttpExchange do
 
     markdown = build_exchange(response: { status: 200, headers: {}, body: body }).to_markdown
     blocks, = split_markdown_fenced_blocks(markdown)
-    response_body = blocks.last
+    response_body = blocks.first
 
     expect(markdown.bytesize).to be <= (max_bytes * 2) + 2_048
     expect(response_body[:content]).to include(described_class::TRUNCATION_MARKER)

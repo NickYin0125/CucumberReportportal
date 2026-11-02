@@ -76,7 +76,7 @@ RSpec.describe "Opt-in Launch run context" do
     expect(calls.first.last.fetch("attributes")).to eq(attributes)
     expect(calls.last.last.fetch("attributes")).to eq(attributes)
     expect(calls.first.last.fetch("description"))
-      .to eq("Cucumber #{Gem.loaded_specs.fetch('cucumber').version} · Ruby #{RUBY_VERSION} · 4 workers · feature/ledger@e7dae2b")
+      .to eq("4 workers · feature/ledger@e7dae2b · build 42")
   end
 
   it "preserves explicit attributes and descriptions with no duplicate generated keys" do
