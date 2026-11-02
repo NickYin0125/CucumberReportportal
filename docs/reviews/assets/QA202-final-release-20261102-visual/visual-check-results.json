@@ -1,0 +1,622 @@
+{
+  "candidate": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "generatedAt": "2026-11-02T14:52:16.938Z",
+  "literalChecks": [
+    {
+      "capture": "P16-script-literal",
+      "launchId": 4045,
+      "itemIds": [
+        33061
+      ],
+      "logId": 22278,
+      "literal": "x<script>alert(1)</script>",
+      "exactHeading": true,
+      "scopedHTML": "<h2 id=\"✗-runtimeerror-xscriptalert1script\">✗ RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;</h2>\n<p><code>F14-negative.feature:24</code> → <code>support.rb:232</code></p>\n<pre><code class=\"language-text\">support.rb:232           block in &lt;top (required)&gt;\nF14-negative.feature:24  ledger escaping failure 10</code></pre>\n<p><em>Full backtrace · 60 frames · 56 framework and 2 runner frames not shown above</em></p>\n<pre><code class=\"language-text\">/Users/nick/Documents/crr-qa-2.0.2/script/acceptance/presentation_ledger_developer/support.rb:232:in 'block in &lt;top (required)&gt;'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '&lt;top (required)&gt;'\n-e:8:in 'Kernel#load'\n-e:8:in '&lt;main&gt;'\nfeatures/F14-negative.feature:24:in `ledger escaping failure 10'</code></pre>",
+      "scriptCount": 0,
+      "boldElementCount": 0
+    },
+    {
+      "capture": "P16-bold-literal",
+      "launchId": 4045,
+      "itemIds": [
+        33043
+      ],
+      "logId": 22269,
+      "literal": "<b>x</b>",
+      "exactHeading": true,
+      "scopedHTML": "<h2 id=\"✗-runtimeerror-bxb\">✗ RuntimeError: &lt;b&gt;x&lt;/b&gt;</h2>\n<p><code>F14-negative.feature:6</code> → <code>support.rb:232</code></p>\n<pre><code class=\"language-text\">support.rb:232          block in &lt;top (required)&gt;\nF14-negative.feature:6  ledger escaping failure 1</code></pre>\n<p><em>Full backtrace · 60 frames · 56 framework and 2 runner frames not shown above</em></p>\n<pre><code class=\"language-text\">/Users/nick/Documents/crr-qa-2.0.2/script/acceptance/presentation_ledger_developer/support.rb:232:in 'block in &lt;top (required)&gt;'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'BasicObject#instance_exec'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:40:in 'block in Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:53:in 'Cucumber::Glue::InvokeInWorld.cucumber_run_with_backtrace_filtering'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/invoke_in_world.rb:30:in 'Cucumber::Glue::InvokeInWorld.cucumber_instance_exec_in'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/glue/step_definition.rb:135:in 'Cucumber::Glue::StepDefinition#invoke'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:34:in 'Cucumber::StepMatch#invoke'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/step_match.rb:27:in 'block in Cucumber::StepMatch#activate'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/action/defined.rb:24:in 'Cucumber::Core::Test::Action::Defined#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:35:in 'Cucumber::Core::Test::Step#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:50:in 'Cucumber::Core::Test::Runner#test_step'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/step.rb:31:in 'Cucumber::Core::Test::Step#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:34:in 'block (3 levels) in Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'Array#each'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:33:in 'block (2 levels) in Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:23:in 'block in Cucumber::Filters::PrepareWorld::CaseFilter#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:18:in 'Cucumber::Core::Test::AroundHook#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:215:in 'Cucumber::Core::Test::Runner::RunningTestCase::Status::Base#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:150:in 'Cucumber::Core::Test::Runner::RunningTestCase#execute'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:59:in 'Cucumber::Core::Test::Runner#around_hook'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/around_hook.rb:13:in 'Cucumber::Core::Test::AroundHook#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:94:in 'block (2 levels) in Cucumber::Core::Test::Case#compose_around_hooks'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:95:in 'Cucumber::Core::Test::Case#compose_around_hooks'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:32:in 'block in Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/runner.rb:37:in 'Cucumber::Core::Test::Runner#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/prepare_world.rb:11:in 'Cucumber::Filters::PrepareWorld#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:56:in 'test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/retry.rb:18:in 'Cucumber::Filters::Retry#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in 'Cucumber::Filters::BroadcastTestCaseReadyEvent#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/quit.rb:11:in 'Cucumber::Filters::Quit#test_case'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/case.rb:31:in 'Cucumber::Core::Test::Case#describe_to'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:22:in 'block in Cucumber::Filters::FireBeforeAllHooks#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Array#map'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/fire_before_all_hooks.rb:21:in 'Cucumber::Filters::FireBeforeAllHooks#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/filters/broadcast_test_run_started_event.rb:23:in 'Cucumber::Filters::BroadcastTestRunStartedEvent#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in 'Cucumber::Core::Test::LocationsFilter#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/filter.rb:61:in 'done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in 'Cucumber::Core::Test::TagFilter#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/compiler.rb:33:in 'Cucumber::Core::Compiler#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core/gherkin/parser.rb:36:in 'Cucumber::Core::Gherkin::Parser#done'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:36:in 'Cucumber::Core#parse'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-core-20.1.0/lib/cucumber/core.rb:25:in 'Cucumber::Core#compile'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/runtime.rb:57:in 'Cucumber::Runtime#run!'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/lib/cucumber/cli/main.rb:30:in 'Cucumber::Cli::Main#execute!'\n/opt/homebrew/lib/ruby/gems/3.4.0/gems/cucumber-12.0.1/bin/cucumber:9:in '&lt;top (required)&gt;'\n-e:8:in 'Kernel#load'\n-e:8:in '&lt;main&gt;'\nfeatures/F14-negative.feature:6:in `ledger escaping failure 1'</code></pre>",
+      "scriptCount": 0,
+      "boldElementCount": 0
+    }
+  ],
+  "foldChecks": [
+    {
+      "capture": "S18-340-lines-open",
+      "launchId": 4047,
+      "logId": 22312,
+      "summary": "Preview · 100 lines",
+      "rawSummary": "Preview · 100 lines",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S18-json-open",
+      "launchId": 4047,
+      "logId": 22313,
+      "summary": "Preview · 25 lines",
+      "rawSummary": "Preview · 25 lines",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S18-docstring-open",
+      "launchId": 4047,
+      "logId": 22320,
+      "summary": "Doc string · JSON · 25 lines",
+      "rawSummary": "Doc string · JSON · 25 lines",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-info-headers-open",
+      "launchId": 4054,
+      "logId": 22331,
+      "summary": "Request headers · 4",
+      "rawSummary": "Request headers · 4",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-info-headers-open",
+      "launchId": 4054,
+      "logId": 22331,
+      "summary": "Response headers · 1",
+      "rawSummary": "Response headers · 1",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22353,
+      "summary": "Request headers · 2",
+      "rawSummary": "Request headers · 2",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22353,
+      "summary": "Response headers · 3",
+      "rawSummary": "Response headers · 3",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22354,
+      "summary": "Request headers · 2",
+      "rawSummary": "Request headers · 2",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22354,
+      "summary": "Response headers · 3",
+      "rawSummary": "Response headers · 3",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22355,
+      "summary": "Request headers · 2",
+      "rawSummary": "Request headers · 2",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22355,
+      "summary": "Response headers · 3",
+      "rawSummary": "Response headers · 3",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22356,
+      "summary": "Response body · 99 lines",
+      "rawSummary": "Response body · 99 lines",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22356,
+      "summary": "Response headers · 1",
+      "rawSummary": "Response headers · 1",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22357,
+      "summary": "Response body · 100 lines",
+      "rawSummary": "Response body · 100 lines",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22357,
+      "summary": "Response headers · 1",
+      "rawSummary": "Response headers · 1",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22358,
+      "summary": "Response body · 101 lines",
+      "rawSummary": "Response body · 101 lines",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-all-folds-open",
+      "launchId": 4064,
+      "logId": 22358,
+      "summary": "Response headers · 1",
+      "rawSummary": "Response headers · 1",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-40-lines-open",
+      "launchId": 4050,
+      "logId": 22327,
+      "summary": "Response body · 40 lines",
+      "rawSummary": "Response body · 40 lines",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    },
+    {
+      "capture": "S09-http-40-lines-open",
+      "launchId": 4050,
+      "logId": 22327,
+      "summary": "Response headers · 1",
+      "rawSummary": "Response headers · 1",
+      "rawBlankLines": true,
+      "open": true,
+      "directPreCodeCount": 1,
+      "exactCodeText": true,
+      "parent": "PRE",
+      "grandparent": "DETAILS"
+    }
+  ],
+  "contrast": [
+    {
+      "tone": "PASS",
+      "capture": "S09-passed-assertion",
+      "launchId": 4059,
+      "itemId": 33158,
+      "logId": 22336,
+      "logLevel": "info",
+      "foreground": "rgb(39, 110, 80)",
+      "background": "rgb(230, 245, 238)",
+      "allAncestorOpacityOne": true,
+      "ratio": 5.436358015569269,
+      "minimum": 4.5
+    },
+    {
+      "tone": "FAIL",
+      "capture": "S09-http-tones-closed",
+      "launchId": 4064,
+      "itemId": 33177,
+      "logId": 22355,
+      "logLevel": "warn",
+      "foreground": "rgb(178, 59, 59)",
+      "background": "rgb(251, 234, 234)",
+      "allAncestorOpacityOne": true,
+      "ratio": 5.041991492652568,
+      "minimum": 4.5
+    },
+    {
+      "tone": "WARN",
+      "capture": "S09-http-tones-closed",
+      "launchId": 4064,
+      "itemId": 33177,
+      "logId": 22354,
+      "logLevel": "warn",
+      "foreground": "rgb(138, 90, 0)",
+      "background": "rgb(255, 243, 214)",
+      "allAncestorOpacityOne": true,
+      "ratio": 5.374709945701803,
+      "minimum": 4.5
+    },
+    {
+      "tone": "INFO",
+      "capture": "S06-rich-media",
+      "launchId": 4061,
+      "itemId": 33166,
+      "logId": 22339,
+      "logLevel": "info",
+      "foreground": "rgb(15, 108, 122)",
+      "background": "rgb(227, 244, 247)",
+      "allAncestorOpacityOne": true,
+      "ratio": 5.382347609734271,
+      "minimum": 4.5
+    }
+  ],
+  "errorPlainPairs": [
+    {
+      "richLogId": 22268,
+      "plainLogId": 22172,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "bc4fdfdb3b40a1c8654def226ea26da393db7b69a7a8e6bad7d9ed540bdbeab1",
+      "plainMessageSHA256": "bc4fdfdb3b40a1c8654def226ea26da393db7b69a7a8e6bad7d9ed540bdbeab1",
+      "equal": true
+    },
+    {
+      "richLogId": 22269,
+      "plainLogId": 22173,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "e865f078471d5e592dd9fa6456c8c5175a1dfc2344ca1c72d378febfb21d5d37",
+      "plainMessageSHA256": "e865f078471d5e592dd9fa6456c8c5175a1dfc2344ca1c72d378febfb21d5d37",
+      "equal": true
+    },
+    {
+      "richLogId": 22270,
+      "plainLogId": 22174,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "182ec7d833506b4701b05deda1d7fca475ff057adf0c295f1f2377114f7c98e8",
+      "plainMessageSHA256": "182ec7d833506b4701b05deda1d7fca475ff057adf0c295f1f2377114f7c98e8",
+      "equal": true
+    },
+    {
+      "richLogId": 22271,
+      "plainLogId": 22175,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "4fed273595d9d87e45a4892e61d9cd2585b0aa75dded25262deff44808bf0233",
+      "plainMessageSHA256": "4fed273595d9d87e45a4892e61d9cd2585b0aa75dded25262deff44808bf0233",
+      "equal": true
+    },
+    {
+      "richLogId": 22272,
+      "plainLogId": 22176,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "d638414901235cb0820235410c7f3c1aab5c5b9e01af1789253b6cacb1bee847",
+      "plainMessageSHA256": "d638414901235cb0820235410c7f3c1aab5c5b9e01af1789253b6cacb1bee847",
+      "equal": true
+    },
+    {
+      "richLogId": 22273,
+      "plainLogId": 22177,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "fb87ea15c7dcea9c220a10e1aaa57cecbcd6cdc2a5c60ed17d4296c56cd9e1ad",
+      "plainMessageSHA256": "fb87ea15c7dcea9c220a10e1aaa57cecbcd6cdc2a5c60ed17d4296c56cd9e1ad",
+      "equal": true
+    },
+    {
+      "richLogId": 22274,
+      "plainLogId": 22178,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "627158a90685a3523a51020066394d7615050f690b5aaff47d1d63328598c16f",
+      "plainMessageSHA256": "627158a90685a3523a51020066394d7615050f690b5aaff47d1d63328598c16f",
+      "equal": true
+    },
+    {
+      "richLogId": 22275,
+      "plainLogId": 22179,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "06cd726a4426e83cb21c839030bef4ad77a8f8c38142b3e864825bba4cf13151",
+      "plainMessageSHA256": "06cd726a4426e83cb21c839030bef4ad77a8f8c38142b3e864825bba4cf13151",
+      "equal": true
+    },
+    {
+      "richLogId": 22276,
+      "plainLogId": 22180,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "e04867140c037cf5aefee057a12879f9be47c600c0b2ca608db89c3929ab8ff2",
+      "plainMessageSHA256": "e04867140c037cf5aefee057a12879f9be47c600c0b2ca608db89c3929ab8ff2",
+      "equal": true
+    },
+    {
+      "richLogId": 22277,
+      "plainLogId": 22181,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "7da440ddcd5eb8333c575465d54c411e6da17ff16ea9a534377e29dcc9b09870",
+      "plainMessageSHA256": "7da440ddcd5eb8333c575465d54c411e6da17ff16ea9a534377e29dcc9b09870",
+      "equal": true
+    },
+    {
+      "richLogId": 22278,
+      "plainLogId": 22182,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "ed7fc6f6092baa148bfb5de60199a582b8e89b10b388a9e9c817ec644cd7e35d",
+      "plainMessageSHA256": "ed7fc6f6092baa148bfb5de60199a582b8e89b10b388a9e9c817ec644cd7e35d",
+      "equal": true
+    },
+    {
+      "richLogId": 22279,
+      "plainLogId": 22183,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "2886fc6edfa885d129d4586755039e7d23d8114766bc6383edefe7f696e227f7",
+      "plainMessageSHA256": "2886fc6edfa885d129d4586755039e7d23d8114766bc6383edefe7f696e227f7",
+      "equal": true
+    },
+    {
+      "richLogId": 22280,
+      "plainLogId": 22184,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "fa9d704dc0d6f121c2f94378cd9364bdb1e216f42e183dda27ed0f8cdfb4938d",
+      "plainMessageSHA256": "fa9d704dc0d6f121c2f94378cd9364bdb1e216f42e183dda27ed0f8cdfb4938d",
+      "equal": true
+    },
+    {
+      "richLogId": 22281,
+      "plainLogId": 22185,
+      "launchId": 4045,
+      "level": "error",
+      "richMessageSHA256": "193c2a885573abb70d217273c67e080b3958f0dd14486959e71e235e3dec48dd",
+      "plainMessageSHA256": "193c2a885573abb70d217273c67e080b3958f0dd14486959e71e235e3dec48dd",
+      "equal": true
+    },
+    {
+      "richLogId": 22321,
+      "plainLogId": 22225,
+      "launchId": 4048,
+      "level": "error",
+      "richMessageSHA256": "5e480bab2c8379a2c08720f72d4f0f4127987df4861cb638c7acb4f0b621b200",
+      "plainMessageSHA256": "5e480bab2c8379a2c08720f72d4f0f4127987df4861cb638c7acb4f0b621b200",
+      "equal": true
+    },
+    {
+      "richLogId": 22322,
+      "plainLogId": 22226,
+      "launchId": 4048,
+      "level": "error",
+      "richMessageSHA256": "14d7952b49400490ca58fd80c39fc5fbf28b1e8b8896897c568878f56edd5f6c",
+      "plainMessageSHA256": "14d7952b49400490ca58fd80c39fc5fbf28b1e8b8896897c568878f56edd5f6c",
+      "equal": true
+    },
+    {
+      "richLogId": 22323,
+      "plainLogId": 22227,
+      "launchId": 4048,
+      "level": "error",
+      "richMessageSHA256": "642227ec5e4923855135e0807f19a6b00a1da7e76b4fbdb0295eaa0d25f118d1",
+      "plainMessageSHA256": "642227ec5e4923855135e0807f19a6b00a1da7e76b4fbdb0295eaa0d25f118d1",
+      "equal": true
+    },
+    {
+      "richLogId": 22324,
+      "plainLogId": 22228,
+      "launchId": 4048,
+      "level": "error",
+      "richMessageSHA256": "cbd22db471e440e6aa44f81652c1bbd93c5d8b65b33359d91e12fbd16ab6795e",
+      "plainMessageSHA256": "cbd22db471e440e6aa44f81652c1bbd93c5d8b65b33359d91e12fbd16ab6795e",
+      "equal": true
+    },
+    {
+      "richLogId": 22344,
+      "plainLogId": 22248,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "3f7f980570f92763cbbfd3fc823f4381c06ae868a2b30b3ea298969b7fbd89ef",
+      "plainMessageSHA256": "3f7f980570f92763cbbfd3fc823f4381c06ae868a2b30b3ea298969b7fbd89ef",
+      "equal": true
+    },
+    {
+      "richLogId": 22345,
+      "plainLogId": 22249,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "e9e468f347412c4ef74630c195ff34a9ab14b7e14fed4f717fd74e9fe8547316",
+      "plainMessageSHA256": "e9e468f347412c4ef74630c195ff34a9ab14b7e14fed4f717fd74e9fe8547316",
+      "equal": true
+    },
+    {
+      "richLogId": 22346,
+      "plainLogId": 22250,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "2b2f26cf20bb554dec7675beaf77452acc31817ff1e4b56dce8200fe1b80cd81",
+      "plainMessageSHA256": "2b2f26cf20bb554dec7675beaf77452acc31817ff1e4b56dce8200fe1b80cd81",
+      "equal": true
+    },
+    {
+      "richLogId": 22347,
+      "plainLogId": 22251,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "0a892f7dd49af70c9c7d3d988f08828fbac25d12aa878f49977b1ece2c260f9b",
+      "plainMessageSHA256": "0a892f7dd49af70c9c7d3d988f08828fbac25d12aa878f49977b1ece2c260f9b",
+      "equal": true
+    },
+    {
+      "richLogId": 22348,
+      "plainLogId": 22252,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "c3ece2e456091ae1f016dcb27287a28c701f464464123d5d776a19ccff20b2ad",
+      "plainMessageSHA256": "c3ece2e456091ae1f016dcb27287a28c701f464464123d5d776a19ccff20b2ad",
+      "equal": true
+    },
+    {
+      "richLogId": 22349,
+      "plainLogId": 22253,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "6d21953dfeaa4fdd46ace391c44be3092ffec5f50ecd6c4b4ec98d48114b989a",
+      "plainMessageSHA256": "6d21953dfeaa4fdd46ace391c44be3092ffec5f50ecd6c4b4ec98d48114b989a",
+      "equal": true
+    },
+    {
+      "richLogId": 22350,
+      "plainLogId": 22254,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "5c059ef64f69c7e64d440b82a16f03ea22c29e165f1cefb4aa03d7ae6f844c35",
+      "plainMessageSHA256": "5c059ef64f69c7e64d440b82a16f03ea22c29e165f1cefb4aa03d7ae6f844c35",
+      "equal": true
+    },
+    {
+      "richLogId": 22351,
+      "plainLogId": 22255,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "b9fb89058fbaa2ab0bb93e6fbf35c25ad3cbd70ec7bbeafc07b9d99bc0be79ef",
+      "plainMessageSHA256": "b9fb89058fbaa2ab0bb93e6fbf35c25ad3cbd70ec7bbeafc07b9d99bc0be79ef",
+      "equal": true
+    },
+    {
+      "richLogId": 22352,
+      "plainLogId": 22256,
+      "launchId": 4063,
+      "level": "error",
+      "richMessageSHA256": "6124514fe573be0ac341fb65a41d5499852727f238129edcdc3d4f35a8aeff19",
+      "plainMessageSHA256": "6124514fe573be0ac341fb65a41d5499852727f238129edcdc3d4f35a8aeff19",
+      "equal": true
+    },
+    {
+      "richLogId": 22362,
+      "plainLogId": 22266,
+      "launchId": 4065,
+      "level": "error",
+      "richMessageSHA256": "45e8b27794d7dd91e3af6e731957c9780821844e5b0e9d6db64c14d1013f5f9e",
+      "plainMessageSHA256": "45e8b27794d7dd91e3af6e731957c9780821844e5b0e9d6db64c14d1013f5f9e",
+      "equal": true
+    },
+    {
+      "richLogId": 22363,
+      "plainLogId": 22267,
+      "launchId": 4065,
+      "level": "fatal",
+      "richMessageSHA256": "2b6d3a321524f8e8ce55d7fb630e7cc137f50db579c6c81b4978a3db76b7641b",
+      "plainMessageSHA256": "2b6d3a321524f8e8ce55d7fb630e7cc137f50db579c6c81b4978a3db76b7641b",
+      "equal": true
+    },
+    {
+      "richLogId": 22337,
+      "plainLogId": 22241,
+      "launchId": 4060,
+      "level": "error",
+      "richMessageSHA256": "157e6988b0d0809a88ca834adc3590e9af1aebd12478c92210dd9cfa9d6d23e6",
+      "plainMessageSHA256": "157e6988b0d0809a88ca834adc3590e9af1aebd12478c92210dd9cfa9d6d23e6",
+      "equal": true
+    },
+    {
+      "richLogId": 22342,
+      "plainLogId": 22246,
+      "launchId": 4062,
+      "level": "error",
+      "richMessageSHA256": "c8c5bff7d47af324c21e82d86d04747ced81f56a89a08e958540a7c61f3fdf96",
+      "plainMessageSHA256": "c8c5bff7d47af324c21e82d86d04747ced81f56a89a08e958540a7c61f3fdf96",
+      "equal": true
+    }
+  ],
+  "foldTotal": 19,
+  "rawFoldTotal": 19,
+  "allFoldsPass": true,
+  "allContrastPass": true,
+  "allLiteralChecksPass": true,
+  "allInspectedErrorFatalPairsEqual": true
+}
