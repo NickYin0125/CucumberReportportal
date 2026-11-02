@@ -157,7 +157,7 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
     expect(result).not_to include("SECRET123")
     expect(result).to include("api\\_key=\\[REDACTED\\]", "token=[REDACTED]")
     result = card(message: 'failed {"\\u0070assword":"SECRET123"}')
-    expect(result).to start_with("## \u2717 RuntimeError\n\n_Message withheld: unsafe or ambiguous input_")
+    expect(result).to start_with("## \u2717 RuntimeError\n\nMessage withheld: unsafe or ambiguous input")
     expect(result).to end_with("```text\n#{backtrace}\n```")
     expect(result).not_to include("SECRET123")
   end
@@ -209,7 +209,7 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
   end
 
   it "preserves the redacted baseline on oversized evidence or unsafe fences" do
-    expect(card(message: "x" * 65_537)).to start_with("## \u2717 RuntimeError\n\n_Message withheld:")
+    expect(card(message: "x" * 65_537)).to start_with("## \u2717 RuntimeError\n\nMessage withheld:")
     expect(card(message: "x" * 65_537)).to end_with("```text\n#{backtrace}\n```")
     message = "`" * 32 + "~" * 32
     logger = double("logger", warn: nil)

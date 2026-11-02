@@ -34,7 +34,7 @@ RSpec.describe Automation::FailureRedactor do
         frames.each { |frame| expect(output).to include(frame) }
         expect(output).not_to include("SENSITIVE_VALUE")
         if disposition == :withheld
-          expect(output).to start_with("## \u2717 RuntimeError\n\n_Message withheld: unsafe or ambiguous input_")
+          expect(output).to start_with("## \u2717 RuntimeError\n\nMessage withheld: unsafe or ambiguous input")
         end
       end
     end

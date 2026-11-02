@@ -67,6 +67,42 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     expect(buffer).to have_received(:emit_log).with(hash_including(message: "Step failed"))
   end
 
+  probes = [
+    [RuntimeError.new('back\\slash'), :kept],
+    [RuntimeError.new('expected "ABC" to match /\\d+/'), :kept],
+    [Errno::ENOENT.new('C:\\logs\\failure.json'), :kept],
+    [RuntimeError.new("expected: \"first\\nsecond\"\n     got: \"first\\nchanged\"\nDiff:\n- second\n+ changed"), :withheld],
+    [RuntimeError.new('HTTP 500 body: {"message":"a\\"b"}'), :withheld],
+    [RuntimeError.new('request failed: "{\\"api_key\\":\\"F1_PROBE_SECRET\\"}"'), :withheld]
+  ]
+  %w[plain rich].each do |mode|
+    probes.each_with_index do |(failure, disposition), index|
+      it "keeps all 62 frame bytes for #{mode} F1 probe #{index + 1} (#{disposition})" do
+        formatter.instance_variable_set(:@config, ReportportalCucumber::Config.new("rp.presentation" => mode))
+        frames = Array.new(62) { |i| "/project/features/support/helper_#{i}.rb:#{i + 1}:in '<top (required)>'" }
+        failure.set_backtrace(frames)
+        expect(buffer).to receive(:emit_log).once do |entry|
+          expect(entry.except(:message)).to eq(item_uuid: "step-1", launch_uuid: "launch-1", level: :error, timestamp: timestamp)
+          body = entry.fetch(:message)
+          # The rich wrapper may differ, but the fenced raw tail must not.
+          tail = body.scan(/```text\n(.*?)\n```/m).last.fetch(0)
+          expect(tail.b).to eq(frames.join("\n").b)
+          expect(body).not_to include("F1_PROBE_SECRET")
+          if disposition == :withheld
+            expect(body.lines[2].chomp).to eq("Message withheld: unsafe or ambiguous input")
+            expect(body.lines.first).to include(failure.class.name)
+          else
+            escaped = ReportportalCucumber::Presentation::MarkdownText.inline(failure.message)
+            expect(body.lines.first).to include(escaped)
+            expect(body).not_to include("Message withheld:")
+          end
+        end
+        formatter.send(:emit_error_log, item_uuid: "step-1", error: failure, timestamp: timestamp)
+        expect(failure.backtrace).to eq(frames)
+      end
+    end
+  end
+
   it "preserves Step failed when whole-message redaction produces an empty string" do
     failure = RuntimeError.new('""')
     failure.set_backtrace([])

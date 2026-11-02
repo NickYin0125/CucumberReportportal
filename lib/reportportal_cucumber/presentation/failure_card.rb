@@ -52,7 +52,7 @@ module ReportportalCucumber
           return "Step failed" if title_text.empty? && backtrace.empty?
 
           sections = [title(title_text.empty? ? "Step failed" : title_text)]
-          sections << "_Message withheld: unsafe or ambiguous input_" if withheld
+          sections << "Message withheld: unsafe or ambiguous input" if withheld
           frames = backtrace.lines(chomp: true).map { |line| frame(line, cwd) }
           feature = frames.find { |entry| entry[:feature] }
           projects = frames.select { |entry| entry[:kind] == :project && !entry[:feature] }
