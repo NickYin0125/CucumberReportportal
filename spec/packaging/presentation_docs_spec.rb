@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "digest"
+require "date"
 require "rspec"
 require_relative "../../lib/reportportal_cucumber/version"
 require_relative "../../examples/current_sdk/helpers/sdk_version"
@@ -46,8 +47,9 @@ RSpec.describe "Ledger candidate version and documentation" do
     expect(source).to include("%w[9.2.1 10.2.0 11.0.0 12.0.0 13.0.0]")
   end
 
-  it "prepends an Unreleased section without reusing the Ledger release rationale" do
-    expect(changelog).to start_with("# Changelog\n\n## #{version} - Unreleased\n")
+  it "prepends a dated release section without reusing the Ledger release rationale" do
+    expect(changelog).to match(/\A# Changelog\n\n## #{Regexp.escape(version)} - \d{4}-\d{2}-\d{2}\n/)
+    expect { Date.iso8601(changelog.lines.fetch(2).delete_prefix("## #{version} - ").strip) }.not_to raise_error
     expect(changelog.split("\n## ", 3)[1]).not_to include(rationale)
   end
 
@@ -120,14 +122,15 @@ RSpec.describe "Ledger candidate version and documentation" do
     end
   end
 
-  it "uses supplied/local candidates instead of inventing published assets" do
-    paths = %w[README.md docs/getting-started.md docs/ci.md examples/current_sdk/README.md script/release/README.md]
+  it "links the authorized GitHub release while retaining archive verification and promotion gates" do
+    paths = %w[README.md docs/getting-started.md docs/ci.md examples/current_sdk/README.md]
     paths.each do |relative|
       text = document(relative)
-      expect(text).not_to match(%r{/releases/(?:tag|download)/v#{Regexp.escape(version)}})
-      expect(text).to match(/candidate/i)
+      expect(text).to include("https://github.com/NickYin0125/CucumberReportportal/releases/tag/v#{version}")
+      expect(text).to include("archive")
     end
     expect(document("docs/getting-started.md")).to include("SDK_GEM_ARCHIVE", "gem install", version)
+    expect(document("script/release/README.md")).to include("independent acceptance", "final CI before merging and tagging")
     expect(document("script/release/README.md")).to include("SDK 2.0.1 Ledger rationale (historical):\n\n#{rationale}")
   end
 end

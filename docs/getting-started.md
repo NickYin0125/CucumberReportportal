@@ -1,21 +1,21 @@
 # Getting started
 
-**Version scope:** this guide installs the unpublished SDK **2.0.2** candidate
-from a matching maintainer-supplied or locally built archive, not an invented
-release URL. Use Ruby `>=3.3` and Cucumber `>=12.0.1, ~>12.0`; see the
+**Version scope:** this guide installs SDK **2.0.2** from the
+[GitHub release archive](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2)
+or a matching locally built archive. Use Ruby `>=3.3` and Cucumber `>=12.0.1, ~>12.0`; see the
 [migration guide](migrating-to-2.0.md) when moving from 1.x.
 
-Follow **install the candidate, run one local Scenario, integrate an existing
+Follow **install the Gem, run one local Scenario, integrate an existing
 project, add API/UI evidence, then run in CI**. Steps 1-2 need only Ruby, Bundler
 and the gems. Browser tooling, Node, ReportPortal and an SDK source checkout are
 not required to consume a supplied archive.
 
-## 1. Install the candidate
+## 1. Install the Gem
 
 From **a directory where you keep projects**, create a fresh consumer project.
-Set the archive path to the exact candidate supplied by your maintainer; verify
-its checksum and source provenance before installation. There is no assumed
-2.0.2 tag, release asset or RubyGems publication.
+Set the archive path to the downloaded Gem; verify its checksum and source
+provenance before installation. This release does not publish to RubyGems.org;
+install the local archive rather than assuming a registry download is available.
 
 ```sh
 export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.2.gem
@@ -25,7 +25,7 @@ cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.2.gem
 gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.2.gem --no-document
 ```
 
-Expected: the candidate archive is in `rp-smoke/vendor/cache`, and RubyGems
+Expected: the verified archive is in `rp-smoke/vendor/cache`, and RubyGems
 installs `reportportal-cucumber-ruby-2.0.2` plus missing dependencies.
 
 Create **`rp-smoke/Gemfile`**:
@@ -45,7 +45,7 @@ bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber:
 ```
 
 Expected: Bundler resolves supported Cucumber 12 and the installed or cached
-candidate; the version check prints `2.0.2`. Commit `Gemfile.lock` in your
+archive; the version check prints `2.0.2`. Commit `Gemfile.lock` in your
 real test project. Existing published archives remain unchanged.
 
 First-time installs need network access. `gem install --local` and

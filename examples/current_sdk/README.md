@@ -7,11 +7,10 @@ a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-SDK 2.0.2 is in preparation, not published or approved by this guide. Use this
-example and an explicitly selected 2.0.2 candidate archive from the same source.
+Use this example and the verified SDK 2.0.2 archive from the same release.
 The shared SDK version definition keeps setup/runtime checks aligned. Older
 published archives and their dated verification evidence are retained unchanged;
-use the SDK 1.3.2 candidate on `maintenance/presentation-ledger-1.3.2` for
+use SDK 1.3.2 on `maintenance/1.x` (tag `v1.3.2`) for
 Cucumber 9/10.
 
 ## Install the consumer
@@ -20,9 +19,9 @@ Use Ruby `>=3.3`, Bundler `>=2.6`, and Cucumber `>=12.0.1,<13`. Node/npm and the
 Playwright CLI/browser are needed for UI, not for the API-only run. The sample pins
 Playwright Ruby to 1.62.0; setup derives its CLI version from the installed binding.
 
-Use the `codex/failure-redaction-2.0.2` checkout for the sample files. Obtain a matching
-candidate archive from your maintainer, or build one with the maintainer workflow
-below. There is intentionally no 2.0.2 release-download URL before approval.
+Use the `v2.0.2` checkout for the sample files. Obtain the matching archive and
+checksums from the [GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2),
+or build a candidate with the maintainer workflow below.
 No root development bundle is required to consume a supplied archive.
 
 From **any working directory**, set the two absolute paths to your checkout and

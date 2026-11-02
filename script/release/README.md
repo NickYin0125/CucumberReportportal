@@ -5,9 +5,12 @@ both complete offline validation matrices, build gem/Chart/checksums/provenance
 and publish through a draft.
 Only the publish job has contents-write permission. No RubyGems push is performed.
 
-**Preparation only:** SDK 2.0.2 is not released. Do not create/push its tag or run
-the publisher before local acceptance and independent review. This change does
-not publish any release, move v1.3.1, or change the server/deployment.
+**SDK 2.0.2 promotion:** the owner authorized release after independent acceptance
+on 2026-11-02. Contract, browser and performance reviewers accepted runtime
+`8f44c105`; bind release-metadata edits to those unchanged runtime bytes and wait
+for final CI before merging and tagging. The tag workflow must then pass its own
+validation and publication checks. Do not move existing tags, publish to
+RubyGems, change 1.x or upgrade the deployment as part of this operation.
 
 The previously published SDK 2.0.0 has its own
 [independent acceptance](../../docs/reviews/2026-10-31-cucumber-12-independent-acceptance.md).
@@ -23,15 +26,15 @@ That historical approval does not authorize a Ledger candidate release.
 
 ### Frozen maintenance publication boundary
 
-`maintenance/1.x` is still frozen at released v1.3.1 and therefore still contains
-its **historical main-only release workflow/tooling**. Updating these files on
-the 2.x branch does not update the workflow executed by a tag on that separate
-source line. Legacy compatibility jobs here validate the real released baseline;
-they do not make future 1.x publication operational.
+The immutable v1.3.1 CI baseline retains its **historical main-only release
+workflow/tooling**. It is not the current maintenance-head claim: SDK 1.3.2 was
+released separately with independent SDK/Chart identities. Updating files on
+the 2.x branch never updates the workflow executed by a tag on that separate
+source line. Legacy compatibility jobs here validate v1.3.1, not a new 1.x patch.
 
-Before a new maintenance release, obtain explicit approval for a minimal
-workflow/tooling backport and its necessary QA-owned test harness changes, then
-validate the actual maintenance head on Ruby 3.1+ / Cucumber 9 and 10. Do not use
+Before a new maintenance release, obtain explicit approval for any necessary
+workflow/tooling backport and QA-owned test harness changes, then validate the
+actual maintenance head on Ruby 3.1+ / Cucumber 9 and 10. Do not use
 only the frozen baseline's results as evidence for a new patch. Preserve the
 legacy gemspec/lock/dependency contract, historical package formats, historic tags
 and server/chart contents; do not backport SDK 2.x runtime/dependency changes.

@@ -7,21 +7,21 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-This checkout prepares **SDK 2.0.2**, an unpublished failure-evidence safety
-and readability candidate. Use a matching maintainer-supplied or locally built archive; no new
-tag, GitHub release or RubyGems publication is implied.
+**SDK 2.0.2** improves failure-evidence safety and readability. Distribution uses
+the versioned Gem archive, checksums and provenance in the
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2).
+RubyGems.org publication is separate and is not performed by this release.
 
-| SDK line | Ruby | Cucumber | Candidate source |
+| SDK line | Ruby | Cucumber | Release line |
 | --- | --- | --- | --- |
-| 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/presentation-ledger-1.3.2` |
-| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/failure-redaction-2.0.2` |
+| 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/1.x`, tag `v1.3.2` |
+| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/cucumber-12`, tag `v2.0.2` |
 
 Cucumber 11 remains unsupported. Existing published archives and their dated
 evidence are unchanged. Helm **1.3.1** / ReportPortal **26.0.7** stay independently
 versioned; this SDK update requires no infrastructure upgrade.
 For Cucumber 12 migration and CI-owned parallel Launches, see the
-[migration guide](docs/migrating-to-2.0.md). This candidate branch is not an
-approved release ancestry ref; publication remains a separate operation.
+[migration guide](docs/migrating-to-2.0.md).
 
 **New here?** Follow the five steps below. The
 [complete getting-started guide](docs/getting-started.md) runs one Scenario without
@@ -31,7 +31,7 @@ a browser or a ReportPortal server before connecting your real project.
 | --- | --- |
 | Ruby | `>= 3.3` |
 | Cucumber | `>= 12.0.1, ~> 12.0` |
-| Package | `reportportal-cucumber-ruby` **2.0.2**, matching candidate archive |
+| Package | `reportportal-cucumber-ruby` **2.0.2**, verified release archive |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -39,11 +39,13 @@ The SDK records tests and evidence. Your framework makes HTTP requests, performs
 assertions, and owns browser/screenshot/video lifecycles. Logging an ERROR does
 not fail a Scenario.
 
-## 1. Install the candidate gem
+## 1. Install the Gem
 
-Obtain `reportportal-cucumber-ruby-2.0.2.gem` from the maintainer or use the
+Obtain `reportportal-cucumber-ruby-2.0.2.gem` from the
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2),
+verify its supplied checksum and provenance, or use the
 [isolated source-packaging workflow](examples/current_sdk/README.md#source-and-packaging-verification).
-There is no candidate release-download URL or assumed registry publication.
+Do not assume the SDK version is available from a public Gem registry.
 
 From **your automation project root**, using the verified archive's absolute path:
 
@@ -70,7 +72,7 @@ bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber:
 ```
 
 Expected output: `2.0.2`. Installation may download dependencies; offline setup
-requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-candidate).
+requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-gem).
 
 ## Presentation Opt-ins
 

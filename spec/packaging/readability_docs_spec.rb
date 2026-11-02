@@ -2,6 +2,7 @@
 
 require "rspec"
 require "ripper"
+require "date"
 
 RSpec.describe "2.0.2 readability user documentation" do
   let(:root) { File.expand_path("../..", __dir__) }
@@ -153,8 +154,10 @@ RSpec.describe "2.0.2 readability user documentation" do
     end
   end
 
-  it "records all six fixes and the example refresh only in the Unreleased candidate section" do
-    expect(candidate_notes).to start_with("2.0.2 - Unreleased\n")
+  it "records all six fixes and the example refresh in the dated release section" do
+    heading = candidate_notes.lines.first.chomp
+    expect(heading).to match(/\A2\.0\.2 - \d{4}-\d{2}-\d{2}\z/)
+    expect { Date.iso8601(heading.delete_prefix("2.0.2 - ")) }.not_to raise_error
     %w[F1 F2 F3 F4 F5 F6].each { |item| expect(candidate_notes).to include("- #{item}:") }
     expect(candidate_notes).to include("examples/current_sdk", "R02 remains unresolved (not fixed)",
                                        "native HTML no longer includes", "project-local npm prefix",
@@ -162,11 +165,15 @@ RSpec.describe "2.0.2 readability user documentation" do
                                        "Version attributes are retained")
   end
 
-  it "describes implemented pipeline isolation without claiming cloud publication or live QA" do
+  it "records accepted runtime evidence and retains final CI and publication gates" do
     expect(candidate_notes).to include("Keep release-bundle dependencies", "outside the source checkout",
-                                       "88 targeted tests", "cloud tag publication remains unverified",
-                                       "not authorized", "not completed live QA", "pending validation")
-    expect(candidate_notes).not_to include("Planned release-pipeline repair")
+                                       "independent contract, browser and performance acceptance",
+                                       "1,802 RSpec examples", "zero failures per cell", "69 new acceptance Launches",
+                                       "must pass final CI before promotion", "package-content and checksum gates",
+                                       "unchanged companion Helm 1.3.1")
+    expect(candidate_notes).not_to include("pending independent review", "not completed live QA",
+                                           "not authorized", "Planned release-pipeline repair")
+    expect(document("README.md")).to include("releases/tag/v2.0.2", "RubyGems.org publication is separate")
   end
 
   it "records the exact owner screenshot tradeoff and retains the prior R02 decision" do
