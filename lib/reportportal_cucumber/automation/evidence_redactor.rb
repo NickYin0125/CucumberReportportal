@@ -97,17 +97,21 @@ module Automation
     # @return [String] URL with userinfo and sensitive query values masked.
     def redact_url(url)
       original = bounded_source(url.to_s)
-      uri = URI.parse(original)
-      if uri.userinfo
-        uri.user = nil
-        uri.password = nil
+      safe = begin
+        uri = URI.parse(original)
+        if uri.userinfo
+          uri.user = nil
+          uri.password = nil
+        end
+        uri.query = redact_query(uri.query) if uri.query
+        uri.path = redact_url_path(uri.path) unless uri.path.nil?
+        uri.fragment = redact_fragment(uri.fragment) if uri.fragment
+        uri.to_s
+      rescue URI::Error, ArgumentError
+        fallback_redact_url(original)
       end
-      uri.query = redact_query(uri.query) if uri.query
-      uri.path = redact_plain_segment(uri.path) unless uri.path.nil?
-      uri.fragment = redact_fragment(uri.fragment) if uri.fragment
-      uri.to_s
-    rescue URI::Error, ArgumentError
-      fallback_redact_url(original)
+      # Decoding must not reveal a credential that the component rules missed.
+      encoded_credential_exposed?(safe) ? OMITTED : safe
     rescue UnsafeInput, EncodingError
       OMITTED
     end
@@ -446,15 +450,18 @@ module Automation
     def encoded_credential_exposed?(text)
       return false unless text.match?(PERCENT_ESCAPE)
 
-      decoded = percent_decoded(text)
-      decoded = decoded.gsub(JSON_UNICODE_ESCAPE) do
-        codepoint = Regexp.last_match(1).to_i(16)
-        codepoint.between?(0xd800, 0xdfff) ? Regexp.last_match(0) : codepoint.chr(Encoding::UTF_8)
-      end
+      decoded = json_unescaped(percent_decoded(text))
       decoded.to_enum(:scan, @key_value_pattern).any? do
         match = Regexp.last_match
         value = match[0][(match[1].length + match[2].length)..].delete("\\\"'")
         !value.empty? && !value.start_with?(MASK)
+      end
+    end
+
+    def json_unescaped(text)
+      text.gsub(JSON_UNICODE_ESCAPE) do
+        codepoint = Regexp.last_match(1).to_i(16)
+        codepoint.between?(0xd800, 0xdfff) ? Regexp.last_match(0) : codepoint.chr(Encoding::UTF_8)
       end
     end
 
@@ -481,6 +488,7 @@ module Automation
     def redact_query(query)
       query.split("&", -1).map do |pair|
         key, raw_value = pair.split("=", 2)
+        next redact_encoded_component(pair) if raw_value.nil? && pair.match?(PERCENT_ESCAPE)
         next pair if raw_value.nil?
 
         decoded_key = URI.decode_www_form_component(key)
@@ -498,6 +506,25 @@ module Automation
           pair
         end
       end.join("&")
+    end
+
+    def redact_url_path(path)
+      safe = redact_plain_segment(path)
+      return safe unless safe.match?(PERCENT_ESCAPE)
+
+      safe.split("/", -1).map do |segment|
+        segment.match?(PERCENT_ESCAPE) ? redact_encoded_component(segment) : segment
+      end.join("/")
+    end
+
+    # Applies the encoded fragment rules to one path segment or valueless query part.
+    def redact_encoded_component(component)
+      # Without a key separator or bearer scheme there is no credential syntax to mask,
+      # so route templates such as %7Bid%7D stay readable.
+      return component unless json_unescaped(percent_decoded(component)).match?(/[:=]|bearer/i)
+
+      safe = redact_encoded_json_fragment(component) || redact_encoded_fragment(component) || component
+      safe == MASK ? URI.encode_www_form_component(MASK) : safe
     end
 
     def redact_fragment(fragment)
@@ -603,7 +630,7 @@ module Automation
       safe = original.gsub(%r{((?:[a-z][a-z0-9+.-]*:)?//)[^/?#]*@}i, "\\1")
       base, fragment = safe.split("#", 2)
       path, query = base.split("?", 2)
-      path = redact_plain_segment(path)
+      path = redact_url_path(path)
       path += "?#{redact_query(query)}" unless query.nil?
       path += "##{redact_fragment(fragment)}" unless fragment.nil?
       path

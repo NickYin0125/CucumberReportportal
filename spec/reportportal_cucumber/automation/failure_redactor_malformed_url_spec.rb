@@ -125,8 +125,10 @@ RSpec.describe Automation::FailureRedactor do
       expect(policy.redact_text("context x#%70assword%3D #{secret}")).to eq(omitted)
     end
 
-    it "fails closed for encoded credential JSON in a well-formed URL path" do
-      expect(policy.redact_text("GET https://example.test/%7B%22password%22%3A%22#{secret}%22%7D")).to eq(omitted)
+    it "masks encoded credential JSON in a well-formed URL path" do
+      output = policy.redact_text("GET https://example.test/%7B%22password%22%3A%22#{secret}%22%7D")
+
+      expect(output).to eq("GET https://example.test/#{masked_fragment}")
     end
   end
 
