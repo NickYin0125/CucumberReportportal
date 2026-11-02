@@ -46,12 +46,32 @@ ruby bin/setup "$SDK_GEM_ARCHIVE"
 ```
 
 Expected: isolated normal gem installation, version-pinned Bundler resolution, matching
-Node Playwright CLI installation, and Chromium installation. Use a supported Node
-runtime (the previous lab used Node 20+). Review the
+Node Playwright CLI installation, and Chromium installation. UI setup requires
+**Node >=20** for the pinned `playwright-core` 1.62.1 CLI, paired with
+`playwright-ruby-client` 1.62.0. Review the
 [Ruby Playwright setup guide](https://playwright-ruby-client.vercel.app/docs/article/getting_started)
 if your OS needs browser packages. `bin/setup` can require network access for all
 three dependency layers. Existing tools can be reused with `SKIP_BROWSER_SETUP=true`,
 an absolute `PLAYWRIGHT_CLI_EXECUTABLE_PATH`, and `PLAYWRIGHT_BROWSERS_PATH`.
+Before reusing a CLI, check the Node version and compare these two CLI versions:
+
+```sh
+node --version
+bundle exec ruby -rplaywright/version -e 'puts "Required CLI: #{Playwright::COMPATIBLE_PLAYWRIGHT_VERSION}"'
+"$PLAYWRIGHT_CLI_EXECUTABLE_PATH" --version
+```
+
+The required and installed CLI versions must match exactly (1.62.1 for this
+example); a different working Playwright installation is not automatically
+compatible. Its matching Chromium must also exist in `PLAYWRIGHT_BROWSERS_PATH`.
+If they differ, use a supported Node version, clear the old CLI override, and
+install the pinned CLI/browser rather than silently reusing the mismatch:
+
+```sh
+unset SKIP_BROWSER_SETUP PLAYWRIGHT_CLI_EXECUTABLE_PATH
+ruby bin/setup "$SDK_GEM_ARCHIVE"
+```
+
 The npm install explicitly uses `--prefix` with the consumer's working directory,
 so it cannot select a parent project's `package.json`. No `package.json` is needed
 or shipped by this example.

@@ -82,6 +82,16 @@ RSpec.describe "2.0.2 readability user documentation" do
     end
   end
 
+  it "makes the example's Node floor and reused CLI compatibility check explicit" do
+    text = prose("examples/current_sdk/README.md")
+    expect(text).to include("Node >=20", "1.62.1", "1.62.0", "node --version",
+                            "Playwright::COMPATIBLE_PLAYWRIGHT_VERSION",
+                            '"$PLAYWRIGHT_CLI_EXECUTABLE_PATH" --version',
+                            "must match exactly", "PLAYWRIGHT_BROWSERS_PATH",
+                            "unset SKIP_BROWSER_SETUP PLAYWRIGHT_CLI_EXECUTABLE_PATH")
+    expect(text).not_to include("previous lab used Node")
+  end
+
   it "explains whitespace labels and top-level deltas for both failing and passing observations" do
     expect(document("docs/advanced-reporting.md")).to include(
       '"" (empty string)', '"   " (3 spaces)', '" a " (leading/trailing whitespace)'
