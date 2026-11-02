@@ -59,7 +59,7 @@ module Automation
         fallback: -> { render_markdown(presentation: false) }, state: fallback_state
       ) do
         plain = render_card
-        next plain unless presentation == "rich"
+        next plain unless presentation == "rich" && !%i[error fatal].include?(level)
 
         ReportportalCucumber::Presentation::Accent.guard(plain: plain, rich: render_card(accent: true), level: level)
       end

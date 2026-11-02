@@ -147,8 +147,8 @@ RSpec.describe "Scoped Ledger rich routing" do
     ])
     expect(native.join).not_to include("<span style", "<details")
     expect(rich_records.length).to eq(3)
-    expect(rich_records.map { |record| record[:message] }).to all(include("<span style="))
-    expect(rich_records.last[:message].lines.first).to eq(plain_records.last[:message].lines.first)
+    expect(rich_records.first(2).map { |record| record[:message] }).to all(include("<span style="))
+    expect(rich_records.last[:message].b).to eq(plain_records.last[:message].b)
     expect(rich_records.map { |record| record.reject { |key, _| key == :message } })
       .to eq(plain_records.map { |record| record.reject { |key, _| key == :message } })
     expect(output.string).not_to include("<span", "<details")
@@ -280,8 +280,9 @@ RSpec.describe "Scoped Ledger rich routing" do
     plain, rich = results.map { |sent, _| sent.first.first.first }
     expect(rich.reject { |key, _| key == "message" }).to eq(plain.reject { |key, _| key == "message" })
     expect(rich).to include("level" => "error", "itemUuid" => "owner")
-    expect(rich["message"].lines.first).to eq(plain["message"].lines.first)
-    expect(rich["message"]).to include(accent.pill("MP4", tone: :info), "<video", "https://video.example.test/original.mp4")
+    expect(rich["message"].b).to eq(plain["message"].b)
+    expect(rich["message"]).to include("<video", "https://video.example.test/original.mp4")
+    expect(rich["message"]).not_to include("<span")
     expect(results.last.last).to eq(results.first.last)
     expect(results.last.last.first).to include(bytes: "unchanged-video", content_type: "video/mp4")
     expect(results.map { |sent, _| sent.first.last }).to eq([[], []])
@@ -322,16 +323,16 @@ RSpec.describe "Scoped Ledger rich routing" do
       "\n\n### Details\n\n{\"label\":\"original details\"}")
     expect(rp.first).to include('expected  { "count": 1 }', 'actual    { "count": 0 }')
     expect(native.first).not_to include("<span style")
-    expect(rp.first).to include(accent.pill("FAIL", tone: :fail))
+    expect(rp.first).not_to include("<span", "<details>")
     expect(expected).to eq(count: 2)
     expect(name).to eq("Changed name")
     expect(details[:label]).to eq("Changed details")
   end
 
   it "retains original String snapshots and the exact frozen baseline when lazy accenting fails" do
-    values = { name: +"Original", expected: +"before expected", actual: +"before actual", details: +"before details", passed: false }
+    values = { name: +"Original", expected: +"before expected", actual: +"before actual", details: +"before details", passed: true }
     original = values.transform_values { |value| value.is_a?(String) ? value.dup : value }
-    snapshot = ReportportalCucumber::Service::EvidencePresenter.send(:assertion_snapshot, "FAIL", *values.values_at(:name, :expected, :actual, :details))
+    snapshot = ReportportalCucumber::Service::EvidencePresenter.send(:assertion_snapshot, "PASS", *values.values_at(:name, :expected, :actual, :details))
     baseline = ReportportalCucumber::Service::EvidencePresenter.send(:assertion_baseline, snapshot).freeze
     native, rp = [], []
     world = Object.new
@@ -363,8 +364,8 @@ RSpec.describe "Scoped Ledger rich routing" do
       expect(direct.map(&:last)).to eq([{ level: :info, mirror: false }, { level: :info, mirror: false }, { level: :error, mirror: false }])
       expect(native.join).not_to include("<span style", "<details")
       if mode == "rich"
-        expect(direct.map(&:first)).to all(include("<span style="))
-        expect(direct.last.first.lines.first).to eq(plain_cards.last.lines.first)
+        expect(direct.first(2).map(&:first)).to all(include("<span style="))
+        expect(direct.last.first.b).to eq(plain_cards.last.b)
       else
         expect(direct.map(&:first)).to eq(plain_cards)
       end
@@ -379,10 +380,10 @@ RSpec.describe "Scoped Ledger rich routing" do
       artifacts: [{ name: "evidence.txt", mime: "text/plain", bytes: "line\n" * 25 }])).to be(true)
     expect(records.length).to eq(2)
     expect(records).to all(include(item_uuid: "after", level: :error))
-    expect(records.first[:message]).to include(accent.pill("FAIL", tone: :fail))
+    expect(records.first[:message]).not_to include("<span", "<details>")
     wire = ReportportalCucumber::Service::PayloadBuilder.build_log_batch(records, presentation: "rich")
     expect(wire[:entries].last["message"]).to start_with("`evidence.txt` \u00b7 Text")
-    expect(wire[:entries].last["message"]).to include("<details>")
+    expect(wire[:entries].last["message"]).not_to include("<details>")
     expect(wire[:files].first[:bytes]).to eq("line\n" * 25)
     source = Struct.new(:keyword, :text, :data_table).new("Given ", "argument", Struct.new(:rows).new([["qty"], ["1.00"]]))
     descriptor = ReportportalCucumber::ReportPortal::Models::StepDesc.new(step: source)

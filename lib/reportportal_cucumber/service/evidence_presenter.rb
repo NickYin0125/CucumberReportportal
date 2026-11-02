@@ -153,16 +153,12 @@ module ReportportalCucumber
           end
           append_card_details(parts, nil, details, string: snapshot[:details_string]) unless details.nil?
           plain = parts.join("\n\n")
-          return plain unless accent
+          return plain unless accent && status == "PASS"
 
-          if status == "PASS"
-            heading = "#{Presentation::Accent.pill('PASS', tone: :pass)} #{card_title(name_text, accent: true)}"
-            heading += " \u00b7 expected #{card_code(expected_text)}" if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
-            parts[0] = heading
-          else
-            parts.insert(1, Presentation::Accent.pill('FAIL', tone: :fail))
-          end
-          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: status == "PASS" ? :info : :error)
+          heading = "#{Presentation::Accent.pill('PASS', tone: :pass)} #{card_title(name_text, accent: true)}"
+          heading += " \u00b7 expected #{card_code(expected_text)}" if expected_text.length <= 60 && !expected_text.match?(/[\r\n]/)
+          parts[0] = heading
+          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: :info)
         end
 
         def failure_card(action, error, url, names, details, diagnostic, accent: false)
@@ -179,16 +175,7 @@ module ReportportalCucumber
           message = safe_string(error.message, VALUE_LIMIT)
           append_card_fence(parts, message, "text") unless message.empty?
           append_card_details(parts, details, diagnostic) unless details.nil?
-          plain = parts.join("\n\n")
-          return plain unless accent
-
-          pill = Presentation::Accent.pill('FAIL', tone: :fail)
-          if meta.empty?
-            parts.insert(1, pill)
-          else
-            parts[1] = "#{pill} #{parts[1]}"
-          end
-          Presentation::Accent.guard(plain: plain, rich: parts.join("\n\n"), level: :error)
+          parts.join("\n\n")
         end
 
         def assertion_value(text, string:)
