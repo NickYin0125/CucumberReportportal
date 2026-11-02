@@ -1,0 +1,85 @@
+# frozen_string_literal: true
+
+require "base64"
+require "cgi"
+require "digest/sha1"
+require "fileutils"
+require "json"
+require "logger"
+require "mime/types"
+require "securerandom"
+require "time"
+require "timeout"
+require "uri"
+
+require_relative "reportportal_cucumber/version"
+
+module ReportportalCucumber
+  class Error < StandardError; end
+  class ConfigurationError < Error; end
+  class ReportingError < Error; end
+end
+
+require_relative "reportportal_cucumber/config"
+require_relative "reportportal_cucumber/presentation/markdown_text"
+require_relative "reportportal_cucumber/presentation/ledger_json"
+require_relative "reportportal_cucumber/presentation/units"
+require_relative "reportportal_cucumber/presentation/run_context"
+require_relative "reportportal_cucumber/presentation/failure_card"
+require_relative "reportportal_cucumber/presentation/image_dimensions"
+require_relative "reportportal_cucumber/presentation/attachment_caption"
+require_relative "reportportal_cucumber/transport/multipart_helper"
+require_relative "reportportal_cucumber/transport/minio_uploader"
+require_relative "reportportal_cucumber/service/payload_builder"
+require_relative "reportportal_cucumber/service/evidence_presenter"
+require_relative "reportportal_cucumber/service/reporting_deadline"
+require_relative "reportportal_cucumber/service/delivery_receipt"
+require_relative "reportportal_cucumber/service/log_response_parser"
+require_relative "reportportal_cucumber/service/spool_store"
+require_relative "reportportal_cucumber/service/queue_processor"
+require_relative "reportportal_cucumber/transport/http_client"
+require_relative "reportportal_cucumber/http/client"
+require_relative "reportportal_cucumber/reportportal/models"
+require_relative "reportportal_cucumber/reportportal/models/step_desc"
+require_relative "reportportal_cucumber/reportportal/api"
+require_relative "reportportal_cucumber/runtime/context"
+require_relative "reportportal_cucumber/runtime/log_buffer"
+require_relative "reportportal_cucumber/runtime/join"
+require_relative "reportportal_cucumber/automation/cucumber_logger"
+require_relative "reportportal_cucumber/automation/app_log"
+require_relative "reportportal_cucumber/cucumber/world"
+require_relative "reportportal_cucumber/cucumber/formatter"
+require_relative "reportportal_cucumber/cucumber/parallel_formatter"
+
+module ReportportalCucumber
+  class << self
+    attr_writer :logger
+
+    # @return [Logger]
+    def logger
+      @logger ||= Logger.new($stderr).tap do |instance|
+        instance.level = ENV["DEBUG"].to_s.strip.empty? ? Logger::INFO : Logger::DEBUG
+        instance.progname = "reportportal-cucumber"
+      end
+    end
+
+    # @return [Object, nil]
+    def current_runtime
+      Thread.current[:reportportal_cucumber_runtime]
+    end
+
+    # @param runtime [Object, nil]
+    # @return [Object, nil]
+    def current_runtime=(runtime)
+      Thread.current[:reportportal_cucumber_runtime] = runtime
+    end
+  end
+end
+
+module ReportPortal
+  module Cucumber
+    Formatter = ::ReportportalCucumber::Cucumber::Formatter
+    ParallelFormatter = ::ReportportalCucumber::Cucumber::ParallelFormatter
+    World = ::ReportportalCucumber::Cucumber::World
+  end
+end

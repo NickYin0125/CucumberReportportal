@@ -1,0 +1,117 @@
+{
+  "schema": "sdk202-independent-final-performance/4",
+  "formal_result": "NOT RUN",
+  "release_performance_accepted": false,
+  "attempted_windows": 1,
+  "retries": 0,
+  "candidate_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "baseline_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "stop_reason": "Original container quiet criterion did not settle after 18 attempts; no benchmark started",
+  "preflight_first_utc": "2026-11-02T15:00:18Z",
+  "preflight_last_utc": "2026-11-02T15:03:41Z",
+  "timing_started": false,
+  "benchmark_samples_collected": 0,
+  "matching_timing_files": 0,
+  "container_quiet": {
+    "required_maximum_percent": 35,
+    "required_consecutive_samples": 3,
+    "required_maximum_spread_points": 15,
+    "observed_cpu_percent": [
+      40.93,
+      33.27,
+      46.54,
+      82.06,
+      100.69000000000001,
+      28.37,
+      47.39,
+      30.060000000000002,
+      44.51,
+      91.46000000000001,
+      48.98,
+      44.650000000000006,
+      32.28,
+      98.9,
+      38.25,
+      34.33,
+      50.589999999999996,
+      29.7
+    ],
+    "minimum_percent": 28.37,
+    "maximum_percent": 100.69000000000001,
+    "samples_at_or_below_35": 6,
+    "longest_consecutive_at_or_below_35": 1,
+    "qualifying_three_sample_windows": 0,
+    "all_container_names_allowed": true,
+    "last_three_percent": [
+      34.33,
+      50.589999999999996,
+      29.7
+    ],
+    "last_three_spread_points": 20.889999999999997
+  },
+  "host_load_diagnostic": {
+    "not_a_gate": true,
+    "one_minute_values": [
+      21.83,
+      20.46,
+      17.84,
+      18.67,
+      19.4,
+      20.06,
+      21.44,
+      22.72,
+      23.3,
+      24.28,
+      26.14,
+      27.05,
+      29.07,
+      26.4,
+      23.78,
+      20.36,
+      19.09,
+      22.42
+    ],
+    "cpu_count": 8
+  },
+  "required_measurements": {
+    "frozen21_renderer_plain_rich": {
+      "status": "NOT RUN",
+      "p95_ms": null,
+      "limits": "each matched round <= baseline * 1.10; candidate renderer p95 <2ms"
+    },
+    "frozen21_full_formatter_plain_rich": {
+      "status": "NOT RUN",
+      "p95_ms": null,
+      "limit": "each matched round <= baseline * 1.10"
+    },
+    "F07": {
+      "status": "NOT RUN",
+      "medians_seconds": null,
+      "limit": "median of 3 rotated runs <= baseline * 1.10"
+    },
+    "F01_F18_presentation_including_F06": {
+      "status": "NOT RUN",
+      "p95_ms": null,
+      "limit": "every observed entry point p95 <2ms per mode"
+    },
+    "encoded_url_absolute_cost": {
+      "status": "NOT RUN",
+      "blocking_speed_threshold": null
+    }
+  },
+  "source_manifests": {
+    "baseline": "c751cd9304e8e88016948a1c9948dd36a8975472f16044172c49bf855f9e0382",
+    "candidate": "23dca543c9e679c7a06874c2e6935430929da3947af502cb71edc75fc919777e"
+  },
+  "image_id": "sha256:316dd4f6b6de632d5ade7bdb78fc33f7e82db8a87785e93a8a2c8d81706d3fe7",
+  "dependency_volume": "ledger-qa202-9bf3356-dependencies",
+  "dependency_sha256": "3a015e3a12387b249ede5ebd6cdb5b638eb916c95c036ff4755cefb081e1536b",
+  "corpus_file_sha256": "d8b2f24a9d531d9114e02ed960ad50618a42c98d8fdfb22308be7ff285421177",
+  "ordered_corpus_sha256": "a99b8d138ce4b63d63b531698bf33ffcb0b0ca263136ac20517e4c72a1bd1d4f",
+  "harness_manifest_sha256": "2ebbdf7683fe972b54608f755037bea5fee4da30ad3f3042c8920ebc455ff274",
+  "authorization_sha256": "02950a1750556a88c1d7aad7286fab449cf5a3974679a36c967ea14e5e4c8479",
+  "raw_conditions": "exclusive-v4-20261102T145902Z/settling.json",
+  "raw_result": "exclusive-v4-20261102T145902Z/result.json",
+  "post_stop_proof": "post-stop-proof-v4.json",
+  "files_left_uncommitted": true
+}

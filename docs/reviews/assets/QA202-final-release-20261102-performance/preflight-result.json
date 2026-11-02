@@ -1,0 +1,41 @@
+{
+  "schema": "sdk202-independent-release-performance-readiness/1",
+  "formal_result": "NOT RUN",
+  "release_performance_accepted": false,
+  "candidate_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "baseline_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "readiness": "READY_FOR_MASTER_EXCLUSIVE_QUIET_WINDOW",
+  "timings_started": false,
+  "benchmark_samples_collected": 0,
+  "frozen21_comparison": "NOT RUN",
+  "F07_wall_medians": "NOT RUN",
+  "all_presentation_p95": "NOT RUN",
+  "supplementary_encoded_url_cost": "NOT RUN",
+  "actual_mode_validation": {
+    "status": "VALIDATED_WITHOUT_TIMING",
+    "roles": ["baseline", "candidate"],
+    "modes": ["plain", "rich"],
+    "frozen_cases_per_role_per_mode": 21,
+    "supplementary_cases_per_role_per_mode": 3,
+    "timing_samples_per_role_per_mode": 0
+  },
+  "harness_tests": {
+    "tests": 10,
+    "assertions": 49,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "clock": "Synthetic test clock only; SDK timing not executed"
+  },
+  "remaining_prerequisites": [
+    "Master must explicitly grant exclusive quiet window after live QA/network/browser workloads finish",
+    "Recorded original container and host quiet thresholds must pass before timing begins"
+  ],
+  "source_proofs": ["baseline-source.json", "candidate-source.json"],
+  "environment_proof": "environment.json",
+  "dependency_manifest": "dependencies.json",
+  "corpus_proof": "corpus-provenance.json",
+  "active_harness_manifest": "harness-manifest-v2.json",
+  "files_left_uncommitted": true,
+  "no_merge_tag_release_push": true
+}

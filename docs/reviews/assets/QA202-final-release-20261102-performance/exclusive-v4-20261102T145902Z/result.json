@@ -1,0 +1,30 @@
+{
+  "status": "NOT RUN",
+  "final_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "baseline_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "frozen21": "NOT RUN",
+  "F07": "NOT RUN",
+  "all_presentation": "NOT RUN",
+  "supplement": "NOT RUN",
+  "quiet_conditions": {
+    "original_container_criterion": {
+      "consecutive": 3,
+      "maximum_cpu_percent": 35,
+      "maximum_spread_percentage_points": 15,
+      "eligible_containers": [
+        "rp2607-control-plane",
+        "typewords-local-typewords-1"
+      ]
+    },
+    "host_load_diagnostic": {
+      "recorded_comparison": "1-minute loadavg <= hw.ncpu",
+      "origin": "Later third-party focused_window3.rb preflight; not original G11/Decision25 or original container criterion",
+      "gates_execution": false,
+      "acceptance_threshold": false,
+      "master_clarification": "Host-load<=CPU from later third-party preflight is NOT a normative owner gate; record it separately as a diagnostic, not a new release criterion",
+      "master_disclosed_recent_host_load": "approximately 17 on 8 CPUs before this window"
+    }
+  },
+  "reason": "ReleasePerfDriver202::Invalid: Load did not settle; no benchmark started",
+  "ended_utc": "2026-11-02T15:03:41Z"
+}

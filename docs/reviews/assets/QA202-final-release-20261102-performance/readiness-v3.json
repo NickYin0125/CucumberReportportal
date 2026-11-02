@@ -1,0 +1,29 @@
+{
+  "status": "READY_FOR_MASTER_EXCLUSIVE_QUIET_WINDOW",
+  "final_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "timings_started": false,
+  "manifest": "/Users/nick/Documents/crr-qa-2.0.2/docs/reviews/assets/QA202-final-release-20261102-performance/harness-manifest-v3.json",
+  "previous_preparation_preserved": true,
+  "quiet_conditions": {
+    "original_container_criterion": {
+      "consecutive": 3,
+      "maximum_cpu_percent": 35,
+      "maximum_spread_percentage_points": 15,
+      "eligible_containers": [
+        "rp2607-control-plane",
+        "typewords-local-typewords-1"
+      ]
+    },
+    "additional_host_preflight": {
+      "criterion": "1-minute loadavg <= hw.ncpu",
+      "origin": "Later third-party focused_window3.rb preflight; not original G11/Decision25 or original container criterion",
+      "retained_for_this_execution": true,
+      "acceptance_threshold": false
+    }
+  },
+  "supplementary_speed_gate": false,
+  "remaining_prerequisites": [
+    "Explicit Master exclusive quiet grant after live agents/browser workloads finish",
+    "Original container quiet criterion and separately retained additional host preflight pass"
+  ]
+}

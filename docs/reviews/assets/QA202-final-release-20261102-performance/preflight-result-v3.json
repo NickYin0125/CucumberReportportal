@@ -1,0 +1,50 @@
+{
+  "schema": "sdk202-independent-release-performance-readiness/3",
+  "formal_result": "NOT RUN",
+  "release_performance_accepted": false,
+  "candidate_sha": "8f44c10533eb4d0a8eae1adcc2ed5b63ace155c7",
+  "baseline_sha": "3f20313c20b25071fbc49b31e1c6bc772bd599e4",
+  "readiness": "READY_FOR_MASTER_EXCLUSIVE_QUIET_WINDOW",
+  "timings_started": false,
+  "benchmark_samples_collected": 0,
+  "normative_gates": {
+    "frozen21_matched_renderer_and_formatter_plain_rich": "NOT RUN",
+    "F07_wall_medians": "NOT RUN",
+    "F01_F18_presentation_p95_including_F06": "NOT RUN",
+    "scope": "Original G11 and matched same-corpus Decision25 boundaries unchanged"
+  },
+  "supplementary_encoded_url_cost": {
+    "status": "NOT RUN",
+    "purpose": "Diagnostic absolute cost per arm/mode/boundary, not corpus replacement",
+    "blocking_relative_speed_threshold": null,
+    "blocking_absolute_speed_threshold": null,
+    "prior_v2_blocking_threshold": "Incorrect scope addition removed before any timing; earlier prepared records preserved"
+  },
+  "quiet_conditions": {
+    "original_container_criterion": {
+      "consecutive_samples": 3,
+      "maximum_total_container_cpu_percent": 35,
+      "maximum_spread_percentage_points": 15,
+      "eligible_containers": ["rp2607-control-plane", "typewords-local-typewords-1"],
+      "unchanged": true
+    },
+    "additional_host_preflight": {
+      "criterion": "1-minute loadavg <= hw.ncpu",
+      "origin": "Later third-party focused_window3.rb, not original G11/Decision25 or original container criterion",
+      "retained_for_current_execution": true,
+      "normative_sdk_acceptance_threshold": false
+    }
+  },
+  "harness_tests": {"tests": 12, "assertions": 59, "failures": 0, "errors": 0, "skips": 0},
+  "remaining_prerequisites": [
+    "Master explicitly grants exclusive quiet window after live QA/network/browser work finishes",
+    "Original container criterion and separately retained additional host preflight pass"
+  ],
+  "active_harness_manifest": "harness-manifest-v3.json",
+  "source_proofs": ["baseline-source.json", "candidate-source.json"],
+  "environment_proof": "environment.json",
+  "dependency_manifest": "dependencies.json",
+  "corpus_proof": "corpus-provenance.json",
+  "files_left_uncommitted": true,
+  "no_merge_tag_release_push": true
+}
