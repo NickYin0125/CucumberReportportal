@@ -6,9 +6,12 @@ module Automation
   # Keeps failure messages independent of frames without splitting credentials.
   class FailureRedactor
     Result = Struct.new(:message, :backtrace, :baseline, :fallback_only, keyword_init: true)
+    # Only immutable policy is shared; scanners, budgets and evidence remain local to each call.
+    DEFAULT_REDACTOR = EvidenceRedactor.new.freeze
+    private_constant :DEFAULT_REDACTOR
 
     # @param redactor [EvidenceRedactor] The unchanged evidence safety policy.
-    def initialize(redactor: EvidenceRedactor.new)
+    def initialize(redactor: DEFAULT_REDACTOR)
       @redactor = redactor
     end
 
