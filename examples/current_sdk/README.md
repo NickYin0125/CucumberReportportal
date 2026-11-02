@@ -52,6 +52,9 @@ runtime (the previous lab used Node 20+). Review the
 if your OS needs browser packages. `bin/setup` can require network access for all
 three dependency layers. Existing tools can be reused with `SKIP_BROWSER_SETUP=true`,
 an absolute `PLAYWRIGHT_CLI_EXECUTABLE_PATH`, and `PLAYWRIGHT_BROWSERS_PATH`.
+The npm install explicitly uses `--prefix` with the consumer's working directory,
+so it cannot select a parent project's `package.json`. No `package.json` is needed
+or shipped by this example.
 
 **Copy outside the checkout before execution.** Scripts reject running under the
 SDK source example directory; generated reports/node_modules there could otherwise
@@ -93,15 +96,20 @@ bundle exec ruby bin/verify
 
 The runner preserves the native Cucumber exit. `intentional` is not an all-pass
 suite. Only the verifier recognizes its precise failed-Step count, original
-Playwright TimeoutError, and valid After-hook screenshot as the expected negative
-case. It rejects other failures/skipped/undefined/pending steps, forces RP off,
-and checks native HTML/messages ownership, compact/color console output, and
-spool retention. These are executable expectations, not a claim they ran on your
-machine or against your RP service.
+Playwright TimeoutError, unchanged passed After hook, and valid local screenshot
+as the expected negative case. It rejects other failures/skipped/undefined/pending steps, forces RP off,
+and checks exact evidence counts/owners, native HTML/messages agreement,
+compact/color console output, and spool retention. It also runs the example's
+self-tests, including one captioned PNG at the RP queue boundary with After
+ownership, without connecting to RP. These are executable expectations, not a
+claim they ran on your machine or against your RP service.
 
 Each run prints its unique `artifacts/<profile>/<run>/` path. Open `cucumber.html`
 and expand the API action to see request/response Markdown/JSON. For `intentional`,
-inspect the original failed Step and **After Hook** PNG plus `failure-routing.json`.
+inspect the original failed Step in native HTML and the local PNG in the report
+directory. Failure PNG names contain the scenario slug, failed checkpoint and a
+random suffix, for example `save-a-practice-word-practice-status-a1b2c3d4.png`.
+Native HTML/messages deliberately do **not** contain the failure screenshot.
 `progress.txt`, `summary.txt`, and `messages.ndjson` are retained. The RP
 formatter's distinct `reportportal.txt` destination may be absent; it is not an
 RP log stream or receipt. `NO_COLOR=1` disables sample console colors.
@@ -117,10 +125,12 @@ bundle exec ruby bin/check_fixture
 bundle exec ruby bin/check_config
 bundle exec ruby bin/check_rerun
 bundle exec ruby bin/runtime
+bundle exec ruby test/self_test.rb
 ```
 
 Expected: fixture HTTP/size contracts, credential-free endpoint policy, safe
-rerun/spool preservation, and installed runtime/version/SHA manifest respectively.
+rerun/spool preservation, installed runtime/version/SHA manifest, and example
+self-tests respectively.
 `check_rerun` preserves its synthetic spool sentinel. `bin/runtime` can compare
 the complete installed `lib/**/*.rb` file inventory against `SDK_SOURCE_ROOT`
 when you explicitly set it; do not use that check to equate the published release
@@ -140,7 +150,7 @@ Expected: the **Current SDK examples** Launch (or your `RP_LAUNCH` override)
 contains the 4 API Scenarios and their action-owned evidence. Full `offline`
 contributes 5 passed Scenarios across two Feature suites. Refresh after batching,
 include DEBUG to find deep helper logs, and inspect the expected 400 at INFO.
-The optional diagnostic comparison can be ERROR while its separately asserted
+The optional diagnostic-only observation is INFO and explicitly non-fatal; its
 expected-rejection Scenario remains PASSED.
 
 For an explicitly selected loopback development RP endpoint, **from the same
@@ -159,9 +169,20 @@ consumers. Use HTTPS for real networks. `RP_ALLOW_LOCAL_HTTP` is sample-specific
 
 Run `intentional` separately with RP enabled when checking browser-failure
 ownership: it deliberately exits `1`, and its screenshot belongs to After, not
-the completed failing Step. The PNG follows AppLog's native event route; the
-structured `rp_evidence` diagnostic targets the open Hook without attaching
-the same PNG twice. A rejected target never silently retargets to another action.
+the completed failing Step. One direct `rp_attach` call emits an ERROR entry
+containing the scenario/failed-check caption and PNG. The last **passed** browser
+action appears in its details, not its title. The terminal summary uses
+`AppLog.error(report: false)` and creates no extra RP/native record. There is no
+`rp_evidence` call, native failure attachment, or `failure-routing.json` entry.
+This RP-only screenshot route is intentional: native HTML/messages retain the
+original exception and backtrace but no failure PNG. With RP disabled or absent,
+the PNG remains a local file and no RP evidence is emitted.
+
+**R02 is not fixed.** Evidence remains owned by the current open After hook,
+whose status stays PASSED. RP's **Hide all passed logs** hides this After-hook
+evidence even though the screenshot entry is ERROR. Turn that filter off to see
+it. The example does not retarget the Scenario or closed failed Step, extend the
+capture API, or change hook status.
 See [best practices](../../docs/best-practices.md) and the
 [CI reporting policy](../../docs/ci.md#choose-the-reporting-policy).
 

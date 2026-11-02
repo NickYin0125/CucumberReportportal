@@ -35,7 +35,6 @@ module CurrentSDK
                   request: {headers: request.to_hash, body: request.body},
                   response: {status: response.code.to_i, headers: response.to_hash, body: response.body},
                   duration_ms: elapsed.round(2), expected_status: expected_status)
-      AppLog.info("API response snapshot", json: JSON.parse(response.body), report: true)
     end
   end
 end
