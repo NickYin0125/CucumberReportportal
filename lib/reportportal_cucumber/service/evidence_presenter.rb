@@ -179,7 +179,18 @@ module ReportportalCucumber
         end
 
         def assertion_value(text, string:)
-          return text if string
+          if string
+            label = if text.empty?
+                      "empty string"
+                    elsif text.match?(/\A +\z/)
+                      Presentation::Units.count(text.length, "space")
+                    elsif text.match?(/\A[[:space:]]+\z/)
+                      "whitespace only"
+                    elsif text.match?(/\A[[:space:]]|[[:space:]]\z/)
+                      "leading/trailing whitespace"
+                    end
+            return label ? "#{JSON.generate(text)} (#{label})" : text
+          end
 
           bounded(ledger_json(parsed_diagnostic(text)), VALUE_LIMIT)
         end

@@ -97,10 +97,34 @@ RSpec.describe ReportportalCucumber::Service::EvidencePresenter do
     end
   end
 
-  it "does not coerce numeric-looking strings, blanks, or surrounding spaces" do
-    ["001.2300", "+7", "98.10%", "1e3", "", " 42 "].each do |value|
+  it "does not coerce numeric-looking strings" do
+    ["001.2300", "+7", "98.10%", "1e3"].each do |value|
       expect(fenced_blocks(assertion(expected: value, actual: value)[:markdown]).first.last)
         .to eq("expected  #{value}\nactual    #{value}")
+    end
+  end
+
+  {
+    "" => '"" (empty string)',
+    " " => '" " (1 space)',
+    "   " => '"   " (3 spaces)',
+    " a " => '" a " (leading/trailing whitespace)',
+    " a" => '" a" (leading/trailing whitespace)',
+    "a " => '"a " (leading/trailing whitespace)',
+    "\t\n" => '"\t\n" (whitespace only)',
+    "a\n" => '"a\n" (leading/trailing whitespace)',
+    "\u00a0a" => "\"\u00a0a\" (leading/trailing whitespace)"
+  }.each do |value, display|
+    %w[plain rich].each do |mode|
+      it "labels both assertion values for #{value.inspect} in #{mode} without changing input or native baseline" do
+        original = value.dup.freeze
+        args = { name: "Whitespace", expected: original, actual: original, passed: false, presentation: mode }
+        result = described_class.assertion(**args, alternate: true)
+        expect(fenced_blocks(result[:markdown]).first.last).to eq("expected  #{display}\nactual    #{display}")
+        baseline = described_class.send(:assertion_markdown, "FAIL", "Whitespace", original, original, nil, presentation: false)
+        expect(result[:native_markdown]).to eq(baseline)
+        expect(original).to eq(value)
+      end
     end
   end
 
