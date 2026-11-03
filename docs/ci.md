@@ -4,7 +4,7 @@ Keep the same World/logger setup and formatter command used locally. Start with
 one Launch per CI job; add shared parallel reporting only when the coordinator
 can own its complete lifecycle.
 
-This example consumes SDK **1.3.2**, an unpublished candidate with the unchanged
+This example consumes SDK **1.3.3**, an unpublished candidate with the unchanged
 Ruby `>=3.1` / Cucumber `>=9,<11` contract.
 
 ## A serial job
@@ -16,7 +16,7 @@ It runs from the checked-out **automation project root**. Inject `RP_API_KEY` as
 masked CI secret; set your RP endpoint/project to real values. Supply a verified
 candidate archive through your CI artifact/mirror process and set
 `SDK_GEM_ARCHIVE` to its absolute local path. This is not a release-download URL,
-and no 1.3.2 publication is assumed.
+and no 1.3.3 publication is assumed.
 
 Add to **`.gitlab-ci.yml`**:
 
@@ -35,8 +35,8 @@ cucumber:
     NO_COLOR: "1"
   before_script:
     - mkdir -p vendor/cache artifacts
-    - cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.2.gem
-    - gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.2.gem --no-document
+    - cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.3.gem
+    - gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.3.gem --no-document
     - bundle install
   script:
     - >-
@@ -174,16 +174,26 @@ describes native hook ordering and the corresponding design contracts.
 
 The repository's [GitHub CI workflow](https://github.com/NickYin0125/CucumberReportportal/blob/main/.github/workflows/ci.yml)
 and [shared validation workflow](https://github.com/NickYin0125/CucumberReportportal/blob/main/.github/workflows/validate.yml)
-are **source-checkout developer workflows**. They render/lint the companion Helm
-profiles, run the offline RSpec suite (including installed-gem packaging checks),
-and execute the default Cucumber suite. Browser/live RP/duration checks are
+are **source-checkout developer workflows**. All four Ruby 3.1/3.3 x Cucumber
+9.2.1/10.2.0 cells resolve an exact Cucumber version in a private runner-temporary
+Gemfile with external gem/config paths, retaining each Gemfile, lockfile and
+runtime identity. They render/lint the companion Helm profiles, run the full
+RSpec suite (including installed-gem packaging checks), execute the default
+offline Cucumber suite and run `bundle exec rspec script/release/spec`.
+The tracked source Gemfile, lockfile and gemspec are not rewritten.
+Browser/live RP/duration checks are
 separate opt-ins; a green offline run does not claim those were performed.
 
 Release publication remains separately authorized and ancestry-gated. SDK 1.3.2+
 requires the Gem to match its tag but permits the independently committed Chart
 version; historical bundles through 1.3.1 retain their original matching-version
-contract. Tooling verifies gem, chart, checksums and provenance; candidate branch
-validation does not authorize a release or backport the publication workflow.
+contract. A required all-cells gate retains the recovery-compatible check name
+`validate / test`. Only after it succeeds can a separate fresh-checkout bundle
+job run on a release tag. That job disables Bundler's in-checkout cache and sets
+both `BUNDLE_PATH` and `BUNDLE_APP_CONFIG` outside source before Ruby setup;
+the root lockfile stays frozen and dirty-source checks remain strict.
+Tooling verifies gem, chart, checksums and provenance and preserves fixed 1.x
+ancestry and `latest=false`; candidate branch validation authorizes no release.
 They do not publish to RubyGems.org or deploy a Kubernetes stack. See the
 [source-checkout release operator guide](https://github.com/NickYin0125/CucumberReportportal/blob/main/script/release/README.md) and
 [changelog](../CHANGELOG.md) for maintainers.

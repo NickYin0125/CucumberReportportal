@@ -2,6 +2,7 @@
 
 require "rspec"
 require "yaml"
+require "open3"
 
 RSpec.describe "Release workflow security and validation contract" do
   let(:root) { File.expand_path("../..", __dir__) }
@@ -37,7 +38,7 @@ RSpec.describe "Release workflow security and validation contract" do
   end
 
   it "has full release-line history with non-persisted credentials and Node24 checkout" do
-    jobs = [validation.dig("jobs", "test"), release.dig("jobs", "preflight"), release.dig("jobs", "publish")]
+    jobs = [validation.dig("jobs", "test"), validation.dig("jobs", "bundle"), release.dig("jobs", "preflight"), release.dig("jobs", "publish")]
     jobs.each do |job|
       checkout = job.fetch("steps").find { |step| step.fetch("uses", "").start_with?("actions/checkout@") }
       expect(checkout.fetch("uses")).to eq("actions/checkout@v6")
@@ -69,24 +70,67 @@ RSpec.describe "Release workflow security and validation contract" do
     expect(steps.find { |step| step["uses"] == "azure/setup-helm@v5" }.dig("with", "version")).to eq("v3.18.4")
   end
 
-  it "keeps the Bundler installation config and explicitly selects the packaging Gemfile" do
-    env = validation.dig("jobs", "test", "env")
-    expect(env.fetch("BUNDLE_GEMFILE")).to eq("${{ github.workspace }}/Gemfile")
-    expect(env.fetch("BUNDLE_FROZEN")).to eq("true")
-    expect(env).not_to have_key("BUNDLE_IGNORE_CONFIG")
-    setup = validation.dig("jobs", "test", "steps").find { |step| step["uses"] == "ruby/setup-ruby@v1" }
-    expect(setup.fetch("with")).to include("ruby-version" => "3.3", "bundler-cache" => true)
+  it "resolves all four exact maintenance cells outside source without ignoring Bundler config" do
+    job = validation.dig("jobs", "test")
+    expect(job.fetch("strategy")).to eq("fail-fast" => false, "matrix" => {
+      "ruby" => %w[3.1 3.3], "cucumber" => %w[9.2.1 10.2.0]
+    })
+    expect(job.fetch("env")).to include("BUNDLE_FROZEN" => "false", "CUCUMBER_VERSION" => "${{ matrix.cucumber }}")
+    expect(job.fetch("env")).not_to have_key("BUNDLE_IGNORE_CONFIG")
+    steps = job.fetch("steps")
+    isolation = steps.find { |step| step["name"] == "Isolate matrix dependencies before Ruby setup" }
+    expect(isolation.fetch("run")).to include("BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile",
+                                             "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems",
+                                             "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config")
+    setup = steps.find { |step| step["uses"] == "ruby/setup-ruby@v1" }
+    expect(setup.fetch("with")).to eq("ruby-version" => "${{ matrix.ruby }}", "bundler" => "2.6.6", "bundler-cache" => false)
+    resolution = steps.find { |step| step["name"] == "Resolve the exact matrix runtime without changing source" }
+    expect(resolution.fetch("run")).to include('File.write(ENV.fetch("BUNDLE_GEMFILE")', "eval_gemfile", 'ENV.fetch("CUCUMBER_VERSION")',
+                                               "bundle install --jobs 4", 'echo "BUNDLE_FROZEN=true" >> "$GITHUB_ENV"')
+    expect(resolution.fetch("run")).not_to include('File.open("Gemfile"', 'rm_f("Gemfile.lock")')
+    expect(steps.index(isolation)).to be < steps.index(setup)
+    expect(steps.index(setup)).to be < steps.index(resolution)
+    provenance = steps.find { |step| step["name"] == "Record the exact matrix runtime" }
+    expect(provenance.fetch("run")).to include('ReportportalCucumber::VERSION == "1.3.3"', 'cucumber == ENV.fetch("CUCUMBER_VERSION")',
+                                               "RUBY_DESCRIPTION", "Bundler::VERSION", "runtime/runtime.json", "source-dependencies.sha256")
+    retain = steps.find { |step| step["name"] == "Retain the exact matrix dependency resolution" }
+    expect(retain.fetch("if")).to eq("always()")
+    expect(retain.fetch("uses")).to eq("actions/upload-artifact@v6")
+    expect(retain.fetch("with")).to include("path" => "${{ runner.temp }}/runtime/", "include-hidden-files" => true,
+                                          "if-no-files-found" => "error", "retention-days" => 7)
+    expect(retain.dig("with", "name")).to include("matrix.ruby", "matrix.cucumber", "github.run_attempt")
+    unchanged = steps.find { |step| step["name"] == "Require unchanged tracked source" }
+    expect(unchanged.fetch("if")).to eq("always()")
+    expect(unchanged.fetch("run")).to include("git diff --exit-code", 'sha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"')
   end
 
   it "packages only after complete RSpec and Cucumber success and passes immutable artifact identity" do
     steps = validation.dig("jobs", "test", "steps")
     commands = steps.filter_map { |step| step["run"] }
     expect(commands.index("bundle exec rspec")).to be < commands.index("bundle exec cucumber")
-    expect(commands.last).to include("ruby script/release/cli.rb build")
-    expect(steps.last.fetch("if")).to include("inputs.release", "github.event_name == 'push'", "github.ref_type == 'tag'")
+    expect(commands).to include("bundle exec rspec script/release/spec")
+    expect(commands.join).not_to include("script/release/cli.rb build")
+    gate = validation.dig("jobs", "gate")
+    expect(gate.fetch("needs")).to eq("test")
+    expect(gate.fetch("name")).to eq("test")
+    expect(gate.fetch("if")).to eq("always()")
+    expect(gate.fetch("steps")).to eq([{
+      "name" => "Require every maintenance matrix cell", "env" => { "MATRIX_RESULT" => "${{ needs.test.result }}" },
+      "run" => 'test "$MATRIX_RESULT" = success'
+    }])
+    bundle = validation.dig("jobs", "bundle")
+    expect(bundle.fetch("needs")).to eq("gate")
+    expect(bundle.fetch("if")).to include("inputs.release", "github.event_name == 'push'", "github.ref_type == 'tag'")
+    expect(bundle.dig("env", "BUNDLE_GEMFILE")).to eq("${{ github.workspace }}/Gemfile")
+    expect(bundle.dig("env", "BUNDLE_FROZEN")).to eq("true")
+    expect(bundle.fetch("env")).not_to have_key("BUNDLE_IGNORE_CONFIG")
+    bundle_steps = bundle.fetch("steps")
+    expect(bundle_steps.filter_map { |step| step["run"] }.last).to include("ruby script/release/cli.rb build")
+    expect(validation.dig(true, "workflow_call", "outputs", "artifact-id", "value")).to eq("${{ jobs.bundle.outputs.artifact-id }}")
+    expect(bundle.dig("outputs", "artifact-id")).to eq("${{ steps.artifacts.outputs.artifact-id }}")
     download = release.dig("jobs", "publish", "steps").find { |step| step.fetch("uses", "").start_with?("actions/download-artifact@") }
     expect(download.dig("with", "artifact-ids")).to eq("${{ needs.validate.outputs.artifact-id }}")
-    expect(steps.last.dig("with", "if-no-files-found")).to eq("error")
+    expect(bundle_steps.last.dig("with", "if-no-files-found")).to eq("error")
     expect(release.to_s).not_to include("gem push", "workflow_dispatch", "workflow_run")
   end
 
@@ -96,6 +140,14 @@ RSpec.describe "Release workflow security and validation contract" do
     expect(resume.dig("jobs", "publish", "needs")).to eq("preflight")
     checkout = resume.dig("jobs", "preflight", "steps").first
     expect(checkout.fetch("with")).to include("ref" => "${{ github.sha }}", "fetch-depth" => 0, "persist-credentials" => false)
+  end
+
+  it "fails the required gate for failed, cancelled, skipped or missing matrix results" do
+    command = validation.dig("jobs", "gate", "steps").first.fetch("run")
+    %w[success failure cancelled skipped].push("").each do |result|
+      _out, _err, status = Open3.capture3({ "MATRIX_RESULT" => result }, "/bin/bash", "-e", "-c", command)
+      expect(status.success?).to eq(result == "success"), "Gate accepted unexpected result #{result.inspect}"
+    end
   end
 
   it "checks stable tags and the controller checkout against its fixed trusted remote before source or API lookup" do

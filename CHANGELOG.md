@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.3 - Unreleased
+
+### Selective Readability Backport
+
+- Selectively backport SDK 2.0.2 readability and example-redaction improvements onto released 1.3.2. Keep Ruby >=3.1, Cucumber >=9,<11, the 1.x native hook topology and companion Helm 1.3.1 unchanged.
+- Keep ERROR/FATAL evidence cards plain even in rich mode. Label empty and whitespace-sensitive assertion strings, and summarize missing, extra and changed top-level JSON keys without claiming a recursive diff.
+- Show HTTP response evidence before request evidence and preserve repeated header values. Strengthen the existing bounded automatic HTTP/evidence redaction paths; do not enable FailureRedactor or globally redact raw AppLog text/JSON.
+- Intentionally withhold over-depth automatic URL/evidence inputs when the bounded decoding budget is exceeded; do not decode without limit. This 1.x fail-closed hardening addresses the reproduced four/five-layer percent-encoded JSON-path leak beyond released 2.0.2's three-pass guard. It is not a repair of that released 2.x tag or a claim of byte-identical behavior with 2.0.2.
+- Focus generated run-context descriptions on available branch/commit/build information while retaining allowlisted runtime attributes, explicit-value precedence and the 1.x no-generated-workers policy.
+- Use unique PNG names in the current consumer and submit each screenshot through one RP route. R02 remains unfixed: hiding passed logs can hide evidence owned by a passed After Hook. The consolidated PNG route does not also attach that PNG to native HTML; no native HTML deduplication fix is claimed.
+- Preserve Decision 19: native 1.x failures retain the original v1.3.1 message and every backtrace frame, including on presentation fallback. No 2.x failure-redaction policy is activated.
+
+### Candidate Integration And CI
+
+- Validate the candidate in all four Ruby 3.1/3.3 x Cucumber 9.2.1/10.2.0 cells, with isolated dependency resolutions, retained lockfiles, full RSpec, offline Cucumber and executable release-isolation regressions. A required all-cells gate precedes a separate clean release-bundle job.
+- Install locked release dependencies and Bundler configuration outside the checkout, fixing the known vendor/bundle dirty-source failure without relaxing clean-source, ancestry, identity or checksum guards. Keep 1.x publication latest=false and historical 1.3.1 verification unchanged.
+- This is an unreleased candidate, not publication authorization. No tag, GitHub asset, RubyGems publication or deployment is created. SDK 2.0.2 QA results do not establish 1.3.3 acceptance; independent frozen-head four-cell verification is still required.
+
 ## 1.3.2 - Unreleased
 
 ### Ledger Presentation

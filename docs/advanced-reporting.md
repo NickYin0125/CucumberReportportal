@@ -7,8 +7,8 @@ minimal Scenario or ordinary PNG/JSON/text reporting.
 
 ## Presentation
 
-SDK 1.3.2 uses Ledger plain cards by default: project-first failures with
-complete backtraces, attachment metadata, compact JSON, argument captions,
+SDK 1.3.3 retains the Ledger plain cards introduced in 1.3.2: project-first
+failures with complete backtraces, attachment metadata, compact JSON, argument captions,
 numeric table alignment, one-line Outline values, and assertion/HTTP/evidence
 cards. Numeric values, status levels, log counts, ownership, IDs and original
 attachment bytes are unchanged. Argument-free steps do not send descriptions.
@@ -20,22 +20,37 @@ RP_PRESENTATION=rich RP_RUN_CONTEXT=true bundle exec cucumber --profile rp
 ```
 
 `RP_PRESENTATION` defaults to `plain`; invalid values warn once and use plain.
-`rich` accents **ReportPortal log messages only**, not native Cucumber
+`rich` accents eligible **ReportPortal log messages only**, not native Cucumber
 HTML/messages, terminal summaries, caller AppLog text, names, descriptions or
-Launch metadata. It folds full backtraces, attachment previews over 20 lines,
+Launch metadata. It folds eligible attachment previews over 20 lines,
 DocStrings over 20 lines, HTTP headers and HTTP bodies over 12 lines. Table
 headers are accented only for tables with at most six columns. Existing preview
 bounds still apply, with full original attachment bytes retained separately.
 Client-generated `<br>` is allowed in table cells; user markup is escaped.
 
-Every ERROR first line stays byte-identical. Added markup is limited to 1,024
-bytes per message; exceeding that budget or changing an ERROR first line keeps
+ERROR/FATAL cards remain entirely plain, including failures, failed assertions,
+failure evidence and error-severity HTTP exchanges. Added markup on eligible
+cards is limited to 1,024 bytes per message; exceeding that budget keeps
 the plain card. Helper exceptions retain the original baseline with one warning,
 not a partially formatted card. Rendering does not change Scenario outcomes.
 
+The selective 2.0.2 backport labels empty, space-only and other whitespace-sensitive
+assertion strings, and summarizes missing, extra and changed top-level JSON keys
+from bounded sanitized snapshots, not recursive object diffs. HTTP cards show
+response evidence before request evidence and retain repeated header values.
+Existing automatic HTTP/evidence redaction paths are strengthened; they do not
+become a global AppLog text/JSON filter.
+
+Decision 19 still governs native 1.x failures: preserve the original v1.3.1
+message and every backtrace frame, including exact baseline fallback on a
+presentation fault. `FailureRedactor` is not activated on 1.x. Do not infer the
+2.x failure-redaction policy or its QA results apply to this candidate.
+
 `RP_RUN_CONTEXT` defaults to `false`. When enabled it adds only the documented
-SDK/runtime/CI attributes and a one-line description if none was supplied;
+SDK/runtime/CI attributes and a focused branch/commit/build description if none
+was supplied;
 explicit values win. No `workers` attribute is generated on 1.x.
+With no available CI context, no runtime-only description is generated.
 See the [configuration allowlist](configuration.md#presentation-and-run-context).
 
 The owner-approved compatibility exceptions preserve baseline behavior:
@@ -383,7 +398,7 @@ link, and a playable/safely accessible recording are separate checks.
 
 The **separate companion Chart 1.3.1** in this checkout pins ReportPortal `26.0.7`
 and official chart `26.10.26`, requiring Kubernetes `>=1.35`. The historical SDK
-1.3.1 release included that chart; SDK 1.3.2 leaves it unchanged and does not
+1.3.1 release included that chart; SDK 1.3.3 leaves it unchanged and does not
 imply a new published bundle. The SDK, chart and server versions are independent.
 Its version is independent of browser playback behavior. It uses
 Prefix routes with a configurable controller class and dedicated-bucket

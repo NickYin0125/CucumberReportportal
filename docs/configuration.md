@@ -84,7 +84,8 @@ the conflict is rejected. See [shared Launches](ci.md#parallel-workers-and-a-sha
 
 ## Presentation and run context
 
-Available in SDK 1.3.2; both additions are opt-in and off by default.
+Available in SDK 1.3.3, introduced in 1.3.2; both switches remain opt-in and off
+by default.
 
 | Environment variable | YAML key | Default | Type / use |
 | --- | --- | --- | --- |
@@ -107,9 +108,13 @@ profiles:
 
 Rich mode never changes native Cucumber messages/HTML, terminal summaries,
 arbitrary AppLog text, item names/descriptions, or Launch metadata. It preserves
-every ERROR log's first line and adds at most 1,024 bytes per message; a budget
-or first-line guard retains the plain card. A presentation exception instead
+ERROR/FATAL cards entirely plain and adds at most 1,024 bytes per eligible
+non-ERROR/FATAL message; a budget guard retains the plain card. A presentation exception instead
 restores the original pre-Ledger baseline with one nonreflective warning.
+Decision 19 preserves native 1.x failure messages and every original v1.3.1
+backtrace frame. `FailureRedactor` is not activated; raw AppLog text/JSON is not
+globally redacted. Existing bounded automatic HTTP/evidence redaction remains
+separate from the presentation switches.
 
 Run context adds missing `sdk`, `cucumber`, `ruby`, `git.branch`, `git.sha` and
 `ci.build` attributes. It reads only these environment sources, first non-empty
@@ -123,7 +128,9 @@ value from left to right:
 
 Values are trimmed, capped at 128 characters, and omitted when empty. Explicit
 attribute keys win; a non-empty explicit Launch description is retained.
-Otherwise a one-line Cucumber/Ruby/branch description is generated.
+Otherwise a focused branch/commit/build description is generated from available
+CI context; SDK/Cucumber/Ruby stay in attributes, not repeated description text.
+Without CI context the generated description is empty.
 The 1.x formatter never generates a `workers` attribute, even when `PARALLEL_TEST_GROUPS` is set.
 No environment dump or implicit CI API lookup occurs. See
 [Presentation](advanced-reporting.md#presentation) for the card and channel contract.

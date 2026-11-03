@@ -9,23 +9,25 @@ on:
     outputs:
       artifact-id:
         description: Immutable artifact from this successful validation job
-        value: ${{ jobs.test.outputs.artifact-id }}
+        value: ${{ jobs.bundle.outputs.artifact-id }}
 
 permissions:
   contents: read
 
 jobs:
   test:
+    name: matrix (Ruby ${{ matrix.ruby }}, Cucumber ${{ matrix.cucumber }})
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    outputs:
-      artifact-id: ${{ steps.artifacts.outputs.artifact-id }}
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["3.1", "3.3"]
+        cucumber: ["9.2.1", "10.2.0"]
     env:
       CUCUMBER_PUBLISH_QUIET: "true"
-      BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
-      BUNDLE_FROZEN: "true"
-      RELEASE_TAG: ${{ github.ref_name }}
-      RELEASE_SHA: ${{ github.sha }}
+      BUNDLE_FROZEN: "false"
+      CUCUMBER_VERSION: ${{ matrix.cucumber }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -33,10 +35,31 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Isolate matrix dependencies before Ruby setup
+        run: |
+          mkdir -p "$RUNNER_TEMP/runtime"
+          echo "BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile" >> "$GITHUB_ENV"
+          echo "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems" >> "$GITHUB_ENV"
+          echo "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config" >> "$GITHUB_ENV"
+
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.3"
-          bundler-cache: true
+          ruby-version: ${{ matrix.ruby }}
+          bundler: "2.6.6"
+          bundler-cache: false
+
+      - name: Resolve the exact matrix runtime without changing source
+        run: |
+          ruby -e 'File.write(ENV.fetch("BUNDLE_GEMFILE"), "eval_gemfile #{File.join(ENV.fetch("GITHUB_WORKSPACE"), "Gemfile").inspect}\ngem \"cucumber\", #{("= " + ENV.fetch("CUCUMBER_VERSION")).inspect}\n")'
+          bundle install --jobs 4
+          echo "BUNDLE_FROZEN=true" >> "$GITHUB_ENV"
+
+      - name: Record the exact matrix runtime
+        run: |
+          ruby --version
+          bundle exec ruby -rjson -e 'require "reportportal_cucumber"; cucumber = Gem.loaded_specs.fetch("cucumber").version.to_s; abort "Wrong SDK source" unless ReportportalCucumber::VERSION == "1.3.3"; abort "Wrong Cucumber version" unless cucumber == ENV.fetch("CUCUMBER_VERSION"); puts JSON.pretty_generate(sdk: ReportportalCucumber::VERSION, cucumber: cucumber, ruby: RUBY_DESCRIPTION, bundler: Bundler::VERSION)' > "$RUNNER_TEMP/runtime/runtime.json"
+          cat "$RUNNER_TEMP/runtime/runtime.json"
+          sha256sum Gemfile Gemfile.lock reportportal-cucumber-ruby.gemspec > "$RUNNER_TEMP/runtime/source-dependencies.sha256"
 
       - uses: azure/setup-helm@v5
         with:
@@ -83,7 +106,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v6
         with:
-          name: rspec-faults-ruby-3.3-${{ github.run_attempt }}
+          name: rspec-faults-ruby-${{ matrix.ruby }}-cucumber-${{ matrix.cucumber }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/rspec-fault-diagnostics/
           include-hidden-files: true
           if-no-files-found: warn
@@ -91,6 +114,86 @@ jobs:
 
       - name: Run full offline Cucumber profile
         run: bundle exec cucumber
+
+      - name: Run release dependency isolation regressions
+        run: bundle exec rspec script/release/spec
+
+      - name: Require unchanged tracked source
+        if: always()
+        run: |
+          git diff --exit-code
+          sha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"
+
+      - name: Retain the exact matrix dependency resolution
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: runtime-lock-ruby-${{ matrix.ruby }}-cucumber-${{ matrix.cucumber }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/runtime/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+
+  gate:
+    # Recovery verifies this exact historical check name after all four cells.
+    name: test
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every maintenance matrix cell
+        env:
+          MATRIX_RESULT: ${{ needs.test.result }}
+        run: test "$MATRIX_RESULT" = success
+
+  bundle:
+    needs: gate
+    if: inputs.release && github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      artifact-id: ${{ steps.artifacts.outputs.artifact-id }}
+    env:
+      BUNDLE_GEMFILE: ${{ github.workspace }}/Gemfile
+      BUNDLE_FROZEN: "true"
+      RELEASE_TAG: ${{ github.ref_name }}
+      RELEASE_SHA: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Isolate release dependencies before Ruby setup
+        run: |
+          echo "BUNDLE_PATH=$RUNNER_TEMP/release-gems" >> "$GITHUB_ENV"
+          echo "BUNDLE_APP_CONFIG=$RUNNER_TEMP/release-bundle-config" >> "$GITHUB_ENV"
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          # Cache mode forces vendor/bundle inside the clean release checkout.
+          bundler-cache: false
+
+      - name: Install locked release dependencies outside source
+        run: bundle install --jobs 4
+
+      - uses: azure/setup-helm@v5
+        with:
+          version: "v3.18.4"
+
+      - name: Prepare the locked chart for packaging without deployment
+        run: |
+          helm_bin="$(command -v helm)"
+          test -x "$helm_bin"
+          echo "HELM_BIN=$helm_bin" >> "$GITHUB_ENV"
+          sha256sum helm/reportportal-rich-experience/Chart.lock > "$RUNNER_TEMP/chart-lock.sha256"
+          helm repo add reportportal https://k8s.reportportal.io/
+          helm repo update
+          helm dependency build ./helm/reportportal-rich-experience
+          sha256sum --check "$RUNNER_TEMP/chart-lock.sha256"
 
       - name: Build verified release bundle
         if: inputs.release && github.event_name == 'push' && github.ref_type == 'tag'
