@@ -38,7 +38,6 @@ jobs:
       - name: Isolate matrix dependencies before Ruby setup
         run: |
           mkdir -p "$RUNNER_TEMP/runtime"
-          echo "BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile" >> "$GITHUB_ENV"
           echo "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems" >> "$GITHUB_ENV"
           echo "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config" >> "$GITHUB_ENV"
 
@@ -50,7 +49,9 @@ jobs:
 
       - name: Resolve the exact matrix runtime without changing source
         run: |
-          ruby -e 'File.write(ENV.fetch("BUNDLE_GEMFILE"), "eval_gemfile #{File.join(ENV.fetch("GITHUB_WORKSPACE"), "Gemfile").inspect}\ngem \"cucumber\", #{("= " + ENV.fetch("CUCUMBER_VERSION")).inspect}\ngem \"diff-lcs\", \"< 2\"\n")'
+          ruby -e 'File.write(File.join(ENV.fetch("RUNNER_TEMP"), "runtime", "Gemfile"), "eval_gemfile #{File.join(ENV.fetch("GITHUB_WORKSPACE"), "Gemfile").inspect}\ngem \"cucumber\", #{("= " + ENV.fetch("CUCUMBER_VERSION")).inspect}\ngem \"diff-lcs\", \"< 2\"\n")'
+          export BUNDLE_GEMFILE="$RUNNER_TEMP/runtime/Gemfile"
+          echo "BUNDLE_GEMFILE=$BUNDLE_GEMFILE" >> "$GITHUB_ENV"
           bundle install --jobs 4
           echo "BUNDLE_FROZEN=true" >> "$GITHUB_ENV"
 
