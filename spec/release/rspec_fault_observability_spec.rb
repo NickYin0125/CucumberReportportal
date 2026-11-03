@@ -62,7 +62,7 @@ RSpec.describe "RSpec fault diagnostic retention" do
     expect(upload.fetch("if")).to eq("always()")
     expect(upload).not_to have_key("continue-on-error")
     expect(upload.fetch("with")).to eq(
-      "name" => 'rspec-faults-ruby-3.3-${{ github.run_attempt }}',
+      "name" => 'rspec-faults-ruby-${{ matrix.ruby }}-cucumber-${{ matrix.cucumber }}-${{ github.run_attempt }}',
       "path" => "${{ runner.temp }}/rspec-fault-diagnostics/",
       "include-hidden-files" => true, "retention-days" => 7, "if-no-files-found" => "warn"
     )
@@ -86,16 +86,22 @@ RSpec.describe "RSpec fault diagnostic retention" do
     end
   end
 
-  it "preserves the approved 1.x CI runtime and last release artifact step" do
-    expect(job).not_to have_key("strategy")
+  it "preserves every 1.x matrix runtime and the separate gated release artifact step" do
+    expect(job.fetch("strategy")).to eq("fail-fast" => false, "matrix" => {
+      "ruby" => %w[3.1 3.3], "cucumber" => %w[9.2.1 10.2.0]
+    })
     setup = steps.find { |step| step["uses"] == "ruby/setup-ruby@v1" }
-    expect(setup.fetch("with")).to eq("ruby-version" => "3.3", "bundler-cache" => true)
-    expect(job.dig("outputs", "artifact-id")).to eq("${{ steps.artifacts.outputs.artifact-id }}")
-    expect(steps.last).to include("name" => "Preserve validated release bundle", "id" => "artifacts")
-    expect(steps.last.fetch("if")).to include("inputs.release", "github.event_name == 'push'", "github.ref_type == 'tag'")
-    expect(steps.last.dig("with", "path")).to eq("${{ runner.temp }}/release-bundle/")
-    expect(steps.last.dig("with", "if-no-files-found")).to eq("error")
-    expect(steps.filter_map { |step| step["run"] }.last)
+    expect(setup.fetch("with")).to eq("ruby-version" => "${{ matrix.ruby }}", "bundler" => "2.6.6", "bundler-cache" => false)
+    expect(job).not_to have_key("outputs")
+    bundle = validation.dig("jobs", "bundle")
+    expect(bundle.fetch("needs")).to eq("gate")
+    expect(bundle.dig("outputs", "artifact-id")).to eq("${{ steps.artifacts.outputs.artifact-id }}")
+    expect(bundle.fetch("if")).to include("inputs.release", "github.event_name == 'push'", "github.ref_type == 'tag'")
+    artifact = bundle.fetch("steps").last
+    expect(artifact).to include("name" => "Preserve validated release bundle", "id" => "artifacts")
+    expect(artifact.dig("with", "path")).to eq("${{ runner.temp }}/release-bundle/")
+    expect(artifact.dig("with", "if-no-files-found")).to eq("error")
+    expect(bundle.fetch("steps").filter_map { |step| step["run"] }.last)
       .to include('script/release/cli.rb build "$RELEASE_TAG" "$RELEASE_SHA"')
   end
 end

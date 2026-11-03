@@ -14,7 +14,7 @@ Feature: Practice API contracts and diagnostic evidence
       | word  | persevere |
       | saved | true      |
 
-  Scenario Outline: Query practice word metadata
+  Scenario Outline: Query practice word metadata (<word>)
     When I GET metadata for "<word>"
     Then the response status is 200
     And the JSON response includes:

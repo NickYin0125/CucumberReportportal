@@ -406,7 +406,19 @@ _Details_ `api_key` = `[REDACTED]`
 ````markdown
 ✓ POST /api/orders → 201 · 84 ms
 
+_Response_ · `application/json` · 51 B
+
+```json
+{ "orderId": "ORD-20261031-0042", "status": "ACCEPTED" }
+```
+
 `https://api.example.test/api/orders`
+
+_Request_ · `application/json` · 55 B
+
+```json
+{ "account": "JPM-PRIME", "side": "BUY", "notional": 5000000 }
+```
 
 _Request headers · 4_
 
@@ -417,22 +429,10 @@ X-Request-Id: ledger-42
 X-Fixture: F11a
 ```
 
-_Request_ · `application/json` · 55 B
-
-```json
-{ "account": "JPM-PRIME", "side": "BUY", "notional": 5000000 }
-```
-
 _Response headers · 1_
 
 ```text
 Content-Type: application/json
-```
-
-_Response_ · `application/json` · 51 B
-
-```json
-{ "orderId": "ORD-20261031-0042", "status": "ACCEPTED" }
 ```
 ````
 

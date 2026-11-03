@@ -215,6 +215,19 @@ deliberately want terminal diagnostics. Request/response Hashes use `headers:`
 and `body:`, with `status:` on the response. Do not invent options such as
 `sensitive_keys:` on `AppLog.http`; its public signature does not accept them.
 Pre-redact application-specific fields in the client before logging.
+SDK 1.3.3 strengthens these existing automatic HTTP/evidence paths without
+globally redacting ordinary AppLog text/JSON. RP HTTP cards put responses before
+requests and preserve repeated header values; ERROR/FATAL cards stay plain even
+with `RP_PRESENTATION=rich`. Assertion cards label empty/whitespace-sensitive
+strings and summarize top-level missing/extra/changed JSON keys, not recursive diffs.
+
+Automatic URL/evidence inputs that exceed the bounded decoding budget are
+intentionally withheld rather than decoded without limit. This narrow 1.x
+fail-closed hardening covers the reproduced four/five-layer percent-encoded
+JSON-path leak beyond released 2.0.2's three-pass guard. It is not a fix to the
+released 2.x tag or a promise of byte-identical 2.0.2 behavior. Native 1.x failure
+messages/backtraces and raw logs remain outside this sanitization guarantee
+under Decision 19.
 
 For POST/PUT bodies and a real local fixture, copy the
 [current SDK API client](../examples/current_sdk/helpers/api_client.rb) and read
@@ -303,6 +316,10 @@ end
 
 The PNG follows AppLog's native-report route and is forwarded once to RP. The
 `rp_evidence` call adds the RP failure diagnostic without resubmitting the PNG.
+Use a unique filename for every screenshot, as the current consumer does. This
+means one RP entry per PNG, not native HTML deduplication. R02 remains unfixed:
+hiding passed logs can hide evidence owned by a passed After Hook. The current
+consumer's consolidated PNG route does not also attach that PNG to native HTML.
 With `RP_ENABLED=false`, native evidence still works and `rp_evidence` returns
 false. A capture failure remains secondary and the original action still fails.
 
@@ -392,6 +409,9 @@ text has separate bounded credential redaction. **These are not general PII
 filters**. Ordinary AppLog text/JSON, low-level `rp_log`, native logs, files,
 screenshots, videos, and original exception/backtrace channels may contain private
 data. Redaction in one diagnostic does not mutate a re-raised browser exception.
+Under Decision 19, native 1.x failures retain the original v1.3.1 message and
+every backtrace frame; `FailureRedactor` is not activated. Sanitize sensitive
+application inputs at their producer rather than relying on failure-log filtering.
 
 Use synthetic identifiers and an allowlisted set of response fields. Redact
 application-specific sensitive fields before logging. Avoid authentication bodies,

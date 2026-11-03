@@ -78,7 +78,7 @@ RSpec.describe "Independent SDK and Helm release versions" do
     File.write(File.join(bundle.directory, "SHA256SUMS"), sums)
   end
 
-  %w[1.3.2 1.4.0 2.0.1].each do |sdk_version|
+  %w[1.3.2 1.3.3 1.4.0 2.0.1].each do |sdk_version|
     context "with SDK #{sdk_version}" do
       let(:version) { sdk_version }
 

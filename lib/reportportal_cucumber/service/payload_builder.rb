@@ -399,6 +399,10 @@ module ReportportalCucumber
         return baseline_log_message(message, attachment) unless attachment
         return baseline_log_message(message, attachment) if attachment[:caption_style] == "baseline"
 
+        guard_level = normalize_log_level(level)
+        guard_level = :error unless %w[trace debug info warn error fatal].include?(guard_level)
+        presentation = "plain" if %w[error fatal].include?(guard_level.to_s)
+
         Presentation::Fallback.render(fallback: -> { baseline_log_message(message, attachment) }, state: fallback_state) do
           preview = ledger_attachment_preview(attachment, presentation: presentation)
           mime = attachment.fetch(:mime)
@@ -413,14 +417,7 @@ module ReportportalCucumber
           plain = [base, caption, preview[:text]].compact.reject(&:empty?).join("\n\n")
           next plain unless presentation == "rich"
 
-          # Numeric/custom wire levels remain untouched; conservatively protect
-          # their first line too, rather than guessing their severity.
-          guard_level = normalize_log_level(level)
-          guard_level = :error unless %w[trace debug info warn error fatal].include?(guard_level)
-          # An ERROR caption on the first line must remain byte-identical. When
-          # caller text comes first, only the generated caption is accented.
-          caption_level = base.to_s.empty? ? guard_level : :info
-          rich_caption = Presentation::AttachmentCaption.format(**caption_data, presentation: "rich", level: caption_level)
+          rich_caption = Presentation::AttachmentCaption.format(**caption_data, presentation: "rich", level: guard_level)
           rich = [base, rich_caption, preview[:rich_text] || preview[:text]].compact.reject(&:empty?).join("\n\n")
           Presentation::Accent.guard(plain: plain, rich: rich, level: guard_level)
         end

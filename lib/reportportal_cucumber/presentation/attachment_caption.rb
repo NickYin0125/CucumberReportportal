@@ -44,7 +44,7 @@ module ReportportalCucumber
           parts << Units.bytes(size)
           parts << "failure evidence" if evidence
           plain = parts.join(" · ")
-          next plain unless presentation == "rich"
+          next plain unless presentation == "rich" && !%w[error fatal].include?(level.to_s.downcase)
 
           rich = ["#{Accent.pill(parts[1], tone: :info)} #{parts[0]}", *parts.drop(2)].join(" · ")
           Accent.guard(plain: plain, rich: rich, level: level)

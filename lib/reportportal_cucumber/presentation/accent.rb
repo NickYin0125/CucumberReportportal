@@ -83,16 +83,16 @@ module ReportportalCucumber
         # @param rich [String] Complete candidate assembled from these helpers.
         # @param level [Symbol, String] trace/debug/info/warn/error/fatal; strings
         #   are case-insensitive. This is explicit input, never global context.
-        # @return [String] The exact plain object if rich adds >1024 bytes or
-        #   changes an ERROR first line; otherwise the exact rich object.
+        # @return [String] The exact plain object for ERROR/FATAL, or if rich
+        #   adds >1024 bytes; otherwise the exact rich object.
         #   This is not an HTML rewriter or a replacement for outer Fallback.
         def guard(plain:, rich:, level:)
           [plain, rich].each { |text| check_text!(text) }
           level = level.downcase.to_sym if level.is_a?(String)
           raise ArgumentError, "unknown log level" unless LEVELS.include?(level)
 
+          return plain if %i[error fatal].include?(level)
           return plain if rich.bytesize > plain.bytesize + MAX_ADDED_BYTES
-          return plain if level == :error && plain.partition("\n").first.b != rich.partition("\n").first.b
 
           rich
         end

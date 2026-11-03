@@ -1,32 +1,33 @@
 # Getting started
 
-**Version scope:** this guide installs the unpublished SDK **1.3.2** candidate
-from a matching maintainer-supplied or locally built archive, not an invented
-release URL. Use Ruby `>=3.1` and Cucumber `>=9,<11`. The 1.x expressions constraint
+**Version scope:** this guide installs SDK **1.3.3** from the
+[v1.3.3 GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.3)
+or a matching locally built candidate archive. Use Ruby `>=3.1` and Cucumber `>=9,<11`. The 1.x expressions constraint
 `>=17,<19` remains required for native HTML/message compatibility.
 
-Follow **install the candidate, run one local Scenario, integrate an existing
+Follow **install the gem, run one local Scenario, integrate an existing
 project, add API/UI evidence, then run in CI**. Steps 1-2 need only Ruby, Bundler
 and the gems. Browser tooling, Node, ReportPortal and an SDK source checkout are
 not required to consume a supplied archive.
 
-## 1. Install the candidate
+## 1. Install the gem
 
 From **a directory where you keep projects**, create a fresh consumer project.
-Set the archive path to the exact candidate supplied by your maintainer; verify
-its checksum and source provenance before installation. There is no assumed
-1.3.2 tag, release asset or RubyGems publication.
+Download the Gem, `SHA256SUMS` and `release-manifest.json` from the linked release.
+Set the archive path to that file; verify its checksum and source provenance
+before installation. RubyGems registry publication is not performed by this
+release process; install the downloaded archive, not an assumed registry package.
 
 ```sh
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.2.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.3.gem
 mkdir -p rp-smoke/vendor/cache rp-smoke/features/support rp-smoke/features/step_definitions
 cd rp-smoke
-cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.2.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.2.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.3.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.3.gem --no-document
 ```
 
-Expected: the candidate archive is in `rp-smoke/vendor/cache`, and RubyGems
-installs `reportportal-cucumber-ruby-1.3.2` plus missing dependencies.
+Expected: the archive is in `rp-smoke/vendor/cache`, and RubyGems
+installs `reportportal-cucumber-ruby-1.3.3` plus missing dependencies.
 
 Create **`rp-smoke/Gemfile`**:
 
@@ -34,7 +35,7 @@ Create **`rp-smoke/Gemfile`**:
 source "https://rubygems.org"
 
 gem "cucumber", "~> 10.0"
-gem "reportportal-cucumber-ruby", "= 1.3.2"
+gem "reportportal-cucumber-ruby", "= 1.3.3"
 ```
 
 From **`rp-smoke/`**:
@@ -45,7 +46,7 @@ bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber:
 ```
 
 Expected: Bundler resolves supported Cucumber 10 and the installed or cached
-candidate; the version check prints `1.3.2`. Commit `Gemfile.lock` in your
+archive; the version check prints `1.3.3`. Commit `Gemfile.lock` in your
 real test project. Existing published archives remain unchanged.
 
 First-time installs need network access. `gem install --local` and

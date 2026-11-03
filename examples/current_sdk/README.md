@@ -1,14 +1,17 @@
 # Current SDK API/UI example
 
-A small independent Cucumber project using **`reportportal-cucumber-ruby` 1.3.2**.
+A small independent Cucumber project targeting **`reportportal-cucumber-ruby` 1.3.3**
+and **Cucumber 9/10**.
 It makes real loopback HTTP requests and optionally drives real Chromium against
 a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-SDK 1.3.2 is an unpublished candidate. Use this example and a matching explicitly
-selected candidate archive; no new tag, release URL or registry publication is
-implied. The shared SDK version definition keeps setup/runtime checks aligned.
+Use the SDK 1.3.3 Gem from the
+[v1.3.3 GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.3)
+or a matching explicitly selected local candidate archive. RubyGems registry
+publication is not performed by this release process. The shared SDK version
+definition keeps setup/runtime checks aligned.
 Older published archives and their dated evidence are unchanged.
 
 ## Install the consumer
@@ -17,16 +20,17 @@ Use Ruby `>=3.1`, Bundler `>=2.6`, and Cucumber `>=9,<11`. Node/npm and the comp
 Playwright CLI/browser are needed for UI, not for the API-only run. The sample pins
 Playwright Ruby to 1.62.0; setup derives its CLI version from the installed binding.
 
-Use the `maintenance/presentation-ledger-1.3.2` checkout for sample files.
-Obtain the candidate archive from your maintainer or build it with the
+Use the `v1.3.3` checkout for sample files.
+Obtain the release archive and checksums from the linked release or build it with the
 [source-packaging workflow](#source-and-packaging-verification).
+Verify the selected archive before installation.
 
-From **any directory**, set absolute checkout and candidate paths. Install in a
+From **any directory**, set absolute checkout and archive paths. Install in a
 disposable gem directory instead of changing global gems or Bundler settings:
 
 ```sh
 sample_source=/absolute/path/to/CucumberReportportal
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.2.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.3.gem
 sample_work=$(mktemp -d "${TMPDIR:-/tmp}/current-sdk-consumer.XXXXXX")
 cp -R "$sample_source/examples/current_sdk" "$sample_work/project"
 cd "$sample_work/project"
@@ -41,12 +45,35 @@ ruby bin/setup "$SDK_GEM_ARCHIVE"
 ```
 
 Expected: normal gem installation, version-pinned Bundler resolution, matching
-Node Playwright CLI installation, and Chromium installation. Use a supported Node
-runtime (the previous lab used Node 20+). Review the
+Node Playwright CLI installation, and Chromium installation. UI setup requires
+**Node >=20** for the pinned `playwright-core` 1.62.1 CLI, paired with
+`playwright-ruby-client` 1.62.0. Review the
 [Ruby Playwright setup guide](https://playwright-ruby-client.vercel.app/docs/article/getting_started)
 if your OS needs browser packages. `bin/setup` can require network access for all
 three dependency layers. Existing tools can be reused with `SKIP_BROWSER_SETUP=true`,
 an absolute `PLAYWRIGHT_CLI_EXECUTABLE_PATH`, and `PLAYWRIGHT_BROWSERS_PATH`.
+Before reusing a CLI, check the Node version and compare these two CLI versions:
+
+```sh
+node --version
+bundle exec ruby -rplaywright/version -e 'puts "Required CLI: #{Playwright::COMPATIBLE_PLAYWRIGHT_VERSION}"'
+"$PLAYWRIGHT_CLI_EXECUTABLE_PATH" --version
+```
+
+The required and installed CLI versions must match exactly (1.62.1 for this
+example); a different working Playwright installation is not automatically
+compatible. Its matching Chromium must also exist in `PLAYWRIGHT_BROWSERS_PATH`.
+If they differ, use a supported Node version, clear the old CLI override, and
+install the pinned CLI/browser rather than silently reusing the mismatch:
+
+```sh
+unset SKIP_BROWSER_SETUP PLAYWRIGHT_CLI_EXECUTABLE_PATH
+ruby bin/setup "$SDK_GEM_ARCHIVE"
+```
+
+The npm install explicitly uses `--prefix` with the consumer's working directory,
+so it cannot select a parent project's `package.json`. No `package.json` is needed
+or shipped by this example.
 
 **Copy outside the checkout before execution.** Scripts reject running under the
 SDK source example directory; generated reports/node_modules there could otherwise
@@ -88,15 +115,20 @@ bundle exec ruby bin/verify
 
 The runner preserves the native Cucumber exit. `intentional` is not an all-pass
 suite. Only the verifier recognizes its precise failed-Step count, original
-Playwright TimeoutError, and valid After-hook screenshot as the expected negative
-case. It rejects other failures/skipped/undefined/pending steps, forces RP off,
-and checks native HTML/messages ownership, compact/color console output, and
-spool retention. These are executable expectations, not a claim they ran on your
-machine or against your RP service.
+Playwright TimeoutError, unchanged passed After hook, and valid local screenshot
+as the expected negative case. It rejects other failures/skipped/undefined/pending steps, forces RP off,
+and checks exact evidence counts/owners, native HTML/messages agreement,
+compact/color console output, and spool retention. It also runs the example's
+self-tests, including one captioned PNG at the RP queue boundary with After
+ownership, without connecting to RP. These are executable expectations, not a
+claim they ran on your machine or against your RP service.
 
 Each run prints its unique `artifacts/<profile>/<run>/` path. Open `cucumber.html`
 and expand the API action to see request/response Markdown/JSON. For `intentional`,
-inspect the original failed Step and **After Hook** PNG plus `failure-routing.json`.
+inspect the original failed Step in native HTML and the local PNG in the report
+directory. Failure PNG names contain the scenario slug, failed checkpoint and a
+random suffix, for example `save-a-practice-word-practice-status-a1b2c3d4.png`.
+Native HTML/messages deliberately do **not** contain the failure screenshot.
 `progress.txt`, `summary.txt`, and `messages.ndjson` are retained. The RP
 formatter's distinct `reportportal.txt` destination may be absent; it is not an
 RP log stream or receipt. `NO_COLOR=1` disables sample console colors.
@@ -112,10 +144,12 @@ bundle exec ruby bin/check_fixture
 bundle exec ruby bin/check_config
 bundle exec ruby bin/check_rerun
 bundle exec ruby bin/runtime
+bundle exec ruby test/self_test.rb
 ```
 
 Expected: fixture HTTP/size contracts, credential-free endpoint policy, safe
-rerun/spool preservation, and installed runtime/version/SHA manifest respectively.
+rerun/spool preservation, installed runtime/version/SHA manifest, and example
+self-tests respectively.
 `check_rerun` preserves its synthetic spool sentinel. `bin/runtime` can compare
 the complete installed `lib/**/*.rb` file inventory against `SDK_SOURCE_ROOT`
 when you explicitly set it; do not use that check to equate the published release
@@ -135,7 +169,7 @@ Expected: the **Current SDK examples** Launch (or your `RP_LAUNCH` override)
 contains the 4 API Scenarios and their action-owned evidence. Full `offline`
 contributes 5 passed Scenarios across two Feature suites. Refresh after batching,
 include DEBUG to find deep helper logs, and inspect the expected 400 at INFO.
-The optional diagnostic comparison can be ERROR while its separately asserted
+The optional diagnostic-only observation is INFO and explicitly non-fatal; its
 expected-rejection Scenario remains PASSED.
 
 For an explicitly selected loopback development RP endpoint, **from the same
@@ -154,9 +188,20 @@ consumers. Use HTTPS for real networks. `RP_ALLOW_LOCAL_HTTP` is sample-specific
 
 Run `intentional` separately with RP enabled when checking browser-failure
 ownership: it deliberately exits `1`, and its screenshot belongs to After, not
-the completed failing Step. The PNG follows AppLog's native event route; the
-structured `rp_evidence` diagnostic targets the open Hook without attaching
-the same PNG twice. A rejected target never silently retargets to another action.
+the completed failing Step. One direct `rp_attach` call emits an ERROR entry
+containing the scenario/failed-check caption and PNG. The last **passed** browser
+action appears in its details, not its title. The terminal summary uses
+`AppLog.error(report: false)` and creates no extra RP/native record. There is no
+`rp_evidence` call, native failure attachment, or `failure-routing.json` entry.
+This RP-only screenshot route is intentional: native HTML/messages retain the
+original exception and backtrace but no failure PNG. With RP disabled or absent,
+the PNG remains a local file and no RP evidence is emitted.
+
+**R02 is not fixed.** Evidence remains owned by the current open After hook,
+whose status stays PASSED. RP's **Hide all passed logs** hides this After-hook
+evidence even though the screenshot entry is ERROR. Turn that filter off to see
+it. The example does not retarget the Scenario or closed failed Step, extend the
+capture API, or change hook status.
 See [best practices](../../docs/best-practices.md) and the
 [CI reporting policy](../../docs/ci.md#choose-the-reporting-policy).
 
@@ -174,7 +219,7 @@ terminal output, user AppLog text, item names/descriptions and Launch metadata
 remain free of those accents. Run context separately adds allowlisted metadata;
 explicit attributes and descriptions win. No worker attribute is generated on 1.x.
 
-Invalid presentation values warn once and fall back to plain. ERROR first lines,
+Invalid presentation values warn once and fall back to plain. Entire ERROR/FATAL messages,
 evidence values, ownership and attachment bytes remain unchanged. See the
 [configuration reference](../../docs/configuration.md#presentation-and-run-context)
 and [presentation boundaries](../../docs/advanced-reporting.md#presentation).
@@ -243,7 +288,7 @@ bundle exec ruby bin/verify
 Expected: setup accepts a candidate with the shared consumer version, and runtime
 verification loads that normally installed gem from the isolated GEM_HOME and
 checks its source hashes. This proves the candidate packaging lane when it passes;
-it does not publish 1.3.2, replace older releases, or prove real RP/video ingestion.
+it does not publish 1.3.3, replace older releases, or prove real RP/video ingestion.
 
 For separate Cucumber lanes, use a fresh external copy/lockfile per lane and set
 `CUCUMBER_VERSION='= 9.2.1'` or `'= 10.2.0'` on both setup and verification commands.
@@ -253,4 +298,4 @@ set `SDK_SOURCE_ROOT` to a gemspec-containing checkout. It is not packaging proo
 
 The [archived 2026-10-12 verification](verification.md) records earlier candidate
 runs, toolchain details, HTML backtrace normalization, and limitations. Its older
-candidate version/results must not be relabeled as fresh 1.3.2 acceptance.
+candidate version/results must not be relabeled as fresh 1.3.3 acceptance.

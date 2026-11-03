@@ -7,14 +7,15 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-This checkout prepares **SDK 1.3.2**, an unpublished Ledger presentation
-candidate. Use a matching maintainer-supplied or locally built archive; no new
-tag, GitHub release or RubyGems publication is implied.
+**SDK 1.3.3** selectively backports 2.0.2 readability and example-redaction
+improvements onto released 1.3.2. Download the matching Gem and checksums from
+the [v1.3.3 GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.3).
+RubyGems registry publication is not performed by this release process.
 
-| SDK line | Ruby | Cucumber | Candidate source |
+| SDK line | Ruby | Cucumber | Release source |
 | --- | --- | --- | --- |
-| 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/presentation-ledger-1.3.2` |
-| 2.x / **2.0.1** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/presentation-ledger-2.0.1` |
+| 1.x / **1.3.3** | `>= 3.1` | `>= 9, < 11` | `v1.3.3` / `maintenance/1.x` |
+| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `v2.0.2` / `codex/cucumber-12` |
 
 Cucumber 11 remains unsupported. Existing published archives and their dated
 evidence are unchanged. Helm **1.3.1** / ReportPortal **26.0.7** stay independently
@@ -31,7 +32,7 @@ a browser or a ReportPortal server before connecting your real project.
 | --- | --- |
 | Ruby | `>= 3.1` |
 | Cucumber | `>= 9, < 11` |
-| Package | `reportportal-cucumber-ruby` **1.3.2**, matching candidate archive |
+| Package | `reportportal-cucumber-ruby` **1.3.3**, matching release archive |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -39,19 +40,20 @@ The SDK records tests and evidence. Your framework makes HTTP requests, performs
 assertions, and owns browser/screenshot/video lifecycles. Logging an ERROR does
 not fail a Scenario.
 
-## 1. Install the candidate gem
+## 1. Install the gem
 
-Obtain `reportportal-cucumber-ruby-1.3.2.gem` from the maintainer or use the
+Obtain `reportportal-cucumber-ruby-1.3.3.gem` from the linked GitHub release,
+verify its SHA-256 against `SHA256SUMS`, or use the
 [isolated source-packaging workflow](examples/current_sdk/README.md#source-and-packaging-verification).
-There is no candidate release-download URL or assumed registry publication.
+The local candidate workflow is optional; no registry publication is assumed.
 
 From **your automation project root**, using the verified archive's absolute path:
 
 ```sh
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.2.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-1.3.3.gem
 mkdir -p vendor/cache
-cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.2.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.2.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-1.3.3.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-1.3.3.gem --no-document
 ```
 
 Add these entries to that project's `Gemfile`, then run `bundle install` from the
@@ -60,7 +62,7 @@ same directory:
 ```ruby
 source "https://rubygems.org"
 gem "cucumber", ">= 9", "< 11"
-gem "reportportal-cucumber-ruby", "= 1.3.2"
+gem "reportportal-cucumber-ruby", "= 1.3.3"
 ```
 
 Verify, still from **your project root**:
@@ -69,8 +71,8 @@ Verify, still from **your project root**:
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected output: `1.3.2`. Installation may download dependencies; offline setup
-requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-candidate).
+Expected output: `1.3.3`. Installation may download dependencies; offline setup
+requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-gem).
 
 ## Presentation Opt-ins
 
@@ -81,10 +83,23 @@ text, names and descriptions do not acquire rich markup.
 
 Structured AppLog HTTP and assertion logs retain their existing native Cucumber
 and terminal bodies; only the RP subscriber selects the new plain or rich cards.
+In 1.3.3, ERROR/FATAL cards stay plain: no new Ledger decoration is added;
+existing MP4 `<video>` markup and caller-supplied HTML remain unchanged. This is
+not an HTML-stripping policy. HTTP cards show responses first and retain
+repeated headers; assertions label whitespace-sensitive strings and top-level key
+deltas. Existing automatic HTTP/evidence redaction is strengthened, not extended
+to all logging. Decision 19 preserves each native 1.x failure's original v1.3.1
+message and every backtrace frame; `FailureRedactor` is not activated and raw
+AppLog text/JSON is not globally redacted. Producers must keep secrets out.
+Automatic URL/evidence inputs exceeding the bounded decoding budget are
+intentionally withheld, not decoded without limit. This 1.x hardening is not
+byte-identical to released 2.0.2 and does not repair that released 2.x tag.
 
 `RP_RUN_CONTEXT=true` separately enables allowlisted Launch metadata; it defaults
 to `false` and never overwrites explicit attributes or a non-empty description.
 The 1.x line never generates a `workers` attribute.
+Generated descriptions focus on available branch/commit/build context rather
+than repeating runtime attributes; explicit descriptions still win.
 See [configuration](docs/configuration.md#presentation-and-run-context) and
 [Presentation](docs/advanced-reporting.md#presentation) for boundaries and examples.
 
@@ -155,6 +170,10 @@ terminal-only unless `report: true` (or legacy `attach: true`) is supplied.
 Use one route per artifact to avoid submitting it twice. Publish Step evidence
 before that Step closes; an After-hook screenshot belongs to the After Hook.
 Keep file-backed evidence until reporting finalization settles.
+The current example uses unique PNG names and one RP submission per screenshot.
+R02 remains unfixed: hiding passed logs can hide evidence owned by a passed
+After Hook. The consolidated PNG route does not also attach that PNG to native
+HTML; unique filenames are not a native HTML deduplication fix.
 
 Example of Step logs and a Gherkin table rendered in ReportPortal:
 
@@ -218,12 +237,19 @@ From **an SDK source checkout**, with Ruby/Bundler installed:
 bundle install
 RUBYOPT=-rbundler/setup bundle exec rspec -Ilib -Ispec spec
 bundle exec cucumber
+bundle exec rspec script/release/spec
 ```
 
 Expected: RSpec and the default Cucumber suite complete successfully for a healthy
 checkout. These are developer checks; consumers do not need the root development
 bundle. Browser/live RP/duration checks are separate opt-ins in the
 [examples index](examples/README.md).
+Source CI requires full RSpec, offline Cucumber and release-isolation regressions
+in all four Ruby 3.1/3.3 x Cucumber 9.2.1/10.2.0 cells before separate clean
+release packaging. The separate [1.3.3 QA report](https://github.com/NickYin0125/CucumberReportportal/blob/013fcd5a77511f7e4a3ae6d8018c96815d167abe/docs/reviews/2026-11-03-maintenance-1.3.3-final-acceptance.md)
+and [CI extension](https://github.com/NickYin0125/CucumberReportportal/blob/013fcd5a77511f7e4a3ae6d8018c96815d167abe/docs/reviews/2026-11-03-maintenance-1.3.3-ci-extension.md)
+record tested commits, counts, live runs, performance tradeoffs and limitations;
+SDK 2.0.2 results are not substituted for 1.3.3 acceptance.
 
 The gem uses Cucumber, `cucumber-cucumber-expressions` (`>=17,<19`), `mime-types`,
 and `aws-sdk-s3` for optional S3 video delivery. Cucumber 11 is unsupported.

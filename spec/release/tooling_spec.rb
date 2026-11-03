@@ -136,7 +136,7 @@ RSpec.describe ReleaseTooling do
     end
   end
 
-  %w[1.3.2 2.0.1].each do |release_version|
+  %w[1.3.2 1.3.3 2.0.1].each do |release_version|
     context "with SDK #{release_version} artifacts" do
       let(:version) { release_version }
 
@@ -275,6 +275,20 @@ RSpec.describe ReleaseTooling do
         expect(gh_commands.last).to eq([
           "gh", "release", "edit", "v1.3.2", "--draft=false", "--latest=false",
           "--title", "SDK 1.3.2 / Helm 1.3.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
+          "--repo", "owner/repo"
+        ])
+      end
+    end
+
+    context "when publishing v1.3.3" do
+      let(:version) { "1.3.3" }
+      let(:chart_version) { "1.3.1" }
+
+      it "keeps the independently versioned maintenance release off Latest" do
+        publisher.publish!
+        expect(gh_commands.last).to eq([
+          "gh", "release", "edit", "v1.3.3", "--draft=false", "--latest=false",
+          "--title", "SDK 1.3.3 / Helm 1.3.1", "--notes-file", File.join(bundle.directory, "release-notes.md"),
           "--repo", "owner/repo"
         ])
       end

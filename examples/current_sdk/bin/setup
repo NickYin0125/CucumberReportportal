@@ -23,7 +23,7 @@ unless ENV["SKIP_BROWSER_SETUP"] == "true"
   version = IO.popen([RbConfig.ruby, bundle_executable, "exec", RbConfig.ruby, "-e",
                      'require "playwright/version"; puts Playwright::COMPATIBLE_PLAYWRIGHT_VERSION'], &:read).strip
   abort "Cannot determine compatible Playwright CLI" unless $?.success? && version.match?(/\A\d+\.\d+\.\d+\z/)
-  abort "npm installation failed" unless system("npm", "install", "--no-save", "playwright-core@#{version}")
+  abort "npm installation failed" unless system("npm", "install", "--prefix", Dir.pwd, "--no-save", "playwright-core@#{version}")
   cli = ENV.fetch("PLAYWRIGHT_CLI_EXECUTABLE_PATH", File.join(Dir.pwd, "node_modules/.bin/playwright-core"))
   abort "Chromium installation failed" unless system(cli, "install", "chromium")
 end
