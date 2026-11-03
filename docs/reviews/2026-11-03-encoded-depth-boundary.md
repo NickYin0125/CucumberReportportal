@@ -37,3 +37,18 @@ The same correction is a **remaining 2.x follow-up**. This task does not modify
 or republish v2.0.2, and its earlier scoped acceptance is not an assertion that
 arbitrarily nested encoding is safe. Final 1.3.3 evidence must name the actual
 candidate commit and explicitly record whether the additional boundary passes.
+
+## Additional Independent Finding: Repeated Bearer Scheme
+
+Independent QA on frozen candidate `b470799` found three failing checks for
+`Authorization: Bearer Bearer SYNTHETIC_BEARER_SENTINEL`. The automatic text
+redactor masks the second `Bearer` as if it were the token and leaves the actual
+synthetic value. Structured HTTP and evidence surfaces inherit that result.
+The manager independently reproduced it on released 1.3.2 and 2.0.2 as well;
+this is an existing shared gap, not a new 1.x-only regression.
+
+Candidate acceptance is blocked until a narrow correction and independent
+retest pass. The first frozen run is retained as failed evidence, not replaced
+or relabeled. The 2.x follow-up must include this case alongside decode-budget
+exhaustion. Native 1.x failure text and arbitrary AppLog messages remain outside
+the automatic sanitization route under Decision 19.

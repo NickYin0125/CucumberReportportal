@@ -13,7 +13,7 @@ module Automation
   class EvidenceRedactor
     DEFAULT_SENSITIVE_KEYS = CredentialKeys::DEFAULT_KEYS
     MASK = "[REDACTED]".freeze
-    BEARER_PATTERN = /\bBearer[ \t]+[^\s,;&"'<>]+/i
+    BEARER_PATTERN = /\b(?:Bearer[ \t]+)+[^\s,;&"'<>]+/i
     MAX_INPUT_BYTES = 64 * 1024
     MAX_STRUCTURE_BYTES = 256 * 1024
     MAX_STRUCTURE_NODES = 1024
@@ -61,7 +61,7 @@ module Automation
       single_quoted_value = /\\?'(?:\\.|[^'\\]|\\\z)*(?:\\?'|\z)/
       value_patterns = [
         double_quoted_value, single_quoted_value,
-        /Bearer[ \t]+[^\s,;&"'<>]+/, /[^\s,;&"'<>]+/
+        BEARER_PATTERN, /[^\s,;&"'<>]+/
       ]
       value_pattern = Regexp.union(value_patterns)
       key_pattern = "((?<![a-z0-9_.-])[-_.]*(?:#{alternatives.join('|')})[-_.]*(?![a-z0-9_.-])\\\\?\"?)" \
@@ -464,7 +464,7 @@ module Automation
       end
       return true if exposed_value
       return true if decoded.to_enum(:scan, BEARER_PATTERN).any? do
-        !Regexp.last_match(0).sub(/\ABearer[ \t]+/i, "").match?(COMPLETE_MASK)
+        !Regexp.last_match(0).sub(/\A(?:Bearer[ \t]+)+/i, "").match?(COMPLETE_MASK)
       end
 
       # Quoted JSON keys use the same normalization as structured evidence, not
