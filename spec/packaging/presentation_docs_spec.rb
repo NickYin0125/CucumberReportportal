@@ -47,8 +47,8 @@ RSpec.describe "Readability backport candidate version and documentation" do
       .to eq("16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99")
   end
 
-  it "prepends an Unreleased section for this selective backport, not the old Ledger rationale" do
-    expect(changelog).to start_with("# Changelog\n\n## #{version} - Unreleased\n")
+  it "dates the authorized release section without borrowing the old Ledger rationale" do
+    expect(changelog).to start_with("# Changelog\n\n## #{version} - 2026-11-03\n")
     candidate = changelog.split("\n## ", 3)[1]
     expect(candidate).to include("Selective Readability Backport", "2.0.2", "released 1.3.2", "Decision 19")
     expect(candidate).not_to include(rationale, "715/715", "1,519 examples", "Launches 3807")
@@ -96,11 +96,13 @@ RSpec.describe "Readability backport candidate version and documentation" do
     end
   end
 
-  it "uses supplied/local candidates instead of inventing published assets" do
+  it "links the authorized GitHub release while retaining local candidates and the registry boundary" do
     paths = %w[README.md docs/getting-started.md docs/ci.md examples/current_sdk/README.md script/release/README.md]
     paths.each do |relative|
       text = document(relative)
-      expect(text).not_to match(%r{/releases/(?:tag|download)/v#{Regexp.escape(version)}})
+      expect(text).to include("https://github.com/NickYin0125/CucumberReportportal/releases/tag/v#{version}")
+      expect(text).not_to include("unpublished", "no 1.3.3 publication is assumed", "There is no 1.3.3 release-download URL")
+      expect(text).to match(/RubyGems\s+(?:registry\s+)?publication\s+is\s+not\s+performed|No RubyGems publication/)
       expect(text).to match(/candidate/i)
     end
     expect(document("docs/getting-started.md")).to include("SDK_GEM_ARCHIVE", "gem install", version)
@@ -133,7 +135,10 @@ RSpec.describe "Readability backport candidate version and documentation" do
       expect(text).to include("R02 remains unfixed", "hiding passed logs can hide evidence owned by a passed")
       expect(text).to match(/does not also attach that PNG to native\s+HTML/)
     end
-    expect(changelog.split("\n## ", 3)[1]).to include("independent frozen-head four-cell verification is still required")
+    release = changelog.split("\n## ", 3)[1]
+    expect(release).to include("1,878 examples per cell", "1,879 examples per cell", "4085-4088",
+                              "013fcd5a77511f7e4a3ae6d8018c96815d167abe", "scoped ACCEPT")
+    expect(release).not_to include("verification is still required")
   end
 
   it "bounds the new over-depth withholding guarantee to automatic URL/evidence inputs" do

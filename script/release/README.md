@@ -4,14 +4,17 @@ Normal stable tags invoke `Tag Release`: verify fixed release-line ancestry, run
 offline validation, build gem/Chart/checksums/provenance and publish through a draft.
 Only the publish job has contents-write permission. No RubyGems push is performed.
 
-## Current candidate boundary
+## Current maintenance release
 
-SDK **1.3.3** is prepared, not published by this change. The matching candidate
-archive is `reportportal-cucumber-ruby-1.3.3.gem`; the companion Chart remains
-`reportportal-rich-experience-1.3.1.tgz` / ReportPortal `26.0.7`. Consume a supplied
-or locally built archive using the [example workflow](../../examples/current_sdk/README.md#source-and-packaging-verification),
-not an assumed release URL. Candidate packaging is not publication authorization.
-No merge, tag, release or deployment is authorized by this candidate work.
+SDK **1.3.3** is distributed through the
+[v1.3.3 GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.3).
+The archive is `reportportal-cucumber-ruby-1.3.3.gem`; the companion Chart remains
+`reportportal-rich-experience-1.3.1.tgz` / ReportPortal `26.0.7`. The release also
+contains `SHA256SUMS` and `release-manifest.json`. Local candidate builds remain
+available using the [example workflow](../../examples/current_sdk/README.md#source-and-packaging-verification).
+The owner authorized merge and publication on 2026-11-03 after independent
+acceptance. No RubyGems publication or deployment is performed. Future candidate
+packaging is not automatic publication authorization.
 
 This selectively backports 2.0.2 readability and example-redaction improvements
 onto released 1.3.2, preserving Decision 19, Ruby >=3.1 / Cucumber >=9,<11 and

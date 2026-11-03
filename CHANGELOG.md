@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.3.3 - Unreleased
+## 1.3.3 - 2026-11-03
 
 ### Selective Readability Backport
 
@@ -8,15 +8,24 @@
 - Keep ERROR/FATAL evidence cards plain even in rich mode. Label empty and whitespace-sensitive assertion strings, and summarize missing, extra and changed top-level JSON keys without claiming a recursive diff.
 - Show HTTP response evidence before request evidence and preserve repeated header values. Strengthen the existing bounded automatic HTTP/evidence redaction paths; do not enable FailureRedactor or globally redact raw AppLog text/JSON.
 - Intentionally withhold over-depth automatic URL/evidence inputs when the bounded decoding budget is exceeded; do not decode without limit. This 1.x fail-closed hardening addresses the reproduced four/five-layer percent-encoded JSON-path leak beyond released 2.0.2's three-pass guard. It is not a repair of that released 2.x tag or a claim of byte-identical behavior with 2.0.2.
+- Consume repeated Bearer prefixes before masking the credential in automatic evidence. Preserve raw AppLog and Decision 19 native failure text; the corresponding released-2.0.2 correction remains a separate follow-up.
 - Focus generated run-context descriptions on available branch/commit/build information while retaining allowlisted runtime attributes, explicit-value precedence and the 1.x no-generated-workers policy.
 - Use unique PNG names in the current consumer and submit each screenshot through one RP route. R02 remains unfixed: hiding passed logs can hide evidence owned by a passed After Hook. The consolidated PNG route does not also attach that PNG to native HTML; no native HTML deduplication fix is claimed.
 - Preserve Decision 19: native 1.x failures retain the original v1.3.1 message and every backtrace frame, including on presentation fallback. No 2.x failure-redaction policy is activated.
 
-### Candidate Integration And CI
+### Integration And CI
 
 - Validate the candidate in all four Ruby 3.1/3.3 x Cucumber 9.2.1/10.2.0 cells, with isolated dependency resolutions, retained lockfiles, full RSpec, offline Cucumber and executable release-isolation regressions. A required all-cells gate precedes a separate clean release-bundle job.
 - Install locked release dependencies and Bundler configuration outside the checkout, fixing the known vendor/bundle dirty-source failure without relaxing clean-source, ancestry, identity or checksum guards. Keep 1.x publication latest=false and historical 1.3.1 verification unchanged.
-- This is an unreleased candidate, not publication authorization. No tag, GitHub asset, RubyGems publication or deployment is created. SDK 2.0.2 QA results do not establish 1.3.3 acceptance; independent frozen-head four-cell verification is still required.
+- Distribute the Gem, unchanged-version Helm companion, checksums and provenance through GitHub. RubyGems publication and deployment are not performed. The 1.x release does not replace 2.x as GitHub's Latest release.
+
+### Verification
+
+- Runtime `68e81d3697965305438be4fa27aa98aeb4baf726` passed the full local Ruby 3.1.7/3.3.12 x Cucumber 9.2.1/10.2.0 matrix: 1,878 examples per cell, zero failures. Each cell also passed 88 independent probes, nine release-isolation examples and the offline Cucumber profile (one Scenario, three steps).
+- Final CI head `69aaedecd10a3ac01d7ad90b96e2db1b60343344` passed both remote four-cell runs: 1,879 examples per cell, zero failures or pending examples, plus the same offline and isolation checks. The extra example tests CI Gemfile creation order; independent package-byte comparison proved no runtime or packaged content changed from the locally accepted head.
+- Fresh ReportPortal Launches 4085-4088 cover Cucumber 9/10 in plain/rich modes, with three passed and two intentionally failed Scenarios per Launch. API and browser checks verify complete native failures, escaped step arguments, response-first HTTP, bounded F18 previews and correctly owned, uniquely named PNG evidence. Consumer self-tests use browser doubles and are not a new Playwright business run.
+- Independent QA returned scoped ACCEPT; the final report and CI extension are preserved on `qa/readability-1.3.3` at `013fcd5a77511f7e4a3ae6d8018c96815d167abe`. Earlier failed controls and immutable historical reports remain available. This release preparation changes documentation/specs only, not SDK runtime, dependencies, example code or deployment configuration.
+- Matched local CPU-side p95: plain failure cards 0.224 -> 0.146 ms; rich failure cards 0.371 -> 0.205 ms. Plain HTTP evidence 1.571 -> 1.815 ms (+15.5%); the owner accepted this measured cost on 2026-11-03. These are not network latency or production-throughput guarantees. R02 and the existing RP code-theme contrast limitation remain disclosed in QA.
 
 ## 1.3.2 - Unreleased
 

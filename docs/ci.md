@@ -4,8 +4,9 @@ Keep the same World/logger setup and formatter command used locally. Start with
 one Launch per CI job; add shared parallel reporting only when the coordinator
 can own its complete lifecycle.
 
-This example consumes SDK **1.3.3**, an unpublished candidate with the unchanged
-Ruby `>=3.1` / Cucumber `>=9,<11` contract.
+This example consumes SDK **1.3.3** from the
+[v1.3.3 GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.3),
+with the unchanged Ruby `>=3.1` / Cucumber `>=9,<11` contract.
 
 ## A serial job
 
@@ -14,9 +15,11 @@ Use your project's normal browser image/setup only for UI jobs. The example
 below is **consumer GitLab CI configuration**, not the SDK's own release workflow.
 It runs from the checked-out **automation project root**. Inject `RP_API_KEY` as a
 masked CI secret; set your RP endpoint/project to real values. Supply a verified
-candidate archive through your CI artifact/mirror process and set
-`SDK_GEM_ARCHIVE` to its absolute local path. This is not a release-download URL,
-and no 1.3.3 publication is assumed.
+release archive through your CI artifact/mirror process and set
+`SDK_GEM_ARCHIVE` to its absolute local path. The runner uses that local file,
+not a presumed registry package. RubyGems registry publication is not performed
+by this release process. Local candidate archives remain available for pre-release
+validation.
 
 Add to **`.gitlab-ci.yml`**:
 
@@ -61,7 +64,7 @@ retained spool evidence are collected even on failure. `reportportal.out` may
 be absent and is not the delivery receipt.
 
 The project must already have the [version-pinned Gemfile and integration setup](getting-started.md#3-connect-reportportal-and-integrate-an-existing-project).
-Retain/commit its `Gemfile.lock`. Cache approved dependencies or place the candidate
+Retain/commit its `Gemfile.lock`. Cache approved dependencies or place the verified
 archive/dependencies in your internal package mirror for an offline runner; a
 first-time `bundle install --local` cannot fetch missing gems. Set
 `RP_ENABLED=false` for a deliberate native-only job and omit the completeness

@@ -7,9 +7,11 @@ a deterministic practice page. RP is disabled until you enable it. First-time
 users should run the [one-Scenario quick start](../../docs/getting-started.md)
 before this larger example.
 
-SDK 1.3.3 is an unpublished candidate. Use this example and a matching explicitly
-selected candidate archive; no new tag, release URL or registry publication is
-implied. The shared SDK version definition keeps setup/runtime checks aligned.
+Use the SDK 1.3.3 Gem from the
+[v1.3.3 GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.3)
+or a matching explicitly selected local candidate archive. RubyGems registry
+publication is not performed by this release process. The shared SDK version
+definition keeps setup/runtime checks aligned.
 Older published archives and their dated evidence are unchanged.
 
 ## Install the consumer
@@ -18,12 +20,12 @@ Use Ruby `>=3.1`, Bundler `>=2.6`, and Cucumber `>=9,<11`. Node/npm and the comp
 Playwright CLI/browser are needed for UI, not for the API-only run. The sample pins
 Playwright Ruby to 1.62.0; setup derives its CLI version from the installed binding.
 
-Use the `codex/readability-backport-1.3.3` checkout for sample files.
-Obtain the candidate archive from your maintainer or build it with the
+Use the `v1.3.3` checkout for sample files.
+Obtain the release archive and checksums from the linked release or build it with the
 [source-packaging workflow](#source-and-packaging-verification).
-There is no 1.3.3 release-download URL or publication claim before approval.
+Verify the selected archive before installation.
 
-From **any directory**, set absolute checkout and candidate paths. Install in a
+From **any directory**, set absolute checkout and archive paths. Install in a
 disposable gem directory instead of changing global gems or Bundler settings:
 
 ```sh

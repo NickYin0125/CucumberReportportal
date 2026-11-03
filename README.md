@@ -7,15 +7,15 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-This checkout prepares **SDK 1.3.3**, an unpublished selective 2.0.2 readability
-and example-redaction backport onto released 1.3.2. Use a matching
-maintainer-supplied or locally built archive; no new
-tag, GitHub release or RubyGems publication is implied.
+**SDK 1.3.3** selectively backports 2.0.2 readability and example-redaction
+improvements onto released 1.3.2. Download the matching Gem and checksums from
+the [v1.3.3 GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v1.3.3).
+RubyGems registry publication is not performed by this release process.
 
-| SDK line | Ruby | Cucumber | Candidate source |
+| SDK line | Ruby | Cucumber | Release source |
 | --- | --- | --- | --- |
-| 1.x / **1.3.3** | `>= 3.1` | `>= 9, < 11` | `codex/readability-backport-1.3.3` |
-| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/failure-redaction-2.0.2` |
+| 1.x / **1.3.3** | `>= 3.1` | `>= 9, < 11` | `v1.3.3` / `maintenance/1.x` |
+| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `v2.0.2` / `codex/cucumber-12` |
 
 Cucumber 11 remains unsupported. Existing published archives and their dated
 evidence are unchanged. Helm **1.3.1** / ReportPortal **26.0.7** stay independently
@@ -32,7 +32,7 @@ a browser or a ReportPortal server before connecting your real project.
 | --- | --- |
 | Ruby | `>= 3.1` |
 | Cucumber | `>= 9, < 11` |
-| Package | `reportportal-cucumber-ruby` **1.3.3**, matching candidate archive |
+| Package | `reportportal-cucumber-ruby` **1.3.3**, matching release archive |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -40,11 +40,12 @@ The SDK records tests and evidence. Your framework makes HTTP requests, performs
 assertions, and owns browser/screenshot/video lifecycles. Logging an ERROR does
 not fail a Scenario.
 
-## 1. Install the candidate gem
+## 1. Install the gem
 
-Obtain `reportportal-cucumber-ruby-1.3.3.gem` from the maintainer or use the
+Obtain `reportportal-cucumber-ruby-1.3.3.gem` from the linked GitHub release,
+verify its SHA-256 against `SHA256SUMS`, or use the
 [isolated source-packaging workflow](examples/current_sdk/README.md#source-and-packaging-verification).
-There is no candidate release-download URL or assumed registry publication.
+The local candidate workflow is optional; no registry publication is assumed.
 
 From **your automation project root**, using the verified archive's absolute path:
 
@@ -71,7 +72,7 @@ bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber:
 ```
 
 Expected output: `1.3.3`. Installation may download dependencies; offline setup
-requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-candidate).
+requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-gem).
 
 ## Presentation Opt-ins
 
@@ -245,8 +246,10 @@ bundle. Browser/live RP/duration checks are separate opt-ins in the
 [examples index](examples/README.md).
 Source CI requires full RSpec, offline Cucumber and release-isolation regressions
 in all four Ruby 3.1/3.3 x Cucumber 9.2.1/10.2.0 cells before separate clean
-release packaging. SDK 2.0.2 QA results do not establish 1.3.3 acceptance;
-independent frozen-head verification is still required.
+release packaging. The separate [1.3.3 QA report](https://github.com/NickYin0125/CucumberReportportal/blob/013fcd5a77511f7e4a3ae6d8018c96815d167abe/docs/reviews/2026-11-03-maintenance-1.3.3-final-acceptance.md)
+and [CI extension](https://github.com/NickYin0125/CucumberReportportal/blob/013fcd5a77511f7e4a3ae6d8018c96815d167abe/docs/reviews/2026-11-03-maintenance-1.3.3-ci-extension.md)
+record tested commits, counts, live runs, performance tradeoffs and limitations;
+SDK 2.0.2 results are not substituted for 1.3.3 acceptance.
 
 The gem uses Cucumber, `cucumber-cucumber-expressions` (`>=17,<19`), `mime-types`,
 and `aws-sdk-s3` for optional S3 video delivery. Cucumber 11 is unsupported.
