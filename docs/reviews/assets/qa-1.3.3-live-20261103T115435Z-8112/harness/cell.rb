@@ -1,0 +1,147 @@
+# frozen_string_literal: true
+
+require "digest"
+require "fileutils"
+require "json"
+require "open3"
+require "time"
+require_relative "preflight"
+
+OUT = "/evidence"
+SOURCE = "/tmp/qa-1x-source"
+RUNTIME = "/tmp/qa-1x-runtime"
+FileUtils.mkdir_p([OUT, RUNTIME])
+result = { phase: ENV.fetch("QA_PHASE"), sha: ENV.fetch("QA_SHA"), scope: ENV.fetch("QA_SCOPE"), commands: [] }
+result[:harness_sha256] = Dir["/qa/**/*"].select { |path| File.file?(path) }.sort.to_h do |path|
+  [path.delete_prefix("/qa/"), Digest::SHA256.file(path).hexdigest]
+end
+
+def run(result, label, *argv, required: true, chdir: SOURCE)
+  start = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  status = nil
+  File.open(File.join(OUT, "#{label}.log"), "w") do |log|
+    Open3.popen2e(*argv, chdir: chdir) do |input, output, process|
+      input.close
+      IO.copy_stream(output, log)
+      status = process.value
+    end
+  end
+  result[:commands] << { label: label, argv: argv, exit: status.exitstatus,
+    seconds: Process.clock_gettime(Process::CLOCK_MONOTONIC) - start }
+  raise "#{label} failed; inspect #{label}.log" if required && !status.success?
+  status.success?
+end
+
+def fingerprint(root)
+  Dir[File.join(root, "lib/**/*.rb")].sort.to_h do |path|
+    [path.delete_prefix(root + "/"), Digest::SHA256.file(path).hexdigest]
+  end
+end
+
+begin
+  ENV.keys.grep(/\ARP_/).each { |key| ENV.delete(key) }
+  ENV["CUCUMBER_PUBLISH_QUIET"] = "true"
+  ENV["CUCUMBER_PUBLISH_ENABLED"] = "false"
+  ENV["NO_COLOR"] = "1"
+  ENV["PATH"] = "/tools:#{ENV.fetch('PATH')}"
+  ENV["HELM_BIN"] = "/tools/helm"
+  result[:image] = ENV.fetch("QA_IMAGE_ID")
+  result[:tool_preflight] = QA1xPreflight.tools(expected_ruby: ENV.fetch("QA_RUBY"))
+  File.write(File.join(OUT, "tool-preflight.json"), JSON.pretty_generate(result.fetch(:tool_preflight)) + "\n")
+  FileUtils.cp_r("/source", SOURCE)
+  before = fingerprint("/source")
+  raise "Library staging differs" unless before == fingerprint(SOURCE)
+  result[:lib_sha256] = before
+  result[:original_gemfile_lock_sha256] = Digest::SHA256.file(File.join(SOURCE, "Gemfile.lock")).hexdigest
+  # The dependency manifest is outside both SDK checkouts and their lockfiles.
+  gemfile = File.join(RUNTIME, "Gemfile")
+  File.write(gemfile, <<~GEMFILE)
+    eval_gemfile #{File.join(SOURCE, "Gemfile").inspect}
+    gem "cucumber", "= #{ENV.fetch('QA_CUCUMBER')}"
+    gem "cucumber-cucumber-expressions", ">= 17", "< 19"
+    gem "diff-lcs", "< 2"
+  GEMFILE
+  FileUtils.cp_r("/bundle", "/tmp/qa-1x-bundle")
+  ENV["BUNDLE_GEMFILE"] = gemfile
+  ENV["BUNDLE_PATH"] = "/tmp/qa-1x-bundle"
+  ENV["BUNDLE_IGNORE_CONFIG"] = "1"
+  ENV["BUNDLE_FROZEN"] = "false"
+  ENV["BUNDLE_SILENCE_ROOT_WARNING"] = "1"
+  ENV["BUNDLE_JOBS"] = "1"
+  run(result, "git-safe", "git", "config", "--global", "--add", "safe.directory", SOURCE)
+  run(result, "source-head", "git", "rev-parse", "HEAD")
+  raise "Wrong source HEAD" unless File.read(File.join(OUT, "source-head.log")).strip == result.fetch(:sha)
+  run(result, "bundle-install", "bundle", "_2.6.6_", "install", "--local")
+  FileUtils.cp(gemfile, File.join(OUT, "Gemfile.resolved"))
+  FileUtils.cp(gemfile + ".lock", File.join(OUT, "Gemfile.resolved.lock"))
+  run(result, "runtime", "bundle", "_2.6.6_", "exec", "ruby", "-e",
+    "require 'json'; require 'reportportal_cucumber'; puts JSON.generate(ruby: RUBY_DESCRIPTION, sdk: ReportportalCucumber::VERSION, sdk_root: Gem.loaded_specs.fetch('reportportal-cucumber-ruby').full_gem_path, gems: Gem.loaded_specs.sort.to_h.transform_values { |s| s.version.to_s })")
+  result[:runtime] = JSON.parse(File.read(File.join(OUT, "runtime.log")))
+  expected_sdk = result.fetch(:phase) == "baseline" ? "1.3.2" : "1.3.3"
+  raise "Wrong SDK version" unless result.dig(:runtime, "sdk") == expected_sdk
+  raise "Wrong Ruby runtime" unless RUBY_VERSION.start_with?(ENV.fetch("QA_RUBY") + ".")
+  raise "Wrong Cucumber runtime" unless result.dig(:runtime, "gems", "cucumber") == ENV.fetch("QA_CUCUMBER")
+  raise "Wrong expressions runtime" unless Gem::Version.new(result.dig(:runtime, "gems", "cucumber-cucumber-expressions")) < Gem::Version.new("19")
+  result[:sdk_preflight] = QA1xPreflight.sdk(source: SOURCE, runtime: result.fetch(:runtime),
+    expected_version: expected_sdk, cucumber: ENV.fetch("QA_CUCUMBER"))
+  File.write(File.join(OUT, "sdk-preflight.json"), JSON.pretty_generate(result.fetch(:sdk_preflight)) + "\n")
+  ENV["QA_SOURCE"] = SOURCE
+  target = true
+  if result.fetch(:scope) == "preflight"
+    result[:preflight_only] = true
+  else
+    target = run(result, "targeted", "bundle", "_2.6.6_", "exec", "rspec", "/qa/targeted_spec.rb", "/qa/adversarial_spec.rb",
+      "--format", "documentation", "--format", "json", "--out", File.join(OUT, "targeted.json"), required: false)
+    result[:targeted] = JSON.parse(File.read(File.join(OUT, "targeted.json"))).fetch("summary")
+  end
+  if ENV["QA_SETUP_BENCH"] == "1"
+    ENV["QA_BENCH_OUT"] = File.join(OUT, "setup-bench.json")
+    ENV["QA_BENCH_LABEL"] = "#{result.fetch(:phase)}-setup-diagnostic"
+    ENV["QA_BENCH_ITERATIONS"] = "100"
+    run(result, "setup-bench", "bundle", "_2.6.6_", "exec", "ruby", "/qa/bench.rb")
+  end
+  if result.fetch(:scope) == "full"
+    result[:tools] = result.fetch(:tool_preflight).fetch(:pinned_tools)
+    ENV["DOCKER_CONFIG"] = "/tmp/qa-docker-config"
+    FileUtils.mkdir_p("/tmp/qa-docker-config/cli-plugins")
+    FileUtils.ln_s("/tools/docker-compose", "/tmp/qa-docker-config/cli-plugins/docker-compose")
+    FileUtils.mkdir_p(File.join(SOURCE, "helm/reportportal-rich-experience/charts"))
+    FileUtils.cp_r(Dir["/charts/*"], File.join(SOURCE, "helm/reportportal-rich-experience/charts"))
+    ENV["DAY2_LOCAL_CAPTURE"] = File.join(OUT, "faults/day2")
+    ENV["M4_D_EVIDENCE_DIR"] = File.join(OUT, "faults/m4d")
+    FileUtils.mkdir_p([ENV["DAY2_LOCAL_CAPTURE"], ENV["M4_D_EVIDENCE_DIR"]])
+    run(result, "rspec-discovery-full", "bundle", "_2.6.6_", "exec", "rspec", "--dry-run", "--format", "json", "--out", File.join(OUT, "rspec-discovery-full.json"))
+    discovery = JSON.parse(File.read(File.join(OUT, "rspec-discovery-full.json")))
+    result[:rspec_discovery] = discovery.fetch("summary")
+    result[:rspec_discovered_files] = discovery.fetch("examples").group_by { |example| example.fetch("file_path") }.transform_values(&:length)
+    result[:repository_spec_files] = Dir[File.join(SOURCE, "spec/**/*_spec.rb")].sort.map { |path| path.delete_prefix(SOURCE + "/") }
+    rspec = run(result, "rspec-full", "bundle", "_2.6.6_", "exec", "rspec", "--format", "progress", "--format", "json", "--out", File.join(OUT, "rspec-full.json"), required: false)
+    cucumber = run(result, "cucumber-offline-full", "bundle", "_2.6.6_", "exec", "cucumber", "--format", "progress", "--format", "json", "--out", File.join(OUT, "cucumber-offline-full.json"), required: false)
+    isolation = run(result, "release-dependency-isolation", "bundle", "_2.6.6_", "exec", "rspec", "script/release/spec", "--format", "documentation", "--format", "json", "--out", File.join(OUT, "release-dependency-isolation.json"), required: false)
+    result[:release_dependency_isolation] = JSON.parse(File.read(File.join(OUT, "release-dependency-isolation.json"))).fetch("summary")
+    result[:rspec_full] = JSON.parse(File.read(File.join(OUT, "rspec-full.json"))).fetch("summary")
+    elements = JSON.parse(File.read(File.join(OUT, "cucumber-offline-full.json"))).flat_map { |feature| feature.fetch("elements", []) }
+    scenarios = elements.select { |entry| entry["type"] == "scenario" }
+    steps = elements.flat_map { |entry| entry.fetch("steps", []) }
+    result[:cucumber_offline_full] = { scenarios: scenarios.length, steps: steps.length,
+      statuses: steps.group_by { |step| step.dig("result", "status") }.transform_values(&:length) }
+    raise "Full v1.3.2 minimum not reached" unless result.dig(:rspec_full, "example_count") >= 1519 && scenarios.length.positive?
+    raise "Discovery and execution counts differ" unless result.dig(:rspec_full, "example_count") == result.dig(:rspec_discovery, "example_count")
+    executed = JSON.parse(File.read(File.join(OUT, "rspec-full.json"))).fetch("examples").group_by { |example| example.fetch("file_path") }.transform_values(&:length)
+    raise "Discovered whole files or examples omitted" unless executed == result.fetch(:rspec_discovered_files)
+    result[:full_success] = rspec && cucumber && isolation && result.dig(:rspec_full, "pending_count").zero? &&
+      result.dig(:release_dependency_isolation, "example_count").positive? && result.dig(:release_dependency_isolation, "pending_count").zero?
+  end
+  run(result, "tracked-source-unchanged", "git", "diff", "--exit-code", "HEAD", "--")
+  raise "Original lock was changed" unless result.fetch(:original_gemfile_lock_sha256) == Digest::SHA256.file(File.join(SOURCE, "Gemfile.lock")).hexdigest
+  raise "Library changed during tests" unless before == fingerprint(SOURCE) && before == fingerprint("/source")
+  result[:status] = target && result.fetch(:full_success, true) ? "PASS" : "FAIL"
+  result[:baseline_observation_only] = result.fetch(:phase) == "baseline"
+rescue StandardError => error
+  result[:status] = "ERROR"
+  result[:error] = "#{error.class}: #{error.message}"
+ensure
+  File.write(File.join(OUT, "result.json"), JSON.pretty_generate(result) + "\n")
+  puts JSON.generate(result.reject { |key, _| %i[lib_sha256 commands tools].include?(key) })
+end
+exit(result[:status] == "PASS" || (result[:phase] == "baseline" && result[:status] == "FAIL") ? 0 : 1)

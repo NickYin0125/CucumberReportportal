@@ -1,0 +1,25 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 223B 0.0s done
+#1 WARN: InvalidDefaultArgInFrom: Default value for ARG ${BASE_IMAGE} results in empty or invalid base image name (line 2)
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/sha256:7849744f16559a7fc88547a7f6f0b55ea853ee8130b002ff67f59c73c643656c
+#2 ERROR: unexpected status from HEAD request to http://docker.mirrors.ustc.edu.cn/v2/library/sha256/manifests/7849744f16559a7fc88547a7f6f0b55ea853ee8130b002ff67f59c73c643656c?ns=docker.io: 500 writing response to docker.mirrors.ustc.edu.cn:80: reading HTTP HEAD: unexpected EOF
+------
+ > [internal] load metadata for docker.io/library/sha256:7849744f16559a7fc88547a7f6f0b55ea853ee8130b002ff67f59c73c643656c:
+------
+
+ [33m1 warning found (use docker --debug to expand):
+[0m - InvalidDefaultArgInFrom: Default value for ARG ${BASE_IMAGE} results in empty or invalid base image name (line 2)
+Dockerfile:2
+--------------------
+   1 |     ARG BASE_IMAGE
+   2 | >>> FROM ${BASE_IMAGE}
+   3 |     COPY prepare_image.rb /tmp/qa-prepare-image.rb
+   4 |     RUN ruby /tmp/qa-prepare-image.rb
+--------------------
+ERROR: failed to build: failed to solve: sha256:7849744f16559a7fc88547a7f6f0b55ea853ee8130b002ff67f59c73c643656c: failed to resolve source metadata for docker.io/library/sha256:7849744f16559a7fc88547a7f6f0b55ea853ee8130b002ff67f59c73c643656c: unexpected status from HEAD request to http://docker.mirrors.ustc.edu.cn/v2/library/sha256/manifests/7849744f16559a7fc88547a7f6f0b55ea853ee8130b002ff67f59c73c643656c?ns=docker.io: 500 writing response to docker.mirrors.ustc.edu.cn:80: reading HTTP HEAD: unexpected EOF
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/tmwmr80tq9voy1yquuvrgjkui

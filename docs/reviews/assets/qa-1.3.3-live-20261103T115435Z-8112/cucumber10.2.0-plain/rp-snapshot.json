@@ -1,0 +1,1009 @@
+{
+  "launch": {
+    "owner": "superadmin",
+    "description": "68e81d3",
+    "id": 4087,
+    "uuid": "77d9e2d2-077d-47f8-8b1e-576dd06a0160",
+    "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+    "number": 1,
+    "startTime": "2026-11-03T11:55:07.484Z",
+    "endTime": "2026-11-03T11:55:08.973Z",
+    "lastModified": "2026-11-03T11:55:09.032222Z",
+    "status": "FAILED",
+    "statistics": {
+      "executions": {
+        "total": 5,
+        "failed": 2,
+        "passed": 3
+      },
+      "defects": {
+        "to_investigate": {
+          "total": 2,
+          "ti001": 2
+        }
+      }
+    },
+    "attributes": [
+      {
+        "key": "qa.package.sha256",
+        "value": "762d18dec2c0d445e8f67b5a899d032e5d0a1ee5eb1b66fd588b2968bd424044"
+      },
+      {
+        "key": "qa.source.sha",
+        "value": "68e81d3697965305438be4fa27aa98aeb4baf726"
+      },
+      {
+        "key": "qa.independent",
+        "value": "true"
+      },
+      {
+        "key": "qa.mode",
+        "value": "plain"
+      },
+      {
+        "key": "ruby",
+        "value": "3.3.12"
+      },
+      {
+        "key": "cucumber",
+        "value": "10.2.0"
+      },
+      {
+        "key": "git.sha",
+        "value": "68e81d3"
+      },
+      {
+        "key": "qa.cucumber",
+        "value": "10.2.0"
+      },
+      {
+        "key": "sdk",
+        "value": "1.3.3"
+      }
+    ],
+    "mode": "DEFAULT",
+    "analysing": [
+      "cluster"
+    ],
+    "approximateDuration": 0.0,
+    "hasRetries": false,
+    "rerun": false,
+    "retentionPolicy": "REGULAR",
+    "launchType": "AUTOMATION"
+  },
+  "items": [
+    {
+      "id": 33300,
+      "uuid": "e0ccd902-773f-4469-8cd0-6f369dd3d78a",
+      "name": "Feature: Independent minimal 1.x final acceptance",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "SUITE",
+      "startTime": "2026-11-03T11:55:07.599Z",
+      "endTime": "2026-11-03T11:55:08.972Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 5,
+          "failed": 2,
+          "passed": 3
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 2,
+            "ti001": 2
+          }
+        }
+      },
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        }
+      },
+      "hasChildren": true,
+      "hasStats": true,
+      "launchId": 4087,
+      "uniqueId": "auto:3d8a9c08a477eac15f4f3f22a67d3ce6",
+      "testCaseHash": 372608637,
+      "patternTemplates": [
+
+      ],
+      "path": "33300",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33301,
+      "uuid": "fd51a73f-c2c6-411c-9547-c45b2ca6dcfc",
+      "name": "Scenario: HTTP and supported separate arguments",
+      "codeRef": "/qa/live.feature:2",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:07.600Z",
+      "endTime": "2026-11-03T11:55:08.128Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 33300,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 4087,
+      "uniqueId": "284287b817b1a8b55e2be3785070d4399e7fae9c",
+      "testCaseId": "/qa/live.feature:2",
+      "testCaseHash": -589398084,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33301",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 33302,
+      "uuid": "d23f20e7-6945-4bb4-8ec0-fa8e9ede7c4c",
+      "name": "When independent structured HTTP evidence is recorded",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:07.756Z",
+      "endTime": "2026-11-03T11:55:07.821Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33301,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33301,
+            "name": "Scenario: HTTP and supported separate arguments"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:dcdba2e871296e1f313e0d99f5ed2728",
+      "testCaseHash": 1734971407,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33301.33302",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33303,
+      "uuid": "67fd0d4a-326a-4eca-81cb-203d97f271d9",
+      "name": "And independent DocString evidence is recorded",
+      "description": "**And** independent DocString evidence is recorded\n\n```\nliteral <script>qa_docstring</script> & back\\slash\n```",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:07.838Z",
+      "endTime": "2026-11-03T11:55:07.940Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33301,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33301,
+            "name": "Scenario: HTTP and supported separate arguments"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:200e04200a1e7177dd150959f20dad3e",
+      "testCaseHash": -1122611418,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33301.33303",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33304,
+      "uuid": "938010fa-165b-4fda-a279-592dd0bf8b75",
+      "name": "And independent DataTable evidence is recorded",
+      "description": "**And** independent DataTable evidence is recorded\n\n| key | value |\n| --- | --- |\n| label | &lt;img src=x onerror=qa()&gt; |",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:07.960Z",
+      "endTime": "2026-11-03T11:55:08.032Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33301,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33301,
+            "name": "Scenario: HTTP and supported separate arguments"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:4c33991dacd41e0e5397e7a5e8835a84",
+      "testCaseHash": 321857323,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33301.33304",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33305,
+      "uuid": "4f3241ce-f47f-46fa-8ab5-6233545d5cfd",
+      "name": "Then independent attachment previews are recorded",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.044Z",
+      "endTime": "2026-11-03T11:55:08.085Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33301,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33301,
+            "name": "Scenario: HTTP and supported separate arguments"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:0052cea21ddcc355951d84fd0bfa8d93",
+      "testCaseHash": 1645675386,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33301.33305",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33306,
+      "uuid": "65da5fdb-2a4a-4c6d-894c-b47cbf67d535",
+      "name": "Scenario: Outline value literal-one",
+      "codeRef": "/qa/live.feature:13",
+      "description": "`value` = `literal-one` · _Examples · line 17_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "literal-one"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.145Z",
+      "endTime": "2026-11-03T11:55:08.431Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 33300,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 4087,
+      "uniqueId": "e46f7b827bb7cc0c99ca429b76e7a4cdc5419a0b",
+      "testCaseId": "/qa/live.feature:13[value=literal-one]",
+      "testCaseHash": -103114556,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33306",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 33307,
+      "uuid": "4a6d9dce-a4ac-47ca-aff9-ee3881a5eef0",
+      "name": "When independent outline value \"literal-one\" is checked",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.190Z",
+      "endTime": "2026-11-03T11:55:08.346Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33306,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33306,
+            "name": "Scenario: Outline value literal-one"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:21ed547c59e418d7d855a75a2fb1bc7f",
+      "testCaseHash": -527518598,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33306.33307",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33308,
+      "uuid": "06d21c63-b478-4ecf-8563-741f5aed23ec",
+      "name": "Scenario: Outline value literal-two",
+      "codeRef": "/qa/live.feature:13",
+      "description": "`value` = `literal-two` · _Examples · line 18_",
+      "parameters": [
+        {
+          "key": "value",
+          "value": "literal-two"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.504Z",
+      "endTime": "2026-11-03T11:55:08.631Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "passed": 1
+        },
+        "defects": {
+        }
+      },
+      "parent": 33300,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 4087,
+      "uniqueId": "0560fe17f804cee222b72be2a0d73f72d7acaece",
+      "testCaseId": "/qa/live.feature:13[value=literal-two]",
+      "testCaseHash": -102956642,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33308",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 33309,
+      "uuid": "910c6ae1-c3ac-4222-9641-1a519b72bef9",
+      "name": "When independent outline value \"literal-two\" is checked",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.540Z",
+      "endTime": "2026-11-03T11:55:08.592Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33308,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33308,
+            "name": "Scenario: Outline value literal-two"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:2e8df307cac6c6b3f544a6762222befa",
+      "testCaseHash": -1553118906,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33308.33309",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33310,
+      "uuid": "f9f02394-cf7d-4402-a519-4bf1de7c909f",
+      "name": "Scenario: Raw failure with After evidence first",
+      "codeRef": "/qa/live.feature:21",
+      "description": "`case` = `first` · _Examples · line 25_",
+      "parameters": [
+        {
+          "key": "case",
+          "value": "first"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.642Z",
+      "endTime": "2026-11-03T11:55:08.763Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 33300,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          }
+        ]
+      },
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": [
+
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 4087,
+      "uniqueId": "05e5cdd2f2a1515f39563171c02a0040a4fc254e",
+      "testCaseId": "/qa/live.feature:21[case=first]",
+      "testCaseHash": -826070476,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33310",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 33311,
+      "uuid": "da4faba1-2e0f-4b39-9b52-aa8390a691c8",
+      "name": "When independent raw business failure \"first\" occurs",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.664Z",
+      "endTime": "2026-11-03T11:55:08.690Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33310,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33310,
+            "name": "Scenario: Raw failure with After evidence first"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:5a5530a87df9aa51cc1e1a8d47ef6bc4",
+      "testCaseHash": 1482446653,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33310.33311",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33312,
+      "uuid": "680efc9b-1590-4eb6-b66e-a7dadf7e7e39",
+      "name": "After hook",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "AFTER_METHOD",
+      "startTime": "2026-11-03T11:55:08.703Z",
+      "endTime": "2026-11-03T11:55:08.749Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33310,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33310,
+            "name": "Scenario: Raw failure with After evidence first"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:1893c3c0f5fc7af64f5baed09a800933",
+      "testCaseHash": -95644321,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33310.33312",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33313,
+      "uuid": "ae0874e6-e3d7-4b81-8921-aab203bd2f8d",
+      "name": "Scenario: Raw failure with After evidence second",
+      "codeRef": "/qa/live.feature:21",
+      "description": "`case` = `second` · _Examples · line 26_",
+      "parameters": [
+        {
+          "key": "case",
+          "value": "second"
+        }
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.803Z",
+      "endTime": "2026-11-03T11:55:08.927Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+          "total": 1,
+          "failed": 1
+        },
+        "defects": {
+          "to_investigate": {
+            "total": 1,
+            "ti001": 1
+          }
+        }
+      },
+      "parent": 33300,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          }
+        ]
+      },
+      "issue": {
+        "issueType": "ti001",
+        "autoAnalyzed": false,
+        "ignoreAnalyzer": false,
+        "externalSystemIssues": [
+
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": true,
+      "launchId": 4087,
+      "uniqueId": "9a8ce4d6b39963ac9fa915af02105b43d8d26cbe",
+      "testCaseId": "/qa/live.feature:21[case=second]",
+      "testCaseHash": -1314229054,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33313",
+      "hasNestedSteps": true
+    },
+    {
+      "id": 33314,
+      "uuid": "2379c7b7-36a7-4363-b049-ad10f3ad7a20",
+      "name": "When independent raw business failure \"second\" occurs",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "STEP",
+      "startTime": "2026-11-03T11:55:08.816Z",
+      "endTime": "2026-11-03T11:55:08.846Z",
+      "status": "FAILED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33313,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33313,
+            "name": "Scenario: Raw failure with After evidence second"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:0cea520b0f47a2e751004c534de558d7",
+      "testCaseHash": -1587048721,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33313.33314",
+      "hasNestedSteps": false
+    },
+    {
+      "id": 33315,
+      "uuid": "3e5fba1f-c94d-4539-8e4d-bad84b7e0806",
+      "name": "After hook",
+      "parameters": [
+
+      ],
+      "attributes": [
+
+      ],
+      "type": "AFTER_METHOD",
+      "startTime": "2026-11-03T11:55:08.858Z",
+      "endTime": "2026-11-03T11:55:08.893Z",
+      "status": "PASSED",
+      "statistics": {
+        "executions": {
+        },
+        "defects": {
+        }
+      },
+      "parent": 33313,
+      "pathNames": {
+        "launchPathName": {
+          "name": "QA133-68e81d3-c10.2.0-plain-9d8ee270",
+          "number": 1
+        },
+        "itemPaths": [
+          {
+            "id": 33300,
+            "name": "Feature: Independent minimal 1.x final acceptance"
+          },
+          {
+            "id": 33313,
+            "name": "Scenario: Raw failure with After evidence second"
+          }
+        ]
+      },
+      "hasChildren": false,
+      "hasStats": false,
+      "launchId": 4087,
+      "uniqueId": "auto:528fb9036506ad51f70dc88694ed2ac5",
+      "testCaseHash": -1049987679,
+      "patternTemplates": [
+
+      ],
+      "path": "33300.33313.33315",
+      "hasNestedSteps": false
+    }
+  ],
+  "logs": [
+    {
+      "id": 22479,
+      "time": "2026-11-03T11:55:07.782Z",
+      "message": "✓ POST /orders?token=%5BREDACTED%5D&amp;page=2 → 201 · 23 ms\n\n_Response_ · `application/json` · 17 B\n\n```json\n{ \"accepted\": true }\n```\n\n`https://example.test/orders?token=%5BREDACTED%5D&page=2`\n\n_Request_ · 12 B\n\n```json\n{ \"order\": 42 }\n```\n\n_Request headers · 1_\n\n```text\nX-Repeat: one\nX-Repeat: two\n```\n\n_Response headers · 1_\n\n```text\nContent-Type: application/json\n```",
+      "level": "info",
+      "itemId": 33302
+    },
+    {
+      "id": 22480,
+      "time": "2026-11-03T11:55:07.783Z",
+      "message": "## ✗ GET /failure → 503\n\n_Response_ · 19 B\n\n```text\nERROR_RESPONSE_BODY\n```\n\n`https://example.test/failure` · expected `200`",
+      "level": "error",
+      "itemId": 33302
+    },
+    {
+      "id": 22481,
+      "time": "2026-11-03T11:55:07.784Z",
+      "message": "## ✗ Assertion failed · blank is not whitespace\n\n```text\nexpected  \"\" (empty string)\nactual    \" \\t\" (whitespace only)\n```",
+      "level": "error",
+      "itemId": 33302
+    },
+    {
+      "id": 22482,
+      "time": "2026-11-03T11:55:07.785Z",
+      "message": "## ✗ Assertion failed · shallow keys\n\nmissing in actual: `gone` · extra in actual: `extra` · changed: `changed`\n\n```text\nexpected  { \"gone\": true, \"changed\": 1 }\nactual    { \"extra\": false, \"changed\": 2 }\n```",
+      "level": "error",
+      "itemId": 33302
+    },
+    {
+      "id": 22483,
+      "time": "2026-11-03T11:55:07.900Z",
+      "message": "_Doc string_\n\n```\nliteral <script>qa_docstring</script> & back\\slash\n```",
+      "level": "info",
+      "itemId": 33303
+    },
+    {
+      "id": 22484,
+      "time": "2026-11-03T11:55:08.025Z",
+      "message": "_Data table · 2 columns × 1 row_\n\n| key | value |\n| --- | --- |\n| label | &lt;img src=x onerror=qa()&gt; |",
+      "level": "info",
+      "itemId": 33304
+    },
+    {
+      "id": 22485,
+      "time": "2026-11-03T11:55:08.063Z",
+      "message": "`qa-340-lines.txt` · Text · 12 KB\n\n```text\nQA line 1 <script>qa_text</script>\nQA line 2 <script>qa_text</script>\nQA line 3 <script>qa_text</script>\nQA line 4 <script>qa_text</script>\nQA line 5 <script>qa_text</script>\nQA line 6 <script>qa_text</script>\nQA line 7 <script>qa_text</script>\nQA line 8 <script>qa_text</script>\nQA line 9 <script>qa_text</script>\nQA line 10 <script>qa_text</script>\nQA line 11 <script>qa_text</script>\nQA line 12 <script>qa_text</script>\nQA line 13 <script>qa_text</script>\nQA line 14 <script>qa_text</script>\nQA line 15 <script>qa_text</script>\nQA line 16 <script>qa_text</script>\nQA line 17 <script>qa_text</script>\nQA line 18 <script>qa_text</script>\nQA line 19 <script>qa_text</script>\nQA line 20 <script>qa_text</script>\nQA line 21 <script>qa_text</script>\nQA line 22 <script>qa_text</script>\nQA line 23 <script>qa_text</script>\nQA line 24 <script>qa_text</script>\nQA line 25 <script>qa_text</script>\nQA line 26 <script>qa_text</script>\nQA line 27 <script>qa_text</script>\nQA line 28 <script>qa_text</script>\nQA line 29 <script>qa_text</script>\nQA line 30 <script>qa_text</script>\nQA line 31 <script>qa_text</script>\nQA line 32 <script>qa_text</script>\nQA line 33 <script>qa_text</script>\nQA line 34 <script>qa_text</script>\nQA line 35 <script>qa_text</script>\nQA line 36 <script>qa_text</script>\nQA line 37 <script>qa_text</script>\nQA line 38 <script>qa_text</script>\nQA line 39 <script>qa_text</script>\nQA line 40 <script>qa_text</script>\nQA line 41 <script>qa_text</script>\nQA line 42 <script>qa_text</script>\nQA line 43 <script>qa_text</script>\nQA line 44 <script>qa_text</script>\nQA line 45 <script>qa_text</script>\nQA line 46 <script>qa_text</script>\nQA line 47 <script>qa_text</script>\nQA line 48 <script>qa_text</script>\nQA line 49 <script>qa_text</script>\nQA line 50 <script>qa_text</script>\nQA line 51 <script>qa_text</script>\nQA line 52 <script>qa_text</script>\nQA line 53 <script>qa_text</script>\nQA line 54 <script>qa_text</script>\nQA line 55 <script>qa_text</script>\nQA line 56 <script>qa_text</script>\nQA line 57 <script>qa_text</script>\nQA line 58 <script>qa_text</script>\nQA line 59 <script>qa_text</script>\nQA line 60 <script>qa_text</script>\nQA line 61 <script>qa_text</script>\nQA line 62 <script>qa_text</script>\nQA line 63 <script>qa_text</script>\nQA line 64 <script>qa_text</script>\nQA line 65 <script>qa_text</script>\nQA line 66 <script>qa_text</script>\nQA line 67 <script>qa_text</script>\nQA line 68 <script>qa_text</script>\nQA line 69 <script>qa_text</script>\nQA line 70 <script>qa_text</script>\nQA line 71 <script>qa_text</script>\nQA line 72 <script>qa_text</script>\nQA line 73 <script>qa_text</script>\nQA line 74 <script>qa_text</script>\nQA line 75 <script>qa_text</script>\nQA line 76 <script>qa_text</script>\nQA line 77 <script>qa_text</script>\nQA line 78 <script>qa_text</script>\nQA line 79 <script>qa_text</script>\nQA line 80 <script>qa_text</script>\nQA line 81 <script>qa_text</script>\nQA line 82 <script>qa_text</script>\nQA line 83 <script>qa_text</script>\nQA line 84 <script>qa_text</script>\nQA line 85 <script>qa_text</script>\nQA line 86 <script>qa_text</script>\nQA line 87 <script>qa_text</script>\nQA line 88 <script>qa_text</script>\nQA line 89 <script>qa_text</script>\nQA line 90 <script>qa_text</script>\nQA line 91 <script>qa_text</script>\nQA line 92 <script>qa_text</script>\nQA line 93 <script>qa_text</script>\nQA line 94 <script>qa_text</script>\nQA line 95 <script>qa_text</script>\nQA line 96 <script>qa_text</script>\nQA line 97 <script>qa_text</script>\nQA line 98 <script>qa_text</script>\nQA line 99 <script>qa_text</script>\nQA line 100 <script>qa_text</script>\n```\n\n_Preview · first 100 lines · full file attached_",
+      "binaryContent": {
+        "id": "5102",
+        "contentType": "text/plain"
+      },
+      "level": "info",
+      "itemId": 33305
+    },
+    {
+      "id": 22486,
+      "time": "2026-11-03T11:55:08.064Z",
+      "message": "`qa-48k.txt` · Text · 48 KB\n\n```text\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n```\n\n_Preview · first 16 KB of 48 KB · full file attached_",
+      "binaryContent": {
+        "id": "5103",
+        "contentType": "text/plain"
+      },
+      "level": "info",
+      "itemId": 33305
+    },
+    {
+      "id": 22487,
+      "time": "2026-11-03T11:55:08.065Z",
+      "message": "`qa-25-lines.json` · JSON · 359 B\n\n```json\n{\n  \"key1\": 1,\n  \"key2\": 2,\n  \"key3\": 3,\n  \"key4\": 4,\n  \"key5\": 5,\n  \"key6\": 6,\n  \"key7\": 7,\n  \"key8\": 8,\n  \"key9\": 9,\n  \"key10\": 10,\n  \"key11\": 11,\n  \"key12\": 12,\n  \"key13\": 13,\n  \"key14\": 14,\n  \"key15\": 15,\n  \"key16\": 16,\n  \"key17\": 17,\n  \"key18\": 18,\n  \"key19\": 19,\n  \"key20\": 20,\n  \"key21\": 21,\n  \"key22\": 22,\n  \"key23\": 23,\n  \"key24\": 24,\n  \"key25\": 25\n}\n```",
+      "binaryContent": {
+        "id": "5101",
+        "contentType": "application/json"
+      },
+      "level": "info",
+      "itemId": 33305
+    },
+    {
+      "id": 22488,
+      "time": "2026-11-03T11:55:08.299Z",
+      "message": "OUTLINE_VALUE=literal-one",
+      "level": "info",
+      "itemId": 33307
+    },
+    {
+      "id": 22489,
+      "time": "2026-11-03T11:55:08.560Z",
+      "message": "OUTLINE_VALUE=literal-two",
+      "level": "info",
+      "itemId": 33309
+    },
+    {
+      "id": 22490,
+      "time": "2026-11-03T11:55:08.680Z",
+      "message": "## ✗ RuntimeError: QA\\_ORIGINAL\\_first\n\n`live.feature:25:22` → `live_steps.rb:60`\n\n```text\nexpected: \"first\\nchanged\"\nactual: \"first\\nsecond\"\nC:\\qa\\logs\\failure.json api_key=SYNTHETIC_RAW_1X\n```\n\n_Project frames_\n\n```text\nlive_steps.rb:60    \"independent raw business failure {string} occurs\"\nlive_steps.rb:25    block (2 levels) in <top (required)>\nlive_steps.rb:25    block in <top (required)>\nboot.rb:5           <main>\nlive.feature:25:22  independent raw business failure \"first\" occurs\n```\n\n_Full message_\n\n```text\n\nQA_ORIGINAL_first\nexpected: \"first\\nchanged\"\nactual: \"first\\nsecond\"\nC:\\qa\\logs\\failure.json api_key=SYNTHETIC_RAW_1X\n\n```\n\n_Full backtrace · 68 frames · 63 framework frames not shown above_\n\n```text\n/qa/live_steps.rb:60:in `\"independent raw business failure {string} occurs\"'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:30:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/step_definition.rb:135:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:34:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:27:in `block in activate'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/action/defined.rb:24:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:36:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:30:in `test_step'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:24:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `each'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to'\n/qa/live_steps.rb:25:in `block (2 levels) in <top (required)>'\n/tmp/qa-installed/gems/reportportal-cucumber-ruby-1.3.3/lib/reportportal_cucumber/automation/app_log.rb:50:in `with_logger'\n/qa/live_steps.rb:25:in `block in <top (required)>'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `instance_exec'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `block in cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:53:in `cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:30:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/hook.rb:22:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/runtime/support_code.rb:132:in `block (2 levels) in find_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:31:in `block in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:20:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:56:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/retry.rb:23:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/quit.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/compiler.rb:32:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:36:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:35:in `parse'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:24:in `compile'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/runtime.rb:80:in `run!'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/cli/main.rb:29:in `execute!'\n/evidence/boot.rb:5:in `<main>'\n/qa/live.feature:25:22:in `independent raw business failure \"first\" occurs'\n```",
+      "level": "error",
+      "itemId": 33311
+    },
+    {
+      "id": 22491,
+      "time": "2026-11-03T11:55:08.739Z",
+      "message": "QA_AFTER_PNG first\n\n`qa-after-first-3a68426c085eaf50.png` · PNG · 1 × 1 · 69 B",
+      "binaryContent": {
+        "id": "5104",
+        "contentType": "image/png"
+      },
+      "level": "error",
+      "itemId": 33312
+    },
+    {
+      "id": 22492,
+      "time": "2026-11-03T11:55:08.837Z",
+      "message": "## ✗ RuntimeError: QA\\_ORIGINAL\\_second\n\n`live.feature:26:22` → `live_steps.rb:60`\n\n```text\nexpected: \"first\\nchanged\"\nactual: \"first\\nsecond\"\nC:\\qa\\logs\\failure.json api_key=SYNTHETIC_RAW_1X\n```\n\n_Project frames_\n\n```text\nlive_steps.rb:60    \"independent raw business failure {string} occurs\"\nlive_steps.rb:25    block (2 levels) in <top (required)>\nlive_steps.rb:25    block in <top (required)>\nboot.rb:5           <main>\nlive.feature:26:22  independent raw business failure \"second\" occurs\n```\n\n_Full message_\n\n```text\n\nQA_ORIGINAL_second\nexpected: \"first\\nchanged\"\nactual: \"first\\nsecond\"\nC:\\qa\\logs\\failure.json api_key=SYNTHETIC_RAW_1X\n\n```\n\n_Full backtrace · 68 frames · 63 framework frames not shown above_\n\n```text\n/qa/live_steps.rb:60:in `\"independent raw business failure {string} occurs\"'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:30:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/step_definition.rb:135:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:34:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/step_match.rb:27:in `block in activate'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/action/defined.rb:24:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:36:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:30:in `test_step'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/step.rb:24:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:33:in `block (3 levels) in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `each'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:32:in `block (2 levels) in describe_to'\n/qa/live_steps.rb:25:in `block (2 levels) in <top (required)>'\n/tmp/qa-installed/gems/reportportal-cucumber-ruby-1.3.3/lib/reportportal_cucumber/automation/app_log.rb:50:in `with_logger'\n/qa/live_steps.rb:25:in `block in <top (required)>'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `instance_exec'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:40:in `block in cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:53:in `cucumber_run_with_backtrace_filtering'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/invoke_in_world.rb:30:in `cucumber_instance_exec_in'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/glue/hook.rb:22:in `invoke'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/runtime/support_code.rb:132:in `block (2 levels) in find_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:23:in `block in test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:22:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:112:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:54:in `execute'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:37:in `around_hook'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/around_hook.rb:13:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:93:in `block (2 levels) in compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:94:in `compose_around_hooks'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:31:in `block in describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/runner.rb:20:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/prepare_world.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:56:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/retry.rb:23:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_case_ready_event.rb:8:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/quit.rb:11:in `test_case'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/case.rb:30:in `describe_to'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:21:in `block in done'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `map'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/filters/broadcast_test_run_started_event.rb:20:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/locations_filter.rb:19:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/filter.rb:61:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/test/filters/tag_filter.rb:16:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/compiler.rb:32:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core/gherkin/parser.rb:36:in `done'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:35:in `parse'\n/bundle/ruby/3.3.0/gems/cucumber-core-16.2.0/lib/cucumber/core.rb:24:in `compile'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/runtime.rb:80:in `run!'\n/bundle/ruby/3.3.0/gems/cucumber-10.2.0/lib/cucumber/cli/main.rb:29:in `execute!'\n/evidence/boot.rb:5:in `<main>'\n/qa/live.feature:26:22:in `independent raw business failure \"second\" occurs'\n```",
+      "level": "error",
+      "itemId": 33314
+    },
+    {
+      "id": 22493,
+      "time": "2026-11-03T11:55:08.882Z",
+      "message": "QA_AFTER_PNG second\n\n`qa-after-second-5ac5d8152e284e43.png` · PNG · 1 × 1 · 69 B",
+      "binaryContent": {
+        "id": "5105",
+        "contentType": "image/png"
+      },
+      "level": "error",
+      "itemId": 33315
+    }
+  ]
+}

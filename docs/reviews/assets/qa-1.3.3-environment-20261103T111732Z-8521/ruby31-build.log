@@ -1,0 +1,62 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 250B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/local/crr-qa-1x-base-ruby31:7849744f1655
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 2B done
+#3 DONE 0.0s
+
+#4 [1/3] FROM docker.io/local/crr-qa-1x-base-ruby31:7849744f1655
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 1.24kB done
+#5 DONE 0.0s
+
+#6 [2/3] COPY prepare_image.rb /tmp/qa-prepare-image.rb
+#6 DONE 0.0s
+
+#7 [3/3] RUN ruby /tmp/qa-prepare-image.rb
+#7 4.097 Reading package lists...
+#7 4.552 Building dependency tree...
+#7 4.656 Reading state information...
+#7 4.764 The following additional packages will be installed:
+#7 4.764   libjq1 libonig5
+#7 4.800 The following NEW packages will be installed:
+#7 4.801   jq libjq1 libonig5
+#7 6.159 0 upgraded, 3 newly installed, 0 to remove and 28 not upgraded.
+#7 6.159 Need to get 365 kB of archives.
+#7 6.159 After this operation, 1197 kB of additional disk space will be used.
+#7 6.159 Get:1 https://deb.debian.org/debian bookworm/main arm64 libonig5 arm64 6.9.8-1 [179 kB]
+#7 7.114 Get:2 https://deb.debian.org/debian-security bookworm-security/main arm64 libjq1 arm64 1.6-2.1+deb12u3 [122 kB]
+#7 7.213 Get:3 https://deb.debian.org/debian-security bookworm-security/main arm64 jq arm64 1.6-2.1+deb12u3 [64.0 kB]
+#7 7.508 debconf: delaying package configuration, since apt-utils is not installed
+#7 7.534 Fetched 365 kB in 2s (148 kB/s)
+#7 7.562 Selecting previously unselected package libonig5:arm64.
+#7 7.562 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 12388 files and directories currently installed.)
+#7 7.631 Preparing to unpack .../libonig5_6.9.8-1_arm64.deb ...
+#7 7.637 Unpacking libonig5:arm64 (6.9.8-1) ...
+#7 7.677 Selecting previously unselected package libjq1:arm64.
+#7 7.679 Preparing to unpack .../libjq1_1.6-2.1+deb12u3_arm64.deb ...
+#7 7.683 Unpacking libjq1:arm64 (1.6-2.1+deb12u3) ...
+#7 7.708 Selecting previously unselected package jq.
+#7 7.709 Preparing to unpack .../jq_1.6-2.1+deb12u3_arm64.deb ...
+#7 7.711 Unpacking jq (1.6-2.1+deb12u3) ...
+#7 7.735 Setting up libonig5:arm64 (6.9.8-1) ...
+#7 7.742 Setting up libjq1:arm64 (1.6-2.1+deb12u3) ...
+#7 7.748 Setting up jq (1.6-2.1+deb12u3) ...
+#7 7.753 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#7 DONE 8.0s
+
+#8 exporting to image
+#8 exporting layers 0.0s done
+#8 writing image sha256:33b5e8c8e1758deef0c66b23dd3165d1a00eb2e6192ed2c784549efbaf921f69 done
+#8 naming to docker.io/local/crr-qa-1x-ruby31-tools:20261103t111732z-8521 done
+#8 DONE 0.1s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/1n0nnat5z5nvvmuaty4e8glib

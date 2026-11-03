@@ -1,0 +1,8 @@
+{
+  "classification": "FAILED_ENVIRONMENT_IMAGE_PREPARATION",
+  "cause": "Docker builder interpreted a bare local sha256 image ID as a registry image name; registry lookup failed before jq installation",
+  "sdk_tests_executed": 0,
+  "candidate_acceptance_evidence": false,
+  "remediation": "Alias the existing pinned local base, verify its exact image ID, and build using that local alias",
+  "original_build_log_retained": true
+}

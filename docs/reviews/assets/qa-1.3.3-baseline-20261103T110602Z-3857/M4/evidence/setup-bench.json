@@ -1,0 +1,95 @@
+{
+  "source": "/tmp/qa-1x-source",
+  "label": "baseline-setup-diagnostic",
+  "ruby": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [aarch64-linux]",
+  "sdk": "1.3.2",
+  "gems": {
+    "addressable": "2.9.1",
+    "aws-eventstream": "1.4.1",
+    "aws-partitions": "1.1300.0",
+    "aws-sdk-core": "3.263.0",
+    "aws-sdk-kms": "1.138.0",
+    "aws-sdk-s3": "1.237.0",
+    "aws-sigv4": "1.12.1",
+    "base64": "0.3.0",
+    "bigdecimal": "4.1.3",
+    "builder": "3.3.0",
+    "bundler": "2.6.6",
+    "crack": "1.0.1",
+    "cucumber": "10.2.0",
+    "cucumber-ci-environment": "11.0.0",
+    "cucumber-core": "16.2.0",
+    "cucumber-cucumber-expressions": "18.1.0",
+    "cucumber-gherkin": "39.1.0",
+    "cucumber-html-formatter": "22.3.0",
+    "cucumber-messages": "32.3.1",
+    "cucumber-tag-expressions": "8.1.0",
+    "diff-lcs": "1.6.2",
+    "ffi": "1.17.4",
+    "hashdiff": "1.2.1",
+    "jmespath": "1.6.2",
+    "logger": "1.7.0",
+    "memoist3": "1.0.0",
+    "mime-types": "3.7.0",
+    "mime-types-data": "3.2026.1027",
+    "mini_mime": "1.1.5",
+    "multi_test": "1.1.0",
+    "mustermann": "3.1.1",
+    "nio4r": "2.7.5",
+    "parallel": "2.3.0",
+    "parallel_tests": "5.8.0",
+    "pathname": "0.3.0",
+    "public_suffix": "7.0.5",
+    "puma": "8.0.2",
+    "rack": "3.2.8",
+    "rack-protection": "4.2.1",
+    "rack-session": "2.1.2",
+    "rackup": "2.3.1",
+    "rake": "13.4.2",
+    "rantly": "3.0.0",
+    "reportportal-cucumber-ruby": "1.3.2",
+    "rexml": "3.4.4",
+    "rspec": "3.13.2",
+    "rspec-core": "3.13.6",
+    "rspec-expectations": "3.13.5",
+    "rspec-mocks": "3.13.8",
+    "rspec-support": "3.13.7",
+    "sinatra": "4.2.1",
+    "sys-uname": "1.5.1",
+    "tilt": "2.9.0",
+    "webmock": "3.34.0"
+  },
+  "diagnostic_only": true,
+  "results": {
+    "failure_plain": {
+      "iterations": 100,
+      "median_ms": 0.18545899365562946,
+      "p95_ms": 1.3581249950220808
+    },
+    "assertion_plain": {
+      "iterations": 100,
+      "median_ms": 0.06749999010935426,
+      "p95_ms": 0.3424580063438043
+    },
+    "benign_http_plain": {
+      "iterations": 100,
+      "median_ms": 1.0420420003356412,
+      "p95_ms": 2.122790989233181
+    },
+    "failure_rich": {
+      "iterations": 100,
+      "median_ms": 0.21475000539794564,
+      "p95_ms": 0.924791005672887
+    },
+    "assertion_rich": {
+      "iterations": 100,
+      "median_ms": 0.09445899922866374,
+      "p95_ms": 0.2578330022515729
+    },
+    "benign_http_rich": {
+      "iterations": 100,
+      "median_ms": 2.0368749974295497,
+      "p95_ms": 5.839916993863881
+    }
+  }
+}

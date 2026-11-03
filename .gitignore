@@ -8,3 +8,9 @@ pkg/
 helm/**/charts/*.tgz
 .DS_Store
 .env
+# QA execution state is local-only, never nested repositories or packages in evidence.
+docs/reviews/assets/qa-1.3.3-*/**/source/
+docs/reviews/assets/qa-1.3.3-*/**/*-source/
+docs/reviews/assets/qa-1.3.3-*/**/*.gem
+docs/reviews/assets/qa-1.3.3-*/**/.git/
+docs/reviews/assets/qa-1.3.3-*/**/native.html

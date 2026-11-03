@@ -1,0 +1,99 @@
+[
+  {
+    "id": "formatter-contract",
+    "uri": "features/formatter_contract.feature",
+    "keyword": "Feature",
+    "name": "Formatter contract",
+    "description": "",
+    "line": 2,
+    "tags": [
+      {
+        "name": "@stubbed",
+        "line": 1
+      }
+    ],
+    "elements": [
+      {
+        "id": "formatter-contract;replay-fixture-events-through-the-formatter",
+        "keyword": "Scenario",
+        "name": "Replay fixture events through the formatter",
+        "description": "",
+        "line": 3,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Given ",
+            "name": "ReportPortal HTTP is stubbed",
+            "line": 4,
+            "match": {
+              "location": "features/step_definitions/formatter_steps.rb:3"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 31457333
+            }
+          },
+          {
+            "keyword": "When ",
+            "name": "I replay the NDJSON fixture through the formatter",
+            "line": 5,
+            "match": {
+              "location": "features/step_definitions/formatter_steps.rb:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17649334
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "the ReportPortal call sequence is correct",
+            "line": 6,
+            "match": {
+              "location": "features/step_definitions/formatter_steps.rb:59"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4271625
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@stubbed",
+            "line": 1
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "features/support/hooks.rb:32"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 122083
+            }
+          },
+          {
+            "match": {
+              "location": "features/support/hooks.rb:17"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 27375
+            }
+          },
+          {
+            "match": {
+              "location": "webmock-3.34.0/lib/webmock/cucumber.rb:10"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 26625
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,564 @@
+
+Independent selective 1.x backport
+  INV Decision19 preserves windows raw message and frames in plain
+  INV Decision19 preserves diff raw message and frames in plain
+  INV Decision19 preserves markup raw message and frames in plain
+  INV oversized plain failure falls back byte-for-byte, without truncation or redaction
+  DELTA ERROR HTTP remains entirely plain in plain
+  DELTA failed assertion remains entirely plain in plain
+  DELTA response body precedes metadata, request body and repeated headers in plain (FAILED - 1)
+  DELTA response survives a large request consuming the shared preview budget in plain (FAILED - 2)
+  INV Decision19 preserves windows raw message and frames in rich
+  INV Decision19 preserves diff raw message and frames in rich
+  INV Decision19 preserves markup raw message and frames in rich
+  INV oversized rich failure falls back byte-for-byte, without truncation or redaction
+  DELTA ERROR HTTP remains entirely plain in rich (FAILED - 3)
+  DELTA failed assertion remains entirely plain in rich (FAILED - 4)
+  DELTA response body precedes metadata, request body and repeated headers in rich (FAILED - 5)
+  DELTA response survives a large request consuming the shared preview budget in rich (FAILED - 6)
+  DELTA error Accent guard returns exact plain object (FAILED - 7)
+  DELTA error attachment caption remains entirely plain
+  DELTA fatal Accent guard returns exact plain object (FAILED - 8)
+  DELTA fatal attachment caption remains entirely plain (FAILED - 9)
+  DELTA assertion distinguishes "" (FAILED - 10)
+  DELTA assertion distinguishes " " (FAILED - 11)
+  DELTA assertion distinguishes "   " (FAILED - 12)
+  DELTA assertion distinguishes "\t\n" (FAILED - 13)
+  DELTA assertion distinguishes " value " (FAILED - 14)
+  DELTA top-level key differences are sorted, shallow and computed from safe snapshots (FAILED - 15)
+  INV raw AppLog payload is deliberately unchanged
+  SEC automatic redaction removes encoded_json_key credential residue
+  SEC automatic redaction removes encoded_path credential residue (FAILED - 16)
+  SEC automatic redaction removes encoded_query credential residue
+  SEC automatic redaction removes malformed_url credential residue (FAILED - 17)
+  SEC automatic redaction removes double_bearer credential residue (FAILED - 18)
+  SEC automatic redaction removes redacted_prefix credential residue
+  SEC structured HTTP sanitizes all automatic surfaces while preserving status (FAILED - 19)
+  DELTA run context description is branch/sha/build only with no 2.x workers (FAILED - 20)
+  INV run context honors explicit description and attributes without mutation
+  INV INFO rich remains opt-in and native HTTP retains its baseline request-first layout
+
+Failures:
+
+  1) Independent selective 1.x backport DELTA response body precedes metadata, request body and repeated headers in plain
+     Failure/Error: expect(card.index("response-body")).to be < card.index("https://example.test")
+
+       expected: < 41
+            got:   281
+     # /qa/targeted_spec.rb:85:in `block (3 levels) in <top (required)>'
+
+  2) Independent selective 1.x backport DELTA response survives a large request consuming the shared preview budget in plain
+     Failure/Error: expect(card).to include("response-body")
+
+       expected "✓ POST /orders?region=eu → 201 · 23 ms\n\n`https://example.test/orders?region=eu`\n\n_Request_ · 1.6...equest\nrequest\n[preview truncated]\n```\n\n_Response_ · 13 B\n\n```text\n[preview truncated]\n```" to include "response-body"
+       Diff:
+       @@ -1 +1,115 @@
+       -response-body
+       +✓ POST /orders?region=eu → 201 · 23 ms
+       +
+       +`https://example.test/orders?region=eu`
+       +
+       +_Request_ · 1.6 KB
+       +
+       +```text
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +[preview truncated]
+       +```
+       +
+       +_Response_ · 13 B
+       +
+       +```text
+       +[preview truncated]
+       +```
+     # /qa/targeted_spec.rb:94:in `block (3 levels) in <top (required)>'
+
+  3) Independent selective 1.x backport DELTA ERROR HTTP remains entirely plain in rich
+     Failure/Error: expect(value.to_markdown(presentation: mode)).to eq(value.to_markdown(presentation: "plain"))
+
+       expected: "## ✗ POST /orders?region=eu → 201 · 23 ms\n\n`https://example.test/orders?region=eu` · expected `200...1_\n\n```text\nX-Response: response-header\n```\n\n_Response_ · 13 B\n\n```text\nresponse-body\n```"
+            got: "## ✗ POST /orders?region=eu → 201 · 23 ms\n\n<span style=\"display:inline-block;padding:0 7px;border...nX-Response: response-header\n```\n\n</details>\n\n_Response_ · 13 B\n\n```text\nresponse-body\n```"
+
+       (compared using ==)
+
+       Diff:
+
+
+
+
+       @@ -1,24 +1,28 @@
+        ## ✗ POST /orders?region=eu → 201 · 23 ms
+        
+       -`https://example.test/orders?region=eu` · expected `200`
+       +<span style="display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#276E50;background:#E6F5EE">201</span> · `https://example.test/orders?region=eu` · expected `200`
+        
+       -_Request headers · 1_
+       +<details><summary>Request headers · 1</summary>
+        
+        ```text
+        X-Request: request-header
+        ```
+        
+       +</details>
+       +
+        _Request_ · 12 B
+        
+        ```text
+        request-body
+        ```
+        
+       -_Response headers · 1_
+       +<details><summary>Response headers · 1</summary>
+        
+        ```text
+        X-Response: response-header
+        ```
+       +
+       +</details>
+        
+        _Response_ · 13 B
+        
+     # /qa/targeted_spec.rb:76:in `block (3 levels) in <top (required)>'
+
+  4) Independent selective 1.x backport DELTA failed assertion remains entirely plain in rich
+     Failure/Error: expect(assertion(presentation: mode)).to eq(assertion(presentation: "plain"))
+
+       expected: "## ✗ Assertion failed · independent comparison\n\n```text\nexpected  expected\nactual    actual\n```"
+            got: "## ✗ Assertion failed · independent comparison\n\n<span style=\"display:inline-block;padding:0 7px;b...olor:#B23B3B;background:#FBEAEA\">FAIL</span>\n\n```text\nexpected  expected\nactual    actual\n```"
+
+       (compared using ==)
+
+       Diff:
+       @@ -1,5 +1,7 @@
+        ## ✗ Assertion failed · independent comparison
+        
+       +<span style="display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#B23B3B;background:#FBEAEA">FAIL</span>
+       +
+        ```text
+        expected  expected
+        actual    actual
+     # /qa/targeted_spec.rb:80:in `block (3 levels) in <top (required)>'
+
+  5) Independent selective 1.x backport DELTA response body precedes metadata, request body and repeated headers in rich
+     Failure/Error: expect(card.index("response-body")).to be < card.index("https://example.test")
+
+       expected: < 328
+            got:   644
+     # /qa/targeted_spec.rb:85:in `block (3 levels) in <top (required)>'
+
+  6) Independent selective 1.x backport DELTA response survives a large request consuming the shared preview budget in rich
+     Failure/Error: expect(card).to include("response-body")
+
+       expected "<span style=\"display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-ap...t\n[preview truncated]\n```\n\n</details>\n\n_Response_ · 13 B\n\n```text\n[preview truncated]\n```" to include "response-body"
+       Diff:
+       @@ -1 +1,119 @@
+       -response-body
+       +<span style="display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:.04em;color:#276E50;background:#E6F5EE">201</span> <span style="font:600 13.5px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;color:#2B2B2D">POST /orders?region=eu</span> · 23 ms
+       +
+       +`https://example.test/orders?region=eu`
+       +
+       +_Request_ · 1.6 KB
+       +
+       +<details><summary>Request body · 101 lines</summary>
+       +
+       +```text
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +request
+       +[preview truncated]
+       +```
+       +
+       +</details>
+       +
+       +_Response_ · 13 B
+       +
+       +```text
+       +[preview truncated]
+       +```
+     # /qa/targeted_spec.rb:94:in `block (3 levels) in <top (required)>'
+
+  7) Independent selective 1.x backport DELTA error Accent guard returns exact plain object
+     Failure/Error: expect(ReportportalCucumber::Presentation::Accent.guard(plain: plain, rich: rich, level: severity)).to equal(plain)
+
+       expected #<String:3980> => "plain\nbody"
+            got #<String:4000> => "plain\n<span>body</span>"
+
+       Compared using equal?, which compares object identity,
+       but expected and actual are not the same object. Use
+       `expect(actual).to eq(expected)` if you don't care about
+       object identity in this example.
+
+
+       Diff:
+       @@ -1,2 +1,2 @@
+        plain
+       -body
+       +<span>body</span>
+     # /qa/targeted_spec.rb:102:in `block (3 levels) in <top (required)>'
+
+  8) Independent selective 1.x backport DELTA fatal Accent guard returns exact plain object
+     Failure/Error: expect(ReportportalCucumber::Presentation::Accent.guard(plain: plain, rich: rich, level: severity)).to equal(plain)
+
+       expected #<String:3980> => "plain\nbody"
+            got #<String:4000> => "plain\n<span>body</span>"
+
+       Compared using equal?, which compares object identity,
+       but expected and actual are not the same object. Use
+       `expect(actual).to eq(expected)` if you don't care about
+       object identity in this example.
+
+
+       Diff:
+       @@ -1,2 +1,2 @@
+        plain
+       -body
+       +<span>body</span>
+     # /qa/targeted_spec.rb:102:in `block (3 levels) in <top (required)>'
+
+  9) Independent selective 1.x backport DELTA fatal attachment caption remains entirely plain
+     Failure/Error: expect(caption.format(**arguments, presentation: "rich")).to eq(caption.format(**arguments, presentation: "plain"))
+
+       expected: "`evidence.png` · PNG · 80 B"
+            got: "<span style=\"display:inline-block;padding:0 7px;border-radius:9px;font:600 10.5px/1.7 system-ui,-ap...sans-serif;letter-spacing:.04em;color:#0F6C7A;background:#E3F4F7\">PNG</span> `evidence.png` · 80 B"
+
+       (compared using ==)
+     # /qa/targeted_spec.rb:108:in `block (3 levels) in <top (required)>'
+
+  10) Independent selective 1.x backport DELTA assertion distinguishes ""
+      Failure/Error: expect(assertion(expected: value)).to include(JSON.generate(value), label)
+
+        expected "## ✗ Assertion failed · independent comparison\n\n```text\nexpected  \nactual    actual\n```" to include "\"\"" and "empty string"
+        Diff:
+        @@ -1,2 +1,6 @@
+        -""
+        -empty string
+        +## ✗ Assertion failed · independent comparison
+        +
+        +```text
+        +expected  
+        +actual    actual
+        +```
+      # /qa/targeted_spec.rb:114:in `block (3 levels) in <top (required)>'
+
+  11) Independent selective 1.x backport DELTA assertion distinguishes " "
+      Failure/Error: expect(assertion(expected: value)).to include(JSON.generate(value), label)
+
+        expected "## ✗ Assertion failed · independent comparison\n\n```text\nexpected   \nactual    actual\n```" to include "\" \"" and "1 space"
+        Diff:
+        @@ -1,2 +1,6 @@
+        -" "
+        -1 space
+        +## ✗ Assertion failed · independent comparison
+        +
+        +```text
+        +expected   
+        +actual    actual
+        +```
+      # /qa/targeted_spec.rb:114:in `block (3 levels) in <top (required)>'
+
+  12) Independent selective 1.x backport DELTA assertion distinguishes "   "
+      Failure/Error: expect(assertion(expected: value)).to include(JSON.generate(value), label)
+
+        expected "## ✗ Assertion failed · independent comparison\n\n```text\nexpected     \nactual    actual\n```" to include "\"   \"" and "3 spaces"
+        Diff:
+        @@ -1,2 +1,6 @@
+        -"   "
+        -3 spaces
+        +## ✗ Assertion failed · independent comparison
+        +
+        +```text
+        +expected     
+        +actual    actual
+        +```
+      # /qa/targeted_spec.rb:114:in `block (3 levels) in <top (required)>'
+
+  13) Independent selective 1.x backport DELTA assertion distinguishes "\t\n"
+      Failure/Error: expect(assertion(expected: value)).to include(JSON.generate(value), label)
+
+        expected "## ✗ Assertion failed · independent comparison\n\n```text\nexpected  \t\n          \nactual    actual\n```" to include "\"\\t\\n\"" and "whitespace only"
+        Diff:
+        @@ -1,2 +1,7 @@
+        -"\t\n"
+        -whitespace only
+        +## ✗ Assertion failed · independent comparison
+        +
+        +```text
+        +expected  	
+        +          
+        +actual    actual
+        +```
+      # /qa/targeted_spec.rb:114:in `block (3 levels) in <top (required)>'
+
+  14) Independent selective 1.x backport DELTA assertion distinguishes " value "
+      Failure/Error: expect(assertion(expected: value)).to include(JSON.generate(value), label)
+
+        expected "## ✗ Assertion failed · independent comparison\n\n```text\nexpected   value \nactual    actual\n```" to include "\" value \"" and "leading/trailing whitespace"
+        Diff:
+        @@ -1,2 +1,6 @@
+        -" value "
+        -leading/trailing whitespace
+        +## ✗ Assertion failed · independent comparison
+        +
+        +```text
+        +expected   value 
+        +actual    actual
+        +```
+      # /qa/targeted_spec.rb:114:in `block (3 levels) in <top (required)>'
+
+  15) Independent selective 1.x backport DELTA top-level key differences are sorted, shallow and computed from safe snapshots
+      Failure/Error: expect(delta).to include("missing in actual: `gone`", "extra in actual: `added`", "changed: `z`")
+        expected nil to include "missing in actual: `gone`", "extra in actual: `added`", and "changed: `z`", but it does not respond to `include?`
+      # /qa/targeted_spec.rb:122:in `block (2 levels) in <top (required)>'
+
+  16) Independent selective 1.x backport SEC automatic redaction removes encoded_path credential residue
+      Failure/Error: expect(redacted).not_to include("SYNTHETIC_SECRET")
+        expected "https://example.test/token%3DSYNTHETIC_SECRET/next" not to include "SYNTHETIC_SECRET"
+      # /qa/targeted_spec.rb:149:in `block (3 levels) in <top (required)>'
+
+  17) Independent selective 1.x backport SEC automatic redaction removes malformed_url credential residue
+      Failure/Error: expect(redacted).not_to include("SYNTHETIC_SECRET")
+        expected "http://[invalid]/token%3DSYNTHETIC_SECRET?password=%5BREDACTED%5D" not to include "SYNTHETIC_SECRET"
+      # /qa/targeted_spec.rb:149:in `block (3 levels) in <top (required)>'
+
+  18) Independent selective 1.x backport SEC automatic redaction removes double_bearer credential residue
+      Failure/Error: expect(redacted).not_to include("SYNTHETIC_SECRET")
+        expected "Authorization: [REDACTED] SYNTHETIC_SECRET" not to include "SYNTHETIC_SECRET"
+      # /qa/targeted_spec.rb:149:in `block (3 levels) in <top (required)>'
+
+  19) Independent selective 1.x backport SEC structured HTTP sanitizes all automatic surfaces while preserving status
+      Failure/Error: expect(output).not_to include("SYNTHETIC_SECRET")
+        expected "POST https://example.test/token%3DSYNTHETIC_SECRET status=503 23ms error=Bearer [REDACTED] SYNTHETIC_SECRET" not to include "SYNTHETIC_SECRET"
+      # /qa/targeted_spec.rb:159:in `block (3 levels) in <top (required)>'
+      # /qa/targeted_spec.rb:158:in `each'
+      # /qa/targeted_spec.rb:158:in `block (2 levels) in <top (required)>'
+
+  20) Independent selective 1.x backport DELTA run context description is branch/sha/build only with no 2.x workers
+      Failure/Error: expect(result.fetch(:description)).to eq("qa-branch@abcdef1 \u00b7 build 902")
+
+        expected: "qa-branch@abcdef1 · build 902"
+             got: "Cucumber 10.2.0 · Ruby 3.3 · qa-branch@abcdef1"
+
+        (compared using ==)
+      # /qa/targeted_spec.rb:169:in `block (2 levels) in <top (required)>'
+
+Finished in 0.06048 seconds (files took 0.31602 seconds to load)
+37 examples, 20 failures
+
+Failed examples:
+
+rspec '/qa/targeted_spec.rb[1:7]' # Independent selective 1.x backport DELTA response body precedes metadata, request body and repeated headers in plain
+rspec '/qa/targeted_spec.rb[1:8]' # Independent selective 1.x backport DELTA response survives a large request consuming the shared preview budget in plain
+rspec '/qa/targeted_spec.rb[1:13]' # Independent selective 1.x backport DELTA ERROR HTTP remains entirely plain in rich
+rspec '/qa/targeted_spec.rb[1:14]' # Independent selective 1.x backport DELTA failed assertion remains entirely plain in rich
+rspec '/qa/targeted_spec.rb[1:15]' # Independent selective 1.x backport DELTA response body precedes metadata, request body and repeated headers in rich
+rspec '/qa/targeted_spec.rb[1:16]' # Independent selective 1.x backport DELTA response survives a large request consuming the shared preview budget in rich
+rspec '/qa/targeted_spec.rb[1:17]' # Independent selective 1.x backport DELTA error Accent guard returns exact plain object
+rspec '/qa/targeted_spec.rb[1:19]' # Independent selective 1.x backport DELTA fatal Accent guard returns exact plain object
+rspec '/qa/targeted_spec.rb[1:20]' # Independent selective 1.x backport DELTA fatal attachment caption remains entirely plain
+rspec '/qa/targeted_spec.rb[1:21]' # Independent selective 1.x backport DELTA assertion distinguishes ""
+rspec '/qa/targeted_spec.rb[1:22]' # Independent selective 1.x backport DELTA assertion distinguishes " "
+rspec '/qa/targeted_spec.rb[1:23]' # Independent selective 1.x backport DELTA assertion distinguishes "   "
+rspec '/qa/targeted_spec.rb[1:24]' # Independent selective 1.x backport DELTA assertion distinguishes "\t\n"
+rspec '/qa/targeted_spec.rb[1:25]' # Independent selective 1.x backport DELTA assertion distinguishes " value "
+rspec /qa/targeted_spec.rb:118 # Independent selective 1.x backport DELTA top-level key differences are sorted, shallow and computed from safe snapshots
+rspec '/qa/targeted_spec.rb[1:29]' # Independent selective 1.x backport SEC automatic redaction removes encoded_path credential residue
+rspec '/qa/targeted_spec.rb[1:31]' # Independent selective 1.x backport SEC automatic redaction removes malformed_url credential residue
+rspec '/qa/targeted_spec.rb[1:32]' # Independent selective 1.x backport SEC automatic redaction removes double_bearer credential residue
+rspec /qa/targeted_spec.rb:154 # Independent selective 1.x backport SEC structured HTTP sanitizes all automatic surfaces while preserving status
+rspec /qa/targeted_spec.rb:165 # Independent selective 1.x backport DELTA run context description is branch/sha/build only with no 2.x workers
+

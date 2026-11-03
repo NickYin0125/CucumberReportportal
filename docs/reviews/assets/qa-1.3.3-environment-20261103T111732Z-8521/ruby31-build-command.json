@@ -1,0 +1,16 @@
+[
+  "/usr/local/bin/docker",
+  "build",
+  "--pull=false",
+  "--platform",
+  "linux/arm64",
+  "--progress",
+  "plain",
+  "--build-arg",
+  "BASE_IMAGE=local/crr-qa-1x-base-ruby31:7849744f1655",
+  "--tag",
+  "local/crr-qa-1x-ruby31-tools:20261103t111732z-8521",
+  "--file",
+  "/Users/nick/Documents/crr-qa-1.3.3/qa/readability_1x/environment/Dockerfile",
+  "/Users/nick/Documents/crr-qa-1.3.3/qa/readability_1x/environment"
+]

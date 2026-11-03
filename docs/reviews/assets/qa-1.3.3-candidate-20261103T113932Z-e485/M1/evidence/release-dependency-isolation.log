@@ -1,0 +1,40 @@
+
+Release dependency isolation
+  keeps setup-ruby's in-checkout cache out of the release bundle job
+  uses only GitHub-supported contexts in job-level environments
+  runs these executable regressions in every maintenance matrix cell
+  with real Git status and an offline dependency install
+  Successfully built RubyGem
+  Name: release-fixture
+  Version: 1.0.0
+  File: release-fixture-1.0.0.gem
+    loads installed dependencies outside source while preserving a clean frozen checkout
+  Successfully built RubyGem
+  Name: release-fixture
+  Version: 1.0.0
+  File: release-fixture-1.0.0.gem
+    still rejects modified tracked source before creating release artifacts
+  Successfully built RubyGem
+  Name: release-fixture
+  Version: 1.0.0
+  File: release-fixture-1.0.0.gem
+    still rejects deleted tracked source before creating release artifacts
+  Successfully built RubyGem
+  Name: release-fixture
+  Version: 1.0.0
+  File: release-fixture-1.0.0.gem
+    still rejects an untracked file before creating release artifacts
+  Successfully built RubyGem
+  Name: release-fixture
+  Version: 1.0.0
+  File: release-fixture-1.0.0.gem
+    still rejects the old untracked vendor/bundle layout before creating release artifacts
+  Successfully built RubyGem
+  Name: release-fixture
+  Version: 1.0.0
+  File: release-fixture-1.0.0.gem
+    still rejects staged changes
+
+Finished in 2.42 seconds (files took 0.12984 seconds to load)
+9 examples, 0 failures
+

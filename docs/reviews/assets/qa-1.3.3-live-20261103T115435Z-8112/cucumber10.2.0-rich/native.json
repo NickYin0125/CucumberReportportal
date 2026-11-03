@@ -1,0 +1,225 @@
+[
+  {
+    "id": "independent-minimal-1.x-final-acceptance",
+    "uri": "/qa/live.feature",
+    "keyword": "Feature",
+    "name": "Independent minimal 1.x final acceptance",
+    "description": "",
+    "line": 1,
+    "elements": [
+      {
+        "id": "independent-minimal-1.x-final-acceptance;http-and-supported-separate-arguments",
+        "keyword": "Scenario",
+        "name": "HTTP and supported separate arguments",
+        "description": "",
+        "line": 2,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "independent structured HTTP evidence is recorded",
+            "line": 3,
+            "output": [
+              "### Request\n- `POST` `https://example.test/orders?token=%5BREDACTED%5D&page=2`\n- Headers:\n```text\nX-Repeat: [\"one\", \"two\"]\n```\n- Body:\n```json\n{\n  \"order\": 42\n}\n```\n\n### Response\n- Status: `201`\n- Headers:\n```text\nContent-Type: [\"application/json\"]\n```\n- Body:\n```json\n{\n  \"accepted\": true\n}\n```\n\n- Duration: `23` ms",
+              "### Request\n- `GET` `https://example.test/failure`\n\n### Response\n- Status: `503`\n- Body:\n```text\nERROR_RESPONSE_BODY\n```\n",
+              "## Assertion: blank is not whitespace\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n|  |  \t |",
+              "## Assertion: shallow keys\n\n**Outcome:** FAIL\n\n| Expected | Actual |\n| --- | --- |\n| {\"gone\":true,\"changed\":1} | {\"extra\":false,\"changed\":2} |"
+            ],
+            "match": {
+              "location": "/qa/live_steps.rb:30"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4892333
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "independent DocString evidence is recorded",
+            "line": 4,
+            "doc_string": {
+              "value": "literal <script>qa_docstring</script> & back\\slash",
+              "content_type": "",
+              "line": 5
+            },
+            "match": {
+              "location": "/qa/live_steps.rb:39"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 32875
+            }
+          },
+          {
+            "keyword": "And ",
+            "name": "independent DataTable evidence is recorded",
+            "line": 8,
+            "rows": [
+              {
+                "cells": [
+                  "key",
+                  "value"
+                ]
+              },
+              {
+                "cells": [
+                  "label",
+                  "<img src=x onerror=qa()>"
+                ]
+              }
+            ],
+            "match": {
+              "location": "/qa/live_steps.rb:43"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 104542
+            }
+          },
+          {
+            "keyword": "Then ",
+            "name": "independent attachment previews are recorded",
+            "line": 11,
+            "match": {
+              "location": "/qa/live_steps.rb:47"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 855917
+            }
+          }
+        ]
+      },
+      {
+        "id": "independent-minimal-1.x-final-acceptance;outline-value-<value>;;2",
+        "keyword": "Scenario Outline",
+        "name": "Outline value literal-one",
+        "description": "",
+        "line": 17,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "independent outline value \"literal-one\" is checked",
+            "line": 14,
+            "output": [
+              "OUTLINE_VALUE=literal-one"
+            ],
+            "match": {
+              "location": "/qa/live_steps.rb:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 383042
+            }
+          }
+        ]
+      },
+      {
+        "id": "independent-minimal-1.x-final-acceptance;outline-value-<value>;;3",
+        "keyword": "Scenario Outline",
+        "name": "Outline value literal-two",
+        "description": "",
+        "line": 18,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "independent outline value \"literal-two\" is checked",
+            "line": 14,
+            "output": [
+              "OUTLINE_VALUE=literal-two"
+            ],
+            "match": {
+              "location": "/qa/live_steps.rb:53"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 442917
+            }
+          }
+        ]
+      },
+      {
+        "id": "independent-minimal-1.x-final-acceptance;raw-failure-with-after-evidence-<case>;;2",
+        "keyword": "Scenario Outline",
+        "name": "Raw failure with After evidence first",
+        "description": "",
+        "line": 25,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "independent raw business failure \"first\" occurs",
+            "line": 22,
+            "match": {
+              "location": "/qa/live_steps.rb:58"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "\nQA_ORIGINAL_first\nexpected: \"first\\nchanged\"\nactual: \"first\\nsecond\"\nC:\\qa\\logs\\failure.json api_key=SYNTHETIC_RAW_1X\n (RuntimeError)\n/qa/live_steps.rb:60:in `\"independent raw business failure {string} occurs\"'\n/qa/live_steps.rb:25:in `block (2 levels) in <top (required)>'\n/qa/live_steps.rb:25:in `block in <top (required)>'\n/evidence/boot.rb:5:in `<main>'\n/qa/live.feature:25:22:in `independent raw business failure \"first\" occurs'",
+              "duration": 239375
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@independent_failure",
+            "line": 20
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "/qa/live_steps.rb:63"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1873291
+            }
+          }
+        ]
+      },
+      {
+        "id": "independent-minimal-1.x-final-acceptance;raw-failure-with-after-evidence-<case>;;3",
+        "keyword": "Scenario Outline",
+        "name": "Raw failure with After evidence second",
+        "description": "",
+        "line": 26,
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "When ",
+            "name": "independent raw business failure \"second\" occurs",
+            "line": 22,
+            "match": {
+              "location": "/qa/live_steps.rb:58"
+            },
+            "result": {
+              "status": "failed",
+              "error_message": "\nQA_ORIGINAL_second\nexpected: \"first\\nchanged\"\nactual: \"first\\nsecond\"\nC:\\qa\\logs\\failure.json api_key=SYNTHETIC_RAW_1X\n (RuntimeError)\n/qa/live_steps.rb:60:in `\"independent raw business failure {string} occurs\"'\n/qa/live_steps.rb:25:in `block (2 levels) in <top (required)>'\n/qa/live_steps.rb:25:in `block in <top (required)>'\n/evidence/boot.rb:5:in `<main>'\n/qa/live.feature:26:22:in `independent raw business failure \"second\" occurs'",
+              "duration": 87000
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@independent_failure",
+            "line": 20
+          }
+        ],
+        "after": [
+          {
+            "match": {
+              "location": "/qa/live_steps.rb:63"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1388583
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

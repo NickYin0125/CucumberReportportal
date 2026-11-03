@@ -1,0 +1,85 @@
+{
+  "status": "PASS",
+  "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+  "platform": "aarch64-linux",
+  "os_release": "PRETTY_NAME=\"Debian GNU/Linux 12 (bookworm)\"\nNAME=\"Debian GNU/Linux\"\nVERSION_ID=\"12\"\nVERSION=\"12 (bookworm)\"\nVERSION_CODENAME=bookworm\nID=debian\nHOME_URL=\"https://www.debian.org/\"\nSUPPORT_URL=\"https://www.debian.org/support\"\nBUG_REPORT_URL=\"https://bugs.debian.org/\"\n",
+  "tools": {
+    "ruby": {
+      "path": "/usr/local/bin/ruby",
+      "version": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [aarch64-linux]",
+      "sha256": "9a8a8c2fc54f077615df6f4451b30ed87d19369ee0e96d1badea677c6842b4bc"
+    },
+    "bundle": {
+      "path": "/usr/local/bundle/bin/bundle",
+      "version": "Bundler version 2.6.6",
+      "sha256": "9e41777f4143edf48792061321229e102a2f3d86be8ae60f82ac8b12fe2c52cb"
+    },
+    "git": {
+      "path": "/usr/bin/git",
+      "version": "git version 2.39.5",
+      "sha256": "54af380ba6ca1b36305358e99427a31ae4b0af5dc5cb6d0198c6f2f16e97651d"
+    },
+    "jq": {
+      "path": "/usr/bin/jq",
+      "version": "jq-1.6",
+      "sha256": "7783b0cb91736bb073d0cdeac6e3e05464abb0a5bddc235d03dd2cabad4aa080"
+    },
+    "helm": {
+      "path": "/tools/helm",
+      "version": "v3.18.4+gd80839c",
+      "sha256": "a20bcb898184a3e824c92eafffcb04a3343066e33f25a7867ca2cd28420f562c"
+    },
+    "docker": {
+      "path": "/tools/docker",
+      "version": "Docker version 27.5.1, build 9f9e405",
+      "sha256": "3e2d3307e386e59268ab1b17c195f5f224b7c616f06c553d22c0d10f90e5e618"
+    },
+    "docker-compose": {
+      "path": "/tools/docker-compose",
+      "version": "2.39.4",
+      "sha256": "49082844b87f03cdcd5f5bbef1ba8c9c897b7a2dfb80cea18d61ec8ca6117e0c"
+    }
+  },
+  "pinned_tools": {
+    "docker": {
+      "version": "27.5.1",
+      "source": "https://download.docker.com/linux/static/stable/aarch64/docker-27.5.1.tgz",
+      "sha256": "3e2d3307e386e59268ab1b17c195f5f224b7c616f06c553d22c0d10f90e5e618"
+    },
+    "docker-compose": {
+      "version": "2.39.4",
+      "source": "https://github.com/docker/compose/releases/tag/v2.39.4",
+      "sha256": "49082844b87f03cdcd5f5bbef1ba8c9c897b7a2dfb80cea18d61ec8ca6117e0c"
+    },
+    "helm": {
+      "version": "3.18.4",
+      "source": "https://get.helm.sh/helm-v3.18.4-linux-arm64.tar.gz",
+      "sha256": "a20bcb898184a3e824c92eafffcb04a3343066e33f25a7867ca2cd28420f562c"
+    }
+  },
+  "jq_linkage": "linux-vdso.so.1 (0x0000ffff81b2c000)\n\tlibjq.so.1 => /lib/aarch64-linux-gnu/libjq.so.1 (0x0000ffff81a50000)\n\tlibc.so.6 => /lib/aarch64-linux-gnu/libc.so.6 (0x0000ffff818a0000)\n\t/lib/ld-linux-aarch64.so.1 (0x0000ffff81af0000)\n\tlibm.so.6 => /lib/aarch64-linux-gnu/libm.so.6 (0x0000ffff817f0000)\n\tlibonig.so.5 => /lib/aarch64-linux-gnu/libonig.so.5 (0x0000ffff81740000)",
+  "jq_libraries": {
+    "/lib/aarch64-linux-gnu/libjq.so.1": {
+      "resolved": "/usr/lib/aarch64-linux-gnu/libjq.so.1.0.4",
+      "sha256": "1fa0db4cce62271addda787f235579a6a3109126037a916d4aeb2991daf62d9b"
+    },
+    "/lib/aarch64-linux-gnu/libc.so.6": {
+      "resolved": "/usr/lib/aarch64-linux-gnu/libc.so.6",
+      "sha256": "e4ac8ae1d81e4865e3aadedb962879cf9415903b3f2ba81ec75e9962b86ab8b0"
+    },
+    "/lib/ld-linux-aarch64.so.1": {
+      "resolved": "/usr/lib/aarch64-linux-gnu/ld-linux-aarch64.so.1",
+      "sha256": "17538b8f9889a470c061f69a8fea8124da89627311cd16546c133a89f09056df"
+    },
+    "/lib/aarch64-linux-gnu/libm.so.6": {
+      "resolved": "/usr/lib/aarch64-linux-gnu/libm.so.6",
+      "sha256": "3c4cb3be0b974edf05f023f85ab15107fb5afc2687163593d0d4cf8e80c17b39"
+    },
+    "/lib/aarch64-linux-gnu/libonig.so.5": {
+      "resolved": "/usr/lib/aarch64-linux-gnu/libonig.so.5.3.0",
+      "sha256": "74d7ab0e4b036f559d232fd9fcf1dac673b9799f597f91ddb9805125fc8a5f76"
+    }
+  },
+  "jq_filter_probe": "true",
+  "jq_packages": "jq=1.6-2.1+deb12u3\nlibjq1=1.6-2.1+deb12u3\nlibonig5=6.9.8-1"
+}

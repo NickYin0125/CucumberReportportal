@@ -1,0 +1,48 @@
+{
+  "source": "/Users/nick/Documents/crr-2.0.2",
+  "reference": "v2.0.2",
+  "reference_commit": "29ce2a4b5d8ca6b8119de97a7e3ae967bc66ddef",
+  "verified_reference_files": {
+    "lib/reportportal_cucumber/automation/evidence_redactor.rb": "621b67850432dce0c58fe18ad4729486ae3a071a591db2bd7a537fe52aa7b300",
+    "lib/reportportal_cucumber/automation/credential_keys.rb": "3b95a3c8f94cf3b870af6ddd50762862262387b34a9eb34b6b8effa97e83bdb3"
+  },
+  "redactor_sha256": "621b67850432dce0c58fe18ad4729486ae3a071a591db2bd7a537fe52aa7b300",
+  "synthetic_only": true,
+  "results": [
+    {
+      "depth": 1,
+      "input": "https://example.test/%7B%22password%22%3A%22SYNTHETIC_DEPTH_SENTINEL%22%7D",
+      "output": "https://example.test/%7B%22password%22%3A%22%5BREDACTED%5D%22%7D",
+      "decoded_output": "https://example.test/{\"password\":\"[REDACTED]\"}",
+      "leaked": false
+    },
+    {
+      "depth": 2,
+      "input": "https://example.test/%257B%2522password%2522%253A%2522SYNTHETIC_DEPTH_SENTINEL%2522%257D",
+      "output": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "decoded_output": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "leaked": false
+    },
+    {
+      "depth": 3,
+      "input": "https://example.test/%25257B%252522password%252522%25253A%252522SYNTHETIC_DEPTH_SENTINEL%252522%25257D",
+      "output": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "decoded_output": "[REDACTED] [evidence omitted: unsafe or oversized input]",
+      "leaked": false
+    },
+    {
+      "depth": 4,
+      "input": "https://example.test/%2525257B%25252522password%25252522%2525253A%25252522SYNTHETIC_DEPTH_SENTINEL%25252522%2525257D",
+      "output": "https://example.test/%2525257B%25252522password%25252522%2525253A%25252522SYNTHETIC_DEPTH_SENTINEL%25252522%2525257D",
+      "decoded_output": "https://example.test/{\"password\":\"SYNTHETIC_DEPTH_SENTINEL\"}",
+      "leaked": true
+    },
+    {
+      "depth": 5,
+      "input": "https://example.test/%252525257B%2525252522password%2525252522%252525253A%2525252522SYNTHETIC_DEPTH_SENTINEL%2525252522%252525257D",
+      "output": "https://example.test/%252525257B%2525252522password%2525252522%252525253A%2525252522SYNTHETIC_DEPTH_SENTINEL%2525252522%252525257D",
+      "decoded_output": "https://example.test/{\"password\":\"SYNTHETIC_DEPTH_SENTINEL\"}",
+      "leaked": true
+    }
+  ]
+}

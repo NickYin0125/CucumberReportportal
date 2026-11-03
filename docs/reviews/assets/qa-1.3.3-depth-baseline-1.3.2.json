@@ -1,0 +1,48 @@
+{
+  "source": "/private/tmp/ledger-release-verification-20261101-rQL8pk/source-1.3.2",
+  "reference": "v1.3.2",
+  "reference_commit": "19174a5ecaf1aa9fb65480f0a21d74ed65c89a8d",
+  "verified_reference_files": {
+    "lib/reportportal_cucumber/automation/evidence_redactor.rb": "dc1853edd4c4e3f560f40d96c1e12d0c9b2522cb5285b7d69ac48e1d609ed0de",
+    "lib/reportportal_cucumber/automation/credential_keys.rb": "3b95a3c8f94cf3b870af6ddd50762862262387b34a9eb34b6b8effa97e83bdb3"
+  },
+  "redactor_sha256": "dc1853edd4c4e3f560f40d96c1e12d0c9b2522cb5285b7d69ac48e1d609ed0de",
+  "synthetic_only": true,
+  "results": [
+    {
+      "depth": 1,
+      "input": "https://example.test/%7B%22password%22%3A%22SYNTHETIC_DEPTH_SENTINEL%22%7D",
+      "output": "https://example.test/%7B%22password%22%3A%22SYNTHETIC_DEPTH_SENTINEL%22%7D",
+      "decoded_output": "https://example.test/{\"password\":\"SYNTHETIC_DEPTH_SENTINEL\"}",
+      "leaked": true
+    },
+    {
+      "depth": 2,
+      "input": "https://example.test/%257B%2522password%2522%253A%2522SYNTHETIC_DEPTH_SENTINEL%2522%257D",
+      "output": "https://example.test/%257B%2522password%2522%253A%2522SYNTHETIC_DEPTH_SENTINEL%2522%257D",
+      "decoded_output": "https://example.test/{\"password\":\"SYNTHETIC_DEPTH_SENTINEL\"}",
+      "leaked": true
+    },
+    {
+      "depth": 3,
+      "input": "https://example.test/%25257B%252522password%252522%25253A%252522SYNTHETIC_DEPTH_SENTINEL%252522%25257D",
+      "output": "https://example.test/%25257B%252522password%252522%25253A%252522SYNTHETIC_DEPTH_SENTINEL%252522%25257D",
+      "decoded_output": "https://example.test/{\"password\":\"SYNTHETIC_DEPTH_SENTINEL\"}",
+      "leaked": true
+    },
+    {
+      "depth": 4,
+      "input": "https://example.test/%2525257B%25252522password%25252522%2525253A%25252522SYNTHETIC_DEPTH_SENTINEL%25252522%2525257D",
+      "output": "https://example.test/%2525257B%25252522password%25252522%2525253A%25252522SYNTHETIC_DEPTH_SENTINEL%25252522%2525257D",
+      "decoded_output": "https://example.test/{\"password\":\"SYNTHETIC_DEPTH_SENTINEL\"}",
+      "leaked": true
+    },
+    {
+      "depth": 5,
+      "input": "https://example.test/%252525257B%2525252522password%2525252522%252525253A%2525252522SYNTHETIC_DEPTH_SENTINEL%2525252522%252525257D",
+      "output": "https://example.test/%252525257B%2525252522password%2525252522%252525253A%2525252522SYNTHETIC_DEPTH_SENTINEL%2525252522%252525257D",
+      "decoded_output": "https://example.test/{\"password\":\"SYNTHETIC_DEPTH_SENTINEL\"}",
+      "leaked": true
+    }
+  ]
+}

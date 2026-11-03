@@ -1,0 +1,168 @@
+
+Independent selective 1.x backport
+  INV Decision19 preserves windows raw message and frames in plain
+  INV Decision19 preserves diff raw message and frames in plain
+  INV Decision19 preserves markup raw message and frames in plain
+  INV oversized plain failure falls back byte-for-byte, without truncation or redaction
+  DELTA ERROR HTTP remains entirely plain in plain
+  DELTA failed assertion remains entirely plain in plain
+  DELTA response body precedes metadata, request body and repeated headers in plain
+  DELTA response survives a large request consuming the shared preview budget in plain
+  INV Decision19 preserves windows raw message and frames in rich
+  INV Decision19 preserves diff raw message and frames in rich
+  INV Decision19 preserves markup raw message and frames in rich
+  INV oversized rich failure falls back byte-for-byte, without truncation or redaction
+  DELTA ERROR HTTP remains entirely plain in rich
+  DELTA failed assertion remains entirely plain in rich
+  DELTA response body precedes metadata, request body and repeated headers in rich
+  DELTA response survives a large request consuming the shared preview budget in rich
+  DELTA error Accent guard returns exact plain object
+  DELTA error attachment caption remains entirely plain
+  DELTA fatal Accent guard returns exact plain object
+  DELTA fatal attachment caption remains entirely plain
+  DELTA assertion distinguishes ""
+  DELTA assertion distinguishes " "
+  DELTA assertion distinguishes "   "
+  DELTA assertion distinguishes "\t\n"
+  DELTA assertion distinguishes " value "
+  DELTA top-level key differences are sorted, shallow and computed from safe snapshots
+  INV raw AppLog payload is deliberately unchanged
+  SEC automatic redaction removes encoded_json_key credential residue
+  SEC automatic redaction removes encoded_path credential residue
+  SEC automatic redaction removes encoded_query credential residue
+  SEC automatic redaction removes malformed_url credential residue
+  SEC automatic redaction removes double_bearer credential residue (FAILED - 1)
+  SEC automatic redaction removes redacted_prefix credential residue
+  SEC structured HTTP sanitizes all automatic surfaces while preserving status (FAILED - 2)
+  DELTA run context description is branch/sha/build only with no 2.x workers
+  INV run context honors explicit description and attributes without mutation
+  INV INFO rich remains opt-in and native HTTP retains its baseline request-first layout
+  INV invalid-UTF8 failure fallback preserves the exact original bytes
+  DELTA failure rich and plain payloads are byte-identical, without folded tails
+  INV 1.x does not introduce 2.x NUL sanitation at the payload boundary
+  INV legacy pending undefined ambiguous and skipped status normalization is unchanged
+  SEC depth 2 encoded JSON path is safe through URL HTTP and diagnostic channels
+  SEC depth 3 encoded JSON path is safe through URL HTTP and diagnostic channels
+  SEC depth 4 encoded JSON path is safe through URL HTTP and diagnostic channels
+  SEC depth 5 encoded JSON path is safe through URL HTTP and diagnostic channels
+  SEC benign URL and bounded encoded non-credential data are retained
+
+Independent percent-depth adversarial boundaries
+  SEC json_path depth=1 never survives any automatic channel
+  SEC json_path depth=2 never survives any automatic channel
+  SEC json_path depth=3 never survives any automatic channel
+  SEC json_path depth=4 never survives any automatic channel
+  SEC json_path depth=5 never survives any automatic channel
+  SEC unicode_json_key_path depth=1 never survives any automatic channel
+  SEC unicode_json_key_path depth=2 never survives any automatic channel
+  SEC unicode_json_key_path depth=3 never survives any automatic channel
+  SEC unicode_json_key_path depth=4 never survives any automatic channel
+  SEC unicode_json_key_path depth=5 never survives any automatic channel
+  SEC json_query_value depth=1 never survives any automatic channel
+  SEC json_query_value depth=2 never survives any automatic channel
+  SEC json_query_value depth=3 never survives any automatic channel
+  SEC json_query_value depth=4 never survives any automatic channel
+  SEC json_query_value depth=5 never survives any automatic channel
+  SEC json_fragment depth=1 never survives any automatic channel
+  SEC json_fragment depth=2 never survives any automatic channel
+  SEC json_fragment depth=3 never survives any automatic channel
+  SEC json_fragment depth=4 never survives any automatic channel
+  SEC json_fragment depth=5 never survives any automatic channel
+  SEC fully_encoded_key_and_value depth=1 never survives any automatic channel
+  SEC fully_encoded_key_and_value depth=2 never survives any automatic channel
+  SEC fully_encoded_key_and_value depth=3 never survives any automatic channel
+  SEC fully_encoded_key_and_value depth=4 never survives any automatic channel
+  SEC fully_encoded_key_and_value depth=5 never survives any automatic channel
+  SEC fully_encoded_path_assignment depth=1 never survives any automatic channel
+  SEC fully_encoded_path_assignment depth=2 never survives any automatic channel
+  SEC fully_encoded_path_assignment depth=3 never survives any automatic channel
+  SEC fully_encoded_path_assignment depth=4 never survives any automatic channel
+  SEC fully_encoded_path_assignment depth=5 never survives any automatic channel
+  SEC malformed_host_path_and_fragment depth=1 never survives any automatic channel
+  SEC malformed_host_path_and_fragment depth=2 never survives any automatic channel
+  SEC malformed_host_path_and_fragment depth=3 never survives any automatic channel
+  SEC malformed_host_path_and_fragment depth=4 never survives any automatic channel
+  SEC malformed_host_path_and_fragment depth=5 never survives any automatic channel
+  SEC remaining percent escapes are intentionally withheld at depth=4, value=BENIGN_OVERDEPTH
+  SEC remaining percent escapes are intentionally withheld at depth=4, value=[REDACTED]
+  SEC remaining percent escapes are intentionally withheld at depth=5, value=BENIGN_OVERDEPTH
+  SEC remaining percent escapes are intentionally withheld at depth=5, value=[REDACTED]
+  INV plain public redaction APIs preserve safe originals and input objects
+  INV benign native HTTP has its original request-first plain API bytes
+  SEC plaintext duplicated Bearer has no residual credential in automatic evidence (FAILED - 3)
+
+Failures:
+
+  1) Independent selective 1.x backport SEC automatic redaction removes double_bearer credential residue
+     Failure/Error: expect(redacted).not_to include("SYNTHETIC_SECRET")
+       expected "Authorization: [REDACTED] SYNTHETIC_SECRET" not to include "SYNTHETIC_SECRET"
+     # /qa/targeted_spec.rb:151:in `block (3 levels) in <top (required)>'
+
+  2) Independent selective 1.x backport SEC structured HTTP sanitizes all automatic surfaces while preserving status
+     Failure/Error: expect(output).not_to include("SYNTHETIC_SECRET")
+       expected "POST https://example.test/%5BREDACTED%5D status=503 23ms error=Bearer [REDACTED] SYNTHETIC_SECRET" not to include "SYNTHETIC_SECRET"
+     # /qa/targeted_spec.rb:161:in `block (3 levels) in <top (required)>'
+     # /qa/targeted_spec.rb:160:in `each'
+     # /qa/targeted_spec.rb:160:in `block (2 levels) in <top (required)>'
+
+  3) Independent percent-depth adversarial boundaries SEC plaintext duplicated Bearer has no residual credential in automatic evidence
+     Got 8 failures from failure aggregation block "all duplicated-Bearer automatic channels".
+     # /qa/adversarial_spec.rb:108:in `block (2 levels) in <top (required)>'
+
+     3.1) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            direct retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+     3.2) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            structured retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+     3.3) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            summary retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+     3.4) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            native retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+     3.5) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            plain retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+     3.6) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            rich retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+     3.7) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            diagnostic retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+     3.8) Failure/Error: expect(output).not_to include("SYNTHETIC_BEARER_SENTINEL"), "#{channel} retains a credential after duplicated Bearer"
+            evidence retains a credential after duplicated Bearer
+          # /qa/adversarial_spec.rb:110:in `block (4 levels) in <top (required)>'
+          # /qa/adversarial_spec.rb:109:in `each'
+          # /qa/adversarial_spec.rb:109:in `block (3 levels) in <top (required)>'
+
+Finished in 0.16924 seconds (files took 0.26221 seconds to load)
+88 examples, 3 failures
+
+Failed examples:
+
+rspec '/qa/targeted_spec.rb[1:32]' # Independent selective 1.x backport SEC automatic redaction removes double_bearer credential residue
+rspec /qa/targeted_spec.rb:156 # Independent selective 1.x backport SEC structured HTTP sanitizes all automatic surfaces while preserving status
+rspec /qa/adversarial_spec.rb:99 # Independent percent-depth adversarial boundaries SEC plaintext duplicated Bearer has no residual credential in automatic evidence
+

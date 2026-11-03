@@ -1,0 +1,227 @@
+{
+  "frozen_sha": "68e81d3697965305438be4fa27aa98aeb4baf726",
+  "image": "sha256:be5daf6e4acf02ce07fb8db1a3723929ef27653e0f7f3f0694a6ba5536c61a35",
+  "matched_runtime_dependencies": true,
+  "diagnostic_not_automatic_acceptance": true,
+  "measurement_scope": "CPU-side renderer and benign HttpExchange construction/rendering only; not an end-to-end network/upload SLA",
+  "aggregation": "Pooled retained samples across three alternating-order repetitions; 20 warmups per case/repetition excluded",
+  "excludes_unsafe_legacy_fast_paths": true,
+  "comparisons": {
+    "failure_plain": {
+      "baseline": {
+        "samples": 3000,
+        "median_ms": 0.05658299778588116,
+        "p95_ms": 0.22408299264498055,
+        "repetition_medians_ms": [
+          0.054917007219046354,
+          0.07012499554548413,
+          0.05445799615699798
+        ],
+        "repetition_p95_ms": [
+          0.2262920024804771,
+          0.24204199144151062,
+          0.1769579976098612
+        ]
+      },
+      "candidate": {
+        "samples": 3000,
+        "median_ms": 0.0543750065844506,
+        "p95_ms": 0.1459580089431256,
+        "repetition_medians_ms": [
+          0.053042007493786514,
+          0.05662499461323023,
+          0.05324999801814556
+        ],
+        "repetition_p95_ms": [
+          0.13308299821801484,
+          0.1769579976098612,
+          0.1332079991698265
+        ]
+      },
+      "candidate_over_baseline": {
+        "median": 0.9609778327796286,
+        "p95": 0.6513569245943175
+      }
+    },
+    "assertion_plain": {
+      "baseline": {
+        "samples": 3000,
+        "median_ms": 0.05400000372901559,
+        "p95_ms": 0.23774999135639518,
+        "repetition_medians_ms": [
+          0.05295799928717315,
+          0.059250000049360096,
+          0.05324999801814556
+        ],
+        "repetition_p95_ms": [
+          0.21691698930226266,
+          0.2998749987455085,
+          0.17112500790972263
+        ]
+      },
+      "candidate": {
+        "samples": 3000,
+        "median_ms": 0.05237500590737909,
+        "p95_ms": 0.17983400903176516,
+        "repetition_medians_ms": [
+          0.05208300717640668,
+          0.05166701157577336,
+          0.05616599810309708
+        ],
+        "repetition_p95_ms": [
+          0.16329200298059732,
+          0.1441249914932996,
+          0.2168749924749136
+        ]
+      },
+      "candidate_over_baseline": {
+        "median": 0.9699074498255387,
+        "p95": 0.7563996448781694
+      }
+    },
+    "benign_http_plain": {
+      "baseline": {
+        "samples": 3000,
+        "median_ms": 0.876082995091565,
+        "p95_ms": 1.57125000259839,
+        "repetition_medians_ms": [
+          0.8956669917097315,
+          0.8939170074881986,
+          0.8445420098723844
+        ],
+        "repetition_p95_ms": [
+          1.7143750010291114,
+          1.5416670066770166,
+          1.4692080003442243
+        ]
+      },
+      "candidate": {
+        "samples": 3000,
+        "median_ms": 0.9213750017806888,
+        "p95_ms": 1.8145420035580173,
+        "repetition_medians_ms": [
+          0.9538750018691644,
+          0.905417007743381,
+          0.912499992409721
+        ],
+        "repetition_p95_ms": [
+          1.7829589924076572,
+          2.6202089939033613,
+          1.6972919984254986
+        ]
+      },
+      "candidate_over_baseline": {
+        "median": 1.0516983059172265,
+        "p95": 1.154839777602096
+      }
+    },
+    "failure_rich": {
+      "baseline": {
+        "samples": 3000,
+        "median_ms": 0.1202080020448193,
+        "p95_ms": 0.370624999050051,
+        "repetition_medians_ms": [
+          0.11624999751802534,
+          0.12724999396596104,
+          0.11758400069084018
+        ],
+        "repetition_p95_ms": [
+          0.3868749918183312,
+          0.3499160084174946,
+          0.378249998902902
+        ]
+      },
+      "candidate": {
+        "samples": 3000,
+        "median_ms": 0.05787500413134694,
+        "p95_ms": 0.20458399376366287,
+        "repetition_medians_ms": [
+          0.0583749933866784,
+          0.05716699524782598,
+          0.05841700476594269
+        ],
+        "repetition_p95_ms": [
+          0.21262500376906246,
+          0.21533400285989046,
+          0.19137500203214586
+        ]
+      },
+      "candidate_over_baseline": {
+        "median": 0.48145716713408454,
+        "p95": 0.5519972864432571
+      }
+    },
+    "assertion_rich": {
+      "baseline": {
+        "samples": 3000,
+        "median_ms": 0.057999990531243384,
+        "p95_ms": 0.23270898964256048,
+        "repetition_medians_ms": [
+          0.05529099144041538,
+          0.056541000958532095,
+          0.07224999717436731
+        ],
+        "repetition_p95_ms": [
+          0.16333299572579563,
+          0.19779198919422925,
+          0.29608300246763974
+        ]
+      },
+      "candidate": {
+        "samples": 3000,
+        "median_ms": 0.05529100599233061,
+        "p95_ms": 0.22837499273009598,
+        "repetition_medians_ms": [
+          0.0578339968342334,
+          0.05629200313705951,
+          0.05337499896995723
+        ],
+        "repetition_p95_ms": [
+          0.22662500850856304,
+          0.29616600659210235,
+          0.19466700905468315
+        ]
+      },
+      "candidate_over_baseline": {
+        "median": 0.95329336239368,
+        "p95": 0.9813758939045651
+      }
+    },
+    "benign_http_rich": {
+      "baseline": {
+        "samples": 3000,
+        "median_ms": 1.0564169933786616,
+        "p95_ms": 1.989166994462721,
+        "repetition_medians_ms": [
+          1.042791991494596,
+          1.0880830086534843,
+          1.0390829993411899
+        ],
+        "repetition_p95_ms": [
+          1.8620000046212226,
+          2.1760000090580434,
+          1.8973749974975362
+        ]
+      },
+      "candidate": {
+        "samples": 3000,
+        "median_ms": 1.0935419995803386,
+        "p95_ms": 2.1202920033829287,
+        "repetition_medians_ms": [
+          1.0772909881779924,
+          1.0622499976307154,
+          1.1379589996067807
+        ],
+        "repetition_p95_ms": [
+          2.0988330070395023,
+          1.9995409966213629,
+          2.3392500006593764
+        ]
+      },
+      "candidate_over_baseline": {
+        "median": 1.0351423788469578,
+        "p95": 1.065919557928129
+      }
+    }
+  }
+}

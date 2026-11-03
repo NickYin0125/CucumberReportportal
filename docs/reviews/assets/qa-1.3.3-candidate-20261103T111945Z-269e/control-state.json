@@ -1,0 +1,19 @@
+{
+  "frozen_sha": "1a8db4fd4cdc59985ef49d71d254ba21997aeef1",
+  "acceptance": "INCOMPLETE; NO ACCEPT VERDICT",
+  "m1": { "status": "PASS", "rspec_examples": 1878, "rspec_failures": 0, "pending": 0, "isolation_examples": 9, "independent_examples": 88, "cucumber_scenarios": 1, "cucumber_steps": 3 },
+  "m2": { "status": "PASS", "rspec_examples": 1878, "rspec_failures": 0, "pending": 0, "isolation_examples": 9, "independent_examples": 88, "cucumber_scenarios": 1, "cucumber_steps": 3 },
+  "m3": { "status": "RETAINED_SDK_STANDALONE_SPEC_ISOLATION_DEFECT", "rspec_examples": 1878, "rspec_failures": 3, "pending": 0, "independent_examples": 88, "independent_failures": 0, "cucumber_scenarios": 1, "cucumber_steps": 3 },
+  "m4": { "status": "MASTER_REQUESTED_ABORT_BEFORE_COMPLETION", "same_image_as_failed_m3": true, "full_execution_count_claimed": false },
+  "root_cause": "Bundler 2.6.6 sets BUNDLER_SETUP; RubyGems 3.5.22 rubygems.rb:1397 auto-requires it in child processes whose existing env -u list does not include this flag",
+  "rubygems_gemdeps_unset": true,
+  "missing_gem_versions_match_tracked_1x_lock": true,
+  "runtime_implementation_defect_proven": false,
+  "classification": "Unfixed SDK standalone-spec isolation list omitted BUNDLER_SETUP; not an SDK helper defect and not Cucumber 12 contamination",
+  "diagnostic_before_after_retained": "environment-diagnostic.json",
+  "qa_launcher_workaround": "PROTOTYPE NEVER USED IN MATRIX; REMOVED after master requested legitimate test-only env -u fix review",
+  "full_retry": "HELD pending approved three-line SDK spec-only env -u fix and new frozen identity; no QA launcher overlay will be used",
+  "sdk_files_edited_by_tester": false,
+  "live_launch_ids": [],
+  "performance_started": false
+}
