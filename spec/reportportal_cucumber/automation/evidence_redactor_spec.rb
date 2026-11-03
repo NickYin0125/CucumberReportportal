@@ -277,7 +277,7 @@ RSpec.describe Automation::EvidenceRedactor do
       abort "defined ReportPortal" if reportportal_before.nil? && defined?(ReportportalCucumber)
     RUBY
     stdout, stderr, status = Open3.capture3(
-      "env", "-u", "RUBYOPT", "-u", "BUNDLE_GEMFILE", "-u", "BUNDLE_BIN_PATH", "-u", "BUNDLER_VERSION",
+      "env", "-u", "RUBYOPT", "-u", "BUNDLE_GEMFILE", "-u", "BUNDLE_BIN_PATH", "-u", "BUNDLER_VERSION", "-u", "BUNDLER_SETUP",
       RbConfig.ruby, "-I#{lib_dir}", "-e", script
     )
 

@@ -318,7 +318,7 @@ RSpec.describe Automation::HttpExchange do
       abort "loaded ReportPortal runtime" if ReportportalCucumber.respond_to?(:current_runtime)
     RUBY
     stdout, stderr, status = Open3.capture3(
-      "env", "-u", "RUBYOPT", "-u", "BUNDLE_GEMFILE", "-u", "BUNDLE_BIN_PATH", "-u", "BUNDLER_VERSION",
+      "env", "-u", "RUBYOPT", "-u", "BUNDLE_GEMFILE", "-u", "BUNDLE_BIN_PATH", "-u", "BUNDLER_VERSION", "-u", "BUNDLER_SETUP",
       RbConfig.ruby, "-I#{lib_dir}", "-e", script
     )
 

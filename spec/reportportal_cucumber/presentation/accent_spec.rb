@@ -361,7 +361,7 @@ RSpec.describe ReportportalCucumber::Presentation::Accent do
       abort "loaded Cucumber" if defined?(Cucumber)
     RUBY
     stdout, stderr, status = Open3.capture3(
-      "env", "-u", "RUBYOPT", "-u", "BUNDLE_GEMFILE", "-u", "BUNDLE_BIN_PATH", "-u", "BUNDLER_VERSION",
+      "env", "-u", "RUBYOPT", "-u", "BUNDLE_GEMFILE", "-u", "BUNDLE_BIN_PATH", "-u", "BUNDLER_VERSION", "-u", "BUNDLER_SETUP",
       RbConfig.ruby, "-I#{root}", "-e", script
     )
     expect(status.success?).to(be(true), "stdout: #{stdout}\nstderr: #{stderr}")
