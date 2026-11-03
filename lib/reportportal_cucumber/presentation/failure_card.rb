@@ -31,17 +31,13 @@ module ReportportalCucumber
             next baseline if baseline.bytesize > BYTE_LIMIT || !baseline.dup.force_encoding(Encoding::UTF_8).valid_encoding?
 
             card = render(error, message, backtrace, cwd)
-            next baseline if card.bytesize > BYTE_LIMIT
-            next card unless presentation == "rich"
-
-            rich = render(error, message, backtrace, cwd, accent: true)
-            Accent.guard(plain: card, rich: rich, level: :error)
+            card.bytesize > BYTE_LIMIT ? baseline : card
           end
         end
 
         private
 
-        def render(error, message, backtrace, cwd, accent: false)
+        def render(error, message, backtrace, cwd)
           message_lines = message.lines(chomp: true)
           first = message_lines.index { |line| !line.strip.empty? }
           headline = first ? message_lines[first] : ""
@@ -77,12 +73,8 @@ module ReportportalCucumber
           end
           unless backtrace.empty?
             caption = tail_caption(frames, shown)
-            if accent
-              sections << Accent.details(summary: caption, body: backtrace, limit: BYTE_LIMIT)
-            else
-              sections << "_#{caption}_"
-              sections << fenced(backtrace)
-            end
+            sections << "_#{caption}_"
+            sections << fenced(backtrace)
           end
           sections.join("\n\n")
         end

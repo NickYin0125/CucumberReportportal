@@ -117,6 +117,21 @@ RSpec.describe ReportportalCucumber::Cucumber::Formatter do
     end
   end
 
+  it "emits the same complete raw failure card in plain and rich without changing ownership" do
+    failure = RuntimeError.new("\n/\\d+/ C:\\logs\\failure.json api_key=RAW_SECRET\n")
+    failure.set_backtrace(["C:\\suite\\steps.rb:42", 'escaped {"message":"a\\"b"}', "", "support.rb:1\n"])
+    %w[plain rich].each do |mode|
+      formatter.instance_variable_set(:@config, ReportportalCucumber::Config.new("rp.presentation" => mode))
+      formatter.send(:emit_error_log, item_uuid: "after-hook", error: failure, timestamp: timestamp)
+    end
+    expect(emissions.length).to eq(2)
+    expect(emissions.last).to eq(emissions.first)
+    output = emissions.last.fetch(:message)
+    expect(output.b).to include("```text\n#{failure.message}\n```".b)
+    expect(output.b).to end_with("```text\n#{failure.backtrace.join("\n")}\n```".b)
+    expect(output).not_to include("<span", "<details>", "Message withheld")
+  end
+
   it "preserves Step failed for an empty non-exception failure" do
     failure = Struct.new(:message, :backtrace).new("", [])
     formatter.send(:emit_error_log, item_uuid: "step-1", error: failure, timestamp: timestamp)

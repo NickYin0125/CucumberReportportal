@@ -32,9 +32,10 @@ module ReportportalCucumber
             explicit << { key: key, value: value } if value && !keys.include?(key)
           end
 
-          generated = ["Cucumber #{trim(cucumber_version)}", "Ruby #{trim(ruby_version)}"]
+          generated = []
           generated << "#{workers} #{workers == '1' ? 'worker' : 'workers'}" if workers
           generated << [branch, sha].compact.join("@") if branch || sha
+          generated << "build #{build_id}" if build_id
           output_description = description
           if description.to_s.empty?
             output_description = generated.map { |part| MarkdownText.inline(part, limit: 512) }.join(" · ")

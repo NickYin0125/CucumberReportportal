@@ -165,6 +165,23 @@ RSpec.describe ReportportalCucumber::Presentation::FailureCard do
       .to eq("## \u2717 RuntimeError: x&lt;script&gt;alert(1)&lt;/script&gt;")
   end
 
+  [
+    "\nraw back\\slash\n/\\d+/ and C:\\logs\\failure.json\n",
+    'HTTP 500 body: {"message":"a\\"b","\\u0070assword":"RAW_SECRET"}' + "\n",
+    "headline " + "x" * 500 + "\nraw continuation\n"
+  ].each do |message|
+    it "keeps rich failure evidence entirely plain with the original full message and every frame byte" do
+      trace = "C:\\suite\\steps.rb:42:in 'work'\n/\\d+/\n{\"path\":\"C:\\\\logs\"}\n\n"
+      arguments = { error: error, message: message, backtrace: trace, cwd: cwd }
+      plain = described_class.format(**arguments)
+      rich = described_class.format(**arguments, presentation: "rich")
+      expect(rich.b).to eq(plain.b)
+      expect(rich).to include("_Full message_\n\n```text\n#{message}\n```")
+      expect(rich.b).to end_with("```text\n#{trace}\n```".b)
+      expect(rich).not_to include("<span", "<details>", "Message withheld")
+    end
+  end
+
   it "preserves credential-looking message and frame content without interpreting escaped JSON" do
     result = card(message: 'api_key=SECRET123 failed', backtrace: "/project/support.rb:1:in 'token=SECRET123'")
     expect(result).to include("api\\_key=SECRET123 failed", "token=SECRET123")

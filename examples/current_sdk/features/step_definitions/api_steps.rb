@@ -29,7 +29,6 @@ Then("the JSON response includes:") do |table|
 end
 
 Then("I record a non-fatal diagnostic comparison") do
-  AppLog.assertion(name: "Optional diagnostic, not a business assertion",
-                   expected: "successful creation", actual: "validation rejection", passed: false,
-                   details: {business_contract: "400 was expected and asserted separately"})
+  AppLog.info("Diagnostic only (non-fatal): validation rejection observed; expected 400 was asserted separately",
+              report: true)
 end

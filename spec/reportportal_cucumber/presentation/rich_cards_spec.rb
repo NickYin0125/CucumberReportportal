@@ -36,22 +36,21 @@ RSpec.describe "RP-only Ledger accents" do
 
   def check_guard(plain, rich, level: :info)
     expect(rich.bytesize).to be <= plain.bytesize + 1024
-    expect(rich.lines.first).to eq(plain.lines.first) if level == :error
+    expect(rich.b).to eq(plain.b) if %i[error fatal].include?(level)
     expect(rich).not_to include("SECRET123")
   end
 
-  it "folds the complete failure tail without changing ERROR identity or raw evidence" do
+  it "keeps the complete raw failure card byte-identical in rich and plain" do
     frames = "/project/step.rb:5:in 'run'\n/gems/cucumber/core.rb:6:in 'call'\n-e:1"
     arguments = { error: error, message: error.message, backtrace: frames,
                   baseline: "#{error.message}\n#{frames}", cwd: "/project" }
     plain = ReportportalCucumber::Presentation::FailureCard.format(**arguments)
     rich = ReportportalCucumber::Presentation::FailureCard.format(**arguments, presentation: "rich")
-    expect(rich.bytesize).to be <= plain.bytesize + 1024
-    expect(rich.lines.first).to eq(plain.lines.first)
+    expect(rich.b).to eq(plain.b)
     expect(plain).to include("token=SECRET123")
     expect(rich).to include("token=SECRET123")
-    expect(rich).to include("<details><summary>Full backtrace", "</summary>\n\n```text\n#{frames}\n```\n\n</details>")
-    expect(rich.gsub(/<[^>]*>/, "")).to include(frames)
+    expect(rich).to end_with("```text\n#{frames}\n```")
+    expect(rich).not_to include("<details>", "<span")
   end
 
   [true, false].each do |passed|
@@ -62,21 +61,23 @@ RSpec.describe "RP-only Ledger accents" do
       rich = presenter.assertion(**arguments, presentation: "rich")
       expect(rich[:summary]).to eq(plain[:summary])
       check_guard(plain[:markdown], rich[:markdown], level: passed ? :info : :error)
-      expect(rich[:markdown]).to include("001.2300", "[1, true, null]", "1.0", "<span style=")
+      expect(rich[:markdown]).to include("001.2300", "[1, true, null]", "1.0")
+      expect(rich[:markdown].include?("<span style=")).to eq(passed)
       expect(rich[:markdown]).to include("&lt;other&gt; \\*literal\\*")
       expect(rich[:markdown]).to include("actual    1.23") unless passed
       expect(rich[:markdown]).to include("#{accent.pill('PASS', tone: :pass)} #{accent.title('Order <other> *literal*')}") if passed
     end
   end
 
-  it "keeps evidence summary and diagnostics byte-identical while accenting only the card metadata" do
+  it "keeps failure evidence and diagnostics byte-identical without rich metadata" do
     arguments = { action: "Find <other>", error: error, url: "https://example.test?token=SECRET123",
                   details: { count: 12 }, artifact_names: ["error.png"] }
     plain = presenter.failure(**arguments)
     rich = presenter.failure(**arguments, presentation: "rich")
     expect(rich.values_at(:summary, :details)).to eq(plain.values_at(:summary, :details))
     check_guard(plain[:card], rich[:card], level: :error)
-    expect(rich[:card]).to include("#{accent.pill('FAIL', tone: :fail)} `RuntimeError`", "evidence `error.png`")
+    expect(rich[:card]).to include("`RuntimeError`", "evidence `error.png`")
+    expect(rich[:card]).not_to include("<span", "<details>")
   end
 
   [[201, nil, :info, :pass], [302, nil, :info, :info], [404, nil, :warn, :warn],
@@ -90,11 +91,13 @@ RSpec.describe "RP-only Ledger accents" do
       expect(http.summary).to eq(summary)
       check_guard(plain, rich, level: level)
       expect(rich.lines.first).to eq(plain.lines.first) if level == :warn
-      expect(rich).to include(accent.pill(status.to_s, tone: tone), "84 ms", "Request headers \u00b7 2",
-                              "Request body \u00b7 25 lines", "Response body \u00b7 25 lines")
-      expect(rich.scan(/<details>/).length).to eq(4)
+      expect(rich).to include("84 ms", "Request headers \u00b7 2")
+      if level != :error
+        expect(rich).to include(accent.pill(status.to_s, tone: tone), "Request body \u00b7 25 lines", "Response body \u00b7 25 lines")
+        expect(rich).to include("</summary>\n\n```text\n", "\n```\n\n</details>")
+      end
+      expect(rich.scan(/<details>/).length).to eq(level == :error ? 0 : 4)
       expect(rich.scan(body).length).to eq(2)
-      expect(rich).to include("</summary>\n\n```text\n", "\n```\n\n</details>")
     end
   end
 
@@ -113,7 +116,7 @@ RSpec.describe "RP-only Ledger accents" do
     rich = http.to_markdown(presentation: "rich")
     expect(rich.scan(/^data$/).length).to eq(plain.scan(/^data$/).length)
     expect(rich.scan('[preview truncated]').length).to eq(plain.scan('[preview truncated]').length)
-    expect(rich.scan(/^data$/).length).to eq(98)
+    expect(rich.scan(/^data$/).length).to eq(100)
     check_guard(plain, rich)
   end
 
@@ -160,7 +163,7 @@ RSpec.describe "RP-only Ledger accents" do
     expect(logger).not_to have_received(:warn)
   end
 
-  [:info, :error, 40000].each do |level|
+  [:info, :error, :fatal, "ERROR", "FATAL", 40000].each do |level|
     it "preserves #{level} attachment ownership, bytes, metadata, and first-caption identity" do
       plain = batch("plain", level: level)
       rich = batch("rich", level: level)
@@ -168,18 +171,19 @@ RSpec.describe "RP-only Ledger accents" do
       expect(rich[:entries].first.reject { |k, _| k == "message" }).to eq(plain[:entries].first.reject { |k, _| k == "message" })
       p, r = [plain, rich].map { |result| result[:entries].first.fetch("message") }
       check_guard(p, r, level: level == :info ? :info : :error)
-      expect(r).to include("<summary>Preview \u00b7 25 lines</summary>", body)
+      expect(r).to include(body)
+      expect(r.include?("<summary>Preview \u00b7 25 lines</summary>")).to eq(level == :info)
       expect(r.include?(accent::PILL)).to eq(level == :info)
       expect(rich[:files].first[:bytes]).to eq(body)
     end
   end
 
-  it "leaves caller text literal while accenting an ERROR attachment below that first line" do
+  it "leaves caller text literal and adds no HTML to an ERROR attachment" do
     caller_text = "User **Markdown** <raw>\n```\nnot a card\n```"
     plain = batch("plain", level: :error, style: nil, message: caller_text)
     rich = batch("rich", level: :error, style: nil, message: caller_text)
     p, r = [plain, rich].map { |result| result[:entries].first.fetch("message") }
-    expect(r).to start_with(caller_text + "\n\n" + accent.pill("Text", tone: :info))
+    expect(r).to start_with(caller_text + "\n\n`log.txt`")
     check_guard(p, r, level: :error)
     expect(builder.build_log_batch([{ message: caller_text, level: :error }], presentation: "rich")[:entries].first["message"])
       .to eq(caller_text)
@@ -209,28 +213,27 @@ RSpec.describe "RP-only Ledger accents" do
     end
   end
 
-  %i[details guard].each do |helper|
-    it "restores the complete pre-Ledger failure message once on Accent.#{helper} fault" do
+  %i[pill title details guard].each do |helper|
+    it "never invokes Accent.#{helper} for raw failure cards" do
       frames = "/project/step.rb:5\n/gems/cucumber/core.rb:6"
-      expect(accent).to receive(helper).once.and_raise("SECRET123")
+      expect(accent).not_to receive(helper)
       result = ReportportalCucumber::Presentation::FailureCard.format(
         error: error, message: error.message, backtrace: frames,
         baseline: "#{error.message}\n#{frames}", presentation: "rich"
       )
-      expect(result).to eq("#{error.message}\n#{frames}")
-      expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
+      expect(result).to include("token=SECRET123")
+      expect(result).to end_with("```text\n#{frames}\n```")
+      expect(logger).not_to have_received(:warn)
     end
   end
 
-  it "returns the evidence summary/details baseline, not Tier 1, if rich metadata fails" do
+  it "does not attempt rich metadata for ERROR evidence" do
     arguments = { action: "failed", error: error, details: { count: 1.0 } }
     plain = presenter.failure(**arguments)
-    baseline = [plain[:summary], plain[:details]].join("\n\n")
-    expect(accent).to receive(:pill).once.and_raise("SECRET123")
+    expect(accent).not_to receive(:pill)
     rich = presenter.failure(**arguments, presentation: "rich")
-    expect(rich[:card]).to eq(baseline)
-    expect(rich[:card]).not_to eq(plain[:card])
-    expect(logger).to have_received(:warn).with(ReportportalCucumber::Presentation::Fallback::WARNING).once
+    expect(rich[:card].b).to eq(plain[:card].b)
+    expect(logger).not_to have_received(:warn)
   end
 
   %i[pill title details guard].each do |helper|
@@ -263,7 +266,7 @@ RSpec.describe "RP-only Ledger accents" do
 
   it "lets evidence helper faults reach an active caller's original-baseline fallback" do
     baseline = "Frozen caller baseline".freeze
-    expect(accent).to receive(:pill).once.and_raise("SECRET123")
+    expect(presenter).to receive(:card_title).once.and_raise("SECRET123")
     result = ReportportalCucumber::Presentation::Fallback.render(fallback: -> { baseline }) do
       presenter.failure(action: "failed", error: error, presentation: "rich")[:card]
     end

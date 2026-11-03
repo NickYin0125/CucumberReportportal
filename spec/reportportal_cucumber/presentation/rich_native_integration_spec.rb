@@ -137,12 +137,12 @@ RSpec.describe "Native Cucumber Ledger channel separation" do
       expect(results["fancy"]["warnings"].scan(ReportportalCucumber::Config::PRESENTATION_WARNING).length).to eq(1)
       [nil, "plain", "rich"].each { |mode| expect(results[mode]["warnings"]).not_to include("Invalid RP_PRESENTATION") }
       expect(plain["logs"].to_json).not_to include("<span style", "<details>")
-      expect(rich["logs"].map { |entry| entry["message"] }.join).to include("<span style=", "<details><summary>Full backtrace",
+      expect(rich["logs"].map { |entry| entry["message"] }.join).to include("<span style=", "_Full backtrace",
         "<details><summary>Preview", "<details><summary>Doc string", "<details><summary>Request headers")
       rich["logs"].zip(plain["logs"]).each do |r, p|
         expect(stable(r.reject { |key, _| key == "message" })).to eq(stable(p.reject { |key, _| key == "message" }))
         expect(r["message"].bytesize).to be <= p["message"].bytesize + 1024
-        expect(r["message"].lines.first).to eq(p["message"].lines.first) if p["level"] == "error"
+        expect(r["message"].b).to eq(p["message"].b) if %w[error fatal].include?(p["level"])
         if p["message"].start_with?("Caller", "Native")
           expect(r["message"]).to eq(p["message"])
         end
