@@ -50,14 +50,14 @@ jobs:
 
       - name: Resolve the exact matrix runtime without changing source
         run: |
-          ruby -e 'File.write(ENV.fetch("BUNDLE_GEMFILE"), "eval_gemfile #{File.join(ENV.fetch("GITHUB_WORKSPACE"), "Gemfile").inspect}\ngem \"cucumber\", #{("= " + ENV.fetch("CUCUMBER_VERSION")).inspect}\n")'
+          ruby -e 'File.write(ENV.fetch("BUNDLE_GEMFILE"), "eval_gemfile #{File.join(ENV.fetch("GITHUB_WORKSPACE"), "Gemfile").inspect}\ngem \"cucumber\", #{("= " + ENV.fetch("CUCUMBER_VERSION")).inspect}\ngem \"diff-lcs\", \"< 2\"\n")'
           bundle install --jobs 4
           echo "BUNDLE_FROZEN=true" >> "$GITHUB_ENV"
 
       - name: Record the exact matrix runtime
         run: |
           ruby --version
-          bundle exec ruby -rjson -e 'require "reportportal_cucumber"; cucumber = Gem.loaded_specs.fetch("cucumber").version.to_s; abort "Wrong SDK source" unless ReportportalCucumber::VERSION == "1.3.3"; abort "Wrong Cucumber version" unless cucumber == ENV.fetch("CUCUMBER_VERSION"); puts JSON.pretty_generate(sdk: ReportportalCucumber::VERSION, cucumber: cucumber, ruby: RUBY_DESCRIPTION, bundler: Bundler::VERSION)' > "$RUNNER_TEMP/runtime/runtime.json"
+          bundle exec ruby -rjson -e 'require "reportportal_cucumber"; cucumber = Gem.loaded_specs.fetch("cucumber").version.to_s; diff_lcs = Gem.loaded_specs.fetch("diff-lcs").version; abort "Wrong SDK source" unless ReportportalCucumber::VERSION == "1.3.3"; abort "Wrong Cucumber version" unless cucumber == ENV.fetch("CUCUMBER_VERSION"); abort "Wrong test diff-lcs version" unless Gem::Requirement.new("< 2").satisfied_by?(diff_lcs); puts JSON.pretty_generate(sdk: ReportportalCucumber::VERSION, cucumber: cucumber, diff_lcs: diff_lcs.to_s, ruby: RUBY_DESCRIPTION, bundler: Bundler::VERSION)' > "$RUNNER_TEMP/runtime/runtime.json"
           cat "$RUNNER_TEMP/runtime/runtime.json"
           sha256sum Gemfile Gemfile.lock reportportal-cucumber-ruby.gemspec > "$RUNNER_TEMP/runtime/source-dependencies.sha256"
 

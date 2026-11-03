@@ -181,6 +181,11 @@ runtime identity. They render/lint the companion Helm profiles, run the full
 RSpec suite (including installed-gem packaging checks), execute the default
 offline Cucumber suite and run `bundle exec rspec script/release/spec`.
 The tracked source Gemfile, lockfile and gemspec are not rewritten.
+CI and independent QA both declare test-only `diff-lcs <2` in their external
+Gemfiles, matching the known-tested root-lock version 1.6.2. This repeats the
+pinned Cucumber versions' existing `~>1.5` constraint, not a new SDK runtime
+bound or an exact 1.6.2 pin. CI records the activated `diff_lcs` version alongside
+each retained lockfile; those locks identify the exact dependency resolution.
 Browser/live RP/duration checks are
 separate opt-ins; a green offline run does not claim those were performed.
 

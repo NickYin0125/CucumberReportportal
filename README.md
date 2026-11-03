@@ -82,7 +82,9 @@ text, names and descriptions do not acquire rich markup.
 
 Structured AppLog HTTP and assertion logs retain their existing native Cucumber
 and terminal bodies; only the RP subscriber selects the new plain or rich cards.
-In 1.3.3, ERROR/FATAL cards stay plain. HTTP cards show responses first and retain
+In 1.3.3, ERROR/FATAL cards stay plain: no new Ledger decoration is added;
+existing MP4 `<video>` markup and caller-supplied HTML remain unchanged. This is
+not an HTML-stripping policy. HTTP cards show responses first and retain
 repeated headers; assertions label whitespace-sensitive strings and top-level key
 deltas. Existing automatic HTTP/evidence redaction is strengthened, not extended
 to all logging. Decision 19 preserves each native 1.x failure's original v1.3.1

@@ -3,6 +3,9 @@
 require "rspec"
 require "yaml"
 require "open3"
+require "bundler"
+require "fileutils"
+require "tmpdir"
 
 RSpec.describe "Release workflow security and validation contract" do
   let(:root) { File.expand_path("../..", __dir__) }
@@ -93,6 +96,8 @@ RSpec.describe "Release workflow security and validation contract" do
     provenance = steps.find { |step| step["name"] == "Record the exact matrix runtime" }
     expect(provenance.fetch("run")).to include('ReportportalCucumber::VERSION == "1.3.3"', 'cucumber == ENV.fetch("CUCUMBER_VERSION")',
                                                "RUBY_DESCRIPTION", "Bundler::VERSION", "runtime/runtime.json", "source-dependencies.sha256")
+    expect(provenance.fetch("run")).to include('Gem.loaded_specs.fetch("diff-lcs").version',
+                                               'Gem::Requirement.new("< 2").satisfied_by?(diff_lcs)', 'diff_lcs: diff_lcs.to_s')
     retain = steps.find { |step| step["name"] == "Retain the exact matrix dependency resolution" }
     expect(retain.fetch("if")).to eq("always()")
     expect(retain.fetch("uses")).to eq("actions/upload-artifact@v6")
@@ -102,6 +107,36 @@ RSpec.describe "Release workflow security and validation contract" do
     unchanged = steps.find { |step| step["name"] == "Require unchanged tracked source" }
     expect(unchanged.fetch("if")).to eq("always()")
     expect(unchanged.fetch("run")).to include("git diff --exit-code", 'sha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"')
+  end
+
+  it "generates the QA-aligned test-only diff-lcs bound outside the unchanged source Gemfile" do
+    resolution = validation.dig("jobs", "test", "steps").find do |step|
+      step["name"] == "Resolve the exact matrix runtime without changing source"
+    end
+    generator = resolution.fetch("run").lines.first
+    Dir.mktmpdir("matrix-manifest-") do |temporary|
+      source = File.join(temporary, "source")
+      runtime = File.join(temporary, "runtime")
+      FileUtils.mkdir_p([source, runtime])
+      original = "source \"https://rubygems.org\"\n"
+      File.write(File.join(source, "Gemfile"), original)
+      gemfile = File.join(runtime, "Gemfile")
+      %w[9.2.1 10.2.0].each do |version|
+        out, err, status = Bundler.with_unbundled_env do
+          Open3.capture3(
+            { "GITHUB_WORKSPACE" => source, "BUNDLE_GEMFILE" => gemfile, "CUCUMBER_VERSION" => version },
+            "/bin/bash", "-e", "-o", "pipefail", "-c", generator
+          )
+        end
+        expect(status.success?).to be(true), "#{out}\n#{err}"
+        dsl = Bundler::Dsl.new
+        dsl.eval_gemfile(gemfile)
+        expect(dsl.dependencies.to_h { |dependency| [dependency.name, dependency.requirement.to_s] })
+          .to eq("cucumber" => "= #{version}", "diff-lcs" => "< 2")
+        expect(File.binread(File.join(source, "Gemfile"))).to eq(original)
+        expect(Dir.children(source)).to eq(["Gemfile"])
+      end
+    end
   end
 
   it "packages only after complete RSpec and Cucumber success and passes immutable artifact identity" do

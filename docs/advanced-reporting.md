@@ -28,8 +28,11 @@ headers are accented only for tables with at most six columns. Existing preview
 bounds still apply, with full original attachment bytes retained separately.
 Client-generated `<br>` is allowed in table cells; user markup is escaped.
 
-ERROR/FATAL cards remain entirely plain, including failures, failed assertions,
-failure evidence and error-severity HTTP exchanges. Added markup on eligible
+ERROR/FATAL cards receive no new Ledger decoration, including failures, failed
+assertions, failure evidence and error-severity HTTP exchanges. This does not
+strip baseline HTML: existing MP4 `<video>` markup and caller-supplied HTML
+remain unchanged; no removal of all HTML from Stack Trace is claimed.
+Added markup on eligible
 cards is limited to 1,024 bytes per message; exceeding that budget keeps
 the plain card. Helper exceptions retain the original baseline with one warning,
 not a partially formatted card. Rendering does not change Scenario outcomes.
