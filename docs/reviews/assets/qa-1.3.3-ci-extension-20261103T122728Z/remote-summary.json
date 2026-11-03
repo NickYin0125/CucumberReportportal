@@ -1,0 +1,357 @@
+{
+  "ci_sha": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+  "old_accepted_sha": "68e81d3697965305438be4fa27aa98aeb4baf726",
+  "draft_pr": {
+    "baseRefName": "maintenance/1.x",
+    "headRefName": "codex/readability-backport-1.3.3",
+    "headRefOid": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+    "isDraft": true,
+    "number": 9,
+    "state": "OPEN",
+    "url": "https://github.com/NickYin0125/CucumberReportportal/pull/9"
+  },
+  "runs": [
+    {
+      "id": "41634520578",
+      "label": "old-pr",
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41634520578",
+      "conclusion": "failure",
+      "classification": "pre-test setup-ruby failure; no full SDK counts claimed",
+      "setup_errors": [
+        "test / matrix (Ruby 3.3, Cucumber 9.2.1)\tUNKNOWN STEP\t2026-11-03T12:18:09.6522747Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist",
+        "test / matrix (Ruby 3.1, Cucumber 9.2.1)\tUNKNOWN STEP\t2026-11-03T12:18:10.3195333Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist",
+        "test / matrix (Ruby 3.3, Cucumber 10.2.0)\tUNKNOWN STEP\t2026-11-03T12:18:08.1878038Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist",
+        "test / matrix (Ruby 3.1, Cucumber 10.2.0)\tUNKNOWN STEP\t2026-11-03T12:18:10.6374344Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist"
+      ],
+      "full_rspec_skipped_all_cells": true
+    },
+    {
+      "id": "41634383995",
+      "label": "old-push",
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41634383995",
+      "conclusion": "failure",
+      "classification": "pre-test setup-ruby failure; no full SDK counts claimed",
+      "setup_errors": [
+        "test / matrix (Ruby 3.3, Cucumber 9.2.1)\tUNKNOWN STEP\t2026-11-03T12:17:08.5669573Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist",
+        "test / matrix (Ruby 3.1, Cucumber 10.2.0)\tUNKNOWN STEP\t2026-11-03T12:17:08.2789592Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist",
+        "test / matrix (Ruby 3.1, Cucumber 9.2.1)\tUNKNOWN STEP\t2026-11-03T12:17:11.0393086Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist",
+        "test / matrix (Ruby 3.3, Cucumber 10.2.0)\tUNKNOWN STEP\t2026-11-03T12:17:08.6721679Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist"
+      ],
+      "full_rspec_skipped_all_cells": true
+    },
+    {
+      "id": "41635045671",
+      "label": "ci-pr",
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41635045671",
+      "head_sha": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+      "conclusion": "success",
+      "cells": [
+        {
+          "job_id": 125913999988,
+          "name": "test / matrix (Ruby 3.1, Cucumber 10.2.0)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "10.2.0",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "18.1.0",
+          "runtime_lock_sha256": "cb1a187b23eb10fc1730597d0b1592abab8fd8ff466328d8ca7c80b903b23097",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "e061a5f5c76b53e21daf230fb7a6e9055950530c",
+          "checkout_tree_identical_to_ci_sha": true
+        },
+        {
+          "job_id": 125914000390,
+          "name": "test / matrix (Ruby 3.3, Cucumber 10.2.0)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "10.2.0",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "18.1.0",
+          "runtime_lock_sha256": "ebd8b28c74ac1b364e95e591229fd9972fdd271ea127365fbc22d04815435f7f",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "e061a5f5c76b53e21daf230fb7a6e9055950530c",
+          "checkout_tree_identical_to_ci_sha": true
+        },
+        {
+          "job_id": 125914000435,
+          "name": "test / matrix (Ruby 3.1, Cucumber 9.2.1)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "9.2.1",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "17.1.0",
+          "runtime_lock_sha256": "98892e55ee42153d7775ca12231a6371f4d57abac1f82bc855e0067003ac7fde",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "e061a5f5c76b53e21daf230fb7a6e9055950530c",
+          "checkout_tree_identical_to_ci_sha": true
+        },
+        {
+          "job_id": 125914000688,
+          "name": "test / matrix (Ruby 3.3, Cucumber 9.2.1)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "9.2.1",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "17.1.0",
+          "runtime_lock_sha256": "f0a36749252e4809951876a66d97a3d7e831e653924f4e5a5c83be775f77714b",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "e061a5f5c76b53e21daf230fb7a6e9055950530c",
+          "checkout_tree_identical_to_ci_sha": true
+        }
+      ],
+      "full_rspec_total": 7516,
+      "required_gate": "success",
+      "packaging": "skipped"
+    },
+    {
+      "id": "41635035639",
+      "label": "ci-push",
+      "url": "https://github.com/NickYin0125/CucumberReportportal/actions/runs/41635035639",
+      "head_sha": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+      "conclusion": "success",
+      "cells": [
+        {
+          "job_id": 125913965734,
+          "name": "test / matrix (Ruby 3.1, Cucumber 10.2.0)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "10.2.0",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "18.1.0",
+          "runtime_lock_sha256": "cb1a187b23eb10fc1730597d0b1592abab8fd8ff466328d8ca7c80b903b23097",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+          "checkout_tree_identical_to_ci_sha": true
+        },
+        {
+          "job_id": 125913966105,
+          "name": "test / matrix (Ruby 3.3, Cucumber 10.2.0)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "10.2.0",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "18.1.0",
+          "runtime_lock_sha256": "ebd8b28c74ac1b364e95e591229fd9972fdd271ea127365fbc22d04815435f7f",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+          "checkout_tree_identical_to_ci_sha": true
+        },
+        {
+          "job_id": 125913966135,
+          "name": "test / matrix (Ruby 3.1, Cucumber 9.2.1)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "9.2.1",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "17.1.0",
+          "runtime_lock_sha256": "98892e55ee42153d7775ca12231a6371f4d57abac1f82bc855e0067003ac7fde",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+          "checkout_tree_identical_to_ci_sha": true
+        },
+        {
+          "job_id": 125913966388,
+          "name": "test / matrix (Ruby 3.3, Cucumber 9.2.1)",
+          "conclusion": "success",
+          "full_rspec": {
+            "examples": 1879,
+            "failures": 0,
+            "pending": 0
+          },
+          "release_isolation": {
+            "examples": 9,
+            "failures": 0,
+            "pending": 0
+          },
+          "offline": {
+            "scenarios": 1,
+            "steps": 3,
+            "all_passed": true
+          },
+          "runtime": {
+            "sdk": "1.3.3",
+            "cucumber": "9.2.1",
+            "diff_lcs": "1.6.2",
+            "ruby": "ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]",
+            "bundler": "2.6.6"
+          },
+          "expressions": "17.1.0",
+          "runtime_lock_sha256": "f0a36749252e4809951876a66d97a3d7e831e653924f4e5a5c83be775f77714b",
+          "source_dependency_sha256": {
+            "Gemfile": "bbf84bea967ac012444426fb7d35999ebb3e2fc9ceb7d76ba129e6466f1d8d2b",
+            "Gemfile.lock": "2ee85c6a9bb58a6913a916d179828736ba75855b66968b71beff5c89186880d4",
+            "reportportal-cucumber-ruby.gemspec": "16df774d7a68b19fd38915ab38b11380bb4ad53f3a7903f4a5510b20810b7e99"
+          },
+          "checkout_sha": "69aaedecd10a3ac01d7ad90b96e2db1b60343344",
+          "checkout_tree_identical_to_ci_sha": true
+        }
+      ],
+      "full_rspec_total": 7516,
+      "required_gate": "success",
+      "packaging": "skipped"
+    }
+  ],
+  "read_only_access": true,
+  "credentials": "existing keychain credential in gh_safe child only; never printed or saved"
+}

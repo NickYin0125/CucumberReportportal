@@ -1,0 +1,111 @@
+diff --git a/.github/workflows/validate.yml b/.github/workflows/validate.yml
+index 94d4cd9f..3e0e64a1 100644
+--- a/.github/workflows/validate.yml
++++ b/.github/workflows/validate.yml
+@@ -38,7 +38,6 @@ jobs:
+       - name: Isolate matrix dependencies before Ruby setup
+         run: |
+           mkdir -p "$RUNNER_TEMP/runtime"
+-          echo "BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile" >> "$GITHUB_ENV"
+           echo "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems" >> "$GITHUB_ENV"
+           echo "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config" >> "$GITHUB_ENV"
+ 
+@@ -50,7 +49,9 @@ jobs:
+ 
+       - name: Resolve the exact matrix runtime without changing source
+         run: |
+-          ruby -e 'File.write(ENV.fetch("BUNDLE_GEMFILE"), "eval_gemfile #{File.join(ENV.fetch("GITHUB_WORKSPACE"), "Gemfile").inspect}\ngem \"cucumber\", #{("= " + ENV.fetch("CUCUMBER_VERSION")).inspect}\ngem \"diff-lcs\", \"< 2\"\n")'
++          ruby -e 'File.write(File.join(ENV.fetch("RUNNER_TEMP"), "runtime", "Gemfile"), "eval_gemfile #{File.join(ENV.fetch("GITHUB_WORKSPACE"), "Gemfile").inspect}\ngem \"cucumber\", #{("= " + ENV.fetch("CUCUMBER_VERSION")).inspect}\ngem \"diff-lcs\", \"< 2\"\n")'
++          export BUNDLE_GEMFILE="$RUNNER_TEMP/runtime/Gemfile"
++          echo "BUNDLE_GEMFILE=$BUNDLE_GEMFILE" >> "$GITHUB_ENV"
+           bundle install --jobs 4
+           echo "BUNDLE_FROZEN=true" >> "$GITHUB_ENV"
+ 
+diff --git a/spec/release/workflows_spec.rb b/spec/release/workflows_spec.rb
+index 5770753d..3d2f7dc2 100644
+--- a/spec/release/workflows_spec.rb
++++ b/spec/release/workflows_spec.rb
+@@ -82,13 +82,16 @@ RSpec.describe "Release workflow security and validation contract" do
+     expect(job.fetch("env")).not_to have_key("BUNDLE_IGNORE_CONFIG")
+     steps = job.fetch("steps")
+     isolation = steps.find { |step| step["name"] == "Isolate matrix dependencies before Ruby setup" }
+-    expect(isolation.fetch("run")).to include("BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile",
+-                                             "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems",
++    expect(isolation.fetch("run")).not_to include("BUNDLE_GEMFILE=")
++    expect(isolation.fetch("run")).to include("BUNDLE_PATH=$RUNNER_TEMP/runtime-gems",
+                                              "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config")
+     setup = steps.find { |step| step["uses"] == "ruby/setup-ruby@v1" }
+     expect(setup.fetch("with")).to eq("ruby-version" => "${{ matrix.ruby }}", "bundler" => "2.6.6", "bundler-cache" => false)
+     resolution = steps.find { |step| step["name"] == "Resolve the exact matrix runtime without changing source" }
+-    expect(resolution.fetch("run")).to include('File.write(ENV.fetch("BUNDLE_GEMFILE")', "eval_gemfile", 'ENV.fetch("CUCUMBER_VERSION")',
++    expect(resolution.fetch("run")).to include('File.write(File.join(ENV.fetch("RUNNER_TEMP"), "runtime", "Gemfile")',
++                                               "eval_gemfile", 'ENV.fetch("CUCUMBER_VERSION")',
++                                               'export BUNDLE_GEMFILE="$RUNNER_TEMP/runtime/Gemfile"',
++                                               'echo "BUNDLE_GEMFILE=$BUNDLE_GEMFILE" >> "$GITHUB_ENV"',
+                                                "bundle install --jobs 4", 'echo "BUNDLE_FROZEN=true" >> "$GITHUB_ENV"')
+     expect(resolution.fetch("run")).not_to include('File.open("Gemfile"', 'rm_f("Gemfile.lock")')
+     expect(steps.index(isolation)).to be < steps.index(setup)
+@@ -109,11 +112,41 @@ RSpec.describe "Release workflow security and validation contract" do
+     expect(unchanged.fetch("run")).to include("git diff --exit-code", 'sha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"')
+   end
+ 
++  it "gives setup-ruby an existing Gemfile before publishing the private matrix manifest" do
++    job = validation.dig("jobs", "test")
++    steps = job.fetch("steps")
++    setup = steps.find { |step| step["uses"] == "ruby/setup-ruby@v1" }
++    isolation = steps.find { |step| step["name"] == "Isolate matrix dependencies before Ruby setup" }
++    resolution = steps.find { |step| step["name"] == "Resolve the exact matrix runtime without changing source" }
++    expect(job.fetch("env")).not_to have_key("BUNDLE_GEMFILE")
++    expect(steps.index(isolation)).to be < steps.index(setup)
++    expect(steps.index(setup)).to be < steps.index(resolution)
++    Dir.mktmpdir("setup-ruby-gemfile-") do |temporary|
++      source = File.join(temporary, "source")
++      FileUtils.mkdir_p(source)
++      File.write(File.join(source, "Gemfile"), "source \"https://rubygems.org\"\n")
++      environment_file = File.join(temporary, "github-env")
++      out, err, status = Bundler.with_unbundled_env do
++        Open3.capture3({ "RUNNER_TEMP" => temporary, "GITHUB_ENV" => environment_file },
++                      "/bin/bash", "-e", "-o", "pipefail", "-c", isolation.fetch("run"), chdir: source)
++      end
++      expect(status.success?).to be(true), "#{out}\n#{err}"
++      environment = File.readlines(environment_file, chomp: true).to_h { |line| line.split("=", 2) }
++      expect(environment).to include("BUNDLE_PATH" => File.join(temporary, "runtime-gems"),
++                                     "BUNDLE_APP_CONFIG" => File.join(temporary, "runtime-bundle-config"))
++      # setup-ruby detects Gemfiles even when bundler-cache is false.
++      selected = environment.fetch("BUNDLE_GEMFILE", File.join(source, "Gemfile"))
++      expect(File.file?(selected)).to be(true), "$BUNDLE_GEMFILE is set to #{selected} but does not exist"
++      expect(File.read(selected)).to eq(File.read(File.join(source, "Gemfile")))
++      expect(File.exist?(File.join(temporary, "runtime", "Gemfile"))).to be(false)
++    end
++  end
++
+   it "generates the QA-aligned test-only diff-lcs bound outside the unchanged source Gemfile" do
+     resolution = validation.dig("jobs", "test", "steps").find do |step|
+       step["name"] == "Resolve the exact matrix runtime without changing source"
+     end
+-    generator = resolution.fetch("run").lines.first
++    generator = resolution.fetch("run").split("bundle install --jobs 4", 2).first
+     Dir.mktmpdir("matrix-manifest-") do |temporary|
+       source = File.join(temporary, "source")
+       runtime = File.join(temporary, "runtime")
+@@ -121,14 +154,19 @@ RSpec.describe "Release workflow security and validation contract" do
+       original = "source \"https://rubygems.org\"\n"
+       File.write(File.join(source, "Gemfile"), original)
+       gemfile = File.join(runtime, "Gemfile")
++      environment_file = File.join(temporary, "github-env")
+       %w[9.2.1 10.2.0].each do |version|
+         out, err, status = Bundler.with_unbundled_env do
+           Open3.capture3(
+-            { "GITHUB_WORKSPACE" => source, "BUNDLE_GEMFILE" => gemfile, "CUCUMBER_VERSION" => version },
++            { "GITHUB_WORKSPACE" => source, "RUNNER_TEMP" => temporary, "GITHUB_ENV" => environment_file,
++              "CUCUMBER_VERSION" => version },
+             "/bin/bash", "-e", "-o", "pipefail", "-c", generator
+           )
+         end
+         expect(status.success?).to be(true), "#{out}\n#{err}"
++        published = File.readlines(environment_file, chomp: true).to_h { |line| line.split("=", 2) }
++        expect(published.fetch("BUNDLE_GEMFILE")).to eq(gemfile)
++        expect(File.file?(published.fetch("BUNDLE_GEMFILE"))).to be(true)
+         dsl = Bundler::Dsl.new
+         dsl.eval_gemfile(gemfile)
+         expect(dsl.dependencies.to_h { |dependency| [dependency.name, dependency.requirement.to_s] })

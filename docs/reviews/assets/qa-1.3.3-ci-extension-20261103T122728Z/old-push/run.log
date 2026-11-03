@@ -1,0 +1,1270 @@
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	﻿2026-11-03T12:16:59.9612283Z Current runner version: '2.338.2'
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9647379Z ##[group]Runner Image Provisioner
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9648818Z Hosted Compute Agent
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9649923Z Version: 20261021.618
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9650979Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9652203Z Build Date: 2026-10-21T00:45:21Z
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9653453Z Worker ID: {c74ebd33-1040-4e3e-9eb0-d8edb2d81959}
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9654933Z Region: eastus
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9655980Z Cloud: Azure
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9656999Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9659400Z ##[group]Operating System
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9660557Z Ubuntu
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9661490Z 24.04.5
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9662412Z LTS
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9663336Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9664235Z ##[group]Runner Image
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9665686Z Image: ubuntu-24.04
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9666750Z Version: 20261025.353.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9668984Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9671719Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9673550Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9675757Z ##[group]GITHUB_TOKEN Permissions
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9678690Z Contents: read
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9679690Z Metadata: read
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9680809Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9683929Z Secret source: Actions
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9685853Z Cache mode: write
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:16:59.9687444Z Prepare workflow directory
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.0436841Z Prepare all required actions
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.0511257Z Getting action download info
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.2870352Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3903992Z Download action repository 'ruby/setup-ruby@v1' (SHA:de492cf36cbab201753d720ce4f4e336cd688c94)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.5159654Z Download action repository 'azure/setup-helm@v5' (SHA:9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.6287509Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9054889Z Uses: NickYin0125/CucumberReportportal/.github/workflows/validate.yml@refs/heads/codex/readability-backport-1.3.3 (68e81d3697965305438be4fa27aa98aeb4baf726)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9060306Z ##[group] Inputs
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9061300Z   release: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9061811Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9062413Z Complete job name: test / matrix (Ruby 3.3, Cucumber 9.2.1)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9989636Z ##[group]Run actions/checkout@v6
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9990606Z with:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9991137Z   ref: 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9991766Z   fetch-depth: 0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9992280Z   persist-credentials: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9992891Z   repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9997406Z   token: ***
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9997896Z   ssh-strict: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9998474Z   ssh-user: git
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9998986Z   clean: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.9999481Z   sparse-checkout-cone-mode: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0000046Z   fetch-tags: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0000529Z   show-progress: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0001004Z   lfs: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0001441Z   submodules: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0001919Z   set-safe-directory: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0002469Z   allow-unsafe-pr-checkout: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0003321Z env:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0003800Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0004397Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0005088Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.0005627Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3281808Z Syncing repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3286274Z ##[group]Getting Git version info
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3288596Z Working directory is '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3290926Z [command]/usr/bin/git version
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3305981Z git version 2.56.0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3333400Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3363038Z Temporarily overriding HOME='/home/runner/work/_temp/6ea0cad2-3ea1-4bf1-b202-5f7c31e3f550' before making global git config changes
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3366718Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3369918Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3430420Z Deleting the contents of '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3445577Z ##[group]Determining repository object format
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3449584Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3455554Z ##[group]Initializing the repository
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3458823Z [command]/usr/bin/git init /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3575408Z hint: Using 'master' as the name for the initial branch. This default branch name
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3578384Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3581249Z hint: to use in all of your new repositories, which will suppress this warning,
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3583649Z hint: call:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3585557Z hint:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3587542Z hint: 	git config --global init.defaultBranch <name>
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3589360Z hint:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3591867Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3594632Z hint: 'development'. The just-created branch can be renamed via this command:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3597165Z hint:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3598743Z hint: 	git branch -m <name>
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3600388Z hint:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3602195Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3605825Z Initialized empty Git repository in /home/runner/work/CucumberReportportal/CucumberReportportal/.git/
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3612641Z [command]/usr/bin/git remote add origin https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3661061Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3663544Z ##[group]Disabling automatic garbage collection
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3665695Z [command]/usr/bin/git config --local gc.auto 0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3700474Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3702927Z ##[group]Setting up auth
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3704528Z Removing SSH command configuration
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3708527Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3754206Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4153717Z Removing HTTP extra header
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4164399Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4218087Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4462571Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4469548Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4514390Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4763229Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4815110Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4858744Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4902080Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4951969Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4989232Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4990999Z ##[group]Fetching the repository
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.4997535Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9073281Z From https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9074518Z  * [new branch]        codex/cucumber-12 -> origin/codex/cucumber-12
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9076036Z  * [new branch]        codex/day2-security-endurance -> origin/codex/day2-security-endurance
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9077301Z  * [new branch]        codex/failure-redaction-2.0.2 -> origin/codex/failure-redaction-2.0.2
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9078549Z  * [new branch]        codex/presentation-ledger-2.0.1 -> origin/codex/presentation-ledger-2.0.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9079939Z  * [new branch]        codex/readability-backport-1.3.3 -> origin/codex/readability-backport-1.3.3
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9081284Z  * [new branch]        codex/release-draft-recovery -> origin/codex/release-draft-recovery
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9082532Z  * [new branch]        codex/reporting-experience-v1-2 -> origin/codex/reporting-experience-v1-2
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9083846Z  * [new branch]        codex/reportportal-rich-experience -> origin/codex/reportportal-rich-experience
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9085367Z  * [new branch]        docs/user-guides-20261014 -> origin/docs/user-guides-20261014
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9086377Z  * [new branch]        main              -> origin/main
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9087322Z  * [new branch]        maintenance/1.x   -> origin/maintenance/1.x
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9088596Z  * [new branch]        maintenance/presentation-ledger-1.3.2 -> origin/maintenance/presentation-ledger-1.3.2
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9090056Z  * [new branch]        maintenance/release-ancestry-1.x -> origin/maintenance/release-ancestry-1.x
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9091650Z  * [new branch]        qa/presentation-ledger-1.3.2 -> origin/qa/presentation-ledger-1.3.2
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9092853Z  * [new branch]        qa/presentation-ledger-2.0.1 -> origin/qa/presentation-ledger-2.0.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9093996Z  * [new branch]        qa/presentation-ledger-2.0.2 -> origin/qa/presentation-ledger-2.0.2
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9095434Z  * [new tag]           m3                -> m3
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9096095Z  * [new tag]           milestone1        -> milestone1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9096760Z  * [new tag]           v1.0.0            -> v1.0.0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9097439Z  * [new tag]           v1.1.0            -> v1.1.0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9098082Z  * [new tag]           v1.2.0            -> v1.2.0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9098724Z  * [new tag]           v1.3.0            -> v1.3.0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9099396Z  * [new tag]           v1.3.1            -> v1.3.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9100418Z  * [new tag]           v1.3.2            -> v1.3.2
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9101310Z  * [new tag]           v2.0.0            -> v2.0.0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9102211Z  * [new tag]           v2.0.1            -> v2.0.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9103189Z  * [new tag]           v2.0.2            -> v2.0.2
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9106598Z [command]/usr/bin/git rev-parse --verify --quiet 68e81d3697965305438be4fa27aa98aeb4baf726^{object}
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9128246Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9132995Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9133740Z ##[group]Determining the checkout info
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9135018Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9139597Z [command]/usr/bin/git sparse-checkout disable
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9200716Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9238705Z ##[group]Checking out the ref
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9242591Z [command]/usr/bin/git checkout --progress --force 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9716040Z Note: switching to '68e81d3697965305438be4fa27aa98aeb4baf726'.
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9716597Z 
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9716900Z You are in 'detached HEAD' state. You can look around, make experimental
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9717492Z changes and commit them, and you can discard any commits you make in this
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9718045Z state without impacting any branches by switching back to a branch.
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9718358Z 
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9718590Z If you want to create a new branch to retain commits you create, you may
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9719118Z do so (now or later) by using -c with the switch command. Example:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9719474Z 
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9719614Z   git switch -c <new-branch-name>
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9719826Z 
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9719961Z Or undo this operation with:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9720156Z 
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9720272Z   git switch -
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9720440Z 
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9720700Z Turn off this advice by setting config variable advice.detachedHead to false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9721041Z 
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9721351Z HEAD is now at 68e81d36 test(isolation): clear Bundler auto-setup in standalone helper checks
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9730857Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9782896Z [command]/usr/bin/git log -1 --format=%H
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9818362Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9828203Z ##[group]Removing auth
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9828849Z Removing SSH command configuration
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9832883Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:07.9874487Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0120182Z Removing HTTP extra header
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0121733Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0165943Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0406425Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0410555Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0447906Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0449596Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0450968Z includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0451954Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0461197Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0498292Z /home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0511194Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0577343Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0610112Z /home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0621873Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0671013Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0705920Z /github/runner_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0713063Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0757368Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0789573Z /github/runner_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0797619Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.0845686Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1084538Z Removing credentials config '/home/runner/work/_temp/git-credentials-1ecf1b16-0c47-45bd-9e57-93a1af16d9eb.config'
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1095929Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1330204Z ##[group]Run mkdir -p "$RUNNER_TEMP/runtime"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1330667Z ^[[36;1mmkdir -p "$RUNNER_TEMP/runtime"^[[0m
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1331124Z ^[[36;1mecho "BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1331662Z ^[[36;1mecho "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1332226Z ^[[36;1mecho "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1357028Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1357338Z env:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1357594Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1357913Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1358199Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1358471Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1533602Z ##[group]Run ruby/setup-ruby@v1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1533933Z with:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1534176Z   ruby-version: 3.3
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1534433Z   bundler: 2.6.6
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1535045Z   bundler-cache: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1537906Z   token: ***
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1538152Z env:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1538395Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1538687Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1538954Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1539288Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1539700Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1540158Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.1540580Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.3040952Z ##[group]Modifying PATH
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.3041737Z Entries added to PATH to use selected Ruby:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.3042618Z   /opt/hostedtoolcache/Ruby/3.3.13/x64/bin
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.3047651Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.3048769Z ##[group]Print Ruby version
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.3137692Z [command]/opt/hostedtoolcache/Ruby/3.3.13/x64/bin/ruby --version
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5550272Z ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5589931Z Took   0.25 seconds
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5591734Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5669573Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	    at Module.detectGemfiles (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:37:11)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	    at setupRuby (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88257:39)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	    at async run (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88191:5)
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5850938Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5851410Z with:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5851655Z   name: rspec-faults-ruby-3.3-cucumber-9.2.1-1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5852031Z   path: /home/runner/work/_temp/rspec-fault-diagnostics/
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5852373Z   include-hidden-files: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5852619Z   if-no-files-found: warn
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5852840Z   retention-days: 7
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5853047Z   compression-level: 6
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5853264Z   overwrite: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5853454Z env:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5853641Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5853875Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5854085Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5854359Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5855032Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5855431Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.5855821Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7563275Z ##[warning]No files were found with the provided path: /home/runner/work/_temp/rspec-fault-diagnostics/. No artifacts will be uploaded.
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7758202Z ##[group]Run git diff --exit-code
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7758546Z ^[[36;1mgit diff --exit-code^[[0m
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7758923Z ^[[36;1msha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"^[[0m
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7781276Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7781627Z env:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7781929Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7782322Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7782692Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7783175Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7783810Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7784486Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.7785415Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8098052Z sha256sum: /home/runner/work/_temp/runtime/source-dependencies.sha256: No such file or directory
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8105793Z ##[error]Process completed with exit code 1.
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8162693Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8162997Z with:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8163240Z   name: runtime-lock-ruby-3.3-cucumber-9.2.1-1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8163563Z   path: /home/runner/work/_temp/runtime/
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8163847Z   include-hidden-files: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8164099Z   if-no-files-found: error
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8164328Z   retention-days: 7
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8164547Z   compression-level: 6
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8164973Z   overwrite: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8165168Z env:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8165357Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8165594Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8165810Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8166090Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8166456Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8166851Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.8167210Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:08.9857795Z ##[error]No files were found with the provided path: /home/runner/work/_temp/runtime/. No artifacts will be uploaded.
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.0161829Z Post job cleanup.
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1124054Z [command]/usr/bin/git version
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1173069Z git version 2.56.0
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1222951Z Temporarily overriding HOME='/home/runner/work/_temp/54af8899-117c-4fc8-8ecb-f28267cff33d' before making global git config changes
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1224319Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1230015Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1265743Z Removing SSH command configuration
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1272919Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1316506Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1575000Z Removing HTTP extra header
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1580991Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1620252Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1886222Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1905755Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.1939249Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.3, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.2368271Z Cleaning up orphan processes
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	﻿2026-11-03T12:16:59.9180379Z Current runner version: '2.338.2'
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9202146Z ##[group]Runner Image Provisioner
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9202752Z Hosted Compute Agent
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9203176Z Version: 20261021.618
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9203591Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9204046Z Build Date: 2026-10-21T00:45:21Z
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9204585Z Worker ID: {36446d1d-09e8-4b79-89ea-51355b452d43}
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9205030Z Region: centralus
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9205420Z Cloud: Azure
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9205791Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9206978Z ##[group]Operating System
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9207456Z Ubuntu
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9207793Z 24.04.5
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9208114Z LTS
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9208503Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9208868Z ##[group]Runner Image
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9209357Z Image: ubuntu-24.04
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9209726Z Version: 20261025.353.1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9210595Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9211537Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9212222Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9212922Z ##[group]GITHUB_TOKEN Permissions
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9214537Z Contents: read
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9214909Z Metadata: read
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9215261Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9217127Z Secret source: Actions
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9217729Z Cache mode: write
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9218495Z Prepare workflow directory
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9585620Z Prepare all required actions
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9622849Z Getting action download info
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.2568395Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.3555047Z Download action repository 'ruby/setup-ruby@v1' (SHA:de492cf36cbab201753d720ce4f4e336cd688c94)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.7466484Z Download action repository 'azure/setup-helm@v5' (SHA:9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0704149Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.2537438Z Uses: NickYin0125/CucumberReportportal/.github/workflows/validate.yml@refs/heads/codex/readability-backport-1.3.3 (68e81d3697965305438be4fa27aa98aeb4baf726)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.2541300Z ##[group] Inputs
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.2541820Z   release: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.2542125Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.2542551Z Complete job name: test / matrix (Ruby 3.1, Cucumber 10.2.0)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3128693Z ##[group]Run actions/checkout@v6
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3129207Z with:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3129523Z   ref: 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3129975Z   fetch-depth: 0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3130291Z   persist-credentials: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3130706Z   repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3135111Z   token: ***
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3135389Z   ssh-strict: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3135683Z   ssh-user: git
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3135979Z   clean: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3136395Z   sparse-checkout-cone-mode: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3136785Z   fetch-tags: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3137085Z   show-progress: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3137384Z   lfs: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3137649Z   submodules: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3137957Z   set-safe-directory: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3138321Z   allow-unsafe-pr-checkout: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3138770Z env:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3139040Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3139425Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3139742Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3140064Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5382797Z Syncing repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5384705Z ##[group]Getting Git version info
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5385622Z Working directory is '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5459153Z [command]/usr/bin/git version
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5461439Z git version 2.56.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5483984Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5498827Z Temporarily overriding HOME='/home/runner/work/_temp/033247f2-86a1-41e5-a740-d0c8dda0fbdf' before making global git config changes
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5501331Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5503647Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5542992Z Deleting the contents of '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5559341Z ##[group]Determining repository object format
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5560494Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5561352Z ##[group]Initializing the repository
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5562897Z [command]/usr/bin/git init /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5644282Z hint: Using 'master' as the name for the initial branch. This default branch name
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5645755Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5647170Z hint: to use in all of your new repositories, which will suppress this warning,
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5648181Z hint: call:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5648571Z hint:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5649142Z hint: 	git config --global init.defaultBranch <name>
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5649911Z hint:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5650607Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5651933Z hint: 'development'. The just-created branch can be renamed via this command:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5652950Z hint:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5653359Z hint: 	git branch -m <name>
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5653881Z hint:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5654654Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5656550Z Initialized empty Git repository in /home/runner/work/CucumberReportportal/CucumberReportportal/.git/
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5665040Z [command]/usr/bin/git remote add origin https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5705694Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5706695Z ##[group]Disabling automatic garbage collection
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5708589Z [command]/usr/bin/git config --local gc.auto 0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5738341Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5739497Z ##[group]Setting up auth
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5740350Z Removing SSH command configuration
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5742981Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5777912Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6114983Z Removing HTTP extra header
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6121220Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6160262Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6345731Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6350567Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6387269Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6576395Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6615532Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6652789Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6689352Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6731050Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6763741Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6769504Z ##[group]Fetching the repository
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.6771259Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2300719Z From https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2301208Z  * [new branch]        codex/cucumber-12 -> origin/codex/cucumber-12
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2301653Z  * [new branch]        codex/day2-security-endurance -> origin/codex/day2-security-endurance
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2302392Z  * [new branch]        codex/failure-redaction-2.0.2 -> origin/codex/failure-redaction-2.0.2
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2302993Z  * [new branch]        codex/presentation-ledger-2.0.1 -> origin/codex/presentation-ledger-2.0.1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2303386Z  * [new branch]        codex/readability-backport-1.3.3 -> origin/codex/readability-backport-1.3.3
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2303938Z  * [new branch]        codex/release-draft-recovery -> origin/codex/release-draft-recovery
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2304525Z  * [new branch]        codex/reporting-experience-v1-2 -> origin/codex/reporting-experience-v1-2
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2305081Z  * [new branch]        codex/reportportal-rich-experience -> origin/codex/reportportal-rich-experience
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2305478Z  * [new branch]        docs/user-guides-20261014 -> origin/docs/user-guides-20261014
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2305798Z  * [new branch]        main              -> origin/main
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2306185Z  * [new branch]        maintenance/1.x   -> origin/maintenance/1.x
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2306734Z  * [new branch]        maintenance/presentation-ledger-1.3.2 -> origin/maintenance/presentation-ledger-1.3.2
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2307257Z  * [new branch]        maintenance/release-ancestry-1.x -> origin/maintenance/release-ancestry-1.x
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2308055Z  * [new branch]        qa/presentation-ledger-1.3.2 -> origin/qa/presentation-ledger-1.3.2
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2308622Z  * [new branch]        qa/presentation-ledger-2.0.1 -> origin/qa/presentation-ledger-2.0.1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2308992Z  * [new branch]        qa/presentation-ledger-2.0.2 -> origin/qa/presentation-ledger-2.0.2
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2309434Z  * [new tag]           m3                -> m3
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2309788Z  * [new tag]           milestone1        -> milestone1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2310051Z  * [new tag]           v1.0.0            -> v1.0.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2310271Z  * [new tag]           v1.1.0            -> v1.1.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2310522Z  * [new tag]           v1.2.0            -> v1.2.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2310741Z  * [new tag]           v1.3.0            -> v1.3.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2310950Z  * [new tag]           v1.3.1            -> v1.3.1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2311164Z  * [new tag]           v1.3.2            -> v1.3.2
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2311377Z  * [new tag]           v2.0.0            -> v2.0.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2311585Z  * [new tag]           v2.0.1            -> v2.0.1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2311786Z  * [new tag]           v2.0.2            -> v2.0.2
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2312969Z [command]/usr/bin/git rev-parse --verify --quiet 68e81d3697965305438be4fa27aa98aeb4baf726^{object}
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2342362Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2345908Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2346379Z ##[group]Determining the checkout info
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2346764Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2349895Z [command]/usr/bin/git sparse-checkout disable
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2402024Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2436352Z ##[group]Checking out the ref
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2439116Z [command]/usr/bin/git checkout --progress --force 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2762672Z Note: switching to '68e81d3697965305438be4fa27aa98aeb4baf726'.
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2763005Z 
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2763250Z You are in 'detached HEAD' state. You can look around, make experimental
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2763564Z changes and commit them, and you can discard any commits you make in this
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2763993Z state without impacting any branches by switching back to a branch.
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2764253Z 
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2764453Z If you want to create a new branch to retain commits you create, you may
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2764903Z do so (now or later) by using -c with the switch command. Example:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2765189Z 
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2765318Z   git switch -c <new-branch-name>
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2765496Z 
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2765622Z Or undo this operation with:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2765786Z 
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2765894Z   git switch -
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2766025Z 
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2766404Z Turn off this advice by setting config variable advice.detachedHead to false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2766682Z 
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2766942Z HEAD is now at 68e81d36 test(isolation): clear Bundler auto-setup in standalone helper checks
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2773883Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2817840Z [command]/usr/bin/git log -1 --format=%H
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2847842Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2854560Z ##[group]Removing auth
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2854866Z Removing SSH command configuration
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2857508Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.2891275Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3082671Z Removing HTTP extra header
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3083232Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3118532Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3304784Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3307942Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3338688Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3339744Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3340096Z includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3340356Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3346480Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3375899Z /home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3383868Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3422159Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3449934Z /home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3457985Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3499248Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3529314Z /github/runner_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3534551Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3571422Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3598931Z /github/runner_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3604152Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3641241Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3827674Z Removing credentials config '/home/runner/work/_temp/git-credentials-56fa62e5-28e7-4a6d-a867-dd4ddb414746.config'
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.3834853Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4006969Z ##[group]Run mkdir -p "$RUNNER_TEMP/runtime"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4007292Z ^[[36;1mmkdir -p "$RUNNER_TEMP/runtime"^[[0m
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4007542Z ^[[36;1mecho "BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4007834Z ^[[36;1mecho "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4008137Z ^[[36;1mecho "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4027465Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4027645Z env:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4027794Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4027974Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4028129Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4028284Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4147396Z ##[group]Run ruby/setup-ruby@v1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4147583Z with:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4147729Z   ruby-version: 3.1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4147876Z   bundler: 2.6.6
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4148024Z   bundler-cache: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4149354Z   token: ***
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4149490Z env:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4149631Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4149801Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4149958Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4150149Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4150375Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4150620Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.4150840Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.5009562Z ##[group]Modifying PATH
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.5009984Z Entries added to PATH to use selected Ruby:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.5010508Z   /opt/hostedtoolcache/Ruby/3.1.7/x64/bin
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.5015817Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.5022274Z ##[group]Downloading Ruby
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.5023282Z https://github.com/ruby/ruby-builder/releases/download/ruby-3.1.7/ruby-3.1.7-ubuntu-24.04-x64.tar.gz
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.9783048Z Took   0.48 seconds
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.9783458Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.9783866Z ##[group]Extracting  Ruby
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:07.9800395Z [command]/usr/bin/tar -xz -C /opt/hostedtoolcache/Ruby/3.1.7 -f /home/runner/work/_temp/c2b2f8f5-6639-4a81-8b9e-3cfb0f25b129
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2542379Z Took   0.28 seconds
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2542930Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2543438Z ##[group]Print Ruby version
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2551479Z [command]/opt/hostedtoolcache/Ruby/3.1.7/x64/bin/ruby --version
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2715562Z ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [x86_64-linux]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2738890Z Took   0.02 seconds
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2739757Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2789592Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	    at Module.detectGemfiles (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:37:11)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	    at setupRuby (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88257:39)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	    at async run (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88191:5)
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2938642Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2938795Z with:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2938937Z   name: rspec-faults-ruby-3.1-cucumber-10.2.0-1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2939135Z   path: /home/runner/work/_temp/rspec-fault-diagnostics/
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2939315Z   include-hidden-files: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2939450Z   if-no-files-found: warn
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2939574Z   retention-days: 7
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2939690Z   compression-level: 6
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2939822Z   overwrite: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2939936Z env:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2940047Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2940178Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2940298Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2940456Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2940643Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2940849Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2941046Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.3958790Z ##[warning]No files were found with the provided path: /home/runner/work/_temp/rspec-fault-diagnostics/. No artifacts will be uploaded.
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4059305Z ##[group]Run git diff --exit-code
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4059512Z ^[[36;1mgit diff --exit-code^[[0m
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4059726Z ^[[36;1msha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"^[[0m
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4076637Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4076774Z env:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4076901Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4077041Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4077163Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4077324Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4077520Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4077731Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4077916Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4280811Z sha256sum: /home/runner/work/_temp/runtime/source-dependencies.sha256: No such file or directory
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4288069Z ##[error]Process completed with exit code 1.
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4328554Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4328714Z with:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4328854Z   name: runtime-lock-ruby-3.1-cucumber-10.2.0-1
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329031Z   path: /home/runner/work/_temp/runtime/
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329186Z   include-hidden-files: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329326Z   if-no-files-found: error
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329471Z   retention-days: 7
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329591Z   compression-level: 6
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329710Z   overwrite: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329821Z env:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4329931Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4330089Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4330210Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4330370Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4330563Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4330770Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4330955Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.5364430Z ##[error]No files were found with the provided path: /home/runner/work/_temp/runtime/. No artifacts will be uploaded.
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.5541090Z Post job cleanup.
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6119448Z [command]/usr/bin/git version
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6151553Z git version 2.56.0
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6176415Z Temporarily overriding HOME='/home/runner/work/_temp/04529394-b37e-44ba-af2d-6d1e9648b581' before making global git config changes
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6177328Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6179499Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6208358Z Removing SSH command configuration
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6212696Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6245530Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6442033Z Removing HTTP extra header
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6446572Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6478516Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6690822Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6697824Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6737599Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.1, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.7050001Z Cleaning up orphan processes
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	﻿2026-11-03T12:17:00.3880681Z Current runner version: '2.338.2'
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3905173Z ##[group]Runner Image Provisioner
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3906070Z Hosted Compute Agent
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3906610Z Version: 20261021.618
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3907245Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3907907Z Build Date: 2026-10-21T00:45:21Z
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3908523Z Worker ID: {a0106ab6-d76d-4292-9e1a-572ea43a4d94}
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3909200Z Region: westus3
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3909700Z Cloud: Azure
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3910226Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3911565Z ##[group]Operating System
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3912409Z Ubuntu
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3912986Z 24.04.5
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3913449Z LTS
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3913956Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3914475Z ##[group]Runner Image
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3915034Z Image: ubuntu-24.04
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3915578Z Version: 20261025.353.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3916722Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3918148Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3919017Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3920053Z ##[group]GITHUB_TOKEN Permissions
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3921912Z Contents: read
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3922822Z Metadata: read
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3923329Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3925279Z Secret source: Actions
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3926233Z Cache mode: write
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.3926877Z Prepare workflow directory
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.4411323Z Prepare all required actions
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.4460456Z Getting action download info
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.7644375Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:00.8399055Z Download action repository 'ruby/setup-ruby@v1' (SHA:de492cf36cbab201753d720ce4f4e336cd688c94)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.3475913Z Download action repository 'azure/setup-helm@v5' (SHA:9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.7763441Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.9764203Z Uses: NickYin0125/CucumberReportportal/.github/workflows/validate.yml@refs/heads/codex/readability-backport-1.3.3 (68e81d3697965305438be4fa27aa98aeb4baf726)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.9770377Z ##[group] Inputs
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.9771845Z   release: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.9772934Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:01.9774102Z Complete job name: test / matrix (Ruby 3.1, Cucumber 9.2.1)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0851690Z ##[group]Run actions/checkout@v6
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0853669Z with:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0855028Z   ref: 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0856542Z   fetch-depth: 0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0857463Z   persist-credentials: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0858478Z   repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0867486Z   token: ***
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0868298Z   ssh-strict: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0869137Z   ssh-user: git
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0869962Z   clean: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0870860Z   sparse-checkout-cone-mode: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0871804Z   fetch-tags: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0872964Z   show-progress: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0873784Z   lfs: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0874530Z   submodules: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0875342Z   set-safe-directory: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0876273Z   allow-unsafe-pr-checkout: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0877627Z env:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0878394Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0879354Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0880200Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.0881033Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3383564Z Syncing repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3386419Z ##[group]Getting Git version info
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3387951Z Working directory is '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3390257Z [command]/usr/bin/git version
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3446999Z git version 2.56.0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3470528Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3487075Z Temporarily overriding HOME='/home/runner/work/_temp/4a7e5686-d443-488b-a641-3d3c00202776' before making global git config changes
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3492175Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3496972Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3540717Z Deleting the contents of '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3547983Z ##[group]Determining repository object format
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3550971Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3553249Z ##[group]Initializing the repository
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3555995Z [command]/usr/bin/git init /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3656152Z hint: Using 'master' as the name for the initial branch. This default branch name
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3659426Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3662814Z hint: to use in all of your new repositories, which will suppress this warning,
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3664540Z hint: call:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3665383Z hint:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3666628Z hint: 	git config --global init.defaultBranch <name>
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3667898Z hint:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3669770Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3673156Z hint: 'development'. The just-created branch can be renamed via this command:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3675781Z hint:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3677231Z hint: 	git branch -m <name>
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3678791Z hint:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3680998Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3684658Z Initialized empty Git repository in /home/runner/work/CucumberReportportal/CucumberReportportal/.git/
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3689452Z [command]/usr/bin/git remote add origin https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3736466Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3738961Z ##[group]Disabling automatic garbage collection
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3741250Z [command]/usr/bin/git config --local gc.auto 0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3767611Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3769515Z ##[group]Setting up auth
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3770511Z Removing SSH command configuration
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3775840Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.3811802Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4124188Z Removing HTTP extra header
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4133872Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4173249Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4405337Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4415281Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4456533Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4662953Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4709757Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4740490Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4769575Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4808578Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4834037Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4836580Z ##[group]Fetching the repository
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:02.4841738Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8214831Z From https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8215626Z  * [new branch]        codex/cucumber-12 -> origin/codex/cucumber-12
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8216464Z  * [new branch]        codex/day2-security-endurance -> origin/codex/day2-security-endurance
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8217261Z  * [new branch]        codex/failure-redaction-2.0.2 -> origin/codex/failure-redaction-2.0.2
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8217892Z  * [new branch]        codex/presentation-ledger-2.0.1 -> origin/codex/presentation-ledger-2.0.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8218536Z  * [new branch]        codex/readability-backport-1.3.3 -> origin/codex/readability-backport-1.3.3
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8219166Z  * [new branch]        codex/release-draft-recovery -> origin/codex/release-draft-recovery
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8219773Z  * [new branch]        codex/reporting-experience-v1-2 -> origin/codex/reporting-experience-v1-2
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8220428Z  * [new branch]        codex/reportportal-rich-experience -> origin/codex/reportportal-rich-experience
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8221028Z  * [new branch]        docs/user-guides-20261014 -> origin/docs/user-guides-20261014
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8221482Z  * [new branch]        main              -> origin/main
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8221888Z  * [new branch]        maintenance/1.x   -> origin/maintenance/1.x
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8222981Z  * [new branch]        maintenance/presentation-ledger-1.3.2 -> origin/maintenance/presentation-ledger-1.3.2
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8224090Z  * [new branch]        maintenance/release-ancestry-1.x -> origin/maintenance/release-ancestry-1.x
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8225022Z  * [new branch]        qa/presentation-ledger-1.3.2 -> origin/qa/presentation-ledger-1.3.2
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8225789Z  * [new branch]        qa/presentation-ledger-2.0.1 -> origin/qa/presentation-ledger-2.0.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8226363Z  * [new branch]        qa/presentation-ledger-2.0.2 -> origin/qa/presentation-ledger-2.0.2
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8226804Z  * [new tag]           m3                -> m3
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8227141Z  * [new tag]           milestone1        -> milestone1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8227477Z  * [new tag]           v1.0.0            -> v1.0.0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8227808Z  * [new tag]           v1.1.0            -> v1.1.0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8228127Z  * [new tag]           v1.2.0            -> v1.2.0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8228438Z  * [new tag]           v1.3.0            -> v1.3.0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8228747Z  * [new tag]           v1.3.1            -> v1.3.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8229062Z  * [new tag]           v1.3.2            -> v1.3.2
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8229379Z  * [new tag]           v2.0.0            -> v2.0.0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8229691Z  * [new tag]           v2.0.1            -> v2.0.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8230072Z  * [new tag]           v2.0.2            -> v2.0.2
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8231504Z [command]/usr/bin/git rev-parse --verify --quiet 68e81d3697965305438be4fa27aa98aeb4baf726^{object}
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8249553Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8254630Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8255047Z ##[group]Determining the checkout info
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8258822Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8259673Z [command]/usr/bin/git sparse-checkout disable
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8304289Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8330739Z ##[group]Checking out the ref
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8335375Z [command]/usr/bin/git checkout --progress --force 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8673049Z Note: switching to '68e81d3697965305438be4fa27aa98aeb4baf726'.
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8673585Z 
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8674014Z You are in 'detached HEAD' state. You can look around, make experimental
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8674855Z changes and commit them, and you can discard any commits you make in this
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8675349Z state without impacting any branches by switching back to a branch.
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8675620Z 
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8675833Z If you want to create a new branch to retain commits you create, you may
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8676483Z do so (now or later) by using -c with the switch command. Example:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8676945Z 
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8677158Z   git switch -c <new-branch-name>
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8677461Z 
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8677626Z Or undo this operation with:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8677788Z 
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8677893Z   git switch -
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8678016Z 
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8678258Z Turn off this advice by setting config variable advice.detachedHead to false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8678556Z 
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8678840Z HEAD is now at 68e81d36 test(isolation): clear Bundler auto-setup in standalone helper checks
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8683915Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8720929Z [command]/usr/bin/git log -1 --format=%H
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8744119Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8751654Z ##[group]Removing auth
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8752243Z Removing SSH command configuration
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8755299Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8782334Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8960102Z Removing HTTP extra header
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8966248Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.8998630Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9175176Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9180298Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9204887Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9205788Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9206533Z includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9207243Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9215869Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9238739Z /home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9250654Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9282762Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9303116Z /home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9313578Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9347967Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9371450Z /github/runner_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9377841Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9407903Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9428438Z /github/runner_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9434282Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9464036Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9653710Z Removing credentials config '/home/runner/work/_temp/git-credentials-a453f45b-8358-4d8f-ab79-34ac8f4c6c57.config'
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9655020Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9834442Z ##[group]Run mkdir -p "$RUNNER_TEMP/runtime"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9834899Z ^[[36;1mmkdir -p "$RUNNER_TEMP/runtime"^[[0m
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9835323Z ^[[36;1mecho "BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9835820Z ^[[36;1mecho "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9836329Z ^[[36;1mecho "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9852158Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9852451Z env:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9852671Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9853041Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9853279Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:09.9853525Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0005074Z ##[group]Run ruby/setup-ruby@v1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0005373Z with:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0005587Z   ruby-version: 3.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0005808Z   bundler: 2.6.6
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0006023Z   bundler-cache: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0008741Z   token: ***
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0008942Z env:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0009149Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0009406Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0009640Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0009936Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0010304Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0010704Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.0011068Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.1245092Z ##[group]Modifying PATH
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.1245639Z Entries added to PATH to use selected Ruby:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.1252701Z   /opt/hostedtoolcache/Ruby/3.1.7/x64/bin
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.1261749Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.1262726Z ##[group]Downloading Ruby
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.1265141Z https://github.com/ruby/ruby-builder/releases/download/ruby-3.1.7/ruby-3.1.7-ubuntu-24.04-x64.tar.gz
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.6623845Z Took   0.54 seconds
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.6625692Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.6626712Z ##[group]Extracting  Ruby
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:10.6651343Z [command]/usr/bin/tar -xz -C /opt/hostedtoolcache/Ruby/3.1.7 -f /home/runner/work/_temp/6e2fdab5-3fea-47f6-b7b2-58bf23c4e6fd
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0147066Z Took   0.35 seconds
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0147745Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0148207Z ##[group]Print Ruby version
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0160186Z [command]/opt/hostedtoolcache/Ruby/3.1.7/x64/bin/ruby --version
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0306528Z ruby 3.1.7p261 (2025-03-26 revision 0a3704f218) [x86_64-linux]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0318089Z Took   0.02 seconds
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0319010Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0393086Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	    at Module.detectGemfiles (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:37:11)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	    at setupRuby (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88257:39)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	    at async run (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88191:5)
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0542275Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0542554Z with:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0542786Z   name: rspec-faults-ruby-3.1-cucumber-9.2.1-1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0543139Z   path: /home/runner/work/_temp/rspec-fault-diagnostics/
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0543462Z   include-hidden-files: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0543703Z   if-no-files-found: warn
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0543928Z   retention-days: 7
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0544140Z   compression-level: 6
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0544367Z   overwrite: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0544576Z env:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0544767Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0545000Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0545215Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0545484Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0545821Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0546191Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.0546628Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2058363Z ##[warning]No files were found with the provided path: /home/runner/work/_temp/rspec-fault-diagnostics/. No artifacts will be uploaded.
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2286356Z ##[group]Run git diff --exit-code
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2286851Z ^[[36;1mgit diff --exit-code^[[0m
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2287480Z ^[[36;1msha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"^[[0m
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2302444Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2302715Z env:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2302944Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2303192Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2303415Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2303701Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2304050Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2304426Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2304758Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2577621Z sha256sum: /home/runner/work/_temp/runtime/source-dependencies.sha256: No such file or directory
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2582673Z ##[error]Process completed with exit code 1.
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2634445Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2634743Z with:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2634985Z   name: runtime-lock-ruby-3.1-cucumber-9.2.1-1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2635309Z   path: /home/runner/work/_temp/runtime/
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2635587Z   include-hidden-files: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2635831Z   if-no-files-found: error
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2636073Z   retention-days: 7
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2636297Z   compression-level: 6
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2636509Z   overwrite: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2636698Z env:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2636893Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2637132Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2637343Z   CUCUMBER_VERSION: 9.2.1
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2637615Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2637953Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2638321Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.2638646Z ##[endgroup]
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.4279778Z ##[error]No files were found with the provided path: /home/runner/work/_temp/runtime/. No artifacts will be uploaded.
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.4490105Z Post job cleanup.
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5357496Z [command]/usr/bin/git version
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5398459Z git version 2.56.0
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5437365Z Temporarily overriding HOME='/home/runner/work/_temp/3ece94d7-3127-422b-be60-dea545deb184' before making global git config changes
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5439171Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5442370Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5477072Z Removing SSH command configuration
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5484467Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5519711Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5736377Z Removing HTTP extra header
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5747017Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5774038Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5983295Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.5992226Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.6026705Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.1, Cucumber 9.2.1)	UNKNOWN STEP	2026-11-03T12:17:11.6365849Z Cleaning up orphan processes
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	﻿2026-11-03T12:16:59.9959058Z Current runner version: '2.338.2'
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9987706Z ##[group]Runner Image Provisioner
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9988892Z Hosted Compute Agent
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9989487Z Version: 20261021.618
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9990238Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9991003Z Build Date: 2026-10-21T00:45:21Z
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9991746Z Worker ID: {b032357f-e0ea-4c77-a61d-878a5f0a6748}
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9992539Z Region: eastus
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9993111Z Cloud: Azure
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9993724Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9995538Z ##[group]Operating System
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9996373Z Ubuntu
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9996946Z 24.04.5
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9997481Z LTS
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9998061Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9998646Z ##[group]Runner Image
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9999369Z Image: ubuntu-24.04
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:16:59.9999993Z Version: 20261025.353.1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0001340Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0002928Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0003992Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0005581Z ##[group]GITHUB_TOKEN Permissions
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0008005Z Contents: read
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0008666Z Metadata: read
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0009240Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0011701Z Secret source: Actions
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0012717Z Cache mode: write
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0013578Z Prepare workflow directory
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0567158Z Prepare all required actions
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.0619163Z Getting action download info
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.3100550Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.4323580Z Download action repository 'ruby/setup-ruby@v1' (SHA:de492cf36cbab201753d720ce4f4e336cd688c94)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.5659844Z Download action repository 'azure/setup-helm@v5' (SHA:9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.6774145Z Download action repository 'actions/upload-artifact@v6' (SHA:b7c566a772e6b6bfb58ed0dc250532a479d7789f)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.9326566Z Uses: NickYin0125/CucumberReportportal/.github/workflows/validate.yml@refs/heads/codex/readability-backport-1.3.3 (68e81d3697965305438be4fa27aa98aeb4baf726)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.9332699Z ##[group] Inputs
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.9333754Z   release: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.9334237Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:00.9335469Z Complete job name: test / matrix (Ruby 3.3, Cucumber 10.2.0)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0273238Z ##[group]Run actions/checkout@v6
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0274367Z with:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0275224Z   ref: 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0275870Z   fetch-depth: 0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0276355Z   persist-credentials: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0276932Z   repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0280847Z   token: ***
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0281312Z   ssh-strict: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0281762Z   ssh-user: git
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0282236Z   clean: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0282712Z   sparse-checkout-cone-mode: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0283248Z   fetch-tags: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0283758Z   show-progress: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0284221Z   lfs: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0284655Z   submodules: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0285322Z   set-safe-directory: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0285850Z   allow-unsafe-pr-checkout: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0286713Z env:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0287152Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0287746Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0288226Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.0288711Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3811520Z Syncing repository: NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3815649Z ##[group]Getting Git version info
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3817898Z Working directory is '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3821044Z [command]/usr/bin/git version
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3822595Z git version 2.56.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3838307Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3850954Z Temporarily overriding HOME='/home/runner/work/_temp/88c0b4a0-6570-45d0-aa16-e12ba5e203bd' before making global git config changes
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3855633Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3860096Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3918688Z Deleting the contents of '/home/runner/work/CucumberReportportal/CucumberReportportal'
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3924008Z ##[group]Determining repository object format
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3928190Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3931932Z ##[group]Initializing the repository
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.3935446Z [command]/usr/bin/git init /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4094254Z hint: Using 'master' as the name for the initial branch. This default branch name
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4098758Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4102902Z hint: to use in all of your new repositories, which will suppress this warning,
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4106709Z hint: call:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4108804Z hint:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4111099Z hint: 	git config --global init.defaultBranch <name>
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4116245Z hint:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4118991Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4123573Z hint: 'development'. The just-created branch can be renamed via this command:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4126817Z hint:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4128691Z hint: 	git branch -m <name>
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4131307Z hint:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4133123Z hint: Disable this message with "git config set advice.defaultBranchName false"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4137614Z Initialized empty Git repository in /home/runner/work/CucumberReportportal/CucumberReportportal/.git/
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4145443Z [command]/usr/bin/git remote add origin https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4190106Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4192772Z ##[group]Disabling automatic garbage collection
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4195335Z [command]/usr/bin/git config --local gc.auto 0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4238668Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4241731Z ##[group]Setting up auth
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4243832Z Removing SSH command configuration
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4247134Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4292113Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4734629Z Removing HTTP extra header
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4741243Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.4787726Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5038662Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5045806Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5097906Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5357684Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5411296Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5454717Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5498391Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5547484Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5587737Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5589586Z ##[group]Fetching the repository
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:01.5597145Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0017009Z From https://github.com/NickYin0125/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0018794Z  * [new branch]        codex/cucumber-12 -> origin/codex/cucumber-12
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0020035Z  * [new branch]        codex/day2-security-endurance -> origin/codex/day2-security-endurance
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0021327Z  * [new branch]        codex/failure-redaction-2.0.2 -> origin/codex/failure-redaction-2.0.2
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0022506Z  * [new branch]        codex/presentation-ledger-2.0.1 -> origin/codex/presentation-ledger-2.0.1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0023845Z  * [new branch]        codex/readability-backport-1.3.3 -> origin/codex/readability-backport-1.3.3
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0025490Z  * [new branch]        codex/release-draft-recovery -> origin/codex/release-draft-recovery
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0026821Z  * [new branch]        codex/reporting-experience-v1-2 -> origin/codex/reporting-experience-v1-2
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0028230Z  * [new branch]        codex/reportportal-rich-experience -> origin/codex/reportportal-rich-experience
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0029479Z  * [new branch]        docs/user-guides-20261014 -> origin/docs/user-guides-20261014
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0030403Z  * [new branch]        main              -> origin/main
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0031289Z  * [new branch]        maintenance/1.x   -> origin/maintenance/1.x
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0032688Z  * [new branch]        maintenance/presentation-ledger-1.3.2 -> origin/maintenance/presentation-ledger-1.3.2
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0034150Z  * [new branch]        maintenance/release-ancestry-1.x -> origin/maintenance/release-ancestry-1.x
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0037156Z  * [new branch]        qa/presentation-ledger-1.3.2 -> origin/qa/presentation-ledger-1.3.2
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0038518Z  * [new branch]        qa/presentation-ledger-2.0.1 -> origin/qa/presentation-ledger-2.0.1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0039673Z  * [new branch]        qa/presentation-ledger-2.0.2 -> origin/qa/presentation-ledger-2.0.2
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0040577Z  * [new tag]           m3                -> m3
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0041232Z  * [new tag]           milestone1        -> milestone1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0041896Z  * [new tag]           v1.0.0            -> v1.0.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0042516Z  * [new tag]           v1.1.0            -> v1.1.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0042900Z  * [new tag]           v1.2.0            -> v1.2.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0043272Z  * [new tag]           v1.3.0            -> v1.3.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0043632Z  * [new tag]           v1.3.1            -> v1.3.1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0044020Z  * [new tag]           v1.3.2            -> v1.3.2
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0044383Z  * [new tag]           v2.0.0            -> v2.0.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0044754Z  * [new tag]           v2.0.1            -> v2.0.1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0045461Z  * [new tag]           v2.0.2            -> v2.0.2
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0047125Z [command]/usr/bin/git rev-parse --verify --quiet 68e81d3697965305438be4fa27aa98aeb4baf726^{object}
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0073121Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0079353Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0080065Z ##[group]Determining the checkout info
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0081066Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0086325Z [command]/usr/bin/git sparse-checkout disable
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0149798Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0190333Z ##[group]Checking out the ref
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0195320Z [command]/usr/bin/git checkout --progress --force 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0664260Z Note: switching to '68e81d3697965305438be4fa27aa98aeb4baf726'.
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0665300Z 
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0665697Z You are in 'detached HEAD' state. You can look around, make experimental
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0666299Z changes and commit them, and you can discard any commits you make in this
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0666872Z state without impacting any branches by switching back to a branch.
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0667211Z 
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0667450Z If you want to create a new branch to retain commits you create, you may
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0667993Z do so (now or later) by using -c with the switch command. Example:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0668371Z 
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0668512Z   git switch -c <new-branch-name>
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0668785Z 
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0668925Z Or undo this operation with:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0669129Z 
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0669245Z   git switch -
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0669404Z 
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0669670Z Turn off this advice by setting config variable advice.detachedHead to false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0670028Z 
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0670346Z HEAD is now at 68e81d36 test(isolation): clear Bundler auto-setup in standalone helper checks
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0678672Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0738276Z [command]/usr/bin/git log -1 --format=%H
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0776408Z 68e81d3697965305438be4fa27aa98aeb4baf726
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0787198Z ##[group]Removing auth
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0787916Z Removing SSH command configuration
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0792258Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.0836404Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1085991Z Removing HTTP extra header
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1090855Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1138511Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1389274Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1395051Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1434574Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1436623Z includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1438024Z includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1438928Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1448198Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1485422Z /home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1498075Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git.path /home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1547876Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1582978Z /home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1594712Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/CucumberReportportal/CucumberReportportal/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1650509Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1691916Z /github/runner_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1699147Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1747989Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1783262Z /github/runner_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1797420Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.1843297Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2097770Z Removing credentials config '/home/runner/work/_temp/git-credentials-6154aaa9-0882-4ae1-87f0-b6ae7667c8d5.config'
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2108397Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2334748Z ##[group]Run mkdir -p "$RUNNER_TEMP/runtime"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2335692Z ^[[36;1mmkdir -p "$RUNNER_TEMP/runtime"^[[0m
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2336166Z ^[[36;1mecho "BUNDLE_GEMFILE=$RUNNER_TEMP/runtime/Gemfile" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2336721Z ^[[36;1mecho "BUNDLE_PATH=$RUNNER_TEMP/runtime-gems" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2337287Z ^[[36;1mecho "BUNDLE_APP_CONFIG=$RUNNER_TEMP/runtime-bundle-config" >> "$GITHUB_ENV"^[[0m
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2361635Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2361952Z env:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2362211Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2362543Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2362817Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2363094Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2551944Z ##[group]Run ruby/setup-ruby@v1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2552315Z with:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2552572Z   ruby-version: 3.3
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2552832Z   bundler: 2.6.6
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2553095Z   bundler-cache: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2556064Z   token: ***
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2556335Z env:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2556589Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2556917Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2557196Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2557557Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2557972Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2558426Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.2558827Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.3943659Z ##[group]Modifying PATH
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.3944756Z Entries added to PATH to use selected Ruby:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.3947341Z   /opt/hostedtoolcache/Ruby/3.3.13/x64/bin
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.3952524Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.3953733Z ##[group]Print Ruby version
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.4055193Z [command]/opt/hostedtoolcache/Ruby/3.3.13/x64/bin/ruby --version
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6604600Z ruby 3.3.13 (2026-10-23 revision af48f08f21) [x86_64-linux]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6645488Z Took   0.27 seconds
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6646648Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6721679Z ##[error]Error: $BUNDLE_GEMFILE is set to /home/runner/work/_temp/runtime/Gemfile but does not exist
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	    at Module.detectGemfiles (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:37:11)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	    at setupRuby (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88257:39)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	    at async run (/home/runner/work/_actions/ruby/setup-ruby/v1/dist/index.js:88191:5)
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6902249Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6902734Z with:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6902983Z   name: rspec-faults-ruby-3.3-cucumber-10.2.0-1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6903366Z   path: /home/runner/work/_temp/rspec-fault-diagnostics/
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6903697Z   include-hidden-files: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6903938Z   if-no-files-found: warn
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6904161Z   retention-days: 7
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6904370Z   compression-level: 6
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6904585Z   overwrite: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6904779Z env:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6905275Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6905520Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6905742Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6906022Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6906374Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6906755Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.6907127Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8604457Z ##[warning]No files were found with the provided path: /home/runner/work/_temp/rspec-fault-diagnostics/. No artifacts will be uploaded.
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8779016Z ##[group]Run git diff --exit-code
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8779564Z ^[[36;1mgit diff --exit-code^[[0m
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8780208Z ^[[36;1msha256sum --check "$RUNNER_TEMP/runtime/source-dependencies.sha256"^[[0m
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8809730Z shell: /usr/bin/bash -e {0}
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8810131Z env:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8810454Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8810874Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8811246Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8811732Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8812354Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8813036Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.8813635Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9152817Z sha256sum: /home/runner/work/_temp/runtime/source-dependencies.sha256: No such file or directory
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9162944Z ##[error]Process completed with exit code 1.
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9229127Z ##[group]Run actions/upload-artifact@v6
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9229430Z with:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9229673Z   name: runtime-lock-ruby-3.3-cucumber-10.2.0-1
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9230000Z   path: /home/runner/work/_temp/runtime/
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9230288Z   include-hidden-files: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9230537Z   if-no-files-found: error
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9230771Z   retention-days: 7
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9230991Z   compression-level: 6
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9231208Z   overwrite: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9231407Z env:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9231597Z   CUCUMBER_PUBLISH_QUIET: true
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9231836Z   BUNDLE_FROZEN: false
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9232050Z   CUCUMBER_VERSION: 10.2.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9232336Z   BUNDLE_GEMFILE: /home/runner/work/_temp/runtime/Gemfile
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9232696Z   BUNDLE_PATH: /home/runner/work/_temp/runtime-gems
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9233085Z   BUNDLE_APP_CONFIG: /home/runner/work/_temp/runtime-bundle-config
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:08.9233443Z ##[endgroup]
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.0943063Z ##[error]No files were found with the provided path: /home/runner/work/_temp/runtime/. No artifacts will be uploaded.
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.1184280Z Post job cleanup.
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2190003Z [command]/usr/bin/git version
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2244030Z git version 2.56.0
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2298809Z Temporarily overriding HOME='/home/runner/work/_temp/b8a8b9ed-6825-44a2-9926-e229ffab1877' before making global git config changes
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2300052Z Adding repository directory to the temporary git global config as a safe directory
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2305826Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/CucumberReportportal/CucumberReportportal
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2347306Z Removing SSH command configuration
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2354801Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2400444Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2675707Z Removing HTTP extra header
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2683377Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2721983Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2988367Z Removing includeIf entries pointing to credentials config files
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.2995967Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.3044778Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+test / matrix (Ruby 3.3, Cucumber 10.2.0)	UNKNOWN STEP	2026-11-03T12:17:09.3487758Z Cleaning up orphan processes
+test / test	UNKNOWN STEP	﻿2026-11-03T12:17:17.6184334Z Current runner version: '2.338.2'
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6203704Z ##[group]Runner Image Provisioner
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6204400Z Hosted Compute Agent
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6204781Z Version: 20261021.618
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6205212Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6205709Z Build Date: 2026-10-21T00:45:21Z
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6206162Z Worker ID: {465460f8-7d55-479c-8672-01fc689209b4}
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6207126Z Region: centralus
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6207512Z Cloud: Azure
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6207905Z ##[endgroup]
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6209020Z ##[group]Operating System
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6209409Z Ubuntu
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6209819Z 24.04.5
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6210165Z LTS
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6210538Z ##[endgroup]
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6210935Z ##[group]Runner Image
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6211338Z Image: ubuntu-24.04
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6211695Z Version: 20261025.353.1
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6212638Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6213626Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6214247Z ##[endgroup]
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6215021Z ##[group]GITHUB_TOKEN Permissions
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6216659Z Contents: read
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6217021Z Metadata: read
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6217464Z ##[endgroup]
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6218987Z Secret source: Actions
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6219703Z Cache mode: write
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6220161Z Prepare workflow directory
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6471772Z Prepare all required actions
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6543176Z Uses: NickYin0125/CucumberReportportal/.github/workflows/validate.yml@refs/heads/codex/readability-backport-1.3.3 (68e81d3697965305438be4fa27aa98aeb4baf726)
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6546923Z ##[group] Inputs
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6547725Z   release: false
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6548070Z ##[endgroup]
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.6548582Z Complete job name: test / test
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.7441473Z ##[group]Run test "$MATRIX_RESULT" = success
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.7442413Z ^[[36;1mtest "$MATRIX_RESULT" = success^[[0m
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.7904854Z shell: /usr/bin/bash -e {0}
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.7905500Z env:
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.7905943Z   MATRIX_RESULT: failure
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.7906604Z ##[endgroup]
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.8056973Z ##[error]Process completed with exit code 1.
+test / test	UNKNOWN STEP	2026-11-03T12:17:17.8259257Z Cleaning up orphan processes
