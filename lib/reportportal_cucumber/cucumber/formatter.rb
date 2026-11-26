@@ -887,6 +887,8 @@ module ReportportalCucumber
           handle_attachment(to_hash_like(attachment))
           return
         end
+        return if @scenario_states.empty?
+
         state = @scenario_states[runtime_context.current_scenario_key]
         return unless state
 
@@ -1049,7 +1051,7 @@ module ReportportalCucumber
         @finalization_finished = true
         enforce_complete_reporting
       ensure
-        @pending_feature_cases.clear if @finalized
+        @pending_feature_cases&.clear if @finalized
         @combined_step_tables_mutex.synchronize { @combined_step_tables.clear } if @finalized
         @attachment_name_mutex.synchronize { @attachment_name_counts.clear } if @finalized
         @hook_names_mutex.synchronize { @hook_names.clear } if @finalized
@@ -1171,6 +1173,8 @@ module ReportportalCucumber
       # @param end_time [Time]
       # @return [void]
       def finish_open_scenarios(status:, end_time:)
+        return if @scenario_states.empty?
+
         current_key = runtime_context.current_scenario_key
         if current_key && @scenario_states[current_key]
           finish_scenario_state(scenario_key: current_key, status: status, end_time: end_time, close_steps: true)
