@@ -4,7 +4,7 @@ Keep the same World/logger setup and formatter command used locally. Start with
 one Launch per CI job; add shared parallel reporting only when the coordinator
 can own its complete lifecycle.
 
-This example consumes SDK **2.0.2**, requiring Ruby
+This example consumes SDK **2.0.3**, requiring Ruby
 `>=3.3` and Cucumber `>=12.0.1, ~>12.0`. See the
 [migration guide](migrating-to-2.0.md) before upgrading a 1.x project.
 
@@ -17,7 +17,7 @@ It runs from the checked-out **automation project root**. Inject `RP_API_KEY` as
 masked CI secret; set your RP endpoint/project to real values. Supply a verified
 release archive through your CI artifact/mirror process and set
 `SDK_GEM_ARCHIVE` to its absolute local path. Obtain the archive and checksums from
-the [GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2);
+the [GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.3);
 RubyGems.org publication is not assumed.
 
 Add to **`.gitlab-ci.yml`**:
@@ -37,8 +37,8 @@ cucumber:
     NO_COLOR: "1"
   before_script:
     - mkdir -p vendor/cache artifacts
-    - cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.2.gem
-    - gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.2.gem --no-document
+    - cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.3.gem
+    - gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.3.gem --no-document
     - bundle install
   script:
     - >-
@@ -199,7 +199,7 @@ retain matching gem/Chart versions. SDK 1.3.2+ permits independent chart version
 2.x tags require main or the explicitly named Cucumber-12 release branch and
 verify the independent chart version from `Chart.yaml`. The exact immutable
 published v1.3.1 commit is the only historical 1.x main exception. Tags still
-package a verified gem, chart, checksums and provenance. SDK 2.0.2 leaves Helm
+package a verified gem, chart, checksums and provenance. SDK 2.0.3 leaves Helm
 1.3.1 / ReportPortal 26.0.7 unchanged and is not currently published.
 They do not publish to RubyGems.org or deploy a Kubernetes stack. See the
 [source-checkout release operator guide](https://github.com/NickYin0125/CucumberReportportal/blob/main/script/release/README.md) and

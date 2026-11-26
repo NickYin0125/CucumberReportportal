@@ -7,15 +7,15 @@ ReportPortal.
 
 ## Release Line Compatibility
 
-**SDK 2.0.2** improves failure-evidence safety and readability. Distribution uses
+**SDK 2.0.3** closes Feature and Rule suites promptly after the final Scenario. Distribution uses
 the versioned Gem archive, checksums and provenance in the
-[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2).
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.3).
 RubyGems.org publication is separate and is not performed by this release.
 
 | SDK line | Ruby | Cucumber | Release line |
 | --- | --- | --- | --- |
 | 1.x / **1.3.2** | `>= 3.1` | `>= 9, < 11` | `maintenance/1.x`, tag `v1.3.2` |
-| 2.x / **2.0.2** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/cucumber-12`, tag `v2.0.2` |
+| 2.x / **2.0.3** | `>= 3.3` | `>= 12.0.1`, `~> 12.0` | `codex/cucumber-12`, tag `v2.0.3` |
 
 Cucumber 11 remains unsupported. Existing published archives and their dated
 evidence are unchanged. Helm **1.3.1** / ReportPortal **26.0.7** stay independently
@@ -31,7 +31,7 @@ a browser or a ReportPortal server before connecting your real project.
 | --- | --- |
 | Ruby | `>= 3.3` |
 | Cucumber | `>= 12.0.1, ~> 12.0` |
-| Package | `reportportal-cucumber-ruby` **2.0.2**, verified release archive |
+| Package | `reportportal-cucumber-ruby` **2.0.3**, verified release archive |
 | ReportPortal | Your endpoint, project, and API key when enabling remote reporting |
 | Browser tooling | Optional; belongs to your UI test project |
 
@@ -41,8 +41,8 @@ not fail a Scenario.
 
 ## 1. Install the Gem
 
-Obtain `reportportal-cucumber-ruby-2.0.2.gem` from the
-[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.2),
+Obtain `reportportal-cucumber-ruby-2.0.3.gem` from the
+[GitHub release](https://github.com/NickYin0125/CucumberReportportal/releases/tag/v2.0.3),
 verify its supplied checksum and provenance, or use the
 [isolated source-packaging workflow](examples/current_sdk/README.md#source-and-packaging-verification).
 Do not assume the SDK version is available from a public Gem registry.
@@ -50,10 +50,10 @@ Do not assume the SDK version is available from a public Gem registry.
 From **your automation project root**, using the verified archive's absolute path:
 
 ```sh
-export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.2.gem
+export SDK_GEM_ARCHIVE=/absolute/path/to/reportportal-cucumber-ruby-2.0.3.gem
 mkdir -p vendor/cache
-cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.2.gem
-gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.2.gem --no-document
+cp "$SDK_GEM_ARCHIVE" vendor/cache/reportportal-cucumber-ruby-2.0.3.gem
+gem install ./vendor/cache/reportportal-cucumber-ruby-2.0.3.gem --no-document
 ```
 
 Add these entries to that project's `Gemfile`, then run `bundle install` from the
@@ -62,7 +62,7 @@ same directory:
 ```ruby
 source "https://rubygems.org"
 gem "cucumber", "~> 12.0", ">= 12.0.1"
-gem "reportportal-cucumber-ruby", "= 2.0.2"
+gem "reportportal-cucumber-ruby", "= 2.0.3"
 ```
 
 Verify, still from **your project root**:
@@ -71,7 +71,7 @@ Verify, still from **your project root**:
 bundle exec ruby -e 'require "reportportal_cucumber"; puts ReportportalCucumber::VERSION'
 ```
 
-Expected output: `2.0.2`. Installation may download dependencies; offline setup
+Expected output: `2.0.3`. Installation may download dependencies; offline setup
 requires all of them to be cached. See [installation details](docs/getting-started.md#1-install-the-gem).
 
 ## Presentation Opt-ins
