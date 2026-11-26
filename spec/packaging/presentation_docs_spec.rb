@@ -8,7 +8,7 @@ require_relative "../../examples/current_sdk/helpers/sdk_version"
 
 RSpec.describe "Ledger candidate version and documentation" do
   let(:root) { File.expand_path("../..", __dir__) }
-  let(:version) { "2.0.2" }
+  let(:version) { "2.0.3" }
   let(:changelog) { File.binread(File.join(root, "CHANGELOG.md")) }
   let(:rationale) do
     "Released as a patch at the owner's request; the two opt-in switches are additive and off by default."
@@ -84,7 +84,7 @@ RSpec.describe "Ledger candidate version and documentation" do
     # Byte preservation is audited against the frozen branch separately; PR
     # merge checkouts may include legitimate target-branch release prose/dates.
     releases = changelog.scan(/^## (\d+\.\d+\.\d+) - .+$/).flatten
-    expect(releases.first(3)).to eq([version, "2.0.1", "2.0.0"])
+    expect(releases.first(4)).to eq([version, "2.0.2", "2.0.1", "2.0.0"])
     expect(releases.count("2.0.1")).to eq(1)
     expect(releases.count("2.0.0")).to eq(1)
   end

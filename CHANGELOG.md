@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.3 - 2026-11-26
+
+- Finish Feature and Rule suites after their last scheduled Scenario completes its final attempt, rather than at Launch teardown. Respect filtered plans, retries and interleaved Features; retain final cleanup for unfinished suites.
+- Avoid recreating empty reporting context during teardown.
+- Local acceptance of PR #10 verified the timing against real ReportPortal (candidate Launch 4089, baseline 4090). Full RSpec passed 1,804 examples; offline Cucumber passed 7 scenarios and 21 steps.
+- SDK compatibility is unchanged: Ruby >= 3.3 and Cucumber >= 12.0.1, < 13. The companion Helm Chart remains 1.3.1.
+
 ## 2.0.2 - 2026-11-02
 
 ### Failure Evidence Safety And Readability

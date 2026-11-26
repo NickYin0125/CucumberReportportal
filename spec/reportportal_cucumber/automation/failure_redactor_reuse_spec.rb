@@ -347,7 +347,8 @@ RSpec.describe Automation::FailureRedactor, "default policy reuse" do
   %i[default injected].each do |mode|
     it "does not retain message strings, frame strings, their arrays or copied evidence with #{mode} policy" do
       wrapper = mode == :default ? sanitizer : described_class.new(redactor: Automation::EvidenceRedactor.new)
-      references = transient_input_references(wrapper)
+      # Do not let conservative stack scanning keep fixtures alive in this thread.
+      references = Thread.new(wrapper) { |policy| transient_input_references(policy) }.value
       retained_strings = owned_objects(wrapper).grep(String)
       expect(retained_strings.grep(/REUSE_RETENTION/)).to be_empty
 

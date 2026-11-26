@@ -156,7 +156,15 @@ jobs:
 
       - name: Resolve this legacy runtime without changing its gemspec
         run: |
-          ruby -rfileutils -e 'File.open("Gemfile", "a") { |file| file.puts "\ngem \"cucumber\", #{ENV.fetch("CUCUMBER_REQUIREMENT").inspect}" }; FileUtils.rm_f("Gemfile.lock")'
+          ruby -rbundler -rfileutils -e '
+            aws = Bundler::LockfileParser.new(File.read("Gemfile.lock")).specs.select { |spec| spec.name.start_with?("aws-") }
+            abort "Missing locked baseline AWS SDK" unless aws.any? { |spec| spec.name == "aws-sdk-s3" }
+            File.open("Gemfile", "a") do |file|
+              file.puts "\ngem \"cucumber\", #{ENV.fetch("CUCUMBER_REQUIREMENT").inspect}"
+              aws.each { |spec| file.puts "gem #{spec.name.inspect}, #{("= " + spec.version.to_s).inspect}" }
+            end
+            FileUtils.rm_f("Gemfile.lock")
+          '
           bundle install --jobs 4
           bundle exec ruby -e 'require "reportportal_cucumber"; cucumber = Gem.loaded_specs.fetch("cucumber").version; abort "Wrong SDK source" unless ReportportalCucumber::VERSION == "1.3.1"; abort "Wrong Cucumber major" unless cucumber.segments.first.to_s == ENV.fetch("CUCUMBER_MAJOR"); puts "SDK=#{ReportportalCucumber::VERSION} Cucumber=#{cucumber} Ruby=#{RUBY_VERSION}"'
 

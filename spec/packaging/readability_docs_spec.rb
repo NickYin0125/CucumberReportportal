@@ -6,7 +6,7 @@ require "date"
 
 RSpec.describe "2.0.2 readability user documentation" do
   let(:root) { File.expand_path("../..", __dir__) }
-  let(:candidate_notes) { document("CHANGELOG.md").split("\n## ", 3).fetch(1) }
+  let(:candidate_notes) { document("CHANGELOG.md").split("\n## ").find { |section| section.start_with?("2.0.2 - ") } }
 
   def document(relative)
     File.read(File.join(root, relative))
@@ -173,7 +173,7 @@ RSpec.describe "2.0.2 readability user documentation" do
                                        "unchanged companion Helm 1.3.1")
     expect(candidate_notes).not_to include("pending independent review", "not completed live QA",
                                            "not authorized", "Planned release-pipeline repair")
-    expect(document("README.md")).to include("releases/tag/v2.0.2", "RubyGems.org publication is separate")
+    expect(document("README.md")).to include("releases/tag/v2.0.3", "RubyGems.org publication is separate")
   end
 
   it "records the exact owner screenshot tradeoff and retains the prior R02 decision" do
