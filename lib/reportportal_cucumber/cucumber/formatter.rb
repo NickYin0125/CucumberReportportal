@@ -43,7 +43,7 @@ module ReportportalCucumber
         @attachment_name_counts = Hash.new(0)
         @hook_names = {}
         @hook_names_mutex = Mutex.new
-        @feature_states = {}
+        @pending_feature_cases = {}
         @rule_states = {}
         @scenario_states = {}
         @identity_warnings = Set.new
@@ -499,6 +499,13 @@ module ReportportalCucumber
       def handle_test_run_started(event)
         return unless reporting_enabled?
 
+        if event.respond_to?(:test_cases)
+          # Cucumber supplies a filtered plan, including one test case per Examples row.
+          event.test_cases.each do |test_case|
+            feature_key = extract_feature_uri(test_case: test_case)
+            (@pending_feature_cases[feature_key] ||= Set.new).add(test_case.id)
+          end
+        end
         start_time = monotonic_timestamp(extract_timestamp(event) || Time.now)
         debug("Starting launch name=#{@config.launch.inspect} join=#{@config.join?} rerun=#{@config.rerun?}")
         creator = lambda do
@@ -959,12 +966,22 @@ module ReportportalCucumber
         end
         @business_failed ||= state[:business_failed] unless state[:will_be_retried]
 
+        end_time = monotonic_timestamp(extract_timestamp(event) || Time.now)
         finish_scenario_state(
           scenario_key: scenario_key,
           status: status,
-          end_time: monotonic_timestamp(extract_timestamp(event) || Time.now),
+          end_time: end_time,
           close_steps: true
         )
+        finish_feature_after_case(state[:feature_key], event, end_time: end_time) unless state[:will_be_retried]
+      end
+
+      def finish_feature_after_case(feature_key, event, end_time:)
+        pending_cases = @pending_feature_cases[feature_key]
+        return unless pending_cases&.delete?(fetch_value(event, [:test_case, :id])) && pending_cases.empty?
+
+        @pending_feature_cases.delete(feature_key)
+        finish_feature_state(feature_key: feature_key, status: nil, end_time: end_time)
       end
 
       # @param event [Object]
@@ -1032,6 +1049,7 @@ module ReportportalCucumber
         @finalization_finished = true
         enforce_complete_reporting
       ensure
+        @pending_feature_cases.clear if @finalized
         @combined_step_tables_mutex.synchronize { @combined_step_tables.clear } if @finalized
         @attachment_name_mutex.synchronize { @attachment_name_counts.clear } if @finalized
         @hook_names_mutex.synchronize { @hook_names.clear } if @finalized

@@ -34,6 +34,46 @@ RSpec.describe "Cucumber 12 real CLI wire acceptance" do
     result.fetch("wire").fetch("launches").values.fetch(0)
   end
 
+  it "finishes each filtered feature after its final attempt, before the next feature or global teardown" do
+    result = Cucumber12QA.run(@server, fixture: ".", tags: "@qa_pass or @qa_flaky_alpha or @qa_flaky_beta",
+                              options: ["--retry", "1"], after_all_failure: true)
+    expect_clean_wire(result, exit_code: 1)
+    suites = items(result).select { |item| item["type"] == "SUITE" }.sort_by { |item| item.fetch("startSequence") }
+    expect(suites.map { |item| item.fetch("name") }).to eq(
+      ["Feature: Native outcomes without removed strict mode", "Feature: Native retry lifecycles"]
+    )
+    first, last = suites
+    expect(first.fetch("finishSequence")).to be < last.fetch("startSequence")
+    attempts = scenarios(result).select { |item| item["parentUuid"] == last.fetch("uuid") }
+    expect(attempts.map { |item| item.fetch("retry") }).to eq([false, true, false, true])
+    expect(last.fetch("finishSequence")).to be > attempts.last.fetch("finishSequence")
+    teardown = result.fetch("wire").fetch("logs").find { |log| log.fetch("message").include?("QA intentional AfterAll failure") }
+    expect(teardown).not_to be_nil
+    expect(last.fetch("finishSequence")).to be < teardown.fetch("sequence")
+    suites.each { |suite| expect_finish(suite, "PASSED") }
+    expect_finish(launch(result), "FAILED")
+  end
+
+  it "keeps an interleaved feature open until its remaining cases finish" do
+    result = Cucumber12QA.run(@server, fixture: ".", tags: "@qa_pass or @qa_flaky_alpha or @qa_flaky_beta",
+                              options: ["--order", "random:3", "--retry", "1"])
+    expect_clean_wire(result, exit_code: 0)
+    cases = scenarios(result).sort_by { |item| item.fetch("startSequence") }
+    expect(cases.map { |item| item.fetch("name") }).to eq(
+      ["Scenario: Flaky alpha", "Scenario: Flaky alpha", "Scenario: Passing native media",
+       "Scenario: Flaky beta", "Scenario: Flaky beta"]
+    )
+    parents = result.fetch("wire").fetch("items")
+    retry_suite = parents.fetch(cases.first.fetch("parentUuid"))
+    other_suite = parents.fetch(cases[2].fetch("parentUuid"))
+    expect(cases.select { |item| item.fetch("retry") }.map { |item| item.fetch("parentUuid") }).to eq(
+      [retry_suite.fetch("uuid"), retry_suite.fetch("uuid")]
+    )
+    expect(other_suite.fetch("finishSequence")).to be < cases[3].fetch("startSequence")
+    expect(retry_suite.fetch("finishSequence")).to be > cases.last.fetch("finishSequence")
+    expect_finish(retry_suite, "PASSED")
+  end
+
   it "preserves native logs, exact PNG/text bytes, and Step/Before/After/AfterStep ownership" do
     result = Cucumber12QA.run(@server, fixture: "outcomes.feature", tags: "@qa_pass")
     expect_clean_wire(result, exit_code: 0)
